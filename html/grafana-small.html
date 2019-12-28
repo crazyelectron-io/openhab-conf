@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-type" CONTENT="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="panel-75px.css" />
+    <script src="smarthome-grafana.js"></script>
+    <script src="smarthome-grafana-user-defaults.js"></script>
+</head>
+
+<body>
+</body>
+
+<script>
+    var fromItemFunction = function (value) {
+        switch (value) {
+            case "HR4_5":
+                return "now-4h&to=now&var-granularity=5m";
+            case "TDY_5":
+                return "now%2Fd&to=now&var-granularity=5m";
+            case "YDY_5":
+                return "now-1d%2Fd&to=now-1d%2Fd&var-granularity=5m";
+            case "DBYDY_5":
+                return "now-2d%2Fd&to=now-2d%2Fd&var-granularity=5m";
+            default:
+                return "now%2Fd&to=now&var-granularity=5m";
+        }
+    }
+
+    var panelItemFunction = function (value) {
+        switch (value) {
+            case "CH_BURN":
+                return 26;
+            case "HW_BURN":
+                return 27;
+            default:
+                return 26;
+        }
+    }
+
+    addGrafanaPanel("grafana", { fromItemFunction: fromItemFunction, panelItemFunction: panelItemFunction });
+
+</script>
+
+</html>

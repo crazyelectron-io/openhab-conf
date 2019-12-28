@@ -1,0 +1,500 @@
+//==================================================================================================
+// nefiteasy.rules - These rules handle Nefit Easy Item updates
+//--------------------------------------------------------------------------------------------------
+//  20199120    v1  Created initial version
+//  20190210    v2  Updated commands and error checking
+//  20190317    v3  Adapted to new container setup
+//  20190928    v4  Truncate Temp_Avg_Livingroom to 1 decimal
+//  20191218    v5  Renamed items
+//==================================================================================================
+
+
+// Nefit Easy Server URLs
+val String NEFIT_API = "http://192.168.2.2:4000/api"
+val String NEFIT_BRIDGE = "http://192.168.2.2:4000/bridge"
+
+val String INFLUXDB = "openhab_db"                  // The Influx Database to store measurements
+val String influxUrl = "http://192.168.2.2:8086/"   // The InfluxDB daemon hostname and port#
+val String seriesHW = "NE_GasUseHW"                 // The measurement name to store the Hot Water gas usage
+val String seriesCH = "NE_GasUseCH"                 // The measurement name to store the Central Heating gas usage
+
+// Global variables
+var Number nSavedSetpoint = 0                       //Holds the setpoint while doors are open
+
+
+//--------------------------------------------------------------------------------------------------
+// Set default Grafana display switches on system start.
+// Note: It wil also be triggered when the rule file gets reloaded (in OH2.x).
+//--------------------------------------------------------------------------------------------------
+rule "Initialize NefitEasy Panel view parameters"
+    when
+	    System started
+    then
+        //--- Arm the watchdog timer (to detect stalled/stopped input from EasyServer)
+        CV_Watchdog.sendCommand(ON)
+        logInfo("Nefit.Delayed.Start", "Set EasyServer watchdog timer at activation of rule")
+    end
+
+
+//--------------------------------------------------------------------------------------------------
+// Triggered when watchdog timer expires indicating we didn't receive data for 30 minutes.
+// Send a notification to the user via Pushover.
+//--------------------------------------------------------------------------------------------------
+rule "Watchdog timeout triggered"
+    when
+	Item CV_Watchdog changed to OFF
+    then
+        logWarn("Nefit.Watchdog.Timeout", "NEFIT WATCHDOG TIMER TRIGGERED!")
+        sendPushoverMessage(pushoverBuilder("Nefit readings missing, check the Easy-Server status").withDevice("NCC-1701").withPriority(1).withTitle("WatchDog Alert"))
+    end
+
+
+//--------------------------------------------------------------------------------------------------
+// Get the Nefit CH/HW system status every minute (from the easy-server daemon).
+// See https://github.com/robertklep/nefit-easy-http-server.
+//
+// The API command '/api/status' returns the following JSON result:
+// {    "user mode":"clock",
+//      "clock program":"auto",
+//      "in house status":"ok",
+//      "in house temp":21.2,
+//      "hot water active":false,
+//      "boiler indicator":"off",
+//      "control":"room",
+//      "temp override duration":0,
+//      "current switchpoint":8,
+//      "ps active":false,
+//      "powersave mode":false,
+//      "fp active":false,
+//      "fireplace mode":false,
+//      "temp override":true,
+//      "holiday mode":false,
+//      "boiler block":null,
+//      "boiler lock":null,
+//      "boiler maintenance":null,
+//      "temp setpoint":20.5,
+//      "temp override temp setpoint":20.5,
+//      "temp manual setpoint":20,
+//      "hed enabled":null,
+//      "hed device at home":null,
+//      "outdoor temp":3,
+//      "outdoor source type":"virtual"
+// }
+//
+// The info retrieved is store in Items:
+//  CV_Temp_Livingroom  - The current measured room temperature
+//  CV_SetPoint_Livingroom     - The set temperature
+//  CV_Pressure     - The pressure in the pipes (in bar)
+//  CV_Burner_Active      - Switch indicating the CV is active
+//  CV_Heater_Active       - Switch indicating the Central Heating is active
+//  CV_HotWater_Active     - Switch indicating the Hot water is active
+//--------------------------------------------------------------------------------------------------
+rule "Nefit Easy status"
+	when
+        Time cron "0 * * * * ?"
+	then
+        val String TAG = "Nefit.Status.Check"
+
+        var String json = ""
+
+		//--- Get Nefit Easy CV and thermostat info in JSON format from the easy-server API.
+		json = sendHttpGetRequest(NEFIT_API + "/status")
+		if (json === null || json == NULL || json == "")
+        {
+			logWarn(TAG, "Empty API status response")
+        }
+        else
+        {
+            //--- Extract the relevant parameters ('in house temp' and 'temp setpoint') from the JSON data.
+            try
+            {
+                val String inhouseTemp = transform("JSONPATH", "$.['in house temp']", json)
+                logDebug(TAG, "In house temperature: {}", inhouseTemp)
+                CV_Temp_Livingroom.postUpdate(inhouseTemp)
+            }
+            catch (Throwable e)
+            {
+                logError(TAG, "Error '{}' reading in house temp; JSON response: {}", e, json)
+            }
+            try
+            {
+                val String setpointTemp = transform("JSONPATH", "$.['temp setpoint']", json)
+                logDebug(TAG, "Setpoint temperature: {}", setpointTemp)
+                CV_Temp_Livingroom.postUpdate(setpointTemp)
+            }
+            catch (Throwable e)
+            {
+                logError(TAG, "Error '{}' reading setpoint temp; JSON response: {}", e, json)
+            }
+        }
+
+        //--- Get Nefit CV water pressure
+        json = ""
+		json = sendHttpGetRequest(NEFIT_BRIDGE + "/system/appliance/systemPressure")
+        // Format: {"id":"/system/appliance/systemPressure","type":"floatValue","recordable":0,"writeable":0,"value":1.9,"unitOfMeasure":"bar","minValue":0,"maxValue":25}
+		if (json === null || json == NULL || json == "")
+        {
+			logWarn(TAG, "Empty API pressure response")
+        }
+        else
+        {
+            // Extract the relevant data (the 'value' parameter) from the JSON data
+            try
+            {
+                val String heaterPressure = transform("JSONPATH", "$.value", json)
+                logDebug(TAG, "Heater pressure read from JSON is: {}", heaterPressure)
+                CV_Pressure.postUpdate(heaterPressure)
+            }
+            catch (Throwable e)
+            {
+                logError(TAG, "Error '{}' reading pressure; JSON response: {}", e, json)
+            }
+        }
+
+        //--- Get Nefit CV burner data
+        json = " "
+		json = sendHttpGetRequest(NEFIT_BRIDGE + "/ecus/rrc/uiStatus")
+		if (json === null || json === null || json == "")
+        {
+			logWarn(TAG, "Empty Nefit API burner status response")
+        }
+        else
+        {
+            // Reset watchdog timer if we received update from EasyServer
+            CV_Watchdog.sendCommand(ON)
+
+            // Extract the relevant data from the JSON data
+            val String vBurner = transform("JSONPATH", "$.value.BAI", json)
+            switch (vBurner)
+            {
+                case "CH":
+                {
+                    // CV heating active
+                    if (CV_Burner_Active.state == NULL || CV_Burner_Active.state != ON) CV_Burner_Active.sendCommand(ON)
+                    if (CV_Heater_Active.state == NULL || CV_Heater_Active.state != ON) CV_Heater_Active.sendCommand(ON)
+                    if (CV_HotWater_Active.state == NULL || CV_HotWater_Active.state != OFF) CV_HotWater_Active.sendCommand(OFF)
+                }
+                case "HW":
+                {
+                    // Hot water tap active
+                    if (CV_Burner_Active.state == NULL || CV_Burner_Active.state != ON) CV_Burner_Active.sendCommand(ON)
+                    if (CV_HotWater_Active.state == NULL || CV_HotWater_Active.state != ON) CV_HotWater_Active.sendCommand(ON)
+                    if (CV_Heater_Active.state == NULL || CV_Heater_Active.state != OFF) CV_Heater_Active.sendCommand(OFF)
+                }
+                case "No":
+                {
+                    // Hot water tap and CV heating inactive
+                    if (CV_Burner_Active.state == NULL || CV_Burner_Active.state != OFF) CV_Burner_Active.sendCommand(OFF)
+                    if (CV_HotWater_Active.state == NULL || CV_HotWater_Active.state != OFF) CV_HotWater_Active.sendCommand(OFF)
+                    if (CV_Heater_Active.state == NULL || CV_Heater_Active.state != OFF) CV_Heater_Active.sendCommand(OFF)
+                }
+                default:
+                {
+                    // Hot water tap and CV heating inactive
+                    logWarn(TAG, "Unknown JSON 'value.BAI' response {}, turning off Nefit switch status", vBurner)
+                    if (CV_Burner_Active.state == NULL || CV_Burner_Active.state != OFF) CV_Burner_Active.sendCommand(OFF)
+                    if (CV_HotWater_Active.state == NULL || CV_HotWater_Active.state != OFF) CV_HotWater_Active.sendCommand(OFF)
+                    if (CV_Heater_Active.state == NULL || CV_Heater_Active.state != OFF) CV_Heater_Active.sendCommand(OFF)
+                }
+            }
+        }
+	end
+
+
+//--------------------------------------------------------------------------------------------------
+// Calculate average living room temp from two different sensors, the Nefit Easy
+// thermostat and the Netatmo Healthy Home Coach.
+//--------------------------------------------------------------------------------------------------
+rule "Calculate average livingroom temperature"
+	when
+        Item CV_Temp_Livingroom received update or
+        Item NHC_Temp_Livingroom received update
+	then
+        val String TAG = "Nefit.AvgTemp.Livingroom"
+
+        //--- Reset watchdog timer if we received update from EasyServer or Netatmo Home Coach
+        if (triggeringItem.name == "CV_Temp_Livingroom")
+        {
+            CV_Watchdog.sendCommand(ON)
+        }
+        if (triggeringItem.name == "NHC_Temp_Livingroom")
+        {
+            NHC_Watchdog.sendCommand(ON)
+        }
+        
+        //--- Calculate the average livingroom temp from two sensor values (if available)
+        var Number temp = 0
+        if (CV_Temp_Livingroom.state != NULL)
+        {
+            if (NHC_Temp_Livingroom.state != NULL)
+            {
+                temp = ((CV_Temp_Livingroom.state as Number + NHC_Temp_Livingroom.state as Number) / 2)
+                logDebug(TAG, "Average temp is {} (from NHC_Temp_Livingroom+CV_Temp_Livingroom)", temp)
+                Temp_Avg_Livingroom.postUpdate(String::format("%.1f", temp))
+            }
+            else
+            {
+                logDebug(TAG, "Average temp is {} (from CV_Temp_Livingroom)", CV_Temp_Livingroom.state as Number)
+                Temp_Avg_Livingroom.postUpdate(String::format("%.1f", CV_Temp_Livingroom.state as Number))
+            }
+        }
+        else
+        {
+            if (NHC_Temp_Livingroom.state != NULL)
+            {
+                logDebug(TAG, "Average temp is {} (from NHC_Temp_Livingroom)", NHC_Temp_Livingroom.state as Number)
+                Temp_Avg_Livingroom.postUpdate(String::format("%.1f", NHC_Temp_Livingroom.state as Number))
+            }
+        }
+    end
+
+
+//--------------------------------------------------------------------------------------------------
+// Get the next programmed switch point (from the easy-server daemon).
+// See https://github.com/robertklep/nefit-easy-http-server.
+//
+// The API command '/api/program' returns the following JSON result:
+//  {
+//      "active":1,
+//      "program1":
+//      [
+//          {"dow":0,"time":"07:15","temp":19.5},
+//          {"dow":0,"time":"08:30","temp":20},
+//          {"dow":0,"time":"11:30","temp":21},
+//          {"dow":0,"time":"22:50","temp":19.5},
+//          {"dow":1,"time":"06:15","temp":20},
+//              ...
+//        {"dow":6,"time":"23:50","temp":19.5}
+//      ],
+//      "program2":
+//      [
+//          {"dow":0,"time":"07:00","temp":20},
+//	     	{"dow":0,"time":"23:00","temp":20},
+//	  	    {"dow":1,"time":"07:00","temp":20},
+//	  	    {"dow":1,"time":"23:00","temp":20},
+//              ...
+//      ]
+// Day of week 0 is Sunday.
+//
+// The info retrieved is store in Item:
+//  NE_NextSwitchPoint  - The time of the next switch point
+//  NE_NextSetPoint     - The next setpoint temperature
+//--------------------------------------------------------------------------------------------------
+// rule "Nefit Easy next program"
+	// when
+        // Time cron "*/10 * * * * ?"
+	// then
+        // val tag = "Nefit.Program.Next"
+        // logDebug(tag, ">>> Enter rule")
+
+		// Get Nefit Easy program info in JSON format from the easy-server API.
+		// var String json = sendHttpGetRequest("http://localhost:4000/api/program")
+		// if (json == NULL || json == "") {
+			// logWarn(tag, "Empty API program response")
+            //  return;
+        // }
+
+        // Get the active program.
+        // val vActiveProgram = transform("JSONPATH", "$.active", json)
+
+        // Get the current time and day of week (0 = Sunday).
+
+
+//--------------------------------------------------------------------------------------------------
+// Retrieve yesterdays gas usage for Hot Water (HW) and Central Heating (CH).
+// The Nefit CV returns the gas usage in kWh, not in m3 (as measured by the utility
+// company). So we must convert this to m3. The Nefit Easy app uses a conversion factor
+// of 0.12307692F (kWh * 0.12307692f = m³) for natural gas, which means a caloric value
+// of 29 MJ/m³ (for Dutch users, this value is rather low, and a value of 35.17 MJ/m³
+// is more accurate. More information can be found on the Gasunie website).
+//
+// Format of the JSON messages received (32 entries per page):
+//  {"id":"/ecus/rrc/recordings/gasusage","type":"recordings","recordable":0,"writeable":0,
+//    "value":[
+//      {"d":"08-01-2019","hw":18.3,"ch":85.9,"T":73},
+//      {"d":"09-01-2019","hw":20.5,"ch":83.1,"T":53},
+//      {"d":"10-01-2019","hw":2.1,"ch":91.9,"T":37},
+//      {"d":"11-01-2019","hw":9.5,"ch":80.5,"T":70},
+//      {"d":"12-01-2019","hw":17.9,"ch":66,"T":68},
+//         ...
+//      {"d":"255-256-65535","hw":6553.5,"ch":6553.5,"T":-1}
+//    ]
+//  }
+//
+// For conversion of kWh to m3 natutal gas:
+//  1 kWh equals 3.6 MJ
+//  1 m3 = 35.17 MJ/3.6 MJ = 9.7694 kWh
+//  1 kWh = 0.102365 m3
+// Since Nefit is a Dutch brand of the Robert Bosch Group, the conversion is hardcoded.
+//--------------------------------------------------------------------------------------------------
+rule "Retrieve yesterdays gas usage for water and heating (after midnight)"
+	when
+        Time cron "0 2 0 * * ?" or
+        Item CV_Retry_GasUsage changed to OFF
+	then
+        val String TAG = "Nefit.YesterDay.GasUsage"
+
+        //--- Get number of gas usage pages in JSON format
+		var String json = sendHttpGetRequest(NEFIT_BRIDGE + "/ecus/rrc/recordings/gasusagePointer")
+
+		if (json == NULL || json == "")
+        {
+	        logWarn(TAG, "Empty gas usage pointer response, retrying")
+            CV_Retry_GasUsage.sendCommand(ON)     //Set retry switch (expires in 2m and turns to OFF)
+        }
+        else
+        {
+            // JSON format: {"id":"/ecus/rrc/recordings/gasusagePointer","type":"floatValue","recordable":0,"writeable":0,"value":1166,"unitOfMeasure":"","minValue":1,"maxValue":6400}
+            val vPage = Math::round(Math::ceil((Float::parseFloat(transform("JSONPATH", "$.value", json)) - 1) / 32))
+
+            // Get the last web page for yesterdays data
+		    json = sendHttpGetRequest(NEFIT_BRIDGE + "/ecus/rrc/recordings/gasusage?page=" + vPage.toString)
+		    if (json == NULL || json == "")
+            {
+	            logWarn(TAG, "Empty gas usage data page {} response, retrying", vPage.toString)
+                CV_Retry_GasUsage.sendCommand(ON)
+            }
+            else
+            {
+                CV_Watchdog.sendCommand(ON)
+                logInfo(TAG, "Received Nefit Bridge update, re-arm watchdog timer")
+
+                // Walk through JSON Array and find yesterday's entry.
+                var int arrayLen = Integer::parseInt(transform("JSONPATH", "$.value.length()", json))
+                var String yesterday = now.minusDays(1).toString("dd-MM-yyyy")
+                for (var i = 0; i < arrayLen; i++)
+                {
+                    if (yesterday == transform("JSONPATH","$.value["+i+"].d", json))
+                    {
+                        val String hotWater = (Float::parseFloat(transform("JSONPATH","$.value["+i+"].hw", json)) * 0.102365).toString
+                        val String centralHeating = (Float::parseFloat(transform("JSONPATH","$.value["+i+"].ch", json)) * 0.102365).toString
+                        val String timeStamp = now.withTimeAtStartOfDay.minusSeconds(1).millis.toString
+
+                        logInfo(TAG,"Yesterdays Hotwater: {}, CentralHeating: {}, Timestamp: {}", hotWater, centralHeating, timeStamp)
+                        var String cmd = "/bin/sh@@-c@@/usr/bin/curl -s -X POST "+influxUrl+"write?db="+INFLUXDB+"\\&precision=ms --data-binary '"+seriesHW+" value=" + hotWater + " " + timeStamp + "'"
+                        executeCommandLine(cmd, 2000)
+
+                        cmd = "/bin/sh@@-c@@/usr/bin/curl -s -X POST "+influxUrl+"write?db="+INFLUXDB+"\\&precision=ms --data-binary '"+seriesCH+" value=" + centralHeating + " " + timeStamp + "'"
+                        executeCommandLine(cmd, 2000)
+
+                        return;
+                    }
+                }
+            }
+        }
+    end
+
+
+//--------------------------------------------------------------------------------------------------
+// Change the thermostat SetPoint temperature and disable the program mode.
+//--------------------------------------------------------------------------------------------------
+rule "POST SetTemp Change"
+    when
+        Item CV_Temp_Livingroom received command
+    then
+        val String TAG = "Nefit."+triggeringItem.name+".Command"
+        logInfo(TAG, ">>>>>> Enter rule >>>>>> {}", CV_Temp_Livingroom)
+
+        val String endpoint1 = "/heatingCircuits/hc1/temperatureRoomManual"
+        val String contenttype = "application/json"
+
+        if (CV_Temp_Livingroom != NULL)
+        {
+            var Number setpointNE = CV_Temp_Livingroom.state as Number
+            var String POSTrequest = '{"value":' + setpointNE + '}'
+
+            var output = sendHttpPostRequest(NEFIT_BRIDGE + endpoint1, contenttype, POSTrequest)
+            logInfo(TAG, "Nefit Setpoint 1: {}", output);
+
+            var String endpoint2 = "/heatingCircuits/hc1/manualTempOverride/status"
+            output = sendHttpPostRequest(NEFIT_BRIDGE + endpoint2, contenttype, '{ "value":"on" }')
+            logInfo(TAG, "Nefit Setpoint 2: {}", output);
+
+            var String endpoint3 = "/heatingCircuits/hc1/manualTempOverride/temperature"
+            output = sendHttpPostRequest(NEFIT_BRIDGE + endpoint3, contenttype, POSTrequest)
+            logInfo(TAG, "Nefit Setpoint 3: {}", output);
+        }
+        else
+        {
+            logWarn(TAG, "{} is NULL, skipping rule", triggeringItem.name)
+        }
+
+        logInfo(TAG, "<<<<<< Exit rule <<<<<<")
+    end
+
+
+//--------------------------------------------------------------------------------------------------
+// Check if the livingroom or dining door is open and lower the thermostat while
+// either is open.
+//--------------------------------------------------------------------------------------------------
+rule "Heating off when livingroom or kitchen door open"
+	when
+        Item Alarm_Door_Livingroom changed to OPEN or
+        Item Alarm_Door_Dining changed to OPEN
+	then
+        val String TAG = "NefitEasy."+triggeringItem.name+".DoorOpen"
+        logInfo(TAG, ">>>>>> Enter rule >>>>>>")
+
+        // Save the current setpoint if this is the first door open event
+        if (nSavedSetpoint == 0)
+        {
+            logInfo(TAG, "Saving current setPoint {}", CV_Temp_Livingroom.state)
+            nSavedSetpoint = CV_Temp_Livingroom.state as Number
+        }
+
+        // Lower the setpoint to 18 while at least one of the doors is open
+        logInfo(TAG, "Door is open. Temporary lower the setpoint to 18 degrees celcius")
+        CV_Temp_Livingroom.sendCommand(18)
+
+        logInfo(TAG, "<<<<<< Exit rule <<<<<<")
+    end
+
+
+//--------------------------------------------------------------------------------------------------
+// Check if both the livingroom or dining door are closed and restore the thermostat
+// setpoint if both are closed.
+//--------------------------------------------------------------------------------------------------
+rule "Restore setpoint when doors are closed"
+    when
+        Item Alarm_Door_Livingroom changed to CLOSED or
+        Item Alarm_Door_Dining changed to CLOSED
+	then
+        val String TAG = "NefitEasy."+triggeringItem.name+".DoorClose"
+
+        // Check if both doors are closed now
+        if (Alarm_Door_Livingroom.state == CLOSED && Alarm_Door_Dining.state == CLOSED)
+        {
+            if (nSavedSetpoint > 0)
+            {
+                logInfo(TAG, "Restoring setpoint to {}, both doors are now closed", nSavedSetpoint)
+                CV_Temp_Livingroom.sendCommand(nSavedSetpoint)
+            }
+            nSavedSetpoint = 0
+        }
+        else
+        {
+            logInfo(TAG, "Skip restore of heater SetPoint, not all doors are closed")
+        }
+    end
+
+
+//--------------------------------------------------------------------------------------------------
+// Check if the livingroom or dining door is open and lower the thermostat while
+// either is open.
+//--------------------------------------------------------------------------------------------------
+rule "Nefit_Presence - Heating adjustment based on presence"
+	when
+        Item Presence_Ron changed or
+        Item Presence_Arniel changed
+	then
+        val String TAG = "Nefit."+triggeringItem.name+".Presence"
+        logInfo(TAG, ">>>>>> Enter rule >>>>>> with trigger {}", triggeringItem.name)
+
+        if ((Presence_Ron.state != NULL && Presence_Ron.state == ON) || (Presence_Arniel.state != NULL && Presence_Arniel.state == ON))
+        {
+            // Someone is home, increase setpoint based on TOD
+            //if ()
+        }
+
+        logInfo(TAG, "<<<<<< Exit rule <<<<<<")
+    end

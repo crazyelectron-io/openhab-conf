@@ -1,0 +1,1043 @@
+//==================================================================================================
+// hue.items - All Hue lighting, switch and motion sensor items.
+//==================================================================================================
+//	v11 20191226	Updated formatting (empty line between items).
+//					Added missing OnOff groupm to Hall and Haill Ceiling dimmer items.
+//	v10	20191224	Added alert group for kitchen; changed channel for brightness of Dining Color
+//					lights from 'brightness' to 'color' to fix the on/off nor working problem.
+//	v09 20190720	Restructured the groups.
+//--------------------------------------------------------------------------------------------------
+// All the Hue lights are defined here, including some OH groups to handle them.
+// Currently the Hue binding does not support Scenes and Groups defined in the bridge.
+// 
+//==================================================================================================
+
+
+//--------------------------------------------------------------------------------------------------
+// Group for all lights
+//--------------------------------------------------------------------------------------------------
+
+Group							gLight
+								"All Lighting"
+
+Group							gLighting_Scene
+								"All Lighting Scenes"
+
+Group							gAlert
+								"Light Alert"
+
+//--------------------------------------------------------------------------------------------------
+// Livingroom Lights
+//--------------------------------------------------------------------------------------------------
+
+Group							gLight_Alert_Livingroom
+								"Alert Livingroom Lighting"
+								<alarm>
+								(gLivingroom,gAlert)
+
+Group:Switch:AND(ON, OFF)		gLight_OnOff_Livingroom
+								"Livingroom lights [(%d)]"
+								<light>
+								(gLight,gLivingroom)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_Livingroom
+								"Brightness Livingroom lights"
+								<slider>
+								(gLicht,gLivingroom)
+								["Lighting"]
+
+Group:Dimmer					gLight_ColorTemp_Livingroom
+								"Colortemp Livingroom lights"
+								<slider>
+								(gLicht,gLivingroom)
+								["Lighting"]
+
+String							Light_Scene_Livingroom
+								"Scene Livingroom lights"
+								<light>
+								(gLight,gLivingroom,gPersist,gLighting_Scene)
+
+Dimmer							Light_Dim_Chair
+								"Dim Chair light"
+								<slider>
+								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_chair:brightness"}
+
+Dimmer							Light_ColorTemp_Chair
+								"ColorTemp Chair light"
+								<slider>
+								(gLight_ColorTemp_Livingroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_chair:color_temperature"}
+
+Dimmer							Light_Dim_Corner
+								"Dim CornerTable light"
+								<slider>
+								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_corner:brightness"}
+
+Dimmer							Light_ColorTemp_Corner
+								"ColorTemp CornerTable light"
+								<slider>
+								(gLight_ColorTemp_Livingroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_corner:color_temperature"}
+
+Dimmer							Light_Dim_SideTable
+								"Sidetable Lamp"
+								<slider>
+								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_side:brightness"}
+
+Dimmer							Light_ColorTemp_SideTable
+								"Sidetable Lamp tint"
+								<slider>
+								(gLight_ColorTemp_Livingroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_side:color_temperature"}
+
+String							Light_Alert_SideTable
+								"Alert SideTable light"
+								<alarm>
+								(gLight_Alert_Livingroom)
+								{channel="hue:0220:0017882ec5b3:bulb_side:alert"}
+
+Dimmer							Light_Dim_Backdoor
+								"Dim Backdoor light"
+								<slider>
+								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_bdoor:brightness"}
+
+Dimmer							Light_ColorTemp_Backdoor
+								"ColorTemp Backdoor light"
+								<slider>
+								(gLight_ColorTemp_Livingroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_bdoor:color_temperature"}
+
+String							Light_Alert_Backdoor
+								"Alert Backdoor light"
+								<alarm>
+								(gLight_Alert_Livingroom)
+								{channel="hue:0220:0017882ec5b3:bulb_bdoor:alert"}
+
+Dimmer							Light_Dim_Couch
+								"Dim Couch light"
+								<slider>
+								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_couch:brightness"}
+
+Dimmer							Light_ColorTemp_Couch
+								"ColorTemp Couch light"
+								<slider>
+								(gLight_ColorTemp_Livingroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_couch:color_temperature"}
+
+String							Light_Alert_Couch
+								"Alert Couch light"
+								<alarm>
+								(gLight_Alert_Livingroom)
+								{channel="hue:0220:0017882ec5b3:bulb_couch:alert"}
+
+//--------------------------------------------------------------------------------------------------
+// Kitchen lights
+//--------------------------------------------------------------------------------------------------
+
+Group:Switch:AND(ON, OFF)		gLight_OnOff_Kitchen
+								"Kitchen lighting [(%d)]"
+								<light>
+								(gLight,gKitchen)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_Kitchen
+								"Brightness Kitchen lighting"
+								<slider>
+								(gLicht,gKitchen)
+								["Lighting"]
+
+Group:Dimmer					gLight_ColorTemp_Kitchen
+								"Colortemp Kitchen lighting"
+								<slider>
+								(gLicht,gKitchen)
+								["Lighting"]
+
+String							Light_Scene_Kitchen
+								"Scene Kitchen light"
+								<light>
+								(gLight,gKitchen,gPersist,gLighting_Scene)
+
+Dimmer							Light_Dim_KitchenLeft
+								"Dim Kitchen light left"
+								<slider>
+								(gLight_OnOff_Kitchen,gLight_Brightness_Kitchen)
+								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:brightness"}
+
+Dimmer							Light_ColorTemp_KitchenLeft
+								"ColorTemp Kitchen light left"
+								<slider>
+								(gLight_ColorTemp_Kitchen)
+								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:color_temperature"}
+
+Dimmer							Light_Dim_KitchenRight
+								"Dim Kitchen light right"
+								<slider>
+								(gLight_OnOff_Kitchen,gLight_Brightness_Kitchen)
+								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:brightness"}
+
+Dimmer							Light_ColorTemp_KitchenRight
+								"ColorTemp Kitchen light right"
+								<slider>
+								(gLight_ColorTemp_Kitchen)
+								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:color_temperature"}
+
+Group							gLight_Alert_Kitchen
+								"Alert Kitchen Lighting"
+								<alarm>
+								(gKitchen,gAlert)
+
+String							Light_Alert_KitchenLeft
+								"Alert Kitchen light left"
+								<alarm>
+								(gKitchen,gLight_Alert_Kitchen)
+								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:alert"}
+
+String							Light_Alert_KitchenRight
+								"Alert Kitchen light right"
+								<alarm>
+								(gKitchen,gLight_Alert_Kitchen)
+								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:alert"}
+
+//Switch  Light1_Effect       { channel="hue:0210:1:bulb1:effect" }
+
+//--------------------------------------------------------------------------------------------------
+// Dining table lights                                                                                                                                                                                                          // Dining table lights
+//--------------------------------------------------------------------------------------------------
+
+Group:Switch:AND(ON, OFF)		gLight_OnOff_Dining
+								"Dining Lights [(%d)]"
+								<light>
+								(gLight,gDining)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_Dining
+								"Dining Lighting Brightness"
+								<slider>
+								(gLicht,gDining)
+								["Lighting"]
+
+Group:Dimmer					gLight_ColorTemp_Dining
+								"Dining ColorTemp"
+								<slider>
+								(gLicht,gDining)
+								["Lighting"]
+
+Group:Color						gLight_Color_Dining
+								"Dining Color"
+								<slider>
+								(gLicht,gDining)
+
+String							Light_Scene_Dining
+								"Eettafel"
+								<light>
+								(gLight,gDining,gPersist,gLighting_Scene)
+
+Dimmer							Light_Dim_Dining1
+								"Dim Dining Light 1"
+								<slider>
+								(gLight_OnOff_Dining,gLight_Brightness_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining1:color"}
+
+Dimmer							Light_ColorTemp_Dining1
+								"ColorTemp Dining Light 1"
+								<slider>
+								(gLight_ColorTemp_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining1:color_temperature"}
+
+Dimmer							Light_Dim_Dining2
+								"Dim Dining Light 2"
+								<slider>
+								(gLight_OnOff_Dining,gLight_Brightness_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining2:color"}
+
+Dimmer							Light_ColorTemp_Dining2
+								"ColorTemp Dining Light 2"
+								<slider>
+								(gLight_ColorTemp_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining2:color_temperature"}
+
+Dimmer							Light_Dim_Dining3
+								"Dim Dining Light 3"
+								<slider>
+								(gLight_OnOff_Dining,gLight_Brightness_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining3:color"}
+
+Dimmer							Light_ColorTemp_Dining3
+								"ColorTemp Dining Light 3"
+								<slider>
+								(gLight_ColorTemp_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining3:color_temperature"}
+
+Color							Light_Color_Dining1
+								"Color Dining Light 1"
+								<colorwheel>
+								(gDining,gLight,gLight_Color_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining1:color"}
+
+Color							Light_Color_Dining2
+								"Color Dining Light 2"
+								<colorwheel>
+								(gDining,gLight,gLight_Color_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining2:color"}
+
+Color							Light_Color_Dining3
+								"Color Dining Light 3"
+								<colorwheel>
+								(gDining,gLight,gLight_Color_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining3:color"}
+
+//--------------------------------------------------------------------------------------------------
+// Hallway Wall lights
+//--------------------------------------------------------------------------------------------------
+
+Group:Switch:AND(ON, OFF)		gLight_OnOff_Hall
+								"Hallway lighting [(%d)]"
+								<light>
+								(gLight,gHall)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_Hall
+								"Brightness Hallway lighting"
+								<slider>
+								(gLicht,gHall)
+								["Lighting"]
+
+Group:Dimmer					gLight_ColorTemp_Hall
+								"Colortemp Hallway lighting"
+								<slider>
+								(gLicht,gHall)
+								["Lighting"]
+
+String							Light_Scene_Hall
+								"Scene Hallway lighting"
+								<light>
+								(gLight,gHall,gPersist,gLighting_Scene)
+
+Dimmer							Light_Dim_HallDoor
+								"Dim Hall Frontdoor light"
+								<slider>
+								(gLight_OnOff_Hall,gLight_Brightness_Hall)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_hallfd:brightness"}
+
+Dimmer							Light_ColorTemp_HallDoor
+								"Colortemp Hall Frontdoor light"
+								<slider>
+								(gLight_ColorTemp_Hall)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_hallfd:color_temperature"}
+
+Dimmer							Light_Dim_HallWall
+								"Dim Hall Wall light"
+								<slider>
+								(gLight_OnOff_Hall,gLight_Brightness_Hall)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_hallwl:brightness"}
+
+Dimmer							Light_ColorTemp_HallWall
+								"ColorTemp Hall Wall light"
+								<slider>
+								(gLight_ColorTemp_Hall)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_hallwl:color_temperature"}
+
+//--------------------------------------------------------------------------------------------------
+// Hallway Ceiling lighting
+//--------------------------------------------------------------------------------------------------
+
+Group:Switch:AND(ON, OFF)		gLight_OnOff_HallCeiling
+								"Hallway Ceiling lighting [(%d)]"
+								<light>
+								(gLight,gHallCeiling)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_HallCeiling
+								"Brightness Hall Ceiling light"
+								<slider>
+								(gLicht,gHallCeiling)
+								["Lighting"]
+
+Group:Dimmer					gLight_ColorTemp_HallCeiling
+								"ColorTemp Hall Ceiling light"
+								<slider>
+								(gLicht,gHallCeiling)
+								["Lighting"]
+
+String							Light_Scene_HallCeiling
+								"Scene Hall Ceiling lighting"
+								<light>
+								(gLight,gPersist,gLighting_Scene,gHallCeiling)
+
+Dimmer							Light_Dim_HallCeiling
+								"Dim Hal Ceiling light"
+								<slider>
+								(gLight_OnOff_HallCeiling,gLight_Brightness_HallCeiling)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_hallcl:brightness"}
+
+Dimmer							Light_ColorTemp_HallCeiling
+								"Colortemp Hal Ceiling light"
+								<slider>
+								(gLight_ColorTemp_HallCeiling)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_hallcl:color_temperature"}
+
+//--------------------------------------------------------------------------------------------------
+// Toilet lighting
+//--------------------------------------------------------------------------------------------------
+
+Group:Switch:AND(ON, OFF)		gLight_OnOff_Toilet
+								"Toilet lights [(%d)]"
+								<light>
+								(gLight,gToilet)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_Toilet
+								"Brightness Toilet lights"
+								<slider>
+								(gLichts,gToilet)
+								["Lighting"]
+
+Group:Dimmer					gLight_ColorTemp_Toilet
+								"Colortemp Toilet lights"
+								<slider>
+								(gLichts,gToilet)
+								["Lighting"]
+
+String							Light_Scene_Toilet
+								"Scene Toilet lights"
+								<light>
+								(gLight,gToilet,gPersist,gLighting_Scene)
+
+Dimmer							Light_Dim_ToiletCeiling
+								"Dim Toilet Ceiling light"
+								<slider>
+								(gLight_OnOff_Toilet, gLight_Brightness_Toilet)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_toilet:brightness"}
+
+Dimmer							Light_ColorTemp_ToiletCeiling
+								"ColorTemp Toilet Ceiling light"
+								<slider>
+								(gLight_ColorTemp_Toilet)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_toilet:color_temperature"}
+
+//--------------------------------------------------------------------------------------------------
+// Bathroom  lighting
+//--------------------------------------------------------------------------------------------------
+
+Group:Switch:AND(ON, OFF)		gLight_OnOff_Bathroom
+								"Bathroom lights"
+								<light>
+								(gLight,gBathroom)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_Bathroom
+								"Brightness Bathroom lights"
+								<slider>
+								(gLight,gBathroom)
+								["Lighting"]
+
+Group:Dimmer					gLight_ColorTemp_Bathroom
+								"ColorTemp Bathroom lights"
+								<slider>
+								(gLichts,gBathroom)
+								["Lighting"]
+
+String							Light_Scene_Bathroom
+								"Scene Bathroom lights"
+								<light>
+								(gLight,gBathroom,gPersist,gLighting_Scene)
+
+Dimmer							Light_Dim_BathroomCeiling
+								"Dim Bathroom Ceiling light"
+								<slider>
+								(gLight_OnOff_Bathroom,gLight_Brightness_Bathroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:brightness"}
+
+Dimmer							Light_ColorTemp_BathroomCeiling
+								"Colortemp Bathroom Ceiling light"
+								<slider>
+								(gLight_ColorTemp_Bathroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:color_temperature"}
+
+//--------------------------------------------------------------------------------------------------
+// Master bedroom lighting
+//--------------------------------------------------------------------------------------------------
+
+Group:Switch:AND(ON, OFF)		gLight_OnOff_Bedroom
+								"Bedroom lights"
+								<light>
+								(gLight,gBedroom)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_Bedroom
+								"Brightness Bedroom lights"
+								<slider>
+								(gLicht,gBedroom)
+								["Lighting"]
+
+Group:Dimmer					gLight_ColorTemp_Bedroom
+								"Colortemp Bedroom lights"
+								<slider>
+								(gLicht,gBedroom)
+								["Lighting"]
+
+String							Light_Scene_Bedroom
+								"Scene Bedroom lights"
+								<light>
+								(gLight,gBedroom,gPersist,gLighting_Scene)
+
+Dimmer							Light_Dim_BedroomLeft
+								"Dim Bedroom light Ron"
+								<slider>
+								(gLight_OnOff_Bedroom,gLight_Brightness_Bedroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_lbed:brightness"}
+
+Dimmer							Light_ColorTemp_BedroomLeft
+								"Colortemp Bedroom light Ron"
+								<slider>
+								(gLight_ColorTemp_Bedroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_lbed:color_temperature"}
+
+Dimmer							Light_Dim_BedroomRight
+								"Dim Bedroom light Arniël"
+								<slider>
+								(gLight_OnOff_Bedroom,gLight_Brightness_Bedroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_rbed:brightness"}
+
+Dimmer							Light_ColorTemp_BedroomRight
+								"ColorTemp Bed light Arniël"
+								<slider>
+								(gLight_ColorTemp_Bedroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_rbed:color_temperature"}
+
+//--------------------------------------------------------------------------------------------------
+// Guestroom lighting
+//--------------------------------------------------------------------------------------------------
+
+Group:Switch:OR(ON, OFF)		gLight_OnOf_Guestroom
+								"Verlichting Menno"
+								<light>
+								(gLight,gGuest)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_Guestroom
+								"Dimmer verlichting Menno"
+								<slider>
+								(gLicht,gGuest)
+								["Lighting"]
+
+Group:Dimmer					gLight_ColorTemp_Guestroom
+								"Kleur verlichting Menno"
+								<slider>
+								(gLicht,gGuest)
+								["Lighting"]
+
+String							Light_Scene_Guestroom
+								"Verlichting Menno"
+								<light>
+								(gLight,gGuest,gPersist,gLighting_Scene)
+
+Dimmer							Light_Dim_GuestroomCeiling1
+								"Menno plafondspot1"
+								<slider>
+								(gLight_Brightness_Guestroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_guest1:brightness"}
+
+Dimmer							Light_ColorTemp_GuestroomCeiling1
+								"Menno plafondspot1 tint"
+								<slider>
+								(gLight_ColorTemp_Guestroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_guest1:color_temperature"}
+
+Dimmer							Light_Dim_GuestroomCeiling2
+								"Menno plafondspot2"
+								<slider>
+								(gLight_Brightness_Guestroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_guest2:brightness"}
+
+Dimmer							Light_ColorTemp_GuestroomCeiling2
+								"Menno plafondspot2 tint"
+								<slider>
+								(gLight_ColorTemp_Guestroom)
+								["Lighting"]
+								{channel="hue:0220:0017882ec5b3:bulb_guest2:color_temperature"}
+
+//--------------------------------------------------------------------------------------------------
+// Laundry room lighting
+//--------------------------------------------------------------------------------------------------
+
+Group:Switch:AND(ON,OFF)		gLight_OnOff_Laundry
+								"Stephan's Ceiling Light"
+								<light>
+								(gLight,gLaundry)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_Laundry
+								"Brightness Stephan's room"
+								<slider>
+								(gLichts,gLaundry)
+								["Lighting"]
+
+Group:Dimmer					gLight_ColorTemp_Laundry
+								"ColorTemp Stephan's room"
+								<slider>
+								(gLichts,gLaundry)
+								["Lighting"]
+
+String							Light_Scene_Laundry
+								"Lightscene Stephan's room"
+								<light>
+								(gLight,gLaundry,gPersist,gLighting_Scene)
+
+Dimmer							Light_Dim_LaundryCeiling
+								"Dim Stephan's Ceiling light"
+								<slider>
+								(gLight_Brightness_Laundry)
+								{channel="hue:0220:0017882ec5b3:bulb_laundry:brightness"}
+
+Dimmer							Light_ColorTemp_LaundryCeiling
+								"ColorTemp Stephan's Ceiling light"
+								<slider>
+								(gLight_ColorTemp_Laundry,gLaundry,gLight)
+								{channel="hue:0220:0017882ec5b3:bulb_laundry:color_temperature"}
+
+// Dimmer                      Light_Dim_LaundryBureau
+//                             "Dim Stephan's Bureau light"
+//                             <slider>
+//                             (gLight_Brightness_Laundry)
+//                             {channel="hue:0220:0017882ec5b3:bulb_laundrybr:brightness"}
+
+// Dimmer                      Light_ColorTemp_LaundryBureau
+//                             "ColorTemp Stephan's Bureau light"
+//                             <slider>
+//                             (gLight_ColorTemp_Laundry)
+//                             {channel="hue:0220:0017882ec5b3:bulb_laundrybr:color_temperature"}
+
+//--------------------------------------------------------------------------------------------------
+// Outside lighting
+//--------------------------------------------------------------------------------------------------
+
+Group:Switch:AND(ON, OFF)		gLight_OnOff_Outside
+								"Outdoor lights [(%d)]"
+								<light>
+								(gLight,gOutside)
+								["Switchable"]
+
+Group:Dimmer					gLight_Brightness_Outside
+								"Dim Outside lights"
+								<light>
+								(gLight,gOutside)
+								["Lighting"]
+
+String							Light_Scene_Outside
+								"Outdoor lights"
+								<light>
+								(gLight,gOutside,gPersist,gLighting_Scene)
+
+Dimmer							Light_Dim_OutsideLeftBack
+								"Lantaarn Left back"
+								<slider>
+								(gLight_OnOff_Outside,gLight_Brightness_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_lhouse:brightness"}
+
+Dimmer							Light_Dim_OutsideLeft
+								"Lantaarn Left"
+								<slider>
+								(gLight_OnOff_Outside,gLight_Brightness_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_lback:brightness"}
+
+Dimmer							Light_Dim_OutsideRight
+								"Lantaarn Right"
+								<slider>
+								(gLight_OnOff_Outside,gLight_Brightness_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_rback:brightness"}
+
+Dimmer							Light_Dim_OutsideFront
+								"Frontdoor light"
+								<slider>
+								(gLight_OnOff_Outside,gLight_Brightness_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_frontdoor:brightness"}
+
+// Dimmer							Light_Dim_OutsideTerrace
+// 								"Terraslantaarn"
+// 								<slider>
+// 								(gLight_OnOff_Outside,gLight_Brightness_Outside)
+// 								{channel="hue:0100:0017882ec5b3:bulb_terrace:brightness"}
+// Dimmer							Light_Dim_OutsideToolshed
+// 								"Tuinhuis Lantaarn"
+// 								<slider>
+// 								(gLight_OnOff_Outside,gLight_Brightness_Outside)
+// 								["Lighting"]
+// 								{channel="hue:0100:0017882ec5b3:bulb_shed:brightness"}
+
+//--------------------------------------------------------------------------------------------------
+// The Lodge lighting
+//--------------------------------------------------------------------------------------------------
+
+// Group:Switch:AND(ON,OFF)		gLight_OnOff_Lodge
+// 								"Lodge lights [(%d)]"
+// 								<light>
+// 								(gLight,gLodge)
+// 								["Switchable"]
+
+// Group:Dimmer					gLight_Brightness_Lodge
+// 								"Lodge lights dimmer"
+// 								<slider>
+// 								(gLight,gLodge)
+// 								["Lighting"]
+
+// String							Light_Scene_Lodge
+// 								"Lodge lights"
+// 								<light>
+// 								(gLight,gLodge,gPersist,gLighting_Scene)
+
+// Dimmer							Light_Dim_LodgeWall1
+// 								"Lodge wandlamp 1"
+// 								<slider>
+// 								(gLight_OnOff_Lodge,gLight_Brightness_Lodge)
+// 								{channel="hue:0100:0017882ec5b3:bulb_lodge1:brightness"}
+
+// Dimmer							Light_Dim_LodgeWall2
+// 								"Lodge wandlamp 2"
+// 								<slider>
+// 								(gLight_OnOff_Lodge,gLight_Brightness_Lodge)
+// 								{channel="hue:0100:0017882ec5b3:bulb_lodge2:brightness"}
+
+//--------------------------------------------------------------------------------------------------
+// Hue motion sensors
+//--------------------------------------------------------------------------------------------------
+
+// Toilet Motion Sensor
+Number:Illuminance				Motion_Lux_Toilet
+								"Lichtsterkte [%d lx]"
+								(gToilet)
+
+Switch							Motion_OnOff_Toilet
+								"Bewegingssensor [%s]"
+								(gToilet)
+
+DateTime						Motion_LastUpdate_Toilet
+								"Detectie [%1$tH:%1$tM:%1$tS]"
+								(gToilet)
+
+Number							Motion_BatteryLevel_Toilet
+								"Batterijniveau [%d %%]"
+								(gToilet)
+
+Number:Temperature				Motion_Temperature_Toilet
+								"Toilet Temperature [%.1f °C]"
+								<temperature>
+								(gToilet,gTemp)
+								["CurrentTemperature"]
+
+
+// Hallway Motion Sensor
+Number:Illuminance				Motion_Lux_Hall
+								"Lichtsterkte [%d lx]"
+								(gHall)
+
+Number							Motion_LightLevel_Hall
+								"Lichtniveau [%.1f]"
+								(gHall)
+
+Switch							Motion_Dark_Hall
+								"Dark"
+								(gHall)
+
+Switch							Motion_Daylight_Hall
+								"Daylight"
+								(gHall)
+
+DateTime						Motion_LastUpdate_Hall
+								"Detectietijd [%1$tH:%1$tM:%1$tS]"
+								(gHall)
+
+Number							Motion_BatteryLevel_Hall
+								"Batterijniveau [%d %%]"
+								(gHall)
+
+Switch							Motion_BatteryLow_Hall
+								"Batterij laag [%s]"
+								(gHall)
+
+Number:Temperature				Motion_Temperature_Hall
+								"Hallway Temperature [%.1f °C]"
+								<temperature>
+								(gHall,gTemp)
+								["CurrentTemperature"]
+
+//--------------------------------------------------------------------------------------------------
+// Hue Dimmer and Tap switches
+//--------------------------------------------------------------------------------------------------
+
+// Hue Dimmer Switch Hallway multi-click timeout
+Switch							DimSwitch_Hallway
+								{expire="5s,command=OFF"}
+
+
+// Hue Dimmer Switch Leftside bed multi-click timeout
+Switch							DimSwitch_BedroomLeft
+								{expire="5s,command=OFF"}
+
+
+// Hue Dimmer Switch Rightside bed multi-click timeout
+Switch							DimSwitch_BedroomRight
+								{expire="5s,command=OFF"}
+
+
+// Hue Dimmer Switch Outside multi-click timeout
+Switch							DimSwitch_Outside
+								{expire="5s,command=OFF"}
+
+
+// Hue Dimmer Switch Laundry multi-click timeout
+Switch							DimSwitch_Laundry
+								{expire="5s,command=OFF"}
+
+
+// Hue Dimmer Switch Toilet multi-click timeout
+Switch							DimSwitch_Toilet
+								{expire="5s,command=OFF"}
+
+
+// Hue Dimmer Switch Guestroom multi-click timeout
+Switch							DimSwitch_Guest
+								{expire="5s,command=OFF"}
+
+
+// Hue Dimmer Switch Hallway multi-click timeout
+Switch							DimSwitch_Bathroom
+								{expire="5s,command=OFF"}
+
+//--------------------------------------------------------------------------------------------------
+//  Lighting Scene persisten values
+//--------------------------------------------------------------------------------------------------
+
+// Livingroom Lighting Scene configuration
+Dimmer							Livingroom_Brightness_EVENING
+								"Living brightness EVENING"
+								(gPersist)
+
+Dimmer							Livingroom_Brightness_MOVIE
+								"Living brightness MOVIE"
+								(gPersist)
+
+Dimmer							Livingroom_Brightness_READ
+								"Living brightness READ"
+								(gPersist)
+
+Dimmer							Livingroom_ColorTemp_EVENING
+								"Living colortemp EVENING"
+								(gPersist)
+
+Dimmer							Livingroom_ColorTemp_MOVIE
+								"Living colortemp MOVIE"
+								(gPersist)
+
+Dimmer							Livingroom_ColorTemp_READ
+								"Living colortemp READ"
+								(gPersist)
+
+// Kitchen lighting Scene configuration
+Dimmer							Kitchen_Brightness_EVENING
+								"Kitchen brightness EVENING"
+								(gPersist)
+
+Dimmer							Kitchen_Brightness_WORK
+								"Kitchen brightness WORK"
+								(gPersist)
+
+Dimmer							Kitchen_Brightness_BRIGHT
+								"Kitchen brightness BRIGHT"
+								(gPersist)
+
+Dimmer							Kitchen_ColorTemp_EVENING
+								"Kitchen colortemp EVENING"
+								(gPersist)
+
+Dimmer							Kitchen_ColorTemp_WORK
+								"Kitchen colortemp WORK"
+								(gPersist)
+
+Dimmer							Kitchen_ColorTemp_BRIGHT
+								"Kitchen colortemp BRIGHT"
+								(gPersist)
+
+// Dining lighting Scene configuration
+Dimmer							Dining_Brightness_EVENING
+								"Dining brightness EVENING"
+								(gPersist)
+
+Dimmer							Dining_Brightness_READ
+								"Dining brightness READ"
+								(gPersist)
+
+Dimmer							Dining_Brightness_BRIGHT
+								"Dining brightness BRIGHT"
+								(gPersist)
+
+Dimmer							Dining_ColorTemp_EVENING
+								"Dining colortemp EVENING"
+								(gPersist)
+
+Dimmer							Dining_ColorTemp_READ
+								"Dining colortemp READ"
+								(gPersist)
+
+Dimmer							Dining_ColorTemp_BRIGHT
+								"Dining colortemp BRIGHT"
+								(gPersist)
+
+// Hallway lighting Scene configuration
+Dimmer							Hall_Brightness_EVENING
+								"Hall brightness EVENING"
+								(gPersist)
+
+Dimmer							Hall_Brightness_READ
+								"Hall brightness READ"
+								(gPersist)
+
+Dimmer							Hall_Brightness_BRIGHT
+								"Hall brightness BRIGHT"
+								(gPersist)
+
+Dimmer							Hall_ColorTemp_EVENING
+								"Hall colortemp EVENING (%d)"
+								(gPersist)
+
+Dimmer							Hall_ColorTemp_READ
+								"Hall colortemp READ (%d)"
+								(gPersist)
+
+Dimmer							Hall_ColorTemp_BRIGHT
+								"Hall colortemp BRIGHT (%d)"
+								(gPersist)
+
+// Hall Ceiling lighting Scene configuration
+Dimmer							HallCeiling_Brightness_EVENING
+								"HallCeiling brightness EVENING"
+								(gPersist)
+
+Dimmer							HallCeiling_Brightness_READ
+								"HallCeiling brightness READ"
+								(gPersist)
+
+Dimmer							HallCeiling_Brightness_BRIGHT
+								"HallCeiling brightness BRIGHT"
+								(gPersist)
+
+Dimmer							HallCeiling_ColorTemp_EVENING
+								"HallCeiling colortemp EVENING"
+								(gPersist)
+
+Dimmer							HallCeiling_ColorTemp_READ
+								"HallCeiling colortemp READ"
+								(gPersist)
+
+Dimmer							HallCeiling_ColorTemp_BRIGHT
+								"HallCeiling colortemp BRIGHT"
+								(gPersist)
+
+// Bathroom lighting Scene configuration
+Dimmer							Bathroom_Brightness_EVENING
+								"Bathroom brightness EVENING"
+								(gPersist)
+
+Dimmer							Bathroom_Brightness_READ
+								"Bathroom brightness READ"
+								(gPersist)
+
+Dimmer							Bathroom_Brightness_BRIGHT
+								"Bathroom brightness BRIGHT"
+								(gPersist)
+
+Dimmer							Bathroom_ColorTemp_EVENING
+								"Bathroom colortemp EVENING"
+								(gPersist)
+
+Dimmer							Bathroom_ColorTemp_READ
+								"Bathroom colortemp READ"
+								(gPersist)
+
+Dimmer							Bathroom_ColorTemp_BRIGHT
+								"Bathroom colortemp BRIGHT"
+								(gPersist)
+
+// Bedroom lighting Scene configuration
+Dimmer							Bedroom_Brightness_EVENING
+								"Bedroom brightness EVENING"
+								(gPersist)
+
+Dimmer							Bedroom_Brightness_READ
+								"Bedroom brightness READ"
+								(gPersist)
+
+Dimmer							Bedroom_Brightness_COSY
+								"Bedroom brightness COSY"
+								(gPersist)
+
+Dimmer							Bedroom_ColorTemp_EVENING
+								"Bedroom colortemp EVENING"
+								(gPersist)
+
+Dimmer							Bedroom_ColorTemp_READ
+								"Bedroom colortemp READ"
+								(gPersist)
+
+Dimmer							Bedroom_ColorTemp_COSY
+								"Bedroom colortemp COSY"
+								(gPersist)
+
+// Lodge lighting Scene configuration
+Dimmer							Lodge_Brightness_EVENING
+								"Lodge brightness EVENING"
+								(gPersist)
+
+Dimmer							Lodge_Brightness_READ
+								"Lodge brightness READ"
+								(gPersist)
+
+Dimmer							Lodge_Brightness_BRIGHT
+								"Lodge brightness BRIGHT"
+								(gPersist)
+
+// Outside lighting Scene configuration
+Dimmer							Outside_Brightness_EVENING
+								"Outside brightness EVENING"
+								(gPersist)
+
+Dimmer							Outside_Brightness_WORK
+								"Outside brightness WORK"
+								(gPersist)
+
+Dimmer							Outside_Brightness_BRIGHT
+								"Outside brightness BRIGHT"
+								(gPersist)

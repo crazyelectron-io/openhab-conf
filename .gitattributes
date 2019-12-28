@@ -1,0 +1,17 @@
+/automation/lib/python/configuration.py filter=git-crypt diff=git-crypt
+/services/influxdb.cfg filter=git-crypt diff=git-crypt
+/services/pushover.cfg filter=git-crypt diff=git-crypt
+/services/runtime.cfg filter=git-crypt diff=git-crypt
+/services/http.cfg filter=git-crypt diff=git-crypt
+/things/alexa.things filter=git-crypt diff=git-crypt
+/things/astro.things filter=git-crypt diff=git-crypt
+/things/mqtt.things filter=git-crypt diff=git-crypt
+/things/netatmo.things filter=git-crypt diff=git-crypt
+/things/solaredge.things filter=git-crypt diff=git-crypt
+/things/unifi.things filter=git-crypt diff=git-crypt
+/things/verisure.things filter=git-crypt diff=git-crypt
+/things/volvo.things filter=git-crypt diff=git-crypt
+/scripts/sunrise_tomorrow.py filter=git-crypt diff=git-crypt
+/scripts/sunset_tomorrow.py filter=git-crypt diff=git-crypt
+/html/smarthome-grafana-user-defaults.js filter=git-crypt diff=git-crypt
+

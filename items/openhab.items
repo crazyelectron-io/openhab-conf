@@ -1,0 +1,144 @@
+//==================================================================================================
+// openhab.items - Define groups to divide everything in areas and automation driven groups.
+//--------------------------------------------------------------------------------------------------
+//	20191206	v2	Added 'gResetExpire' group (used in Jython rule).
+//--------------------------------------------------------------------------------------------------
+// This items file defines the area groups, dividing the openHAB ecosphere in different areas like
+//	kitchen, garden, livingroom.
+// In addition, several generic groups are defined to support automated actions on group members.
+//==================================================================================================
+
+//--------------------------------------------------------------------------------------------------
+// Groups for all main areas
+//--------------------------------------------------------------------------------------------------
+Group							gHouse
+// All Ground Floor items
+Group							gGroundFloor
+								"Ground floor"
+								<groundfloor>
+								(gHouse)
+// All Upper Floor items
+Group							gUpperFloor
+								"First floor"
+								<firstfloor>
+								(gHouse)
+// All outside items
+Group							gOutside
+								"Outside"
+								<garden>
+
+//--------------------------------------------------------------------------------------------------
+// Groups for outside
+//--------------------------------------------------------------------------------------------------
+Group							gLodge
+								"Lodge"
+								<garden>
+								(gOutside)
+Group							gGarden
+								"Garden"
+								<garden>
+								(gOutside)
+Group							gToolShed
+								"Shed"
+								<garden>
+								(gOutside)
+
+//--------------------------------------------------------------------------------------------------
+// Groups for inside
+//--------------------------------------------------------------------------------------------------
+// Group for all Livingroom Items.
+Group							gLivingroom
+								"Livingroom"
+								<sofa>
+								(gGroundFloor)
+// Group for all Guestroom items
+Group							gGuestroom
+								"Guestroom"
+								<suitcase>
+								(gUpperFloor)
+// Group for all Laundry items
+Group							gLaundry
+								"Laundry"
+								(gUpperFloor)
+// Group for all Bathroom items
+Group							gBathroom
+								"Bathroom"
+								<bath>
+								(gUpperFloor)
+// Group for all Bedroom items
+Group							gBedroom
+								"Bedroom"
+								<bedroom>
+								(gUpperFloor)
+//Group for all Kitchen items
+Group							gKitchen
+								"Kitchen"
+								<kitchen>
+								(gGroundFloor)
+//Group for all Dining room items
+Group							gDining
+								"Dining"
+								(gGroundFloor)
+//Group for all Hallway items
+Group							gHall
+								"Hallway"
+								<wardrobe>
+								(gGroundFloor)
+//Group for Hall Ceiling items
+Group							gHallCeiling
+								"Hall Ceiling"
+								<wardrobe>
+								(gGroundFloor)
+// Group for all Corridor items
+Group							gCorridor
+								"Corridor"
+								<corridor>
+								(gUpperFloor)
+//Group for all Study/work room items
+Group							gStudy
+								"Study"
+								<office>
+								(gUpperFloor)
+//Group for all Toilet items
+Group							gToilet
+								"Toilet"
+								<toilet>
+								(gGroundFloor)
+//Group for all Scullery items
+Group							gScullery
+								"Scullery"
+								<washingmachine>
+								(gGroundFloor)
+// Group for all Garaga items
+Group							gGarage
+								"Garage"
+								<garage>
+								(gGroundFloor)
+
+//--------------------------------------------------------------------------------------------------
+// Groups for sensors
+//--------------------------------------------------------------------------------------------------
+// Sensor status group
+Group							gSensorStatus
+								"Sensor status"
+// Group for all Temperature sensors
+Group							gTempSensor
+								"Temperature"
+								<temperature>
+								(gClimate,gSensorStatus)
+//Group for all enegry sensors/values
+Group							gEnergy
+								"Energie"
+								<energy>
+
+//--------------------------------------------------------------------------------------------------
+// Groups for openHAB automation rules
+//--------------------------------------------------------------------------------------------------
+// Group for all expire timer items
+Group:Switch					gResetExpire
+								"Reset Expire Timers"
+// Groups for automated triggers and actions on different areas
+Group							gArea_Trigger
+								"Area Triggers"
+Group							gArea_Action
+								"Area Actions"

@@ -1,0 +1,304 @@
+//==================================================================================================
+// astro.rules - Astro related processing, including sun and moon data and day/night triggers.
+//==================================================================================================
+//  v13 20191226 Merged tomorrow sunset/rise rules; fixed Item name 'Astro_Sun_Elevation'.
+//  v12 20191222 Renamed Items.
+//  v11 20191025 Added next day sunrise/sunset handling.
+//--------------------------------------------------------------------------------------------------
+// Rules in this file:
+//  Astro_Init - Initialize Day/Night status (Astro_NightState) at system starts/reload.
+//  Astro_DayNight - Update Day/Night status (astro_NightState) when sun elevation changes.
+//  Astro_SunPosition - Translate sun position to text (wind direction).
+//  Astro_NextSunrise - Get tomorrow's sunrise time.
+//  Astro_NextSunset - Get tomorrow's sunset time.
+//--------------------------------------------------------------------------------------------------
+// Items changes in these rules:
+//  Astro_NightState - CLOSED=Night, OPEN=Day
+//  Astro_Sun_Direction - Textual description of the wind direction of the sun position
+//  Astro_Sun_RiseTomorrow - Calculated sunrise for the next day (via script)
+//  Astro_Sun_SetTomorrow - Calculated sunset for the next day (via script)
+//  Astro_Sun_RiseNext - The next sunrise time (either today or tomorrow) 
+//  Astro_Sun_SetNext - The next sunset time (either today or tomorrow)
+//==================================================================================================
+
+
+var Timer timerAlarm = null
+
+
+//--------------------------------------------------------------------------------------------------
+// Delay NightState check 2min after restart/reload (to allow OH to initialize its Item Registry).
+//--------------------------------------------------------------------------------------------------
+// rule "Astro_Init - OpenHAB system started"
+//     when
+//         System started
+//     then
+//         logInfo("Astro.Init.Rules", "Delay 2 minutes ")
+//         // Wait 120 seconds before checking the Astro sun rise/set channels
+//         createTimer(now.plusSeconds(120)) [ |
+//             if (now.isAfter((Astro_Sun_SetTime.state as DateTimeType).zonedDateTime.toInstant.toEpochMilli) ||
+//                 now.isBefore((Astro_Sun_RiseTime.state as DateTimeType).zonedDateTime.toInstant.toEpochMilli))
+//                 Astro_NightState.sendCommand(CLOSED)
+//             else
+//                 Astro_NightState.sendCommand(OPEN)
+//         ]
+//     end
+
+
+//==================================================================================================
+// Update the next sunset/rise times and Day Mode when the Astro day phase changes or the Cloudiness
+//  changes.
+//==================================================================================================
+rule "Astro.DayPhase.Change - Calculate current day Mode and next sunrise/sunset times"
+when
+    Item Astro_Day_Phase changed or
+    Item Weather_Cloudy changed or
+    System started
+then
+    val String TAG = "Astro.DayPhase.Change"
+    var Boolean cloudy = false
+
+    //--- Sanity checks
+    if (Astro_Day_Phase.state == NULL)
+    {
+        return;
+    }
+    var String phase = Astro_Day_Phase.state.toString()
+    val Number hour = now.getHourOfDay()
+
+    if (Weather_Cloudy.state != NULL && Weather_Cloudy.state == ON)
+    {
+        logInfo(TAG, "Set Cloudy switch to TRUE")
+        cloudy = true
+    }
+
+    //-- Update Day Mode based on Astro Day Phase
+    //SUN_RISE, ASTRO_DAWN, NAUTIC_DAWN, CIVIL_DAWN, CIVIL_DUSK, NAUTIC_DUSK, ASTRO_DUSK, SUN_SET, DAYLIGHT, NIGHT
+    switch (phase)
+    {
+        case "DAYLIGHT":
+        {
+            logInfo(TAG, "Day Phase is DAYLIGHT, check time to set Day Mode to MORNING or DAY")
+            Day_Mode.sendCommand(if (hour>=7) "DAY" else "MORNING")
+        }
+        case "SUN_SET":
+        {
+            logInfo(TAG, "Day Phase is sunset, check if cloudy")
+            Day_Mode.sendCommand(if (hour>=19) "EVENING" else "DAY")
+        }
+        case "SUN_RISE":
+        {
+            logInfo(TAG, "Day Phase is sunrise, check if cloudy")
+            Day_Mode.sendCommand(if (cloudy) "EVENING" else "DAY")
+        }
+        case "ASTRO_DAWN" ||
+             "NAUTIC_DAWN" ||
+             "CIVIL_DAWN":
+        {
+            logInfo(TAG, "Day Phase is DAWN")
+            Day_Mode.sendCommand(if (hour >= 6) "MORNING" else "NIGHT")
+        }
+        case "ASTRO_DUSK" ||
+             "NAUTIC_DUST" ||
+             "CIVIL_DUSK":
+        {
+            logInfo(TAG, "Day Phase is DUSK")
+            if (hour <= 23)
+                Day_Mode.sendCommand("EVENING")
+            else
+                Day_Mode.sendCommand("NIGHT")
+        }
+        case "NIGHT":
+        {
+            logInfo(TAG, "Day Phase is NIGHT")
+            if (hour <= 23)
+                Day_Mode.sendCommand("EVENING")
+            else
+                Day_Mode.sendCommand("NIGHT")
+        }
+    }
+    logInfo(TAG, "Day Phase is {} and Cloudiness is {}, Day Mode set to {}", phase, cloudy, Day_Mode.state)
+
+    //---
+    if (phase == "DAYLIGHT")
+    {
+        // Set today;s
+        logInfo(TAG, "Daylight; next sunrise is tomorrow at {}, next sunset is today at {}.", Astro_Sun_RiseTomorrow.state, Astro_Sun_SetTime.state)
+        Day_Mode.sendCommand("DAY")
+        Astro_Sun_RiseNext.postUpdate(Astro_Sun_RiseTomorrow.state)
+        Astro_Sun_SetNext.postUpdate(Astro_Sun_SetTime.state)
+    }
+    else
+    {
+        //--- Set today's sunset and tomorrow's sunrise
+        if (now.getHourOfDay > 12)
+        {
+            logInfo(TAG, "Evening; next sunrise is tomorrow at {}, next sunset is tomorrow at {}.", Astro_Sun_RiseTomorrow.state, Astro_Sun_SetTomorrow.state)
+            Astro_Sun_RiseNext.postUpdate(Astro_Sun_RiseTomorrow.state)
+            Astro_Sun_SetNext.postUpdate(Astro_Sun_SetTomorrow.state)
+        }
+        else
+        {
+            logInfo(TAG, "Morning; next sunrise is today at {}, next sunset is today at {}.", Astro_Sun_RiseTime.state, Astro_Sun_SetTime.state)
+            Astro_Sun_RiseNext.postUpdate(Astro_Sun_RiseTime.state)
+            Astro_Sun_SetNext.postUpdate(Astro_Sun_SetTime.state)
+        }
+    }
+end
+
+
+//==================================================================================================
+// Update String Item Astro_Sun_Direction with textual representation of current sun angle.
+//==================================================================================================
+rule "Astro.Sun.Position - Translate Sun Azimut to Wind direction"
+when
+    Item Astro_Sun_Azimuth changed
+then
+    val String TAG = "Astro.Sun.Position"
+    logDebug(TAG, "Update textual Sun direction Item 'Astro_Sun_Direction'")
+
+    if (Astro_Sun_Azimuth.state < 12)
+        Astro_Sun_Direction.postUpdate("North")
+    else if (Astro_Sun_Azimuth.state < 34)
+        Astro_Sun_Direction.postUpdate("North-NorthEast")
+    else if (Astro_Sun_Azimuth.state < 57)
+        Astro_Sun_Direction.postUpdate("North-East")
+    else if (Astro_Sun_Azimuth.state < 79)
+        Astro_Sun_Direction.postUpdate("East-NorthEast")
+    else if (Astro_Sun_Azimuth.state < 102)
+        Astro_Sun_Direction.postUpdate("East")
+    else if (Astro_Sun_Azimuth.state < 125)
+        Astro_Sun_Direction.postUpdate("East-SouthEast")
+    else if (Astro_Sun_Azimuth.state < 147)
+        Astro_Sun_Direction.postUpdate("SouthEast")
+    else if (Astro_Sun_Azimuth.state < 170)
+        Astro_Sun_Direction.postUpdate("South-SouthEast")
+    else if (Astro_Sun_Azimuth.state < 192)
+        Astro_Sun_Direction.postUpdate("South")
+    else if (Astro_Sun_Azimuth.state < 215)
+        Astro_Sun_Direction.postUpdate("South-SouthWest")
+    else if (Astro_Sun_Azimuth.state < 237)
+        Astro_Sun_Direction.postUpdate("SouthWest")
+    else if (Astro_Sun_Azimuth.state < 259)
+        Astro_Sun_Direction.postUpdate("West-SouthWest")
+    else if (Astro_Sun_Azimuth.state < 283)
+        Astro_Sun_Direction.postUpdate("West")
+    else if (Astro_Sun_Azimuth.state < 305)
+        Astro_Sun_Direction.postUpdate("West-NorthWest")
+    else if (Astro_Sun_Azimuth.state < 327)
+        Astro_Sun_Direction.postUpdate("NorthWest")
+    else if (Astro_Sun_Azimuth.state < 349)
+        Astro_Sun_Direction.postUpdate("North-NorthWest")
+    else
+        Astro_Sun_Direction.postUpdate("North")
+end
+
+
+//==================================================================================================
+// Calculate tomorrow's sunrise/sunset time using the python astral library (via script).
+//==================================================================================================
+rule "Astro.Tomorrow.Calc - Calculate tomorrow's sunrise and sunset time"
+when
+    System started or
+    Time cron "0 10 0 ? * * *"  // Everyday at 10 minutes past midnight
+then
+    val String TAG = "Astro.Tomorrow.Calc"
+
+    var String timeString
+
+    //--- Calculate tomorrow's sunrise time
+    timeString = executeCommandLine("python /openhab/conf/scripts/sunrise_tomorrow.py", 5000)
+    if (Astro_Sun_RiseTomorrow !== null && Astro_Sun_RiseTomorrow.state != NULL)
+    {
+        logInfo(TAG, "Tomorrow's sunrise time: {}", timeString)
+        Astro_Sun_RiseTomorrow.postUpdate(DateTimeType.valueOf(timeString))
+    }
+    else
+    {
+        logInfo(TAG, "Astro_Sun_RiseTomorrow not yet initialized")
+    }
+
+    //--- Calculate tomorrow's sunset time
+    timeString = executeCommandLine("python /openhab/conf/scripts/sunset_tomorrow.py", 5000)
+    if (Astro_Sun_SetTomorrow !== null && Astro_Sun_SetTomorrow.state != NULL)
+    {
+        logInfo(TAG, "Tomorrow's sunset time: {}", timeString)
+        Astro_Sun_SetTomorrow.postUpdate(DateTimeType.valueOf(timeString))
+    }
+    else
+    {
+        logInfo(TAG, "Astro_Sun_SetTomorrow not yet initialized")
+    }
+end
+
+
+//--------------------------------------------------------------------------------------------------
+// Convert Sun position to SVG for HABPanel.
+//--------------------------------------------------------------------------------------------------
+// rule "Shadow SVG"
+//     when
+//         Item Astro_Sun_Azimuth received update
+//     then
+
+//         val resp =  executeCommandLine("/usr/bin/python /etc/openhab2/scripts/shadow.py update", 10000)
+//         logInfo("Shadow", "Updating Shadow SVG")          
+//         logInfo("Shadow", resp)          
+
+//     end
+
+// rule "Sunset Rule"
+//     when
+//         Channel 'astro:sun:local:set#event' triggered START 
+//     then
+//         postUpdate(Sunset_Azimuth,Astro_Sun_Azimuth.state)    
+//         logInfo("Shadow","Setting Sunset Azimuth.")
+//     end
+
+// rule "Sunrise Rule"
+//     when
+//         Channel 'astro:sun:local:rise#event' triggered START 
+//     then
+//         postUpdate(Sunrise_Azimuth,Astro_Sun_Azimuth.state)    
+//         logInfo("Shadow","Setting Sunrise Azimuth.")
+//     end
+
+
+//--------------------------------------------------------------------------------------------------
+// Take morning actions when the Android Alarm goes off
+//--------------------------------------------------------------------------------------------------
+rule "Alarm.Clock.Changed - Android Alarm clock set"
+when
+    Item AlarmClock changed
+then
+    val String TAG = "Alarm.Clock.Changed"
+
+    if (AlarmClock.state as Number == 0) {
+        if (timerAlarm !== null) {
+            timerAlarm.cancel
+            timerAlarm = null
+        }
+        logInfo(TAG, "All Android alarms are cancelled")
+    }
+    else
+    {
+        var epoch = new DateTime((AlarmClock.state as Number).longValue)
+        logInfo(TAG, "Scheduling Android alarm for {}", epoch.toString)
+
+        if (timerAlarm !== null)
+        {
+            logInfo(TAG, "Reschedule Android alarm to {}", epoch.toString)
+            timerAlarm.reschedule(epoch)
+        }
+        else
+        {
+            logInfo(TAG, "New Android Alarm set for {}", epoch.toString)
+            timerAlarm = createTimer(epoch,
+                [|
+                    // Turn off the House Alarm and turn on the hallway lighting
+                    Light_Scene_Hall.sendCommand("EVENING")
+                    Alarm_Status.sendCommand("DISARMED")
+                    logInfo(TAG, "Android AlarmClock expired, turn on hall light and disarm the alarm")
+                ]
+            )
+        }
+    }
+end

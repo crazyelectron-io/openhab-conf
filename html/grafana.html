@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-type" CONTENT="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="panel-300px.css" />
+    <script src="smarthome-grafana.js"></script>
+    <script src="smarthome-grafana-user-defaults.js"></script>
+</head>
+
+<body bgcolor="#303030">
+</body>
+
+<script>
+    var fromItemFunction = function (value) {
+        switch (value) {
+            case "HR6_5":
+                return "now-6h&to=now&var-granularity=5m";
+            case "HR4_15":
+                return "now-4h&to=now&var-granularity=15m";
+            case "HR8_15":
+                return "now-8h&to=now&var-granularity=15m";
+            case "HR12_5":
+                return "now-12h&to=now&var-granularity=5m";
+            case "HR12_15":
+                return "now-12h&to=now&var-granularity=15m";
+            case "TDY_5":
+                return "now%2Fd&to=now&var-granularity=15m";
+            case "TDY_15":
+                return "now%2Fd&to=now&var-granularity=15m";
+            case "TDY_30":
+                return "now%2Fd&to=now&var-granularity=30m";
+            case "TDY_1":
+                return "now%2Fd&to=now&var-granularity=1h";
+            case "YDY_5":
+                return "now-1d%2Fd&to=now-1d%2Fd&var-granularity=15m";
+            case "YDY_15":
+                return "now-1d%2Fd&to=now-1d%2Fd&var-granularity=15m";
+            case "YDY_30":
+                return "now-1d%2Fd&to=now-1d%2Fd&var-granularity=30m";
+            case "YDY_1":
+                return "now-1d%2Fd&to=now-1d%2Fd&var-granularity=1h";
+            case "DBYDY_5":
+                return "now-2d%2Fd&to=now-2d%2Fd&var-granularity=15m";
+            case "DBYDY_15":
+                return "now-2d%2Fd&to=now-2d%2Fd&var-granularity=15m";
+            case "DBYDY_30":
+                return "now-2d%2Fd&to=now-2d%2Fd&var-granularity=30m";
+            case "WK_1":
+                return "now%2Fw&to=now%2Fw&var-granularity=1h";
+            case "WK_1D":
+                return "now%2Fw&to=now%2Fw&var-granularity=1d";
+            case "LWK_1":
+                return "now-1w%2Fw&to=now-1w%2Fw&var-granularity=1h";
+            case "LWK_1D":
+                return "now-1w%2Fw&to=now-1w%2Fw&var-granularity=1d";
+            case "MNT_1":
+                return "now%2FM&to=now%2FM&var-granularity=1h";
+            case "MNT_1D":
+                return "now%2FM&to=now%2FM&var-granularity=1d";
+            case "LMNT_1":
+                return "now-1M%2FM&to=now-1M%2FM&var-granularity=1h";
+            case "LMNT_1D":
+                return "now-1M%2FM&to=now-1M%2FM&var-granularity=1d";
+            case "YR_1D":
+                return "now%2Fy&to=now&var-granularity=1d";
+            case "YRL_1W":
+                return "now-1y%2Fy&to=now-1y%2Fy&var-granularity=1w";
+//
+            case "HOUR12":
+                return "now-8h&to=now&var-granularity=10m";
+            case "WEEK":
+                return "now%2Fw&to=now%2Fw&var-granularity=1h";
+            case "WEEKT":
+                return "now%2Fw&to=now%2Fw&var-granularity=4h";
+            case "WEEKG":
+                return "now%2Fw&to=now-1d%2Fw&var-granularity=1d";
+            case "WEEK0":
+                return "now%2Fw&to=now%2Fw&var-granularity=1h";
+            case "WEEK_1":
+                return "now-1w%2Fw&to=now-1w%2Fw&var-granularity=1h";
+            case "WEEK0_1":
+                return "now-1w%2Fw&to=now-1w%2Fw&var-granularity=1h";
+            case "WEEKT_1":
+                return "now-1w%2Fw&to=now-1w%2Fw&var-granularity=1d";
+            case "MONTHT":
+                return "now%2FM&to=now%2FM&var-granularity=1d";
+            case "MONTH_1":
+                return "now-1M%2FM&to=now-1M%2F/M&var-granularity=1d";
+            case "YEAR":
+                return "now%2Fy&to=now&var-granularity=1d";
+            default:
+                return "now-7d&to=now&var-granularity=8h";
+        }
+    }
+
+    var panelItemFunction = function (value) {
+        switch (value) {
+            case "FF_TEMP":
+                return "20&kiosk&fullscreen";        // First floor temperatures
+            case "AC_TEMP":
+                return "23&kiosk&fullscreen";        // Outdoor temperature
+            case "CV_BURN":
+                return 26;
+            case "HW_BURN":
+                return 27;
+// Living room climate graphs
+            case "LR_TEMP":
+                return "2&kiosk&fullscreen";         // Livingroom Climate (temperature/humidity)
+            case "LR_CO2":
+                return "8&kiosk&fullscreen";         // Livingroom CO2 levels
+// Energy status graphs
+            case "PWR_NET":
+                return 4;           // Net power consumption & production
+            case "HIST_USE":
+                return 12;          // Historic power consumption (DSMR)
+            case "PWR_RET":
+                return 17;          // Return power history
+// Solar panel graphs
+            case "SOLAR_PWR":
+                return 14;          // Actual power generation solar panels
+            case "SOLAR_FREQ":
+                return 16;          // Voltage levels and Frequency of grid
+            case "SOLAR_HIST":
+                return 24;          // Solar panel productin history
+// Gas usage graphs
+            case "CV_USE":
+                return 28;          // Central Heating and Hot water gas consumption (estimate)
+            case "GAS_USE":
+                return 10;          // Natural Gas consumption (DSMR meter)
+            default:
+                return 4;
+        }
+    }
+
+    var intervalItemFunction = function (value) {
+        switch (value) {
+            case "HOUR":
+            case "HOUR4":
+            case "HOUR8":
+            case "HOUR12":
+                return "1m";
+            case "HOUR24":
+            case "DAY":
+                return "1h";
+            case "WEEK":
+                return "1d";
+            case "MONTH":
+                return "1d";
+            case "YEAR":
+                return "30d";
+            default:
+                return "1d";
+        }
+    }
+
+    addGrafanaPanel("grafana", { fromItemFunction: fromItemFunction, panelItemFunction: panelItemFunction, intervalItemFunction: intervalItemFunction });
+
+</script>
+
+</html>

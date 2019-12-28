@@ -1,0 +1,170 @@
+//==================================================================================================
+// astro.items - Items for the Astro binding providing sun, moon, time of day related info.
+//==================================================================================================
+//	v03 20191226	Reformatted file.
+//	v02	20191130	Renamed Items.
+//	v01 20181020	Initial version.
+//--------------------------------------------------------------------------------------------------
+//
+//
+//==================================================================================================
+
+// Group for all Astro Items
+Group							gAstro
+								<sun_clouds>
+
+
+//--------------------------------------------------------------------------------------------------
+// Date and time related Items
+//--------------------------------------------------------------------------------------------------
+
+//---The NTP-synced local date and time
+DateTime						Astro_Day_Time
+								"Today [%1$tA, %1$td.%1$tm.%1$tY]"
+								<clock>
+								(gAstro)
+								{channel="ntp:ntp:local:dateTime"}
+
+//---Current day phase (SUN_RISE, ASTRO_DAWN, NAUTIC_DAWN, CIVIL_DAWN, CIVIL_DUSK, NAUTIC_DUSK, ASTRO_DUSK, SUN_SET, DAYLIGHT, NIGHT)
+String							Astro_Day_Phase
+								"Day Phase [%s]"
+								(gAstro,gPersist)
+								{channel="astro:sun:home:phase#name"}
+
+Number							Astro_Day_Light
+								"Daylight duration [%1$tH:%1$tM]"
+								(gAstro,gPersist)
+								{channel="astro:sun:home:daylight#duration"}
+
+//--- Night or Day switch; set via rule to 'DAY' (sun up) or 'NIGHT' (sun down)
+// Contact							Astro_NightState
+// 								"Night"
+// 								(gAstro,gPersist)
+
+//---Current season name, translated to local text
+String							Astro_Season_Name
+								"Season [%s]"
+								(gAstro,gPersist)
+								{channel="astro:sun:home:season#name"}
+
+
+//--------------------------------------------------------------------------------------------------
+// Sunrise and sunset related Items
+//--------------------------------------------------------------------------------------------------
+
+// Today's sunset time
+DateTime						Astro_Sun_SetTime
+								"Today's Sunset [%1$tH:%1$tM]"
+								<sunset>
+								(gAstro)
+								{channel="astro:sun:home:set#start"}
+
+// Today's sunrise time
+DateTime						Astro_Sun_RiseTime
+								"Today's Sunrise [%1$tH:%1$tM]"
+								<sunrise>
+								(gAstro,gPersist)
+								{channel="astro:sun:home:rise#start"}
+
+// Tomorrow's sunset time, calculated with Python script using astral library at night and system start.
+DateTime						Astro_Sun_SetTomorrow
+								"Tomorrow's Sunset [%1$tH:%1$tMs]"
+								<sunset>
+								(gAstro,gPersist)
+
+// Tomorrow's sunrise time, calculated with Python script using astral library at night and system start.
+DateTime						Astro_Sun_RiseTomorrow
+								"Tomorrow's Sunrise [%1$tH:%1$tM]"
+								<sunrise>
+								(gAstro,gPersist)
+
+// Next sunset time: today's or tomorrow's sunset depending on time of day (through rule).
+DateTime						Astro_Sun_SetNext
+								"Next Sunset [%1$tH:%1$tM]"
+								<sunset>
+								(gAstro,gPersist)
+
+// Next sunrise time: today's or tomorrow's sunset depending on time of day (through rule).
+DateTime						Astro_Sun_RiseNext
+								"Next Sunrise [%1$tH:%1$tM]"
+								<sunset>
+								(gAstro)
+
+//--- Sun position parameters
+Number							Astro_Sun_Elevation
+								"Sun elevation [%.0f °]"
+								<sun>
+								(gAstro)
+								{channel="astro:sun:home:position#elevation"}
+
+Number							Astro_Sun_Azimuth
+								"Sun azimut [%.0f °]"
+								<sun>
+								(gAstro)
+								{channel="astro:sun:home:position#azimuth"}
+
+//---Sun direction is 'calculated' from azimuth with a SDL Rule
+String							Astro_Sun_Direction
+								"Sun direction [%s]"
+								<sun>
+								(gAstro,gPersist)
+
+
+//--------------------------------------------------------------------------------------------------
+// Moon related Items
+//--------------------------------------------------------------------------------------------------
+Number							Astro_Moon_Distance
+								"Moon distance [%.0f km]"
+								<moon>
+								(gAstro)
+								{channel="astro:moon:home:distance#distance"}
+
+String							Astro_Moon_Phase
+								"Moon phase [%s]"
+								<moon>
+								(gAstro)
+								{channel="astro:moon:home:phase#name"}
+
+								//[MAP(astro.map):%s]
+DateTime						Astro_Moon_FullNext
+								"Next full moon [%1$td.%1$tm.%1$tY]"
+								<moon>
+								(gAstro)
+								{channel="astro:moon:home:phase#full"}
+
+DateTime						Astro_Moon_NewNext
+								"Next new moon [%1$td.%1$tm.%1$tY]"
+								<moon>
+								(gAstro)
+								{channel="astro:moon:home:phase#new"}
+
+//--------------------------------------------------------------------------------------------------
+// Radiation related Items
+//--------------------------------------------------------------------------------------------------
+Number							Astro_Radiation_Total
+								"Sun Radiation [%.2f %unit%]"
+								(gAstro)
+								{channel="astro:sun:home:radiation#total"}
+
+Number							Astro_Radiation_Direct
+								"Direct Radiation [%.2f %unit%]"
+								(gAstro)
+								{channel="astro:sun:home:radiation#direct"}
+
+Number							Astro_Radiation_Diffuse
+								"Diffuse Radiation [%.2f %unit%]"
+								(gAstro)
+								{channel="astro:sun:home:radiation#diffuse"}
+
+//--------------------------------------------------------------------------------------------------
+// Other non-binding channel related Items.
+//--------------------------------------------------------------------------------------------------
+
+// Current Day Mode: NIGHT, MORNING, DAY, EVENING.
+String							Day_Mode
+								"Current day mode [%s]"
+								(gAstro,gPersist)
+
+// AlarmCLock of Ron's Android device
+Number							AlarmClock
+								"Next Alarm time"

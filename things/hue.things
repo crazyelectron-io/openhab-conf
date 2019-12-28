@@ -1,0 +1,158 @@
+Bridge hue:bridge:0017882ec5b3 [ipAddress="192.168.2.98", userName="BwV8002ZezILkImbelBisdZEvkP8HPgk3loHK1FM"] //, sensorPollingInterval=300]
+{
+    //==============================================================================================
+    // Lights
+    //==============================================================================================
+
+    //----------------------------------------------------------------------------------------------
+    // Livingroom
+    //----------------------------------------------------------------------------------------------
+
+    // Livingroom chair standing light
+    0220 bulb_chair [lightId="1", fadetime=700]
+    // Livingroom cornertable light
+    0220 bulb_corner [lightId="3", fadetime=700]
+    // Livingroom sidetable light
+    0220 bulb_side [lightId="4", fadetime=700]
+    // Livingroom backdoor standing light
+    0220 bulb_bdoor [lightId="6", fadetime=700]
+    // Livingroom couch light
+    0220 bulb_couch [lightId="7", fadetime=700]
+
+    //----------------------------------------------------------------------------------------------
+    // Kitchen
+    //----------------------------------------------------------------------------------------------
+
+    // Kitchen left light
+    0220 bulb_lkitchen [lightId="13", fadetime=600]
+    // Kitchen right light
+    0220 bulb_rkitchen [lightId="14", fadetime=600]
+
+    //----------------------------------------------------------------------------------------------
+    // Dining
+    //----------------------------------------------------------------------------------------------
+
+    0210 bulb_dining3 [lightId="23", fadetime=700]
+    0210 bulb_dining2 [lightId="24", fadetime=700]
+    0210 bulb_dining1 [lightId="25", fadetime=700]
+
+    //----------------------------------------------------------------------------------------------
+    // Hallway
+    //----------------------------------------------------------------------------------------------
+
+    // Hallway ceiling light
+    0220 bulb_hallcl [lightId="17", fadetime=700]
+    // Hallwat frontdoor light
+    0220 bulb_hallfd [lightId="26", fadetime=700]
+    // Hallway wall light
+    0220 bulb_hallwl [lightId="27", fadetime=700]
+
+    //----------------------------------------------------------------------------------------------
+    // Bedroom
+    //----------------------------------------------------------------------------------------------
+
+    // Bedroom left bed light
+    0220 bulb_lbed [lightId="9", fadetime=900]
+    // Bedroom right bed light
+    0220 bulb_rbed [lightId="10", fadetime=900]
+
+    //----------------------------------------------------------------------------------------------
+    // Guest room
+    //----------------------------------------------------------------------------------------------
+
+    // Guest room ceiling spotlights
+    0220 bulb_guest1 [lightId="15", fadetime=300]
+    0220 bulb_guest2 [lightId="16", fadetime=300]
+
+    //----------------------------------------------------------------------------------------------
+    // Laundry room
+    //----------------------------------------------------------------------------------------------
+
+    // Laundry room ceiling light
+    0220 bulb_laundry [lightId="19", fadetime=400]
+
+    //----------------------------------------------------------------------------------------------
+    // Toilet
+    //----------------------------------------------------------------------------------------------
+
+    // Toilet ceiling light
+    0220 bulb_toilet [lightId="20", fadetime=600]
+
+    //----------------------------------------------------------------------------------------------
+    // Bathroom
+    //----------------------------------------------------------------------------------------------
+
+    // Bathroom ceiling light
+    0220 bulb_bathceiling [lightId="28", fadetime=800]
+
+    //----------------------------------------------------------------------------------------------
+    // Outside house/garden
+    //----------------------------------------------------------------------------------------------
+
+    // Outdoor leftside house light
+    0100 bulb_lhouse [lightId="2", fadetime=1000]
+    // Outdoor left back light
+    0100 bulb_lback [lightId="5", fadetime=1000]
+    // Outdoor right back light
+    0100 bulb_rback [lightId="8", fadetime=1000]
+    // Outdoor toolshed left light
+    0100 bulb_shed [lightId="11", fadetime=1000]
+    // Outdoor terras lantern light
+    0100 bulb_terrace [lightId="18", fadetime=1000]
+    // Frontdoor light (vintage bulb)
+    0100 bulb_frontdoor [lightId="29", fadetime=1000]
+
+    //----------------------------------------------------------------------------------------------
+    // The Lodge
+    //----------------------------------------------------------------------------------------------
+
+    // The Lodge walllight right light (vintage bulb)
+    0100 bulb_lodge1 [lightId="30", fadetime=1000]
+    // The Lodge walllight left light (vintage bulb)
+    0100 bulb_lodge2 [lightId="31", fadetime=1000]
+
+    // Spare light
+    // 0100 bulb_spare1 [lightId="21", fadetime=1000]
+
+    //==============================================================================================
+    // Motion sensors
+    //==============================================================================================
+    
+    // Toilet Hue motion sensor
+    0302 temp_toilet "Temperature" @ "Toilet" [sensorId="27"]
+    0107 motion_toilet "Motion sensor" @ "Toilet" [sensorId="28"]
+    0106 llux_toilet "Light intensity" @ "Toilet" [sensorId="29"]
+    
+    // Hall Hue motion sensor
+    0303 temp_hall "Temperature" @ "Hallway" [sensorId="38"]
+    0107 motion_hall "Montion sensor" @ "Hallway" [sensorId="39"]
+    0106 llux_hall "Light intensity" @ "Hallway" [sensorId="40"]
+
+    //==============================================================================================
+    // Dimmers and Switches
+    //==============================================================================================
+
+    // Tap Switch Dining
+    0830 tap_dining [sensorId="32"]
+    // Tap Switch Kitchen
+    0830 tap_kitchen [sensorId="20"]
+    // Dimmer Switch Hallway
+    0820 dim_hall [sensorId="43"]
+    // Dimmer Switch Bedroom Leftside
+    0820 dim_lbed [sensorId="16"]
+    // Dimmer Switch Bedroom Rightside
+    0820 dim_rbed [sensorId="18"]
+    // Dimmer Switch Outdoor lights
+    0820 dim_outd [sensorId="6"]
+    // Dimmer Switch Laundry Room
+    0820 dim_laundry [sensorId="22"]
+    // Dimmer Switch Toilet
+    0820 dim_toilet [sensorId="26"]
+    // Dimmer Switch Guest Room
+    // 0820 dim_guest [sensorId="??"]
+    // Dimmer Switch Bathroom
+    0820 dim_bathroom [sensorId="45"]
+
+    // Test Dimmer Switch
+    0820 dim_test [sensorId="12"]
+}

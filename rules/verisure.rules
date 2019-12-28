@@ -1,0 +1,49 @@
+//==================================================================================================
+// verisure.rules - Handle alarm change commands and trigger other actions.
+//==================================================================================================
+//  v02 20191226    Updated to new Item names; binding version 3.0.0; merged report rule.
+//--------------------------------------------------------------------------------------------------
+// ...
+//==================================================================================================
+
+
+//==================================================================================================
+// Alarm.Status.Change - Alarm status has changed, report it via Echo Dot and push notification.
+//==================================================================================================
+rule "Alarm.Status.Report - Report that the alarm is switched on or off"
+when
+    Item Alarm_Status changed
+then
+    val String TAG = "Alarm.Status.Report"
+
+    logInfo(TAG, "Alarm changed from {} to {}, report it via Echo Dot in Livingroom", triggeringItem.previousState.toString, triggeringItem.state.toString)
+
+    var String msg = "The alarm has been "
+    if (triggeringItem.state.toString == "ARMED_AWAY" || triggeringItem.state.toString == "ARMED_HOME")
+    {
+        msg = msg + "Armed."
+    }
+    else
+    {
+        msg = msg + "Disarmed."
+    }
+
+    Echo_TTS_Livingroom.sendCommand("<speak>Hi, " + msg + "</speak>")
+    sendPushoverMessage(pushoverBuilder(msg).withDevice("Family").withTitle("Alarm").withPriority(1))
+end
+
+
+//==================================================================================================
+// The alarm status has changed, retrieve user and time of day summary
+//==================================================================================================
+rule "AlarmTimeChange - Generate summary item of alarm change status"
+when
+    Item Alarm_Time changed
+then
+    val String TAG = "Alarm.Time.Change"
+
+    val String Summary = Alarm_User.state.toString.split(' ').get(0) + " at " + ((Alarm_Time.state.toString.split('T').get(1)).split('\\.').get(0)).substring(0, 5) + " via " + Alarm_Changed.state.toString
+    logDebug(TAG, "Alarm summary {}", Summary)
+
+    Alarm_LastChange.postUpdate(Summary)
+end

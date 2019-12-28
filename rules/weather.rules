@@ -1,0 +1,82 @@
+//==================================================================================================
+// weather.rules - handle weather items, including average temperature, rain predictions, etc.
+//==================================================================================================
+//  v02 20191226 Added rule to 'calculate' cloudy state.
+//  v01 20191001 Initial version.
+//--------------------------------------------------------------------------------------------------
+// This DSL ruleset handles all weather related processing, including average temperature, rain
+//  predictions, cloudiness, etc.
+//..................................................................................................
+// Rules in this file:
+//  WeatherAvgOutdoorTemp - Calculate average temp based on measured and weather station nearby.
+//  WaetherCloudiness - Determine if it is a cloudy weather condition.
+//..................................................................................................
+// Items changed in these rules:
+//  Weather_TempAverage_Outdoor - Temperature based on measurement (Daikin) and HvH weather station.
+//  Weather_Cloudy - Switch indication if it is a cloudy weather condition.
+//==================================================================================================
+
+
+//==================================================================================================
+// Set average outdoor temperature based on measured temperature around house and weather station.
+//==================================================================================================
+rule "WeatherAvgOutdoorTemp - Calculate outdoor temperature"
+when
+    Item AC_Temp_Outdoor changed or
+    Item Weather_Temp_WeatherStation changed
+then
+    val String TAG = "Weather."+triggeringItem.name+".Average"
+    logDebug(TAG, ">>>>>> Enter rule >>>>>>")
+
+    //--- Calc average of two measurements if available, else use just one value.
+    if (Weather_Temp_WeatherStation.state != NULL) {
+        if (AC_Temp_Outdoor.state != NULL)
+        {
+            Weather_TempAverage_Outdoor.postUpdate(String::format("%.1f", ((Weather_Temp_WeatherStation.state as Number) + (AC_Temp_Outdoor.state as Number))/2))
+        }
+        else {
+            Weather_TempAverage_Outdoor.postUpdate(String::format("%.1f", Weather_Temp_WeatherStation.state as Number))
+            logDebug(TAG, "Daikin outdoor temp sensor data not initialized, using weather station data only")
+        }
+    }
+    else if (AC_Temp_Outdoor.state != NULL) { 
+        Weather_TempAverage_Outdoor.postUpdate(String::format("%.1f", AC_Temp_Outdoor.state as Number))
+        logDebug(TAG, "Weather station temp not initialized, using Daikin outdoor temp sensor data only")
+    }
+    else
+    {
+        logInfo(TAG, "Both outdoor temperature values are NULL, skipping average calculation")
+    }
+
+    logDebug(TAG, "<<<<<< Exit rule <<<<<<")
+end
+
+
+//==================================================================================================
+// Set Cloudy switch item based on reported weather condition.
+//==================================================================================================
+rule "WeatherCloudy - Determine Cloudiness of weather condition"
+when
+    Item Weather_Condition changed
+then
+    val String TAG = "Weather."+triggeringItem.name+".Cloudy"
+
+    val String weather = Weather_Condition.state.toString
+	if (weather == "bewolkt" ||
+        weather == "zwaarbewolkt" ||
+        weather == "regen" ||
+		weather == "mist" ||
+        weather == "hagel" ||
+        weather == "sneeuw" ||
+        weather == "nachtmist" ||
+        weather == "wolkennacht")
+    {
+        logInfo(TAG, "Cloudy conditions, set Cloudy switch")
+        Weather_Cloudy.sendCommand(ON)
+    }
+    else
+    {
+        logInfo(TAG, "Clear conditions, reset Cloudy switch")
+        Weather_Cloudy.sendCommand(OFF)
+    }
+end

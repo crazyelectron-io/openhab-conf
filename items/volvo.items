@@ -1,0 +1,167 @@
+//
+Group							gVoC
+								"Volvo On Call"
+
+Group:Contact:OR(OPEN,CLOSED)	gVoC_Door_Status
+								"Door status"
+								(gVoC)
+
+Contact							VoC_Door_Tailgate
+								"Tailgate"
+								(gVoC_Door_Status)
+								{channel="volvooncall:vehicle:v90:V90:doors#tailgate"}
+
+Contact							VoC_Door_RearRight
+								"Rear right"
+								(gVoC_Door_Status)
+								{channel="volvooncall:vehicle:v90:V90:doors#rearRight"}
+
+Contact							VoC_Door_RearLeft
+								"Rear Left"
+								(gVoC_Door_Status)
+								{channel="volvooncall:vehicle:v90:V90:doors#rearLeft"}
+
+Contact							VoC_Door_FrontRight
+								"Passenger"
+								(gVoC_Door_Status)
+								{channel="volvooncall:vehicle:v90:V90:doors#frontRight"}
+
+Contact							VoC_Door_FrontLeft
+								"Driver"
+								(gVoC_Door_Status)
+								{channel="volvooncall:vehicle:v90:V90:doors#frontLeft"}
+
+Contact							VoC_Door_Hood
+								"Hood"
+								(gVoC_Door_Status)
+								{channel="volvooncall:vehicle:v90:V90:doors#hood"}
+
+Group:Contact:OR(OPEN,CLOSED)	gVoC_Window_Status
+								"Windows status"
+								(gVoC)
+
+Contact							VoC_Window_RearRight
+								"Rear right winsod"
+								(gVoC_Window_Status)
+								{channel="volvooncall:vehicle:v90:V90:windows#rearRightWnd"}
+
+Contact							VoC_Window_RearLeft
+								"Rear Left window"
+								(gVoC_Window_Status)
+								{channel="volvooncall:vehicle:v90:V90:windows#rearLeftWnd"}
+
+Contact							VoC_Window_FrontRight
+								"Passager window"
+								(gVoC_Window_Status)
+								{channel="volvooncall:vehicle:v90:V90:windows#frontRightWnd"}
+
+Contact							VoC_Window_FrontLeft
+								"Driver window"
+								(gVoC_Window_Status)
+								{channel="volvooncall:vehicle:v90:V90:windows#frontLeftWnd"}
+
+Switch							VoC_Car_Locked
+								"Car Locked"
+								(gVoC)
+								{channel="volvooncall:vehicle:v90:V90:doors#carLocked"}
+
+Number:Dimensionless			VoC_Fuel_Level
+								"Fuel Level"
+								<sewerage>
+								(gVoC)
+								{channel="volvooncall:vehicle:v90:V90:tank#fuelLevel"}
+
+Number:Volume                   VoC_Fuel_Amount
+                                "Fuel amount"
+                                (gVoC)
+                                {channel="volvooncall:vehicle:v90:V90:tank#fuelAmount"}
+
+Number                          VoC_Consumption_Average
+                                "Average consumption"
+                                (gVoC)
+                                {channel="volvooncall:vehicle:v90:V90:tank#fuelConsumption"}
+
+Number:Length                   VoC_Distance_Left
+                                "Distance left"
+                                (gVoC)
+                                {channel="volvooncall:vehicle:v90:V90:tank#distanceToEmpty"}
+
+Switch							VoC_Fuel_Alert
+								"Fuel Alert"
+								<siren>
+								(gVoC)
+								{channel="volvooncall:vehicle:v90:V90:tank#fuelAlert"}
+
+String							VoC_Washer_Level
+								"Wiper Fluid Level"
+								(gVoC)
+								{channel="volvooncall:vehicle:v90:V90:other#washerFluidLevel"}
+
+Location						VoC_Location
+								"Location"
+								(gVoC)
+								{channel="volvooncall:vehicle:v90:V90:position#location"}
+
+DateTime						VoC_Location_LUD
+								"Timestamp [%1$tH:%1$tM]"
+								<time>
+								(gVoC)
+								{channel="volvooncall:vehicle:v90:V90:position#locationTimestamp"}
+
+Switch                          VoC_Calculated_Location
+                                "Calculated location"
+                                (gVoC)
+                                {channel="volvooncall:vehicle:v90:V90:position#calculatedLocation"}
+
+Switch                          VoC_Heading
+                                "Heading"
+                                (gVoC)
+                                {channel="volvooncall:vehicle:v90:V90:position#heading"}
+
+Number:Length					VoC_Odometer
+								"Milage [%d %unit%]"
+								(gVoC)
+								{channel="volvooncall:vehicle:v90:V90:odometer#odometer"}
+
+Number:Length                   VoC_TripMeter_1
+                                "Trip meter 1"
+                                (gVoC)
+                                {channel="volvooncall:vehicle:v90:V90:odometer#tripmeter1"}
+
+Number:Length                   VoC_TripMeter_2
+                                "Trip meter 2"
+                                (gVoC)
+                                {channel="volvooncall:vehicle:v90:V90:odometer#tripmeter2"}
+
+Switch                          VoC_Engine_Started
+                                "Engine started"
+                                (gVoC)
+                                {channel="volvooncall:vehicle:v90:V90:other#engineRunning"}
+
+Switch                          VoC_Remote_Heater
+                                "Remote heater"
+                                (gVoC)
+                                {channel="volvooncall:vehicle:v90:V90:other#remoteHeater"}
+
+String                          VoC_Service_Warning
+                                "Service status"
+                                (gVoC)
+                                {channel="volvooncall:vehicle:v90:V90:other#serviceWarningStatus"}
+
+String							VoC_Journal_Log
+								"Journal log"
+								(gVoC)
+								{channel="volvooncall:vehicle:v90:V90:other#journalLog"}
+
+    // // Car properties
+    // public static final String ENGINE_START = "engineStart";
+    // public static final String UNLOCK = "unlock";
+    // public static final String UNLOCK_TIME = "unlockTimeFrame";
+    // public static final String LOCK = "lock";
+    // public static final String HONK = "honk";
+    // public static final String BLINK = "blink";
+    // public static final String HONK_BLINK = "honkAndBlink";
+    // public static final String HONK_AND_OR_BLINK = "honkAndOrBlink";
+    // public static final String REMOTE_HEATER = "remoteHeater";
+    // public static final String PRECLIMATIZATION = "preclimatization";
+    // public static final String LAST_TRIP_ID = "lastTripId";

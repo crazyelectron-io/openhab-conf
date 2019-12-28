@@ -1,0 +1,97 @@
+//==================================================================================================
+// weather.items - v02 20191130
+//--------------------------------------------------------------------------------------------------
+// Items for the weather information retreived from KNMI weer API and Buienradar API using the
+//  HTTP1 binding.
+// See also services/http.cfg
+//..................................................................................................
+// The KNMI weer API response in JSON format is like this:
+// {
+//   "liveweer": [
+//     {
+//        "plaats": "Brielle",
+//        "temp": "12.3", "gtemp": "8.4",
+//        "samenv": "Geheel bewolkt",
+//        "lv": "88",
+//        "windr": "ZZW", "windms": "10", "winds": "5", "windk": "19.4", "windkmh": "36",
+//        "luchtd": "1004.7", "ldmmhg": "754",
+//        "dauwp": "10",
+//        "zicht": "27",
+//        "verw": "Wisselend bewolkt met geregeld buien, soms ook met onweer",
+//        "sup": "07:56", "sunder": "19:04",
+//        "image": "bewolkt",
+//        "d0weer": "bewolkt", "d0tmax": "15", "d0tmin": "11",
+//        "d0windk": "4", "d0windknp": "16", "d0windms": "8", "d0windkmh": "30", "d0windr": "ZW",
+//        "d0neerslag": "17", "d0zon": "11",
+//        "d1weer": "halfbewolkt", "d1tmax": "15", "d1tmin": "9",
+//        "d1windk": "3", "d1windknp": "8", "d1windms": "4", "d1windkmh": "15", "d1windr": "ZW",
+//        "d1neerslag": "60", "d1zon": "30",
+//        "d2weer": "regen", "d2tmax": "16", "d2tmin": "12",
+//        "d2windk": "3", "d2windknp": "10", "d2windms": "5", "d2windkmh": "19", "d2windr": "ZW",
+//        "d2neerslag": "90", "d2zon": "20",
+//        "alarm": "0"
+//     }
+//   ]
+// }
+//..................................................................................................
+// The Buienradar API response in JSON format is like this:
+//	:TODO: Add JSON example.
+//==================================================================================================
+
+// Group for all Weather Items.
+Group							gWeather
+
+// KNMI weatherstation temperature.
+Number							Weather_Temp_WeatherStation
+								"Temp. KNMI: [%.1f °C]"
+								<temperature>
+								(gWeather,gTempSensor)
+								{http="<[KNMI_JSON:10000:JSONPATH($.liveweer.[0].temp)]"}
+
+// Average outdoor temperature.
+Number							Weather_TempAverage_Outdoor
+								"Buitentemperatuur [%.1f °C]"
+								<temperature>
+								(gWeather,gPersist,gTempSensor)
+
+// Feel temperature outdoor (from KNMI API).
+Number							Weather_TempFeel_WeatherStation
+								"Gevoelstemperatuur [%.1f °C]"
+								<temperature>
+								(gWeather,gTempSensor)
+								{http="<[KNMI_JSON:10000:JSONPATH($.liveweer.[0].gtemp)]" }
+
+// Humidity outdoor (from KNMI API).
+Number							Weather_Humidity_WeatherStation
+								"Luchtvochtigheid [%.0f %]"
+								<humidity>
+								(gWeather,gSensorStatus)
+								{http="<[KNMI_JSON:10000:JSONPATH($.liveweer.[0].lv)]" }
+
+// Current percipitation in mm (from Buienradar API).
+Number							Weather_Percipitation
+								"Neerslag [%.1f mm]"
+								<humidity>
+								(gWeather,gPersist)
+								{http="<[Buienradar_JSON:10000:JSONPATH($.actual.stationmeasurements.[?(@.stationid == 6330)].percipitation)]" }
+
+// Current weather condition description (bewolkt, halfbewolkt, zwaarbewolkt, zonnig, regen, buien, hagel, mist, sneeuw, nachtmist, wolkennacht, helderenacht..).
+String							Weather_Condition
+								"[%s]"
+								<none>
+								(gWeather)
+								{http="<[KNMI_JSON:10000:JSONPATH($.liveweer.[0].image)]"  [profile="transform:MAP", function="weather.map", sourceFormat="%s"]}
+
+// Cloudy or clear switch (based on Weather_Condition).
+Switch 							Weather_Cloudy
+								"Cloudy"
+								<none>
+								(gWeather,gPersist)
+
+// Short weather forcast text (from KNMI).
+String							Weather_Forcast
+								"[%s]"
+								<none>
+								(gWeather)
+								{http="<[KNMI_JSON:10000:JSONPATH($.liveweer.[0].verw)]"}
+

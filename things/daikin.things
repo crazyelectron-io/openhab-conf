@@ -1,0 +1,10 @@
+//==================================================================================================
+// daikin.things    v02     Updated IP addresses.
+//..................................................................................................
+// Thing definitions for all the Daikin Airco units.
+//==================================================================================================
+
+Thing daikin:ac_unit:192_168_2_125 "Airco Stephan" @ "Laundry"       [host="192.168.2.125", refresh=10]
+Thing daikin:ac_unit:192_168_2_109 "Airco Menno" @ "Guestroom"       [host="192.168.2.109", refresh=10]
+Thing daikin:ac_unit:192_168_2_137 "Airco Werkkamer" @ "Study"       [host="192.168.2.137", refresh=10]
+Thing daikin:ac_unit:192_168_2_135 "Airco Slaapkamer" @ "Bedroom"    [host="192.168.2.135", refresh=10]

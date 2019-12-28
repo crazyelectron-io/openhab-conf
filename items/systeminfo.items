@@ -1,0 +1,56 @@
+//==================================================================================================
+// systeminfo.items
+//--------------------------------------------------------------------------------------------------
+//	20191116	v2	Reformatted.
+//==================================================================================================
+
+// CPU information
+Number							Sys_OH2_CPULoad
+								"Current Load [%s %%]"
+								<cpu>
+								{channel="systeminfo:computer:openhab2:cpu#load"}
+Number							Sys_OH2_CPULoad1
+								"Load (1 Min) [%s %%]"
+								<cpu>
+								(gHist5)
+								{channel="systeminfo:computer:openhab2:cpu#load1"}
+Number							Sys_OH2_CPULoad5
+								"Load (5 Min) [%s %%]"
+								<cpu>
+								{channel="systeminfo:computer:openhab2:cpu#load5"}
+Number							Sys_OH2_CPULoad15
+								"Load (15 Min) [%s %%]"
+								<cpu>
+								{channel="systeminfo:computer:openhab2:cpu#load15"}
+// Uptime information
+Number							Sys_OH2_CPUUptime
+								"Uptime [%s min]"
+								<time>
+								{channel="systeminfo:computer:openhab2:cpu#uptime"}
+// Memory information
+Number							Sys_OH2_MemFree
+								"Memory free [%s %%]"
+								<cpu>
+								(gHist5)
+								{channel="systeminfo:computer:openhab2:memory#availablePercent"}
+// Storage information
+Number							Sys_OH2_StorageFree
+								"Available [%s %%]"
+								<none>
+								(gHist15)
+								{channel="systeminfo:computer:openhab2:storage#availablePercent"}
+// Temperature information
+Number							Sys_OH2_CPUTemp
+								"CPU Temperature [%d]"
+								<temperature>
+								(gHist,gTempSensor)
+								{channel="systeminfo:computer:openhab2:sensors#cpuTemp"}
+// Network information
+Number							Sys_OH2_DataSent
+								"Data sent [%d MB]"
+								<flowpipe>
+								{channel="systeminfo:computer:openhab2:network0#dataSent"}
+Number							Sys_OH2_DataReceived
+								"Data received [%d MB]"
+								<returnpipe>
+								{channel="systeminfo:computer:openhab2:network0#dataReceived"}

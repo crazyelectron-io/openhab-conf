@@ -1,0 +1,837 @@
+//==================================================================================================
+// hue.rules - Lights and switches rules.
+//--------------------------------------------------------------------------------------------------
+//	v14 20191224	Updated Dimmer Switch handling.
+//	v13 20191215	Added Bedroom Dimmer scene selections.
+//	v12 20191210	Removed superfluous 'sendCommand(ON)' to start lighting scene.
+//	v11 20191019	Generalized Scene settings for light groups.
+//--------------------------------------------------------------------------------------------------
+// Rules in this file:
+//	HueDayNight - xxxx
+//..................................................................................................
+// Items changed by these rules:
+//	xxxx
+//==================================================================================================
+
+
+import org.eclipse.smarthome.model.script.ScriptServiceUtil
+
+
+//==================================================================================================
+// Switch lights on at sunset and off at sunrise (depending on cloudiness).
+//==================================================================================================
+rule "HueDayNight - Lighting change around sunset/sunrise"
+when
+	Item Day_Mode changed
+then
+	val String TAG = "HUE."+triggeringItem.name+".Change"
+	var String command = ""
+
+	logInfo(TAG, "{} changed to {}", triggeringItem.name, triggeringItem.state)
+
+	if (Day_Mode.state == "DAY")
+	{
+		command = "OFF"
+	}
+	else if (Day_Mode.state == "EVENING" || Day_Mode.state == "MORNING")
+	{
+		command = "EVENING"
+	}
+	
+	if (command != "")
+	{
+		logInfo(TAG, "Send command {} to Light Scenes", command)
+		// gLight_Automatic.sendCommand(command)
+		Light_Scene_Livingroom.sendCommand(command)
+		Light_Scene_Dining.sendCommand(command)
+		Light_Scene_Kitchen.sendCommand(command)
+		Light_Scene_Hall.sendCommand(command)
+		// Light_Scene_HallCeiling.sendCommand(command)
+		Light_Scene_Outside.sendCommand(command)
+		// Light_Scene_Lodge.sendCommand(command)
+		val String msg = "Day mode change: lights switched to "+command
+        sendPushoverMessage(pushoverBuilder(msg).withDevice("Family").withTitle("Astro Alert"))
+	}
+end
+
+
+//==================================================================================================
+// Change lighting in area to the specified scene
+//==================================================================================================
+rule "Hue scene changing rule"
+when
+	Item Light_Scene_Livingroom received command or
+	Item Light_Scene_Kitchen received command or
+	Item Light_Scene_Dining received command or
+	Item Light_Scene_Hall received command or
+	Item Light_Scene_HallCeiling received command or
+	Item Light_Scene_Bathroom received command or
+	Item Light_Scene_Bedroom received command or
+	Item Light_Scene_Lodge received command or
+	Item Light_Scene_Outside received command
+then
+	val String TAG = "HUE."+triggeringItem.name+".Change "
+
+	val String lightArea = triggeringItem.name.split('_').get(2)
+	val String scene = receivedCommand.toString
+	logDebug(TAG, "Received command '{}' for area '{}'", scene, lightArea)
+
+	val lightGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_OnOff_" + lightArea)
+
+	logInfo(TAG, "Set Lighting Scene to {} for {}", scene, lightGroup.name)
+
+	if (scene == "OFF")
+	{
+		logDebug(TAG, "Send Command OFF to {}", lightGroup)
+		lightGroup.sendCommand(OFF)
+	}
+	else
+	{
+		lightGroup.postUpdate(ON)
+		val brightnessGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_Brightness_" + lightArea)
+		val String brightness = ScriptServiceUtil.getItemRegistry.getItem(lightArea + "_Brightness_" + receivedCommand).state.toString
+		logDebug(TAG, "Brightness command {}, group {}", brightness, brightnessGroup)
+		brightnessGroup.sendCommand(brightness)
+
+		if (lightArea != "Lodge" && lightArea != "Outside")
+		{
+			val colorTempGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_ColorTemp_" + lightArea)
+			val String colorTemp = ScriptServiceUtil.getItemRegistry.getItem(lightArea + "_ColorTemp_" + receivedCommand).state.toString
+			logDebug(TAG, "ColorTemp command is {}, group is {}", colorTemp, colorTempGroup)
+			colorTempGroup.sendCommand(colorTemp)
+		}
+	}
+end
+
+
+//==================================================================================================
+//	Signal alert to Kitchen lighting.
+//==================================================================================================
+rule "Hue Alert Kitchen"
+when
+	Item Light_Alert_Kitchen changed
+then
+	val String TAG = "HUE."+triggeringItem+".Changed"
+
+	if (triggeringItem.previousState() == NULL)
+	{
+		logInfo(TAG, "Ignore alert, previous state was NULL")
+		return;
+	}
+	if (triggeringItem.state == ON)
+	{
+		logInfo(TAG, "Start Alert for Kitchen lighting")
+		Light_Alert_KitchenLeft.sendCommand("LSELECT")
+		Light_Alert_KitchenRight.sendCommand("LSELECT")
+	}
+	else
+	{
+		logInfo(TAG, "Stop Alert for Kitchen lighting")
+		Light_Alert_KitchenLeft.sendCommand("NONE")
+		Light_Alert_KitchenRight.sendCommand("NONE")
+	}
+end
+
+
+//==================================================================================================
+//	Hallway motion detection rule.
+//==================================================================================================
+rule "Hue Motion detected in rule"
+when
+	Item MS_HallMotion changed
+then
+	val String TAG = "HUE."+triggeringItem+".Event"
+
+	if (previousState == NULL)
+	{
+		logInfo(TAG, "Previous state of {} is NULL, ignoring state change", triggeringItem.name)
+		return;
+	}
+
+	if (triggeringItem.state == ON)
+	{
+		logInfo(TAG, "Motion Sensor state changed to ON")
+	}
+	else if (triggeringItem.state == OFF)
+	{
+		logInfo(TAG, "Motion Sensor state changed to OFF")
+	}
+	else
+	{
+		logWarn(TAG, "Invalid state of switch item '{}", triggeringItem)
+	}
+end
+
+
+//==================================================================================================
+// Handle tap switch commands (for Dining).
+//==================================================================================================
+rule "Hue Tap Dining room"
+when
+	Channel "hue:0830:0017882ec5b3:tap_dining:tap_switch_event" triggered
+then
+    val String TAG = "HUE.DiningTap.Event"
+	logInfo(TAG, "HUE Tap Remote switch event {}", receivedEvent)
+
+	switch (receivedEvent.getEvent())
+	{
+		//--- Upper right button press?
+		case "34.0":
+		{
+			if (Light_Scene_Dining.state == "OFF" || Light_Scene_Dining.state == "BRIGHT")
+			{
+				Light_Scene_Dining.sendCommand("EVENING")
+			}
+			else if (Light_Scene_Dining.state == "EVENING")
+			{
+				Light_Scene_Dining.sendCommand("READ")
+			}
+			else
+			{
+				Light_Scene_Dining.sendCommand("BRIGHT")
+			}
+		}
+		//--- Lower right button press?		
+		case "18.0":
+		{
+			Light_Scene_Dining.sendCommand("OFF")
+		}
+		case "99.0":
+		{
+			Light_Scene_Dining.sendCommand("OFF")
+		}
+		//--- Upper left button press?
+		case "16.0":
+		{
+			if (Light_Scene_Livingroom.state == "OFF" || Light_Scene_Livingroom.state == "READ")
+			{
+				Light_Scene_Livingroom.sendCommand("EVENING")
+			}
+			else if (Light_Scene_Livingroom.state == "EVENING")
+			{
+				Light_Scene_Livingroom.sendCommand("MOVIE")
+			}
+			else
+			{
+				Light_Scene_Livingroom.sendCommand("READ")
+			}
+		}
+		//--- Lower left button press?
+		case "17.0":
+		{
+			Light_Scene_Livingroom.sendCommand("OFF")
+		}
+		//--- Lower Left+Right buttons press?	
+		case "98.0":
+		{
+			Light_Scene_Livingroom.sendCommand("OFF")
+			Light_Scene_Dining.sendCommand("OFF")
+		}
+		// Upper Left+Right buttons press?
+		case "101.0":
+		{
+			Light_Scene_Dining.sendCommand("BRIGHT")
+			Light_Scene_Livingroom.sendCommand("READ")
+		}
+	}
+end
+
+
+//==================================================================================================
+// Hue Tap Switch Kitchen handling rule.
+//==================================================================================================
+rule "Hue Tap Kitchen rule"
+when
+	Channel "hue:0830:0017882ec5b3:tap_kitchen:tap_switch_event" triggered
+then
+    val TAG = "HUE.KitchenTap.Event"
+	logInfo(TAG, "HUE Tap Remote switch event {}", receivedEvent)
+
+	switch(receivedEvent.getEvent())
+	{
+		//--- Upper left button press?
+		case "16.0":
+		{
+			if (Light_Scene_Kitchen.state == "OFF" || Light_Scene_Kitchen.state == "BRIGHT")
+			{
+				Light_Scene_Kitchen.sendCommand("EVENING")
+			}
+			else if (Light_Scene_Kitchen.state == "EVENING")
+			{
+				Light_Scene_Kitchen.sendCommand("WORK")
+			}
+			else
+			{
+				Light_Scene_Kitchen.sendCommand("BRIGHT")
+			}
+		}
+		//--- Lower left button press?
+		case "17.0": 
+		{
+			Light_Scene_Kitchen.sendCommand("OFF")
+		}	
+		//--- Upper right button press?
+		case "34.0":
+		{
+			// if (Light_Scene_KitchenCeiling.state == "OFF" || Light_Scene_KitchenCeiling.state == "BRIGHT"
+			// {
+			// 	Light_Scene_KitchenCeiling.sendCommand("EVENING")
+			// }
+			// else if (Light_Scene_KitchenCeiling.state == "EVENING")
+			// {
+			// 	Light_Scene_KitchenCeiling.sendCommand("WORK")
+			// }
+			// else
+			// {
+			// 	Light_Scene_KitchenCeiling.sendCommand("BRIGHT")
+			// }
+		}
+		//--- Lower right button press?
+		case "18.0":
+		{
+			// Light_Scene_KitchenCeiling.sendCommand("OFF")
+		}
+		//--- Lower Left+Right buttons press?
+		case "98.0":
+		{
+			Light_Scene_Kitchen.sendCommand("OFF")
+			// Light_Scene_KitchenCeiling.sendCommand("OFF")
+		}
+		//--- Upper Left+Right buttons press?
+		case "101.0":
+		{
+			// Upper Right + Left buttons pressed
+			Light_Scene_Kitchen.sendCommand("WORK")
+			// Light_Scene_KitchenCeiling.sendCommand("WORK")
+		}
+	}
+end
+
+
+//==================================================================================================
+// Dimmer Switch Hall Buttons handling rule.
+//--------------------------------------------------------------------------------------------------
+// Key 1 (ON) first press:
+//		Turn on Hall (wall) lighting and Kitchen lighting (Scene EVENING)
+// Key 1 (ON) second press:
+//		Turn on Hall Ceiling lighting (Scene EVENING)
+// Key 1 (ON) third press:
+//		Turn on Hall Ceiling lighting to Scene READ
+// Key 1 (ON) Hold:
+//		Turn on Hall, Kitchen, Dining, Livingroom lighting to Scene EVENING
+//==================================================================================================
+rule "Hue Dimmer Switch Hall - Key handle rule"
+when
+	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered
+then
+    val String TAG = "HUE.HallDimmer.Event"
+
+	logInfo(TAG, "Event '{}' received", receivedEvent)
+
+	var Number dimLevel = 0
+
+	switch(receivedEvent.getEvent())
+	{
+		//--- Key 1 (ON) Initial Press = Not always triggered, ignoring it.
+		case "1000.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Initial Press event triggered [1000] - ignored")
+		}
+		//--- Key 1 (ON) Hold
+		case "1001.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001]")
+			if (Light_Scene_Hall.state == "OFF") Light_Scene_Hall.sendCommand("EVENING")
+			Light_Scene_Dining.sendCommand("EVENING")
+			Light_Scene_Livingroom.sendCommand("EVENING")
+		}
+		//--- Key 1 (ON) Short Release
+		case "1002.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Short Release event triggered [1002]")
+	
+			if (Light_Scene_Hall.state == "OFF" && Light_Scene_Kitchen.state == "OFF")
+			{
+				logInfo(TAG, "First Button 1 (ON) Short Release - Set Hall and Kitchen Scene to EVENING")
+				Light_Scene_Hall.sendCommand("EVENING")
+				Light_Scene_Kitchen.sendCommand("EVENING")
+			}
+			else if (Light_Scene_Hall.state == "EVENING" && Light_Scene_HallCeiling.state == "OFF")
+			{
+				logInfo(TAG, "Second Button 1 (ON) Short Release - Set Hall Ceiling Scene to EVENING as well")
+				Light_Scene_HallCeiling.sendCommand("EVENING")
+			}
+			else if (Light_Scene_Hall.state == "EVENING" && Light_Scene_HallCeiling.state == "EVENING")
+			{
+				logInfo(TAG, "Third Button 1 (ON) Short Release - Set Hall (Ceiling) Scene to READ")
+				Light_Scene_HallCeiling.sendCommand("READ")
+				Light_Scene_Hall.sendCommand("READ")
+			}
+			else
+			{
+				logInfo(TAG, "Forth Button 1 (ON) Short Release - Set Hall (Ceiling) Scene to EVENING")
+				Light_Scene_HallCeiling.sendCommand("EVENING")
+				Light_Scene_Hall.sendCommand("EVENING")
+			}
+		}
+		//--- Key 1 (ON) Long Release
+		case "1003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 1 (ON) Long Release event triggered [1003] - ignored")
+			if (Light_Scene_Hall.state == "OFF") Light_Scene_Hall.sendCommand("EVENING")
+			Light_Scene_Dining.sendCommand("EVENING")
+			Light_Scene_Livingroom.sendCommand("EVENING")
+		}
+		//--- Key 2 (INCREASE) Initial Press
+		case "2000.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Initial Press [2000] - ignored")
+		}
+		//--- Key 2 (INCREASE) Hold
+		case "2001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Hold [2001] - ignored")
+		}
+		//--- Key 2 (INCREASE) Short Release
+		case "2002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Short Release [2002]")
+			if (Light_Scene_Hall.state != "OFF")
+			{
+				logInfo(TAG, "Increase Hall Wall Lighting brightness")
+				dimLevel = gLight_Brightness_Hall.state as Number + 10
+				if (dimLevel > 100) dimLevel = 100
+				gLight_Brightness_Hall.sendCommand(dimLevel)
+			}
+			if (Light_Scene_HallCeiling.state != "OFF")
+			{
+				logInfo(TAG, "Increase Hall Ceiling Lighting brightness")
+				dimLevel = gLight_Brightness_HallCeiling.state as Number + 10
+				if (dimLevel > 100) dimLevel = 100
+				gLight_Brightness_HallCeiling.sendCommand(dimLevel)
+			}
+		}
+		//--- Key 2 (INCREASE) Long Release
+		case "2003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Long Release [2003] - ignored")
+		}
+		//--- Key 3 (DECREASE) Initial Press
+		case "3000.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Initial Press [3000] - ignored")
+		}
+		//--- Key 3 (DECREASE) Hold
+		case "3001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Hold [3001] - ignored")
+		}
+		//--- Key 3 (DECREASE) Short Release
+		case "3002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Short Release [3002]")
+			if (Light_Scene_Hall.state != "OFF")
+			{
+				logInfo(TAG, "Decrease Hall Wall Lighting brightness")
+				dimLevel = gLight_Brightness_Hall.state as Number - 10
+				if (dimLevel < 5) dimLevel = 5
+				gLight_Brightness_Hall.sendCommand(dimLevel)
+			}
+			if (Light_Scene_HallCeiling.state != "OFF")
+			{
+				logInfo(TAG, "Decrease Hall Ceiling Lighting brightness")
+				dimLevel = gLight_Brightness_HallCeiling.state as Number - 10
+				if (dimLevel < 5) dimLevel = 5
+				gLight_Brightness_HallCeiling.sendCommand(dimLevel)
+			}
+		}
+		//--- Key 3 (DECREASE) Long Release
+		case "3003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Long Releas3 [3003] - ignored")
+		}
+		//--- Key 4 (OFF) Initial Press. Ignored, not always triggered.
+		case "4000.0":
+		{
+			logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - ignored")
+		}
+		//--- Key 4 (OFF) Hold
+		case "4001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Hold [4001]")
+			Light_Scene_Livingroom.sendCommand("OFF")
+			Light_Scene_Dining.sendCommand("OFF")
+		}
+		//--- Key 4 (OFF) Short Release
+		case "4002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Short Release [4002]")
+			if (Light_Scene_HallCeiling.state != "OFF")
+			{
+				Light_Scene_HallCeiling.sendCommand("OFF")
+			}
+			else
+			{
+				Light_Scene_Kitchen.sendCommand("OFF")
+				Light_Scene_Hall.sendCommand("OFF")
+			}
+		}
+		//--- Key 4 (OFF) Long Release
+		case "4003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Long Release [4003]")
+			Light_Scene_Livingroom.sendCommand("OFF")
+			Light_Scene_Dining.sendCommand("OFF")
+			Light_Scene_Kitchen.sendCommand("OFF")
+			// Light_Scene_KitchenCeiling.sendCommand("OFF")
+			Light_Scene_HallCeiling.sendCommand("OFF")
+			Light_Scene_Hall.sendCommand("OFF")
+		}
+	}
+end
+
+
+//==================================================================================================
+// Key 1 (ON) Long released
+//==================================================================================================
+rule "Hue Dimmer Hall - Trigger key 1 (ON) Long released"
+when
+	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 1003.0
+then
+    val String TAG = "HUE.HallDim.Event1003"
+	logInfo(TAG, "HUE Hall Dimmer switch event 1003.0")
+
+end
+
+
+//==================================================================================================
+// Key 2 (INCREASE) hold
+//==================================================================================================
+rule "Hue Dimmer Switch Hall - Trigger Key 2 (INCREASE) Hold"
+when
+	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 2001.0
+then
+    val String TAG = "HUE.HallDim.Event2001"
+	logInfo(TAG, "HUE Hall Dimmer switch event 2001.0")
+
+	if (gLight_OnOff_Hall.state != OFF) gLight_Brightness_Hall.sendCommand(INCREASE)
+	if (Light_Scene_HallCeiling.state != OFF) gLight_Brightness_HallCeiling.sendCommand(INCREASE)
+end
+
+
+//==================================================================================================
+// Key 3 (DECREASE) hold
+//==================================================================================================
+rule "Hue Dimmer Switch Hall - Trigger Key 3 (DECREASE) Hold"
+when
+	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 3001.0
+then
+    val String TAG = "HUE.HallDim.Event3001"
+	logInfo(TAG, "HUE Hall Dimmer switch event 3001.0")
+
+	if (gLight_OnOff_Hall.state != OFF) gLight_Brightness_Hall.sendCommand(DECREASE)
+	if (Light_Scene_HallCeiling.state != OFF) gLight_Brightness_HallCeiling.sendCommand(DECREASE)
+end
+
+
+//==================================================================================================
+// Key 4 (OFF) Initial pressed
+//==================================================================================================
+rule "Hue Dimmer Switch Hall - Trigger Key 4 (OFF) Initial pressed"
+when
+	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 4000.0
+then
+    val String TAG = "HUE.HallDim.Event4000"
+	logInfo(TAG, "HUE Hall Dimmer switch event 4000.0")
+
+	Light_Scene_Kitchen.sendCommand("OFF")
+	DimSwitch_Hallway.postUpdate(OFF)
+end
+
+
+//==================================================================================================
+// Key 4 (OFF) Hold (can repeat)
+//==================================================================================================
+rule "Hue Dimmer Switch Hall - Trigger Key 4 (OFF) Hold"
+when
+	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 4001.0
+then
+    val String TAG = "HUE.HallDim.Event4001"
+	logInfo(TAG, "HUE Hall Dimmer switch event 4001.0")
+
+	Light_Scene_Livingroom.sendCommand("OFF")
+	Light_Scene_Dining.sendCommand("OFF")
+end
+
+
+//==================================================================================================
+// Key 4 (OFF) short released
+//==================================================================================================
+rule "Hue Dimmer Switch Hall - Trigger Key 4 (OFF) Short released"
+when
+	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 4002.0
+then
+    val String TAG = "HUE.HallDim.Event4002"
+	logInfo(TAG, "HUE Hall Dimmer switch event 4002.0")
+
+	Light_Scene_Hall.sendCommand("OFF")
+	Light_Scene_Kitchen.sendCommand("OFF")
+	Light_Scene_Livingroom.sendCommand("OFF")
+	Light_Scene_Dining.sendCommand("OFF")
+	Light_Scene_HallCeiling.sendCommand("OFF")
+end
+
+
+//==================================================================================================
+// Key 4 (OFF) long release
+//==================================================================================================
+rule "Hue Dimmer Switch Hall - Trigger Key 4 (OFF) Long released"
+when
+	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 4003.0
+then
+    val String TAG = "HUE.HallDim.Event4003"
+	logInfo(TAG, "HUE Hall Dimmer switch event 4003.0")
+
+	Light_Scene_Livingroom.sendCommand("OFF")
+	Light_Scene_Dining.sendCommand("OFF")
+end
+
+
+//==================================================================================================
+// Bedroom Dimmer Switch Key 1 (ON)
+//==================================================================================================
+rule "Hue Dimmer Switch Bedroom - Trigger Key 1 (ON)"
+when
+	Channel "hue:0820:0017882ec5b3:dim_bedleft:dimmer_switch_event" triggered 1000.0 or
+	Channel "hue:0820:0017882ec5b3:dim_bedleft:dimmer_switch_event" triggered 1002.0 or
+	Channel "hue:0820:0017882ec5b3:dim_bedright:dimmer_switch_event" triggered 1000.0 or
+	Channel "hue:0820:0017882ec5b3:dim_bedright:dimmer_switch_event" triggered 1002.0
+then
+    val String TAG = "HUE.BedroomDim.Event100x"
+	logInfo(TAG, "HUE Bedroom Dimmer switch event {}", receivedEvent.getEvent())
+	if (gLight_OnOff_Bedroom.state != ON) Light_Scene_Bedroom.sendCommand("EVENING")
+end
+
+
+//==================================================================================================
+// Bedroom Dimmer Switch Key 4 (OFF)
+//==================================================================================================
+rule "Hue Dimmer Switch Bedroom - Trigger Key 4 (OFF)"
+when
+	Channel "hue:0820:0017882ec5b3:dim_bedleft:dimmer_switch_event" triggered 4000.0 or
+	Channel "hue:0820:0017882ec5b3:dim_bedright:dimmer_switch_event" triggered 4000.0 or
+	Channel "hue:0820:0017882ec5b3:dim_bedleft:dimmer_switch_event" triggered 4002.0 or
+	Channel "hue:0820:0017882ec5b3:dim_bedright:dimmer_switch_event" triggered 4002.0
+then
+    val String TAG = "HUE.BedroomDim.Event400x"
+	logInfo(TAG, "HUE Bedroom Dimmer Switch event {}", receivedEvent.getEvent())
+	Light_Scene_Bedroom.sendCommand("OFF")
+end
+
+
+//==================================================================================================
+// Bathroom Dimmer Switch Key 1 (ON)
+//==================================================================================================
+rule "Hue Dimmer Switch Bathroom - Trigger Key 1 (ON)"
+when
+	Channel "hue:0820:0017882ec5b3:dim_bathroom:dimmer_switch_event" triggered 1000.0 or
+	Channel "hue:0820:0017882ec5b3:dim_bathroom:dimmer_switch_event" triggered 1002.0
+then
+    val String TAG = "HUE.BathroomDim.Event100x"
+	logInfo(TAG, "HUE Bathroom Dimmer switch event {}", receivedEvent.getEvent())
+	if (gLight_OnOff_Bathroom.state != ON) Light_Scene_Bathroom.sendCommand("EVENING")
+end
+
+
+//==================================================================================================
+// Bathroom Dimmer Switch Key 4 (OFF)
+//==================================================================================================
+rule "Hue Dimmer Switch Bathroom - Trigger Key 4 (OFF)"
+when
+	Channel "hue:0820:0017882ec5b3:dim_bathroom:dimmer_switch_event" triggered 4000.0 or
+	Channel "hue:0820:0017882ec5b3:dim_bathroom:dimmer_switch_event" triggered 4002.0
+then
+    val String TAG = "HUE.BathroomDim.Event400x"
+	logInfo(TAG, "HUE Bathroom Dimmer switch event {}", receivedEvent.getEvent())
+	Light_Scene_Bathroom.sendCommand("OFF")
+end
+
+
+//==================================================================================================
+// Laundry room Dimmer Switch
+//==================================================================================================
+rule "Hue Dimmer Laundry Room"
+when
+	Channel "hue:0820:0017882ec5b3:dim_stephan:dimmer_switch_event" triggered
+then
+    val String tag = "HUErule.LaundryDimmer.Event"
+	logInfo(tag, "HUE Dimmer switch event {}", receivedEvent)
+
+	switch(receivedEvent.getEvent()) {
+		case "1000.0": {
+		    logInfo(tag,"Dimmer Button 1 initial pressed")
+			Light_Scene_Laundry.postUpdate("EVENING")
+		}		
+		case "1001.0": {
+		    logInfo(tag,"Dimmer Button 1 hold")
+			//do more stuff
+		}
+		case "1002.0": {
+		    logInfo(tag,"Dimmer Button 1 short released")
+			Light_Scene_Laundry.postUpdate("EVENING")
+		}	
+		case "1003.0": {
+		    logInfo(tag,"Dimmer Button 1 long released")
+			//do any stuff
+		}
+		case "2000.0": {
+		    logInfo(tag,"Dimmer Button 2 initial pressed")
+			//do stuff
+		}		
+		case "2001.0": {
+		    logInfo(tag,"Dimmer Button 2 hold")
+			//do more stuff
+		}
+		case "2002.0": {
+		    logInfo(tag,"Dimmer Button 2 short released")
+			//do other stuff
+		}	
+		case "2003.0": {
+		    logInfo(tag,"Dimmer Button 2 long released")
+			//do any stuff
+		}
+		case "3000.0": {
+		    logInfo(tag,"Dimmer Button 3 initial pressed")
+			//do stuff
+		}		
+		case "3001.0": {
+		    logInfo(tag,"Dimmer Button 3 hold")
+			//do more stuff
+		}
+		case "3002.0": {
+		    logInfo(tag,"Dimmer Button 3 short released")
+			//do other stuff
+		}	
+		case "3003.0": {
+		    logInfo(tag,"Dimmer Button 3 long released")
+			//do any stuff
+		}
+		case "4000.0": {
+		    logInfo(tag,"Dimmer Button 4 initial pressed")
+			Light_Scene_Laundry.postUpdate("OFF")
+		}		
+		case "4001.0": {
+		    logInfo(tag,"Dimmer Button 4 hold")
+			//do more stuff
+		}
+		case "4002.0": {
+		    logInfo(tag,"Dimmer Button 4 short released")
+			Light_Scene_Laundry.postUpdate("OFF")
+		}	
+		case "4003.0": {
+		    logInfo(tag,"Dimmer Button 4 long released")
+			//do any stuff
+		}
+	}
+end
+
+
+//==================================================================================================
+// Toilet Dimmer Switch
+//==================================================================================================
+rule "Hue Dimmer Toilet"
+when
+	Channel "hue:0820:0017882ec5b3:dim_toilet:dimmer_switch_event" triggered
+then
+    val String tag = "HUErule.DimmerSwitch.Event"
+
+	logInfo(tag, "---> HUE Dimmer switch event {}", receivedEvent)
+
+	switch(receivedEvent.getEvent()) {
+		case "1000.0": {
+		    logInfo(tag,"---> Dimmer Button 1 initial pressed")
+			Light_Scene_Toilet.sendCommand("EVENING")
+		}		
+		case "1001.0": {
+		    logInfo(tag,"---> Dimmer Button 1 hold")
+			//do more stuff
+		}
+		case "1002.0": {
+		    logInfo(tag,"---> Dimmer Button 1 short released")
+			Light_Scene_Toilet.sendCommand("EVENING")
+		}	
+		case "1003.0": {
+		    logInfo(tag,"---> Dimmer Button 1 long released")
+			//do any stuff
+		}
+		case "2000.0": {
+		    logInfo(tag,"---> Dimmer Button 2 initial pressed")
+			//do stuff
+		}		
+		case "2001.0": {
+		    logInfo(tag,"---> Dimmer Button 2 hold")
+			//do more stuff
+		}
+		case "2002.0": {
+		    logInfo(tag,"---> Dimmer Button 2 short released")
+			//do other stuff
+		}	
+		case "2003.0": {
+		    logInfo(tag,"---> Dimmer Button 2 long released")
+			//do any stuff
+		}
+		case "3000.0": {
+		    logInfo(tag,"---> Dimmer Button 3 initial pressed")
+			//do stuff
+		}		
+		case "3001.0": {
+		    logInfo(tag,"---> Dimmer Button 3 hold")
+			//do more stuff
+		}
+		case "3002.0": {
+		    logInfo(tag,"---> Dimmer Button 3 short released")
+			//do other stuff
+		}	
+		case "3003.0": {
+		    logInfo(tag,"---> Dimmer Button 3 long released")
+			//do any stuff
+		}
+		case "4000.0": {
+		    logInfo(tag,"---> Dimmer Button 4 initial pressed")
+			Light_Scene_Toilet.sendCommand("OFF")
+		}		
+		case "4001.0": {
+		    logInfo(tag,"---> Dimmer Button 4 hold")
+			//do more stuff
+		}
+		case "4002.0": {
+		    logInfo(tag,"---> Dimmer Button 4 short released")
+			Light_Scene_Toilet.sendCommand("OFF")
+		}	
+		case "4003.0": {
+		    logInfo(tag,"---> Dimmer Button 4 long released")
+			//do any stuff
+		}
+	}
+end
+
+
+//==================================================================================================
+// Toilet temperature sensor
+//==================================================================================================
+rule "Toilet Temp updated"
+when
+	Item Motion_Temperature_Toilet received update
+then
+	logDebug("HUE.MS_Toilet.Changed", "---> Item (Number-UoM) MS_ToiletTemp updated: {}", Motion_Temperature_Toilet)
+end
+
+
+rule "Hue Dimmer Test"
+when
+	Channel "hue:0820:0017882ec5b3:dim_test:dimmer_switch_event" triggered
+then
+    val tag = "HUE.DimmerSwitch.Event"
+
+	logInfo(tag, "---> HUE Dimmer switch event {}", receivedEvent)
+end

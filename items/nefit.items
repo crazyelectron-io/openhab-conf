@@ -1,0 +1,86 @@
+//==================================================================================================
+// nefit.item - 
+//--------------------------------------------------------------------------------------------------
+//  20190610    v2  Added average temp based on two values.
+//  20191208    v3  Renamed items and restructured file.
+//--------------------------------------------------------------------------------------------------
+// The API command 'status' returns the following JSON result:
+// {    "user mode":"clock",
+//      "clock program":"auto",
+//      "in house status":"ok",
+//      "in house temp":21.2,
+//      "hot water active":false,
+//      "boiler indicator":"off",
+//      "control":"room",
+//      "temp override duration":0,
+//      "current switchpoint":8,
+//      "ps active":false,
+//      "powersave mode":false,
+//      "fp active":false,
+//      "fireplace mode":false,
+//      "temp override":true,
+//      "holiday mode":false,
+//      "boiler block":null, "boiler lock":null, "boiler maintenance":null,
+//      "temp setpoint":20.5,
+//      "temp override temp setpoint":20.5,
+//      "temp manual setpoint":20,
+//      "hed enabled":null, "hed device at home":null,
+//      "outdoor temp":3,
+//      "outdoor source type":"virtual"
+// }
+//==================================================================================================
+// CV thermostat (Nefit Easy) temperature
+Number							CV_Temp_Livingroom
+								"Livingroom temperature [%.1f °C]"
+								<temperature>
+								(gPersist,gTempSensor)
+								["CurrentTemperature"]
+
+// Hot water tapped switch
+Switch							CV_HotWater_Active
+								"Hot water active"
+								(gHistory,gPersist)
+
+// CV thermostat SetPoint
+Number							CV_SetPoint_Livingroom
+								"Set point [%.1f °C]"
+								<heating>
+								(gPersist,gTemp,gLivingroom,gThermostat)
+								["TargetTemperature"]
+
+// CV water pressure (bar)
+Number							CV_Pressure
+								"CV water pressure [%.1f bar]"
+								(gHourly,gPersist)
+
+// CV gas burner active switch
+Switch							CV_Burner_Active
+								"CV active"
+								<fire>
+								(gPersist,gHist1)
+								["homekit:HeatingCoolingMode"]
+
+// Retry reading the gas usage after a HTTP failure
+Switch							CV_Retry_GasUsage
+								"Retry retrieving gas usage timer"
+								{expire="2m,command=OFF"}
+
+// Average livingroom temperature (derived from NefitEasy and Netatmo HC)
+Number							Temp_Avg_Livingroom
+								"Livingroom temperature [%.1f °C]"
+								<temperature>
+								(gHist5,gTempSensor,gLivingroom,gPersist)
+								["CurrentTemperature"]
+
+// CV heater active switch
+Switch							CV_Heater_Active
+								"Heating active"
+								<fire>
+								(gHist1,gPersist)
+
+// Watchdog 'timer' item - to detect if the NefitEasy input is stalled/stopped for more than 30m
+Switch							CV_Watchdog
+								"Watchdog timer switch"
+								(gResetExpire)
+								{expire="30m,command=OFF"}
+

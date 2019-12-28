@@ -1,0 +1,452 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// energy.rules - handle the data from the Smart Meter and Solar Panels.
+//--------------------------------------------------------------------------------------------------
+//  v15 20191218 renamed items.
+//  v14 20191022 combined rules for totals and delta's.
+//--------------------------------------------------------------------------------------------------
+// Rules handling the data read from the Smart Meter (DSMR) for Gas and Power usage.
+// The data is published to an MQTT topic and received and stored in Items via the MQTT
+// binding. The data is updated every 10-60 seconds, but new gas meter data is retrieved only once an
+// hour.
+//--------------------------------------------------------------------------------------------------
+// The following rules are defined in this file:
+//  DSMRRuleInit -      Initialize watchdog timer to monitor MQTT messages from P1 DSMR reader.
+//  DSMRTimeout -       Watchdog timeout.
+//  DSMRGasUse -        Gas usage day cummulation.
+//  DSMRDayUse -        Calulate total and day usage.
+//  DSMRDayRet -        Calulate total and day return.
+//  DSMRPwrDelta -      Calculate delta power per phase.
+//  DSMRActualDelta -   Calculate the current delta in powe consumption.
+//  DSMRMidnight -      Persist and reset day counters.
+//--------------------------------------------------------------------------------------------------
+// The following information is received and stored in Items:
+//  Power_Use_All_Current     Active power usage (in W)
+//  Power_Use_All_CurrentL1   Active Phase 1 power usage (in W)
+//  Power_Use_All_CurrentL2   Active Phase 2 power usage (in W)
+//  Power_Use_All_CurrentL3   Active Phase 3 power rusage (in W)
+//  Power_Use_T1_Total   Total tariff 1 power used since meter installed (in Wh)
+//  Power_Use_T2_Total   Total tariff 2 power used since meter installed (in Wh)
+//  Power_Ret_All_Current     Active power return (in W)
+//  Power_Ret_All_CurrentL1   Active Phase 1 power return (in W)
+//  Power_Ret_All_CurrentL2   Active Phase 2 power return (in W)
+//  Power_Ret_All_CurrentL3   Active Phase 3 power return (in W)
+//  Power_Ret_T1_Total   Total tariff 1 power returned since meter installed (in Wh)
+//  Power_Ret_T2_Total   Total tariff 2 power returned since meter installed (in Wh)
+//  Gas_Use_Total   Total gas used since meter installed (in dm3)
+//--------------------------------------------------------------------------------------------------
+// Based on the input received, other items are calculated in these rules:
+//  Power_Use_Total       Total power used since meter installed in Wh (Power_Use_T1_Total + Power_Use_T2_Total)
+//  Power_Ret_Total       Total power returned since meter installed in Wh (Power_Ret_T1_Total + Power_Ret_T2_Total)
+//  totPwrDelta     Total power since meter installed in Wh (Power_Use_Total - Power_Ret_Total)
+//  aPwrDelta       Difference between Power_Use_All_Current and Power_Ret_All_Current (in W)
+//  aPwrDeltaL1     Difference between Power_Use_All_CurrentL1 and Power_Ret_All_CurrentL1 (in W)
+//  aPwrDeltaL2     Difference between Power_Use_All_CurrentL2 and Power_Ret_All_CurrentL2 (in W)
+//  aPwrDeltaL3     Difference between Power_Use_All_CurrentL3 and Power_Ret_All_CurrentL3 (in W)
+//  hourPwrDelta    Net power usage last hour (in Wh)
+//  dayPwrDelta     Net power usage today (in Wh)
+//  monthPwrDelta   Net power usage this month (in Wh)
+//  yearPwrDelta    Net power usage this year (in Wh)
+//  hourGasUse
+//  Gas_Use_Day
+//  monthGasUse
+//  yearGasUse
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+import org.eclipse.smarthome.model.script.ScriptServiceUtil
+
+
+//==================================================================================================
+// Define global variables.
+//==================================================================================================
+
+val contractStart = now.withTimeAtStartOfDay.withDayOfYear(15)  // Contract started at January 15.
+
+
+//==================================================================================================
+// Arm the watchdog timer to detect stalled/stopped input from DSMR.
+//  1. Set default Grafana display switches;
+//  2. Set initial watchdog timer.
+// Note: It will also be triggered on configuration file update.
+//==================================================================================================
+rule "DSMRRuleInit - Initialize watchdog timer"
+when
+    System started
+then
+    DSMR_Watchdog.sendCommand(ON)
+end
+
+
+//=================================================================================================
+// Triggered when watchdog timer expires indicating we didn't receive data for 10 minutes.
+// Send a notification to the user via Pushalot.
+//=================================================================================================
+rule "DSMRTimeout - Watchdog timeout"
+when
+	Item DSMR_Watchdog changed to OFF
+then
+    logError("DSMR.Watchdog", "DSMR DATA MISSING - WATCHDOG TRIGGERED!")
+    sendPushoverMessage(pushoverBuilder("SmartMeter readings missing, check the connection").withDevice("NCC-1701").withTitle("WatchDog Alert"))
+    DSMR_Watchdog.sendCommand(ON)
+end
+
+
+//=================================================================================================
+// Calculate the periodic natural gas usage (in m3).
+//=================================================================================================
+rule "DSMRGasUse - Gas usage day cummulation"
+when
+    Item Gas_Use_Total changed
+then
+    val String TAG = "DSMRGasUse.Gas_Use_Total.Changed"
+
+    val Number price = GAS_PRICE_PER_DM3.state as Number
+
+    var Number used = 0
+    var Number cost = 0
+
+    //------------------------------------------------------------------------------------------
+    // Calculate consumption last hour
+    //------------------------------------------------------------------------------------------
+    used = Gas_Use_Total.deltaSince(now.minusHours(1), "influxdb")
+    logDebug(TAG, "Last hours gas usage = {}", used)
+    Gas_Use_Hour.postUpdate(used)
+    cost = used * price
+    Gas_Use_Hour_Cost.postUpdate(cost)
+    Gas_Use_Hour_Summary.postUpdate(String.format("%.2f m3", used/1000) + String.format(", € %.2f", cost/100))
+
+    //------------------------------------------------------------------------------------------
+    // Calculate consumption today
+    //------------------------------------------------------------------------------------------
+    used = Gas_Use_Total.deltaSince(now.withTimeAtStartOfDay(), "influxdb")
+    logInfo(TAG, "Todays gas usage = {}", used)
+    Gas_Use_Day.postUpdate(used)
+    cost = used * price
+    Gas_Use_Day_Cost.postUpdate(cost)
+    Gas_Use_Day_Summary.postUpdate(String.format("%.1f m3", used/1000) + String.format(", € %.2f", cost/100))
+
+    //------------------------------------------------------------------------------------------
+    // Calculate consumption this month
+    //------------------------------------------------------------------------------------------
+    used = Gas_Use_Total.deltaSince(now.withTimeAtStartOfDay.withDayOfMonth(1), "influxdb")
+    logInfo(TAG, "This months gas usage = {}", used)
+    Gas_Use_Month.postUpdate(used)
+    cost = (used * price)
+    Gas_Use_Month_Cost.postUpdate(cost)
+    Gas_Use_Month_Summary.postUpdate(String.format("%.0f m3", used/1000) + String.format(", € %.2f", cost/100))
+
+    //------------------------------------------------------------------------------------------
+    // Calculate consumption this year
+    //------------------------------------------------------------------------------------------
+    used = Gas_Use_Total.deltaSince(contractStart, "influxdb")
+    if (used === null)
+    {
+        used = Gas_Use_Total.state as Number - 5611000
+        logInfo(TAG, "Temporary fix for missing year data, pre-fill '{}'", used)
+    }
+        logInfo(TAG, "This contract years gas usage = {}", used)
+    Gas_Use_Year.postUpdate(used)
+    cost = (used * price)
+    Gas_Use_Year_Cost.postUpdate(cost)
+    Gas_Use_Year_Summary.postUpdate(String.format("%.0f m3", used/1000) + String.format(", € %.0f", cost/100))
+end
+
+
+//==================================================================================================
+// Sum the Tarif 1 and Tarif 2 power use meter readings.
+//==================================================================================================
+rule "DSMRUseTarifSum - Combine T1 and T2 usage meter readings"
+when
+    Item Power_Use_T1_Total changed or
+    Item Power_Use_T2_Total changed
+then
+    val String TAG = "DSMRSumTarifs." + triggeringItem.name + ".Changed"
+
+    if (Power_Use_T1_Total.state != NULL && Power_Use_T2_Total.state != NULL)
+    {
+        Power_Use_Total.postUpdate(Power_Use_T1_Total.state as Number + Power_Use_T2_Total.state as Number)
+    }
+    else
+    {
+        if (Power_Use_T1_Total.state == NULL)
+        {
+            logWarn(TAG, "Item 'Power_Use_T1_Total' is NULL, skip tarif meter readings sum update")
+        }
+        if (Power_Use_T2_Total.state == NULL)
+        {
+            logWarn(TAG, "Item 'Power_Use_T2_Total' is NULL, skip tarif meter readings sum update")
+        }
+    }
+end
+
+
+//==================================================================================================
+// Sum the Tarif 1 and Tarif 2 power return meter readings
+//==================================================================================================
+rule "DSMRRetTarifSum - Combine T1 and T2 return meter readings"
+when
+    Item Power_Ret_T1_Total changed or
+    Item Power_Ret_T2_Total changed
+then
+    val String TAG = "DSMRSumTarifs." + triggeringItem.name + ".Changed"
+
+    if (Power_Ret_T1_Total.state != NULL && Power_Ret_T2_Total.state != NULL)
+    {
+        Power_Ret_Total.postUpdate(Power_Ret_T1_Total.state as Number + Power_Ret_T2_Total.state as Number)
+    }
+    else
+    {
+        if (Power_Ret_T1_Total.state == NULL)
+        {
+            logWarn(TAG, "Item 'Power_Ret_T1_Total' is NULL, skip tarif meter readings total update")
+        }
+        if (Power_Ret_T2_Total.state == NULL)
+        {
+            logWarn(TAG, "Item 'Power_Ret_T2_Total' is NULL, skip tarif meter readings total update")
+        }
+    }
+end
+
+
+//==================================================================================================
+// Calculate the total and periodic sum and delta of power consumption
+//==================================================================================================
+rule "DSMRPwrSummary - Calculate power consumption per period"
+when
+    Item Power_Use_Total changed or
+    Item Power_Ret_Total changed
+then
+    val String TAG = "DSMRUseSumm." + triggeringItem.name + ".Changed"
+
+    val Number usedPrice = POWER_USE_PRICE.state as Number
+    val Number retPrice = POWER_RET_PRICE.state as Number
+
+    //--- Variables used for calculation
+    var Number usedHour = 0
+    var Number usedDay = 0
+    var Number usedMonth = 0
+    var Number usedYear = 0
+    var Number usedContract = 0
+    var Number returnedHour = 0
+    var Number returnedDay = 0
+    var Number returnedMonth = 0
+    var Number returnedYear = 0
+    var Number returnedContract = 0
+    var Number delta = 0
+    var Number cost = 0
+
+    //------------------------------------------------------------------------------------------
+    // Calculate multiple periods power consumption
+    //------------------------------------------------------------------------------------------
+    if (Power_Use_Total.state != NULL)
+    {
+        usedHour = Power_Use_Total.deltaSince(now.minusHours(1), "influxdb")
+        if (usedHour === null)
+        {
+            logInfo(TAG, "No last hour's power use data persisted, using 0")
+            usedHour = 0
+        }
+        usedDay = Power_Use_Total.deltaSince(now.withTimeAtStartOfDay, "influxdb")
+        if (usedDay === null)
+        {
+            logInfo(TAG, "No today's power use data persisted, using 0")
+            usedDay = 0
+        }
+        usedMonth = Power_Use_Total.deltaSince(now.withTimeAtStartOfDay.withDayOfMonth(1), "influxdb")
+        if (usedMonth === null)
+        {
+            logInfo(TAG, "No this month's power use data persisted, using 0")
+            usedMonth = 0
+        }
+        usedYear = Power_Use_Total.deltaSince(now.withTimeAtStartOfDay.withMonthOfYear(1).withDayOfMonth(1), "influxdb")
+        if (usedYear === null || usedYear == 0)
+        {
+            usedYear = Power_Use_Total.state as Number - 23887000
+            logInfo(TAG, "Temporary fix for missing year used power start data, default to '{}'", usedYear)
+        }
+        usedContract = Power_Use_Total.deltaSince(contractStart, "influxdb")
+        if (usedContract === null || usedContract == 0)
+        {
+            usedContract = Power_Use_Total.state as Number - 23887000
+            logInfo(TAG, "Temporary fix for missing contract used power start data, default to '{}'", usedContract)
+        }
+    }
+
+    //------------------------------------------------------------------------------------------
+    // Calculate multiple periods power return
+    //------------------------------------------------------------------------------------------
+    if (Power_Ret_Total.state != NULL)
+    {
+        returnedHour = Power_Ret_Total.deltaSince(now.minusHours(1), "influxdb")
+        if (returnedHour === null)
+        {
+            logInfo(TAG, "No last hour's power return data persisted, using 0")
+            returnedHour = 0
+        }
+        returnedDay = Power_Ret_Total.deltaSince(now.withTimeAtStartOfDay, "influxdb")
+        if (returnedDay === null)
+        {
+            logInfo(TAG, "No today's power return data persisted, using 0")
+            returnedDay = 0
+        }
+        returnedMonth = Power_Ret_Total.deltaSince(now.withTimeAtStartOfDay.withDayOfMonth(1), "influxdb")
+        if (returnedMonth === null)
+        {
+            logInfo(TAG, "No this month's power return data persisted, using 0")
+            returnedMonth = 0
+        }
+        returnedYear = Power_Ret_Total.deltaSince(now.withTimeAtStartOfDay.withMonthOfYear(1).withDayOfMonth(1), "influxdb")
+        if (returnedYear === null)
+        {
+            logInfo(TAG, "No this year;s power return data persisted, using 0")
+            returnedYear = 0
+        }
+        returnedContract = Power_Ret_Total.deltaSince(contractStart, "influxdb")
+        if (returnedContract === null)
+        {
+            logInfo(TAG, "No last years use data")
+            returnedContract = 0
+        }
+    }
+
+    //------------------------------------------------------------------------------------------
+    // Calculate last hour's power delta
+    //------------------------------------------------------------------------------------------
+    delta = usedHour - returnedHour
+    cost = (usedHour * usedPrice) - (returnedHour    * retPrice)
+    logDebug(TAG, "Last hours power use/return/delta = {}/{}/{}; net cost = {}", usedHour, returnedHour, delta, cost)
+    Power_Delta_Hour.postUpdate(delta)
+    Power_Delta_Hour_Cost.postUpdate(cost)
+    Power_Delta_Hour_Summary.postUpdate(String.format("%.1f kWh", delta/1000) + String.format(", € %.2f", cost/100))
+
+    //------------------------------------------------------------------------------------------
+    // Calculate today's power delta
+    //------------------------------------------------------------------------------------------
+    delta = usedDay - returnedDay
+    cost = (usedDay * usedPrice) - (returnedDay * retPrice)
+    logDebug(TAG, "Todays power use/return = {}/{}/{}, net cost = {}", usedDay, returnedDay, delta, cost)
+    Power_Delta_Day.postUpdate(delta)
+    Power_Delta_Day_Cost.postUpdate(cost)
+    Power_Delta_Day_Summary.postUpdate(String.format("%.1f kWh", delta/1000) + String.format(", € %.2f", cost/100))
+
+    //------------------------------------------------------------------------------------------
+    // Calculate this month's power delta
+    //------------------------------------------------------------------------------------------
+    delta = usedMonth - returnedMonth
+    cost = (usedMonth * usedPrice) - (returnedMonth * retPrice)
+    logDebug(TAG, "This months power use/return/delta = {}/{}/{}, net cost = {}", usedMonth, returnedMonth, delta, cost)
+    Power_Delta_Month.postUpdate(delta)
+    Power_Delta_Month_Cost.postUpdate(cost)
+    Power_Delta_Month_Summary.postUpdate(String.format("%.0f kWh", delta/1000) + String.format(", € %.2f", cost/100))
+
+    //------------------------------------------------------------------------------------------
+    // Calculate this year's power delta
+    //------------------------------------------------------------------------------------------
+    delta = usedYear - returnedYear
+    cost = (usedYear * usedPrice) - (returnedYear * retPrice)
+    logDebug(TAG, "This years power use/return/delta = {}/{}/{}, net cost = {}", usedYear, returnedYear, delta, cost)
+    Power_Delta_Year.postUpdate(delta)
+    Power_Delta_Year_Cost.postUpdate(cost)
+    Power_Delta_Year_Summary.postUpdate(String.format("%.0f m3", delta/1000) + String.format(", € %.0f", cost/100))
+
+    //------------------------------------------------------------------------------------------
+    // Calculate this contract period's power delta
+    //------------------------------------------------------------------------------------------
+    delta = usedContract - returnedContract
+    cost = (usedContract * usedPrice) - (returnedContract * retPrice)
+    logDebug(TAG, "This contract period's power use/return/delta = {}/{}/{}, net cost = {}", usedContract, returnedContract, delta, cost)
+    Power_Delta_Contract.postUpdate(delta)
+    Power_Delta_Contract_Cost.postUpdate(cost)
+    Power_Delta_Contract_Summary.postUpdate(String.format("%.0f m3", delta/1000) + String.format(", € %.0f", cost/100))
+end
+
+
+//==================================================================================================
+// Calculate the delta of power consumed and power returned currently
+//==================================================================================================
+rule "DSMRActDelta - Calculate the current delta in powe consumption"
+when
+    Item Power_Ret_All_Current changed or
+    Item Power_Use_All_Current changed
+then
+    val String TAG = "DSMRActDelta." + triggeringItem.name + ".Changed"
+
+    if (Power_Ret_All_Current.state != NULL && Power_Use_All_Current.state != NULL)
+    {
+        Power_Delta_All_Current.postUpdate((Power_Use_All_Current.state as Number - Power_Ret_All_Current.state as Number))
+        DSMR_Watchdog.sendCommand(ON)
+    }
+    else
+    {
+        if (Power_Ret_All_Current.state == NULL)
+        {
+            logWarn(TAG, "'Power_Ret_All_Current' not initialized, skip calculation of aPwrDelta")
+        }
+        if (Power_Use_All_Current.state == NULL)
+        {
+            logWarn(TAG, "'Power_Use_All_Current' not initialized, skip calculation of aPwrDelta")
+        }
+    }
+end
+
+
+//==================================================================================================
+// Calculate the delta of each phase's power consumed and power returned
+//==================================================================================================
+rule "DSMRPhaseDelta - Calculate delta power per phase"
+when
+    Item Power_Ret_All_CurrentL1 changed or
+    Item Power_Use_All_CurrentL1 changed or
+    Item Power_Ret_All_CurrentL2 changed or
+    Item Power_Use_All_CurrentL2 changed or
+    Item Power_Ret_All_CurrentL3 changed or
+    Item Power_Use_All_CurrentL3 changed
+then
+    val String TAG = "DSMRPhaseDelta." + triggeringItem.name + ".Changed"
+
+    val String phase = triggeringItem.name.substring(triggeringItem.name.length-2, triggeringItem.name.length)
+
+    val ItemPwrRet = ScriptServiceUtil.getItemRegistry.getItem("Power_Ret_All_Current" + phase)
+    val ItemPwrUse = ScriptServiceUtil.getItemRegistry.getItem("Power_Use_All_Current" + phase)
+    val ItemPwrDelta = ScriptServiceUtil.getItemRegistry.getItem("aPwrDelta" + phase)
+
+    if (ItemPwrRet.state != NULL && ItemPwrUse.state != NULL)
+    {
+        ItemPwrDelta.postUpdate(ItemPwrUse.state as Number - ItemPwrRet.state as Number)
+    }
+    else
+    {
+        if (ItemPwrRet.state == NULL)
+        {
+            logWarn(TAG, "'{}'' not initialzed, skip aPwrDelta{} calculation", ItemPwrRet.name, phase)
+        }
+        if (ItemPwrUse.state == NULL)
+        {
+            logWarn(TAG, "'{}'' not initialzed, skip aPwrDelta{} calculation", ItemPwrUse.name, phase)
+        }
+    }
+end
+
+
+//==================================================================================================
+// Calculate the solarpanel production price and totals summary
+//==================================================================================================
+rule "Solar.Summary - Solar Power production summary update"
+when
+    Item Solar_Prod_Day changed or
+    Item Solar_Prod_Month changed or
+    Item Solar_Prod_Year changed
+then
+    // if (triggeringItem.previousState == NULL)
+    //     return
+
+    var String Summary = String.format("%.1f kWh", (triggeringItem.state as Number) / 1000)
+
+    val Number Cost = triggeringItem.state as Number * POWER_RET_PRICE.state as Number
+    Summary = Summary + ", € " + String.format("%.2f", Cost/100)
+    val CostItem = ScriptServiceUtil.getItemRegistry.getItem(triggeringItem.name + "_Cost")
+    CostItem.postUpdate(Cost)
+
+    val SummaryItem = ScriptServiceUtil.getItemRegistry.getItem(triggeringItem.name.toString + "_Summary")
+    SummaryItem.postUpdate(Summary)
+end

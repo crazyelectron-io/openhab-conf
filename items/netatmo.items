@@ -1,0 +1,64 @@
+//==================================================================================================
+// Items for the Netatmo Healty Home Coach
+//==================================================================================================
+
+// Group for the Living Room Netatmo Homecoach Items
+Group				gNHC
+					"Netatmo Healty Coach"
+
+
+//--------------------------------------------------------------------------------------------------
+// Living room device (location=sidetable): netatmo:NHC:home:homecoach
+//--------------------------------------------------------------------------------------------------
+
+// The temparature (in degrees Celcius)
+Number				NHC_Temp_Livingroom
+					"Temperature [%.1f °C]"
+					<temperature>
+					(gLiving,gNHC,gTempSensor,gPersist)
+					{channel="netatmo:NHC:home:livingroom:Temperature"}
+
+// CO2 is given in ppm
+Number				NHC_CO2_Livingroom
+					"CO2 level woonkamer [%.0f ppm]"
+					<carbondioxide>
+					(gLiving,gHist10,gNHC,gPersist,gSensorStatus)
+					{channel="netatmo:NHC:home:livingroom:Co2"}
+
+// Air humidity is given in relative percentage
+Number				NHC_Humidity_Livingroom
+					"Luchtvochtigheid woonkamer [%d %%]"
+					<humidity>
+					(gLiving,gHist15,gNHC,gPersist,gSensorStatus)
+					{channel="netatmo:NHC:home:livingroom:Humidity"}
+
+// Air pressure is given in hPa
+Number				NHC_Pressure_Livingroom
+					"Luchtdruk woonkamer [%d hPa]"
+					<humidity>
+					(gLiving,gHist60,gNHC,gPersist,gSensorStatus)
+					{channel="netatmo:NHC:home:livingroom:Pressure"}
+
+// Noise level is givin in dB
+Number				NHC_NoiseLevel_Livingroom
+					"Geluidsniveau [%d dB]"
+					<none>
+					(gLiving,gHCoach,gPersist,gSensorStatus)
+					{channel="netatmo:NHC:home:livingroom:Noise"}
+
+
+// These switches remember if a CO2 high/normal level has already been reported by Alexa.
+Switch				CO2HighReported_Livingroom
+					(gResetExpire)
+					{expire="1h, command=OFF"}
+
+Switch				CO2LowReported_Livingroom
+
+
+// Watchdog 'timer' item - to detect if the Netatmo input is stalled/stopped for more than 30 minutes
+Switch				NHC_Watchdog
+					"Netatmo Watchdog timer switch"
+					(gResetExpire)
+					{expire="30m, command=OFF", name="Healty HomeCoach CO2 sensor"}
+
+

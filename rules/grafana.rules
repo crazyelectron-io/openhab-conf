@@ -1,0 +1,118 @@
+//==================================================================================================
+// grafana.rules - v02 20191010 Added light theme support
+//==================================================================================================
+// This DSL ruleset handles all Grafana graph snapshot generation and download for external use
+//	via the cloud server.
+//..................................................................................................
+// Rules in this file:
+//	GrafanaInit -
+//  Grafana_Refresh60 - Refresh Grafana snapshot images every 60 minutes.
+//	Grafana_Refresh15 - Refresh Grafana snapshot images every 15 minutes.
+//  Grafana_Refresh10 - Refresh Grafana snapshot images every 10 minutes.
+//..................................................................................................
+// Items changes in these rules:
+//  gSnapshots60 Members - creating hourly snapshot.
+//	gSnapshots15 Members - creating 15 minute snapshots.
+//	gSnapshots10 Members - creating 10 minute snapshots.
+//==================================================================================================
+
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+
+
+//--------------------------------------------------------------------------------------------------
+// Define constants for building the Grafana URL.
+//--------------------------------------------------------------------------------------------------
+val GRAFANA_URL_BASE = "http://192.168.2.2:3000/render/d-solo/DRmxtepWz/openhab2?orgId=1" //&tz=Europe%2FAmsterdam"
+val GRAFANA_URL_RANGE24H = "&from=now-24h&to=now"
+val GRAFANA_URL_RANGE7D = "&from=now-7d&to=now"
+val GRAFANA_URL_RANGE_TODAY = "&from=now%2Fd"
+val GRAFANA_URL_THEME_DARK = "&theme=dark"
+val GRAFANA_URL_THEME_LIGHT = "&theme=light"
+
+
+//--------------------------------------------------------------------------------------------------
+// getSnapshotImage - Lambda for retreiving the PNG snapshot file.
+//--------------------------------------------------------------------------------------------------
+val getSnapshotImage = [String url, String img |
+	val String tmpFile = "/tmp/"+img+".png";
+    val String result = executeCommandLine("wget -O " + tmpFile + " \"" + url + "\"", 10000)
+	logDebug("Grafana.Image.Graphs", "Retreive snapshot into {}, result is: {}", tmpFile, result)
+    val fileData = Files.readAllBytes(FileSystems.getDefault().getPath(tmpFile));
+	"data:image/png;base64," + java.util.Base64.encoder.encodeToString(fileData)
+]
+
+
+//--------------------------------------------------------------------------------------------------
+// GrafRefresh60 - Refresh Grafana snapshot images every hour.
+//--------------------------------------------------------------------------------------------------
+rule "Grafana_Refresh60 - Refresh Grafana snapshot images every 60 minutes"
+	when
+    	Time cron "0 0 * * * ? *" or
+		System started
+	then
+		val String TAG = "Graf.Image.Refresh60"
+		logDebug(TAG, "Refreshing Grafana 60min snapshot images")
+
+		val String GRAFANA_URL = GRAFANA_URL_BASE + GRAFANA_URL_RANGE24H + GRAFANA_URL_THEME_DARK
+		logDebug(TAG, "Refresh Grafana snapshot from URL: '{}'", GRAFANA_URL)
+
+		gSnapshots60?.members.forEach[imgItem |
+    		{
+				val String itemPanel = imgItem.name.substring(imgItem.name.lastIndexOf('_')+1, imgItem.name.length())
+				val String imageSnapshot = getSnapshotImage.apply(GRAFANA_URL+"&panelId="+itemPanel, imgItem.name)
+				logDebug(TAG, "60min update {} with Grafana base64 image snapshot", imgItem.name)
+	    		imgItem.postUpdate(imageSnapshot)
+			}
+		]
+
+		logDebug(TAG, "Refreshed Grafana 60min snapshot images")
+	end
+
+
+//--------------------------------------------------------------------------------------------------
+// GrafRefresh15 - Refresh Grafana snapshot images every 15 minutes
+//--------------------------------------------------------------------------------------------------
+rule "Grafana_Refresh15 - Refresh Grafana snapshot images every 15 minutes"
+	when
+    	Time cron "0 */15 * * * ? *" or
+		System started
+	then
+		val String TAG = "Graf.Image.Refresh15"
+
+		val String GRAFANA_URL = GRAFANA_URL_BASE + GRAFANA_URL_RANGE_TODAY + GRAFANA_URL_THEME_LIGHT
+		logDebug(TAG, "Refresh Grafana snapshot from URL: '{}'", GRAFANA_URL)
+
+		gSnapshots15?.members.forEach[imgItem |
+    		{
+				val String itemPanel = imgItem.name.substring(imgItem.name.lastIndexOf('_')+1, imgItem.name.length())
+				val String imageSnapshot = getSnapshotImage.apply(GRAFANA_URL+"&panelId="+itemPanel, imgItem.name)
+				logDebug(TAG, "15min update {} with Grafana base64 image snapshot", imgItem.name)
+	    		imgItem.postUpdate(imageSnapshot)
+			}
+		]
+	end
+
+
+//--------------------------------------------------------------------------------------------------
+// GrafRefresh10 - Refresh Grafana snapshot images every 10 minutes.
+//--------------------------------------------------------------------------------------------------
+rule "Grafana_Refresh10 - Refresh Grafana snapshot images every 10 minutes"
+	when
+    	Time cron "0 */10 * * * ? *" or
+		System started
+	then
+		val String TAG = "Graf.Image.Refresh10"
+
+		val String GRAFANA_URL = GRAFANA_URL_BASE + GRAFANA_URL_RANGE_TODAY + GRAFANA_URL_THEME_DARK
+		logDebug(TAG, "Refresh Grafana snapshot from URL: '{}'", GRAFANA_URL)
+
+		gSnapshots10?.members.forEach[imgItem |
+    		{
+				val String itemPanel = imgItem.name.substring(imgItem.name.lastIndexOf('_')+1, imgItem.name.length())
+				val String imageSnapshot = getSnapshotImage.apply(GRAFANA_URL+"&panelId="+itemPanel, imgItem.name)
+				logDebug(TAG, "10min update {} with Grafana base64 image snapshot", imgItem.name)
+	    		imgItem.postUpdate(imageSnapshot)
+			}
+		]
+	end

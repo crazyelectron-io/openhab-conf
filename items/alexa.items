@@ -1,0 +1,31 @@
+//==================================================================================================
+// alexa.items - 
+//--------------------------------------------------------------------------------------------------
+//	20191208	v2	Reformatted items.
+//--------------------------------------------------------------------------------------------------
+//
+//==================================================================================================
+
+// Alexa Living Room group
+Group							gEcho_Livingroom
+								"Echo Dot Livingroom"
+// Commands
+String							Echo_TTS_Livingroom
+								"Text to Speech"
+								(gEchoLR,gLivingroom)
+								{channel="amazonechocontrol:echo:account1:echodot1:textToSpeech"}
+//
+String							Echo_Remind_Livingroom
+								"Remind"
+								(gEchoLR,gLivingroom)
+								{channel="amazonechocontrol:echo:account1:echodot1:remind"}
+//
+String							Echo_PlayAlarmSound_Livingroom
+								"Play Alarm Sound"
+								(gEchoLR,gLivingroom)
+								{channel="amazonechocontrol:echo:account1:echodot1:playAlarmSound"}
+//
+String							Echo_StartRoutine_Livingroom
+								"Start Routine"
+								(gEchoLR,gLivingroom)
+								{channel="amazonechocontrol:echo:account1:echodot1:startRoutine"}

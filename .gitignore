@@ -1,0 +1,5 @@
+*.class
+*.log
+*.pyc
+
+/html/matrix-theme/original-svgs/

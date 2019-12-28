@@ -1,0 +1,1 @@
+Thing systeminfo:computer:openhab2 "openHAB2 Server" @ "Server" [interval_high=10, interval_medium=60]
