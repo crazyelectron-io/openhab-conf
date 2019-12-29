@@ -42,366 +42,374 @@
 //--------------------------------------------------------------------------------------------------
 
 // Items to store current actual power usage readings from DSMR P1 interface.
-Number				Power_Use_All_Current
-					"Current use [%d W]"
-					<energy>
-					(gHist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_Use"}
+Number							Power_Use_All_Current
+								"Current use [%d W]"
+								<energy>
+								(gHist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_Use"}
 
-Number				Power_Use_L1_Current
-					"Current use L1 [%d W]"
-					<energy>
-					(gHist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_UseL1"}
+Number							Power_Use_L1_Current
+								"Current use L1 [%d W]"
+								<energy>
+								(gHist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_UseL1"}
 
-Number				Power_Use_L2_CUrrent
-					"Current use L2 [%d W]"
-					<energy>
-					(gHist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_UseL2"}
+Number							Power_Use_L2_CUrrent
+								"Current use L2 [%d W]"
+								<energy>
+								(gHist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_UseL2"}
 
-Number				Power_Use_L3_Current
-					"Current use L3 [%d W]"
-					<energy>
-					(gHist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_UseL3"}
+Number							Power_Use_L3_Current
+								"Current use L3 [%d W]"
+								<energy>
+								(gHist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_UseL3"}
 
 //--------------------------------------------------------------------------------------------------
 // Items to store current actual power return readings from DSMR (received through MQTT Thing).
 //--------------------------------------------------------------------------------------------------
 
-Number				Power_Ret_All_Current
-					"Current return [%d W]"
-					<energy>
-					(gHist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_Ret"}
+Number							Power_Ret_All_Current
+								"Current return [%d W]"
+								<energy>
+								(gHist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_Ret"}
 
-Number				Power_Ret_L1_Current
-					"Current return L1 [%d W]"
-					<energy>
-					(gHist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_RetL1"}
+Number							Power_Ret_L1_Current
+								"Current return L1 [%d W]"
+								<energy>
+								(gHist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_RetL1"}
 
-Number				Power_Ret_L2_Current
-					"Current return L2 [%d W]"
-					<energy>
-					(gHist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_RetL2"}
+Number							Power_Ret_L2_Current
+								"Current return L2 [%d W]"
+								<energy>
+								(gHist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_RetL2"}
 
-Number				Power_Ret_L3_Current
-					"Current return L3 [%d W]"
-					<energy>
-					(gHist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_RetL3"}
+Number							Power_Ret_L3_Current
+								"Current return L3 [%d W]"
+								<energy>
+								(gHist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_RetL3"}
 
 //--------------------------------------------------------------------------------------------------
 // Items to store meter readings of total power usage since install time of the DSMR
 // (received through MQTT Thing).
 //--------------------------------------------------------------------------------------------------
 
-Number				Power_Use_T1_Total
-					"Usage meter T1 [%d Wh]"
-					<energy>
-					(gPersist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_UseTotT1"}
+Number							Power_Use_T1_Total
+								"Usage meter T1 [%d Wh]"
+								<energy>
+								(gPersist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_UseTotT1"}
 
-Number				Power_Use_T2_Total
-					"Usage meter T2 [%d Wh]"
-					<energy>
-					(gPersist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_UseTotT2"}
+Number							Power_Use_T2_Total
+								"Usage meter T2 [%d Wh]"
+								<energy>
+								(gPersist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_UseTotT2"}
 
-Number				Power_Use_Total
-					"Usage meter [%d Wh]"
-					<energy>
-					(gHist5,gPersist)
+Number							Power_Use_Total
+								"Usage meter [%d Wh]"
+								<energy>
+								(gHist5,gPersist)
 
 //--------------------------------------------------------------------------------------------------
 // Items to store meter reading of total gas consumption since install time of the DSMR smart meter.
 // The gas meter updates it readings only once an hour in the DSMR 4.x standard.
 //--------------------------------------------------------------------------------------------------
 
-Number				Gas_Use_Total
-					"Gas meter [%d dm3]"
-					<gas>
-					(gHist15,gPersist)
-					{channel="mqtt:topic:mosquitto:dsmr:G_UseTot"}
+Number							Gas_Use_Total
+								"Gas meter [%d dm3]"
+								<gas>
+								(gHist15,gPersist)
+								{channel="mqtt:topic:mosquitto:dsmr:G_UseTot"}
 
 //--------------------------------------------------------------------------------------------------
 // Items to store meter readings of total return of energy since install time of the solar panels.
 //--------------------------------------------------------------------------------------------------
 
-Number				Power_Ret_T1_Total
-					"Return meter T1 [%d Wh]"
-					<energy>
-					(gPersist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_RetTotT1"}
+Number							Power_Ret_T1_Total
+								"Return meter T1 [%d Wh]"
+								<energy>
+								(gPersist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_RetTotT1"}
 
-Number				Power_Ret_T2_Total
-					"Return meter T2 [%d Wh]"
-					<energy>
-					(gPersist)
-					{channel="mqtt:topic:mosquitto:dsmr:P_RetTotT2"}
+Number							Power_Ret_T2_Total
+								"Return meter T2 [%d Wh]"
+								<energy>
+								(gPersist)
+								{channel="mqtt:topic:mosquitto:dsmr:P_RetTotT2"}
 
-Number				Power_Ret_Total
-					"Return meter [%d Wh]"
-					<energy>
-					(gHist5,gPersist)
+Number							Power_Ret_Total
+								"Return meter [%d Wh]"
+								<energy>
+								(gHist5,gPersist)
 
 //----------------------------------------------------------------------------------------
 // Items to store calculated data for the DSMR meter.
 //----------------------------------------------------------------------------------------
 
 // Items to store the delta of consumed and returned actual power.
-Number				Power_Delta_All_Current
-					"Net usage [%d W]"
-					<energy>
-					(gHist)
+Number							Power_Delta_All_Current
+								"Net usage [%d W]"
+								<energy>
+								(gHist)
 
-Number				Power_Delta_L1_Current
-					"Net usage L1 [%d W]"
-					<energy>
-					(gHist)
+Number							Power_Delta_L1_Current
+								"Net usage L1 [%d W]"
+								<energy>
+								(gHist)
 
-Number				Power_Delta_L2_Current
-					"Net usage L2 [%d W]"
-					<energy>
-					(gHist)
+Number							Power_Delta_L2_Current
+								"Net usage L2 [%d W]"
+								<energy>
+								(gHist)
 
-Number				Power_Delta_L3_Current
-					"Net usage L3 [%d W]"
-					<energy>
-					(gHist)
+Number							Power_Delta_L3_Current
+								"Net usage L3 [%d W]"
+								<energy>
+								(gHist)
+
 
 // Items to store periodic power usage.
-Number				Power_Delta_Hour
-					"Last hours power use [%d Wh]"
-					<energy>
-					(gHist5,gPersist)
+Number							Power_Delta_Hour
+								"Last hours power use [%d Wh]"
+								<energy>
+								(gHist5,gPersist)
 
-Number				Power_Delta_Hour_Cost
-					"Last hours power cost [%.2f]"
-					<piggybank>
-					(gHist5,gPersist)
+Number							Power_Delta_Hour_Cost
+								"Last hours power cost [%.2f]"
+								<piggybank>
+								(gHist5,gPersist)
 
-String				Power_Delta_Hour_Summary
-					"Last hour's power use summary [%s]"
-					<energy>
-                    (gPersist)
+String							Power_Delta_Hour_Summary
+								"Last hour's power use summary [%s]"
+								<energy>
+								(gPersist)
 
-Number				Power_Delta_Day
-					"Today's power use [%d Wh]"
-					<energy>
-					(gHist60,gPersist)
+Number							Power_Delta_Day
+								"Today's power use [%d Wh]"
+								<energy>
+								(gHist60,gPersist)
 
-Number				Power_Delta_Day_Cost
-					"Today's power cost [%.2f]"
-					<piggybank>
-					(gHist60,gPersist)
+Number							Power_Delta_Day_Cost
+								"Today's power cost [%.2f]"
+								<piggybank>
+								(gHist60,gPersist)
 
-String				Power_Delta_Day_Summary
-					"Today's power use summary [%s]"
-					<energy>
-                    (gPersist)
+String							Power_Delta_Day_Summary
+								"Today's power use summary [%s]"
+								<energy>
+								(gPersist)
 
-Number				Power_Delta_Month
-					"This month's power use [%d Wh]"
-					<energy>
-					(gDaily,gPersist)
+Number							Power_Delta_Month
+								"This month's power use [%d Wh]"
+								<energy>
+								(gDaily,gPersist)
 
-Number				Power_Delta_Month_Cost
-					"This month's power cost [%.2f]"
-					<piggybank>
-					(gDaily,gPersist)
-String				Power_Delta_Month_Summary
-					"This month's power use summary [%s]"
-					<energy>
-                    (gPersist)
+Number							Power_Delta_Month_Cost
+								"This month's power cost [%.2f]"
+								<piggybank>
+								(gDaily,gPersist)
+
+String							Power_Delta_Month_Summary
+								"This month's power use summary [%s]"
+								<energy>
+								(gPersist)
+
 //
-Number				Power_Delta_Year
-					"This year's power use [%d Wh]"
-					<energy>
-					(gDaily,gPersist)
-Number				Power_Delta_Year_Cost
-					"This year's power use [%d Wh]"
-					<piggybank>
-					(gDaily,gPersist)
-String				Power_Delta_Year_Summary
-					"This year's power use summary [%s]"
-					<energy>
-					(gPersist)
-//
-Number				Power_Delta_Contract
-					"This contract period's power use [%d Wh]"
-					<energy>
-					(gDaily,gPersist)
-Number				Power_Delta_Contract_Cost
-					"This contract period's power use [%d Wh]"
-					<piggybank>
-					(gDaily,gPersist)
-String				Power_Delta_Contract_Summary
-					"This contract periods's power use summary [%s]"
-					<energy>
-					(gPersist)
+Number							Power_Delta_Year
+								"This year's power use [%d Wh]"
+								<energy>
+								(gDaily,gPersist)
+
+Number							Power_Delta_Year_Cost
+								"This year's power use [%d Wh]"
+								<piggybank>
+								(gDaily,gPersist)
+
+String							Power_Delta_Year_Summary
+								"This year's power use summary [%s]"
+								<energy>
+								(gPersist)
+
+Number							Power_Delta_Contract
+								"This contract period's power use [%d Wh]"
+								<energy>
+								(gDaily,gPersist)
+
+Number							Power_Delta_Contract_Cost
+								"This contract period's power use [%d Wh]"
+								<piggybank>
+								(gDaily,gPersist)
+
+String							Power_Delta_Contract_Summary
+								"This contract periods's power use summary [%s]"
+								<energy>
+								(gPersist)
 
 // Current total gas comsumption today (calculated from midnight).
-Number				Gas_Use_Hour
-					"Last hour's gas use [%d dm3]"
-					<gas>
-					(gHis150,gPersist)
+Number							Gas_Use_Hour
+								"Last hour's gas use [%d dm3]"
+								<gas>
+								(gHis150,gPersist)
 
-Number				Gas_Use_Hour_Cost
-					"Last hour's gas cost [%.2f]"
-					<piggybank>
-					(gHist15,gPersist)
+Number							Gas_Use_Hour_Cost
+								"Last hour's gas cost [%.2f]"
+								<piggybank>
+								(gHist15,gPersist)
 
-String				Gas_Use_Hour_Summary
-					"Last hours gas use summary [%s]"
-					<gas>
-					(gPersist)
+String							Gas_Use_Hour_Summary
+								"Last hours gas use summary [%s]"
+								<gas>
+								(gPersist)
 
-Number				Gas_Use_Day
-					"Today's gas use [%d dm3]"
-					<gas>
-					(gHist15,gPersist)
+Number							Gas_Use_Day
+								"Today's gas use [%d dm3]"
+								<gas>
+								(gHist15,gPersist)
 
-Number				Gas_Use_Day_Cost
-					"Today's gas cost [%.2f]"
-					<piggybank>
-					(gHist15,gPersist)
+Number							Gas_Use_Day_Cost
+								"Today's gas cost [%.2f]"
+								<piggybank>
+								(gHist15,gPersist)
 
-String				Gas_Use_Day_Summary
-					"Today's gas use summary [%s]"
-					<gas>
-					(gPersist)
+String							Gas_Use_Day_Summary
+								"Today's gas use summary [%s]"
+								<gas>
+								(gPersist)
 
-Number				Gas_Use_Month
-					"This month's gas use [%d dm3]"
-					<gas>
-					(gDaily,gPersist)
+Number							Gas_Use_Month
+								"This month's gas use [%d dm3]"
+								<gas>
+								(gDaily,gPersist)
 
-Number				Gas_Use_Month_Cost
-					"This month's gas use cost [%.2f]"
-					<piggybank>
-					(gDaily,gPersist)
+Number							Gas_Use_Month_Cost
+								"This month's gas use cost [%.2f]"
+								<piggybank>
+								(gDaily,gPersist)
 
-String				Gas_Use_Month_Summary
-					"This month's gas use summary [%s]"
-					<gas>
-					(gPersist)
+String							Gas_Use_Month_Summary
+								"This month's gas use summary [%s]"
+								<gas>
+								(gPersist)
 
-Number				Gas_Use_Year
-					"This year's gas use [%d dm3]"
-					<gas>
-					(gDaily,gPersist)
+Number							Gas_Use_Year
+								"This year's gas use [%d dm3]"
+								<gas>
+								(gDaily,gPersist)
 
-Number				Gas_Use_Year_Cost
-					"This year's gas use cost [%.2f]"
-					<piggybank>
-					(gDaily,gPersist)
+Number							Gas_Use_Year_Cost
+								"This year's gas use cost [%.2f]"
+								<piggybank>
+								(gDaily,gPersist)
 
-String				Gas_Use_Year_Summary
-					"This year's gas use summary [%s]"
-					<gas>
-					(gPersist)
+String							Gas_Use_Year_Summary
+								"This year's gas use summary [%s]"
+								<gas>
+								(gPersist)
 
-Number				Gas_Use_YearLast
-					"Last year's gas use [%.2f]"
-					<piggybank>
-					(gPersist)
+Number							Gas_Use_YearLast
+								"Last year's gas use [%.2f]"
+								<piggybank>
+								(gPersist)
 
 // Gas & Power price for this period (persist daily for historic tracking)                                                                                                                                // Set once (manually in Karaf console) at start of contract period.
-Number				GAS_PRICE_PER_DM3
-					"Gasprice per dm3"
-					<piggybank>
-					(gPersist,gDaily)
+Number							GAS_PRICE_PER_DM3
+								"Gasprice per dm3"
+								<piggybank>
+								(gPersist,gDaily)
 
-Number				POWER_USE_PRICE
-					"Electrivity price per Wh [%.2f]"
-					<piggybank>
-					(gPersist,gDaily)
+Number							POWER_USE_PRICE
+								"Electrivity price per Wh [%.2f]"
+								<piggybank>
+								(gPersist,gDaily)
 
-Number				POWER_RET_PRICE
-					"Return price per Wh [%.2f]"
-					<piggybank>
-					(gPersist,gDaily)
+Number							POWER_RET_PRICE
+								"Return price per Wh [%.2f]"
+								<piggybank>
+								(gPersist,gDaily)
+
 
 // Watchdog 'timer' item - to detect if the DSMR input is stalled/stopped for more than 10m
-Switch				DSMR_Watchdog
-					"Watchdog timer switch"
-					(gResetExpire)
-					{expire="10m,command=OFF"}
+Switch							DSMR_Watchdog
+								"Watchdog timer switch"
+								(gResetExpire)
+								{expire="10m,command=OFF"}
 
 //--------------------------------------------------------------------------------------------------
 // SolarEdge API-based Items.
 //--------------------------------------------------------------------------------------------------
 
-Number				Solar_Prod_Current
-					"Current Solar power [%d W]"
-					<solarplant>
-					(gHist5)
-					{channel="solaredge:generic:se7k:live#production"}
+Number							Solar_Prod_Current
+								"Current Solar power [%d W]"
+								<solarplant>
+								(gHist5)
+								{channel="solaredge:generic:se7k:live#production"}
 
-Number				Solar_Prod_Day
-					"Solar day production [%d Wh]"
-					<solarplant>
-					(gHist10,gPersist)
-					{channel="solaredge:generic:se7k:aggregate_day#production"}
+Number							Solar_Prod_Day
+								"Solar day production [%d Wh]"
+								<solarplant>
+								(gHist10,gPersist)
+								{channel="solaredge:generic:se7k:aggregate_day#production"}
 
-Number				Solar_Prod_Day_Cost
-					"Dagopbrengts Solar [%.5f]"
-					<piggybank>
-					(gPersist,gHist60)
+Number							Solar_Prod_Day_Cost
+								"Dagopbrengts Solar [%.5f]"
+								<piggybank>
+								(gPersist,gHist60)
 
-String				Solar_Prod_Day_Summary
-					"Day Solar production and price [%s]"
-					<solarplant>
-					(gPersist)
+String							Solar_Prod_Day_Summary
+								"Day Solar production and price [%s]"
+								<solarplant>
+								(gPersist)
 
-Number				Solar_Prod_Month
-					"Maandproductie Solar [%d Wh]"
-					<solarplant>
-					(gDaily,gPersist)
-					{channel="solaredge:generic:se7k:aggregate_month#production"}
+Number							Solar_Prod_Month
+								"Maandproductie Solar [%d Wh]"
+								<solarplant>
+								(gDaily,gPersist)
+								{channel="solaredge:generic:se7k:aggregate_month#production"}
 
-Number				Solar_Prod_Month_Cost
-					"Maandopbrengst Solar [%.5f]"
-					<piggybank>
-					(gPersist)
+Number							Solar_Prod_Month_Cost
+								"Maandopbrengst Solar [%.5f]"
+								<piggybank>
+								(gPersist)
 
-String				Solar_Prod_Month_Summary
-					"Month production and price [%s]"
-					<solarplant>
-					(gPersist)
+String							Solar_Prod_Month_Summary
+								"Month production and price [%s]"
+								<solarplant>
+								(gPersist)
 
-Number				Solar_Prod_Year
-					"Jaarproductie zonnepanelen [%d Wh]"
-					<solarplant>
-					(gDaily,gPersist)
-					{channel="solaredge:generic:se7k:aggregate_year#production"}
+Number							Solar_Prod_Year
+								"Jaarproductie zonnepanelen [%d Wh]"
+								<solarplant>
+								(gDaily,gPersist)
+								{channel="solaredge:generic:se7k:aggregate_year#production"}
 
-Number				Solar_Prod_Year_Cost
-					"Jaaropbrengts zonnepanelen [%.5f]"
-					<piggybank>
-					(gPersist)
+Number							Solar_Prod_Year_Cost
+								"Jaaropbrengts zonnepanelen [%.5f]"
+								<piggybank>
+								(gPersist)
 
-String				Solar_Prod_Year_Summary
-					"Solar Year production and price [%s]"
-					<solarplant>
-					(gPersist)
+String							Solar_Prod_Year_Summary
+								"Solar Year production and price [%s]"
+								<solarplant>
+								(gPersist)
 
-Number				SoLar_Prod_LastYear
-					"Last year's Solar production [%d kWh]"
-					<solarplant>
-					(gPersist)
+Number							SoLar_Prod_LastYear
+								"Last year's Solar production [%d kWh]"
+								<solarplant>
+								(gPersist)
 
-Number				Solar_Prod_LastYear_Cost
-					"Last year's Solar opbrengst [%.2f €]"
-					<piggybank>
-					(gPersist)
+Number							Solar_Prod_LastYear_Cost
+								"Last year's Solar opbrengst [%.2f €]"
+								<piggybank>
+								(gPersist)
 
 // Watchdog 'timer' item - to detect if the SolarEdge input is stalled/stopped for more than 1h
-Switch				Solar_Watchdog
-					"Watchdog timer switch"
-					(gResetExpire)
-					{expire="1h,command=OFF"}
+Switch							Solar_Watchdog
+								"Watchdog timer switch"
+								(gResetExpire)
+								{expire="1h,command=OFF"}

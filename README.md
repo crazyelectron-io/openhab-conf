@@ -82,32 +82,24 @@ Verify files are decrypted
 
 ### Adding collaborators
 
-`crypt-admin` can now unlock the crypt and decrypt files at will!
-
-But what if `crypt-admin` wants to be able to do the same from another computer?
-
-What if they want to let others, e.g. team members, also decrypt files?
-
-One solution is to pass around `crypt-admin`’s GPG keys.
-
-However, it is pretty poor practice to have everyone use the same set of keys.
-
-It is probably more acceptable for `crypt-admin` to use the same keys on a second computer.
-
-But, for the sake of simplicity, let’s use the “adding a collaborator” method for all cases.
-
+`crypt-admin` can now unlock the crypt and decrypt files.
+Adding a collaborator.
 (Especially as _USER-ID_ contains _key-description_, meaning `crypt-admin` can have, for example, USER-ID equal to James Smith (mac) jsmith@email.com on one machine and James Smith (PC) jsmith@email.com on another.)
 
-To be added, a collaborator should satisfy prerequisites
-
-Create a GPG user for themselves
+To be added, a collaborator should satisfy prerequisites.
+Create a GPG user for themselves:
 
 ```bash
 $ gpg --list-keys
 pub 2048R/<public-key-id> 2018-08-30
 ```
 
-Export public key to a file gpg --output _public-key-filename_.gpg --armor --export _public-key-id_
+Export public key to a file:
+
+```bash
+gpg --output _public-key-filename_.gpg --armor --export _public-key-id_
+```
+
 Send file to `crypt-admin`
 Get `crypt-admin` to
 Add the collaborator’s public key to their key ring gpg --import /path/to/public-key-filename.gpg
