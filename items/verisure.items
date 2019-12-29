@@ -88,7 +88,7 @@ String							Alarm_Update_SirenKitchen
 								{channel="verisure:siren:myverisure:kitchenSiren:timestamp"}
 
 // This channel reports the current humidity in percentage.
-Number:Temperature				Alamr_Temp_NightControl
+Number:Temperature				Alarm_Temp_NightControl
 								"Temperature Corridor [%.1f °C]"
 								<temperature>
 								{channel="verisure:nightControl:myverisure:corridorNightControl:temperature"}

@@ -1,54 +1,41 @@
 //==================================================================================================
 // astro.rules - Astro related processing, including sun and moon data and day/night triggers.
 //==================================================================================================
+//  v14 21091229 Changed extra logging to debug level.
 //  v13 20191226 Merged tomorrow sunset/rise rules; fixed Item name 'Astro_Sun_Elevation'.
 //  v12 20191222 Renamed Items.
 //  v11 20191025 Added next day sunrise/sunset handling.
 //--------------------------------------------------------------------------------------------------
 // Rules in this file:
-//  Astro_Init - Initialize Day/Night status (Astro_NightState) at system starts/reload.
-//  Astro_DayNight - Update Day/Night status (astro_NightState) when sun elevation changes.
-//  Astro_SunPosition - Translate sun position to text (wind direction).
-//  Astro_NextSunrise - Get tomorrow's sunrise time.
-//  Astro_NextSunset - Get tomorrow's sunset time.
+//  Astro.DayPhase - Calculate current day Mode and next sunrise/sunset times.
+//  Astro_Sun.Position - Translate sun position to text (wind direction).
+//  Astro.Sun.Tomorrow - Calculate tomorrow's sunrise and sunset time.
+//  Alarm.Clock.Change - Android Alarm clock actions.
 //--------------------------------------------------------------------------------------------------
 // Items changes in these rules:
-//  Astro_NightState - CLOSED=Night, OPEN=Day
-//  Astro_Sun_Direction - Textual description of the wind direction of the sun position
-//  Astro_Sun_RiseTomorrow - Calculated sunrise for the next day (via script)
-//  Astro_Sun_SetTomorrow - Calculated sunset for the next day (via script)
-//  Astro_Sun_RiseNext - The next sunrise time (either today or tomorrow) 
-//  Astro_Sun_SetNext - The next sunset time (either today or tomorrow)
+//  Day_Mode - MORNING, DAY, EVENING, NIGHT; based on time, sun and cloudiness.
+//  Astro_Sun_Direction - Textual description of the wind direction of the sun position.
+//  Astro_Sun_RiseTomorrow - Tomorrow's sunrise time, calculated with Python astral library (since
+//      the Astro binding only gives today's times). 
+//  Astro_Sun_SetTomorrow - Tomorrow's sunset time, calculated with Python astral library.
+//  Astro_Sun_RiseNext - The next sunrise time (either today or tomorrow).
+//  Astro_Sun_SetNext - The next sunset time (either today or tomorrow).
 //==================================================================================================
 
 
+//==================================================================================================
+// Global variables used throughout the rule.
+//==================================================================================================
+
+// Android Alarm clock timer.
 var Timer timerAlarm = null
-
-
-//--------------------------------------------------------------------------------------------------
-// Delay NightState check 2min after restart/reload (to allow OH to initialize its Item Registry).
-//--------------------------------------------------------------------------------------------------
-// rule "Astro_Init - OpenHAB system started"
-//     when
-//         System started
-//     then
-//         logInfo("Astro.Init.Rules", "Delay 2 minutes ")
-//         // Wait 120 seconds before checking the Astro sun rise/set channels
-//         createTimer(now.plusSeconds(120)) [ |
-//             if (now.isAfter((Astro_Sun_SetTime.state as DateTimeType).zonedDateTime.toInstant.toEpochMilli) ||
-//                 now.isBefore((Astro_Sun_RiseTime.state as DateTimeType).zonedDateTime.toInstant.toEpochMilli))
-//                 Astro_NightState.sendCommand(CLOSED)
-//             else
-//                 Astro_NightState.sendCommand(OPEN)
-//         ]
-//     end
 
 
 //==================================================================================================
 // Update the next sunset/rise times and Day Mode when the Astro day phase changes or the Cloudiness
 //  changes.
 //==================================================================================================
-rule "Astro.DayPhase.Change - Calculate current day Mode and next sunrise/sunset times"
+rule "Astro.DayPhase - Calculate current day Mode and next sunrise/sunset times"
 when
     Item Astro_Day_Phase changed or
     Item Weather_Cloudy changed or
@@ -67,7 +54,7 @@ then
 
     if (Weather_Cloudy.state != NULL && Weather_Cloudy.state == ON)
     {
-        logInfo(TAG, "Set Cloudy switch to TRUE")
+        logDebug(TAG, "Set Cloudy switch to TRUE")
         cloudy = true
     }
 
@@ -77,68 +64,61 @@ then
     {
         case "DAYLIGHT":
         {
-            logInfo(TAG, "Day Phase is DAYLIGHT, check time to set Day Mode to MORNING or DAY")
+            logDebug(TAG, "Day Phase is DAYLIGHT, check time to set Day Mode to MORNING or DAY")
             Day_Mode.sendCommand(if (hour>=7) "DAY" else "MORNING")
         }
         case "SUN_SET":
         {
-            logInfo(TAG, "Day Phase is sunset, check if cloudy")
-            Day_Mode.sendCommand(if (hour>=19) "EVENING" else "DAY")
+            logDebug(TAG, "Day Phase is sunset, check if cloudy")
+            Day_Mode.sendCommand(if (cloudy) "EVENING" else "DAY")
         }
         case "SUN_RISE":
         {
-            logInfo(TAG, "Day Phase is sunrise, check if cloudy")
-            Day_Mode.sendCommand(if (cloudy) "EVENING" else "DAY")
+            logDebug(TAG, "Day Phase is sunrise, check if cloudy")
+            Day_Mode.sendCommand(if (cloudy) "MORNING" else "DAY")
         }
-        case "ASTRO_DAWN" ||
-             "NAUTIC_DAWN" ||
-             "CIVIL_DAWN":
+        case "ASTRO_DAWN",
+        case "NAUTIC_DAWN",
+        case "CIVIL_DAWN":
         {
-            logInfo(TAG, "Day Phase is DAWN")
+            logDebug(TAG, "Day Phase is DAWN")
             Day_Mode.sendCommand(if (hour >= 6) "MORNING" else "NIGHT")
         }
-        case "ASTRO_DUSK" ||
-             "NAUTIC_DUST" ||
-             "CIVIL_DUSK":
+        case "ASTRO_DUSK",
+        case "NAUTIC_DUST",
+        case "CIVIL_DUSK":
         {
-            logInfo(TAG, "Day Phase is DUSK")
-            if (hour <= 23)
-                Day_Mode.sendCommand("EVENING")
-            else
-                Day_Mode.sendCommand("NIGHT")
+            logDebug(TAG, "Day Phase is DUSK")
+            Day_Mode.sendCommand(if (hour<=23) "EVENING" else "NIGHT")
         }
         case "NIGHT":
         {
-            logInfo(TAG, "Day Phase is NIGHT")
-            if (hour <= 23)
-                Day_Mode.sendCommand("EVENING")
-            else
-                Day_Mode.sendCommand("NIGHT")
+            logDebug(TAG, "Day Phase is NIGHT")
+            Day_Mode.sendCommand(if (hour<=23) "EVENING" else "NIGHT")
         }
     }
-    logInfo(TAG, "Day Phase is {} and Cloudiness is {}, Day Mode set to {}", phase, cloudy, Day_Mode.state)
 
-    //---
+    //--- Determine next sunset/sunrise times for today and tomorrow.
     if (phase == "DAYLIGHT")
     {
-        // Set today;s
-        logInfo(TAG, "Daylight; next sunrise is tomorrow at {}, next sunset is today at {}.", Astro_Sun_RiseTomorrow.state, Astro_Sun_SetTime.state)
+        // Set today's sunset and tomorrow's sunrise time.
+        logDebug(TAG, "Daylight; next sunrise is tomorrow at {}, next sunset is today at {}.", Astro_Sun_RiseTomorrow.state, Astro_Sun_SetTime.state)
         Day_Mode.sendCommand("DAY")
         Astro_Sun_RiseNext.postUpdate(Astro_Sun_RiseTomorrow.state)
         Astro_Sun_SetNext.postUpdate(Astro_Sun_SetTime.state)
     }
     else
     {
-        //--- Set today's sunset and tomorrow's sunrise
+        // Set today's sunset and tomorrow's sunrise.
         if (now.getHourOfDay > 12)
         {
-            logInfo(TAG, "Evening; next sunrise is tomorrow at {}, next sunset is tomorrow at {}.", Astro_Sun_RiseTomorrow.state, Astro_Sun_SetTomorrow.state)
+            logDebug(TAG, "Evening; next sunrise is tomorrow at {}, next sunset is tomorrow at {}.", Astro_Sun_RiseTomorrow.state, Astro_Sun_SetTomorrow.state)
             Astro_Sun_RiseNext.postUpdate(Astro_Sun_RiseTomorrow.state)
             Astro_Sun_SetNext.postUpdate(Astro_Sun_SetTomorrow.state)
         }
         else
         {
-            logInfo(TAG, "Morning; next sunrise is today at {}, next sunset is today at {}.", Astro_Sun_RiseTime.state, Astro_Sun_SetTime.state)
+            logDebug(TAG, "Morning; next sunrise is today at {}, next sunset is today at {}.", Astro_Sun_RiseTime.state, Astro_Sun_SetTime.state)
             Astro_Sun_RiseNext.postUpdate(Astro_Sun_RiseTime.state)
             Astro_Sun_SetNext.postUpdate(Astro_Sun_SetTime.state)
         }
@@ -196,7 +176,7 @@ end
 //==================================================================================================
 // Calculate tomorrow's sunrise/sunset time using the python astral library (via script).
 //==================================================================================================
-rule "Astro.Tomorrow.Calc - Calculate tomorrow's sunrise and sunset time"
+rule "Astro.Sun.Tomorrow - Calculate tomorrow's sunrise and sunset time"
 when
     System started or
     Time cron "0 10 0 ? * * *"  // Everyday at 10 minutes past midnight
@@ -209,7 +189,7 @@ then
     timeString = executeCommandLine("python /openhab/conf/scripts/sunrise_tomorrow.py", 5000)
     if (Astro_Sun_RiseTomorrow !== null && Astro_Sun_RiseTomorrow.state != NULL)
     {
-        logInfo(TAG, "Tomorrow's sunrise time: {}", timeString)
+        logDebug(TAG, "Tomorrow's sunrise time: {}", timeString)
         Astro_Sun_RiseTomorrow.postUpdate(DateTimeType.valueOf(timeString))
     }
     else
@@ -221,7 +201,7 @@ then
     timeString = executeCommandLine("python /openhab/conf/scripts/sunset_tomorrow.py", 5000)
     if (Astro_Sun_SetTomorrow !== null && Astro_Sun_SetTomorrow.state != NULL)
     {
-        logInfo(TAG, "Tomorrow's sunset time: {}", timeString)
+        logDebug(TAG, "Tomorrow's sunset time: {}", timeString)
         Astro_Sun_SetTomorrow.postUpdate(DateTimeType.valueOf(timeString))
     }
     else
@@ -262,10 +242,10 @@ end
 //     end
 
 
-//--------------------------------------------------------------------------------------------------
+//==================================================================================================
 // Take morning actions when the Android Alarm goes off
-//--------------------------------------------------------------------------------------------------
-rule "Alarm.Clock.Changed - Android Alarm clock set"
+//==================================================================================================
+rule "Alarm.Clock.Change - Android Alarm clock actions"
 when
     Item AlarmClock changed
 then

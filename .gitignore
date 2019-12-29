@@ -1,5 +1,7 @@
 *.class
 *.log
 *.pyc
+*.pkc
+packages.idx
 
 /html/matrix-theme/original-svgs/
