@@ -1,13 +1,15 @@
 //==================================================================================================
 // hue.items - All Hue lighting, switch and motion sensor items.
 //==================================================================================================
+//	v12 20191230	Added Alert channels; removed expire switches.
 //	v11 20191226	Updated formatting (empty line between items).
 //					Added missing OnOff groupm to Hall and Haill Ceiling dimmer items.
 //	v10	20191224	Added alert group for kitchen; changed channel for brightness of Dining Color
 //					lights from 'brightness' to 'color' to fix the on/off nor working problem.
 //	v09 20190720	Restructured the groups.
 //--------------------------------------------------------------------------------------------------
-// All the Hue lights are defined here, including some OH groups to handle them.
+// All the Hue lights are defined here, including OH groups to handle them, as well as all the wall
+// switched (both Tap and Dimmer Switch).
 // Currently the Hue binding does not support Scenes and Groups defined in the bridge.
 // 
 //==================================================================================================
@@ -794,17 +796,17 @@ Dimmer							Light_Dim_OutsideFront
 								(gLight_OnOff_Outside,gLight_Brightness_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_frontdoor:brightness"}
 
-// Dimmer							Light_Dim_OutsideTerrace
-// 								"Terraslantaarn"
-// 								<slider>
-// 								(gLight_OnOff_Outside,gLight_Brightness_Outside)
-// 								{channel="hue:0100:0017882ec5b3:bulb_terrace:brightness"}
-// Dimmer							Light_Dim_OutsideToolshed
-// 								"Tuinhuis Lantaarn"
-// 								<slider>
-// 								(gLight_OnOff_Outside,gLight_Brightness_Outside)
-// 								["Lighting"]
-// 								{channel="hue:0100:0017882ec5b3:bulb_shed:brightness"}
+Dimmer							Light_Dim_OutsideTerrace
+								"Terraslantaarn"
+								<slider>
+								(gLight_OnOff_Outside,gLight_Brightness_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_terrace:brightness"}
+Dimmer							Light_Dim_OutsideToolshed
+								"Tuinhuis Lantaarn"
+								<slider>
+								(gLight_OnOff_Outside,gLight_Brightness_Outside)
+								["Lighting"]
+								{channel="hue:0100:0017882ec5b3:bulb_shed:brightness"}
 
 Group							gLight_Alert_Outside
 								"Alert Outside Lighting"
@@ -851,34 +853,34 @@ String							Light_Alert_OutsideToolshed
 // The Lodge lighting
 //--------------------------------------------------------------------------------------------------
 
-// Group:Switch:AND(ON,OFF)		gLight_OnOff_Lodge
-// 								"Lodge lights [(%d)]"
-// 								<light>
-// 								(gLight,gLodge)
-// 								["Switchable"]
+Group:Switch:AND(ON,OFF)		gLight_OnOff_Lodge
+								"Lodge lights [(%d)]"
+								<light>
+								(gLight,gLodge)
+								["Switchable"]
 
-// Group:Dimmer					gLight_Brightness_Lodge
-// 								"Lodge lights dimmer"
-// 								<slider>
-// 								(gLight,gLodge)
-// 								["Lighting"]
+Group:Dimmer					gLight_Brightness_Lodge
+								"Lodge lights dimmer"
+								<slider>
+								(gLight,gLodge)
+								["Lighting"]
 
-// String							Light_Scene_Lodge
-// 								"Lodge lights"
-// 								<light>
-// 								(gLight,gLodge,gPersist,gLighting_Scene)
+String							Light_Scene_Lodge
+								"Lodge lights"
+								<light>
+								(gLight,gLodge,gPersist,gLighting_Scene)
 
-// Dimmer							Light_Dim_LodgeWall1
-// 								"Lodge wandlamp 1"
-// 								<slider>
-// 								(gLight_OnOff_Lodge,gLight_Brightness_Lodge)
-// 								{channel="hue:0100:0017882ec5b3:bulb_lodge1:brightness"}
+Dimmer							Light_Dim_LodgeWall1
+								"Lodge wandlamp 1"
+								<slider>
+								(gLight_OnOff_Lodge,gLight_Brightness_Lodge)
+								{channel="hue:0100:0017882ec5b3:bulb_lodge1:brightness"}
 
-// Dimmer							Light_Dim_LodgeWall2
-// 								"Lodge wandlamp 2"
-// 								<slider>
-// 								(gLight_OnOff_Lodge,gLight_Brightness_Lodge)
-// 								{channel="hue:0100:0017882ec5b3:bulb_lodge2:brightness"}
+Dimmer							Light_Dim_LodgeWall2
+								"Lodge wandlamp 2"
+								<slider>
+								(gLight_OnOff_Lodge,gLight_Brightness_Lodge)
+								{channel="hue:0100:0017882ec5b3:bulb_lodge2:brightness"}
 
 Group							gLight_Alert_Lodge
 								"Alert Lodge Lighting"
@@ -959,49 +961,6 @@ Number:Temperature				Motion_Temperature_Hall
 								<temperature>
 								(gHall,gTemp)
 								["CurrentTemperature"]
-
-//--------------------------------------------------------------------------------------------------
-// Hue Dimmer and Tap switches
-//--------------------------------------------------------------------------------------------------
-
-// Hue Dimmer Switch Hallway multi-click timeout
-Switch							DimSwitch_Hallway
-								{expire="5s,command=OFF"}
-
-
-// Hue Dimmer Switch Leftside bed multi-click timeout
-Switch							DimSwitch_BedroomLeft
-								{expire="5s,command=OFF"}
-
-
-// Hue Dimmer Switch Rightside bed multi-click timeout
-Switch							DimSwitch_BedroomRight
-								{expire="5s,command=OFF"}
-
-
-// Hue Dimmer Switch Outside multi-click timeout
-Switch							DimSwitch_Outside
-								{expire="5s,command=OFF"}
-
-
-// Hue Dimmer Switch Laundry multi-click timeout
-Switch							DimSwitch_Laundry
-								{expire="5s,command=OFF"}
-
-
-// Hue Dimmer Switch Toilet multi-click timeout
-Switch							DimSwitch_Toilet
-								{expire="5s,command=OFF"}
-
-
-// Hue Dimmer Switch Guestroom multi-click timeout
-Switch							DimSwitch_Guest
-								{expire="5s,command=OFF"}
-
-
-// Hue Dimmer Switch Hallway multi-click timeout
-Switch							DimSwitch_Bathroom
-								{expire="5s,command=OFF"}
 
 //--------------------------------------------------------------------------------------------------
 //  Lighting Scene persisten values
