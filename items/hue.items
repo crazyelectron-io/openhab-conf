@@ -205,13 +205,13 @@ Group							gLight_Alert_Kitchen
 String							Light_Alert_KitchenLeft
 								"Alert Kitchen light left"
 								<alarm>
-								(gKitchen,gLight_Alert_Kitchen)
+								(gLight_Alert_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:alert"}
 
 String							Light_Alert_KitchenRight
 								"Alert Kitchen light right"
 								<alarm>
-								(gKitchen,gLight_Alert_Kitchen)
+								(gLight_Alert_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:alert"}
 
 //Switch  Light1_Effect       { channel="hue:0210:1:bulb1:effect" }
@@ -302,6 +302,29 @@ Color							Light_Color_Dining3
 								(gDining,gLight,gLight_Color_Dining)
 								{channel="hue:0210:0017882ec5b3:bulb_dining3:color"}
 
+Group							gLight_Alert_Dining
+								"Alert Dining Lighting"
+								<alarm>
+								(gDining,gAlert)
+
+String							Light_Alert_Dining1
+								"Alert Dining light 1"
+								<alarm>
+								(gLight_Alert_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining1:alert"}
+
+String							Light_Alert_Dining2
+								"Alert Dining light 2"
+								<alarm>
+								(gLight_Alert_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining2:alert"}
+
+String							Light_Alert_Dining3
+								"Alert Dining light 3"
+								<alarm>
+								(gLight_Alert_Dining)
+								{channel="hue:0210:0017882ec5b3:bulb_dining3:alert"}
+
 //--------------------------------------------------------------------------------------------------
 // Hallway Wall lights
 //--------------------------------------------------------------------------------------------------
@@ -357,6 +380,23 @@ Dimmer							Light_ColorTemp_HallWall
 								["Lighting"]
 								{channel="hue:0220:0017882ec5b3:bulb_hallwl:color_temperature"}
 
+Group							gLight_Alert_Hall
+								"Alert Hall Lighting"
+								<alarm>
+								(gHall,gHallCeiling,gAlert)
+
+String							Light_Alert_HallWall
+								"Alert Hall Wall light"
+								<alarm>
+								(gLight_Alert_Hall)
+								{channel="hue:0220:0017882ec5b3:bulb_hallwl:alert"}
+
+String							Light_Alert_HallDoor
+								"Alert Hall Door light"
+								<alarm>
+								(gLight_Alert_Hall)
+								{channel="hue:0220:0017882ec5b3:bulb_hallfd:alert"}
+
 //--------------------------------------------------------------------------------------------------
 // Hallway Ceiling lighting
 //--------------------------------------------------------------------------------------------------
@@ -397,6 +437,12 @@ Dimmer							Light_ColorTemp_HallCeiling
 								(gLight_ColorTemp_HallCeiling)
 								["Lighting"]
 								{channel="hue:0220:0017882ec5b3:bulb_hallcl:color_temperature"}
+
+String							Light_Alert_HallCeiling
+								"Alert Hall Ceiling light"
+								<alarm>
+								(gLight_Alert_Hall)
+								{channel="hue:0220:0017882ec5b3:bulb_hallcl:alert"}
 
 //--------------------------------------------------------------------------------------------------
 // Toilet lighting
@@ -480,6 +526,17 @@ Dimmer							Light_ColorTemp_BathroomCeiling
 								["Lighting"]
 								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:color_temperature"}
 
+Group							gLight_Alert_Bathroom
+								"Alert Bathroom Lighting"
+								<alarm>
+								(gBathroom,gAlert)
+
+String							Light_Alert_BathroomCeiling
+								"Alert Bathroom Ceiling light"
+								<alarm>
+								(gLight_Alert_Bathroom)
+								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:alert"}
+
 //--------------------------------------------------------------------------------------------------
 // Master bedroom lighting
 //--------------------------------------------------------------------------------------------------
@@ -534,6 +591,23 @@ Dimmer							Light_ColorTemp_BedroomRight
 								(gLight_ColorTemp_Bedroom)
 								["Lighting"]
 								{channel="hue:0220:0017882ec5b3:bulb_rbed:color_temperature"}
+
+Group							gLight_Alert_Bedroom
+								"Alert Bedroom Lighting"
+								<alarm>
+								(gBedroom,gAlert)
+
+String							Light_Alert_BedroomLeft
+								"Alert Bedroom Left light"
+								<alarm>
+								(gLight_Alert_Bedroom)
+								{channel="hue:0220:0017882ec5b3:bulb_lbed:alert"}
+
+String							Light_Alert_BedroomRight
+								"Alert Bedroom Right light"
+								<alarm>
+								(gLight_Alert_Bedroom)
+								{channel="hue:0220:0017882ec5b3:bulb_rbed:alert"}
 
 //--------------------------------------------------------------------------------------------------
 // Guestroom lighting
@@ -590,6 +664,23 @@ Dimmer							Light_ColorTemp_GuestroomCeiling2
 								["Lighting"]
 								{channel="hue:0220:0017882ec5b3:bulb_guest2:color_temperature"}
 
+Group							gLight_Alert_Guestroom
+								"Alert Guest room Lighting"
+								<alarm>
+								(gGuestroom,gAlert)
+
+String							Light_Alert_GuestroomCeiling1
+								"Alert Menno plafondspot 1"
+								<alarm>
+								(gLight_Alert_Guestroom)
+								{channel="hue:0220:0017882ec5b3:bulb_guest1:alert"}
+
+String							Light_Alert_GuestroomCeiling2
+								"Alert Menno plafondspot 2"
+								<alarm>
+								(gLight_Alert_Guestroom)
+								{channel="hue:0220:0017882ec5b3:bulb_guest2:alert"}
+
 //--------------------------------------------------------------------------------------------------
 // Laundry room lighting
 //--------------------------------------------------------------------------------------------------
@@ -640,6 +731,23 @@ Dimmer							Light_ColorTemp_LaundryCeiling
 //                             <slider>
 //                             (gLight_ColorTemp_Laundry)
 //                             {channel="hue:0220:0017882ec5b3:bulb_laundrybr:color_temperature"}
+
+Group							gLight_Alert_Laundry
+								"Alert Laundry Lighting"
+								<alarm>
+								(gLaundry,gAlert)
+
+String							Light_Alert_LaundryCeiling
+								"Alert Laundry Ceiling light"
+								<alarm>
+								(gLight_Alert_Laundry)
+								{channel="hue:0220:0017882ec5b3:bulb_laundry:alert"}
+
+// String							Light_Alert_LaundryBureau
+// 								"Alert Laundry Bureau light"
+// 								<alarm>
+// 								(gLight_Alert_Laundry)
+// 								{channel="hue:0220:0017882ec5b3:bulb_laundrybr:alert"}
 
 //--------------------------------------------------------------------------------------------------
 // Outside lighting
@@ -698,6 +806,47 @@ Dimmer							Light_Dim_OutsideFront
 // 								["Lighting"]
 // 								{channel="hue:0100:0017882ec5b3:bulb_shed:brightness"}
 
+Group							gLight_Alert_Outside
+								"Alert Outside Lighting"
+								<alarm>
+								(gOutside,gAlert)
+
+String							Light_Alert_OutsideLeft
+								"Alert Lantern Outside Left"
+								<alarm>
+								(gLight_Alert_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_lback:alert"}
+
+String							Light_Alert_OutsideRight
+								"Alert Lantern Outside Right"
+								<alarm>
+								(gLight_Alert_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_rback:alert"}
+
+String							Light_Alert_OutsideFront
+								"Alert Frontdoor Outside"
+								<alarm>
+								(gLight_Alert_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_frontdoor:alert"}
+
+String							Light_Alert_OutsideLeftBack
+								"Alert Lantern Left Back Outside"
+								<alarm>
+								(gLight_Alert_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_lhouse:alert"}
+
+String							Light_Alert_OutsideTerrace
+								"Alert Terrace Outside"
+								<alarm>
+								(gLight_Alert_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_terrace:alert"}
+
+String							Light_Alert_OutsideToolshed
+								"Alert Toolshed Outside"
+								<alarm>
+								(gLight_Alert_Outside)
+								{channel="hue:0100:0017882ec5b3:bulb_shed:alert"}
+
 //--------------------------------------------------------------------------------------------------
 // The Lodge lighting
 //--------------------------------------------------------------------------------------------------
@@ -731,6 +880,23 @@ Dimmer							Light_Dim_OutsideFront
 // 								(gLight_OnOff_Lodge,gLight_Brightness_Lodge)
 // 								{channel="hue:0100:0017882ec5b3:bulb_lodge2:brightness"}
 
+Group							gLight_Alert_Lodge
+								"Alert Lodge Lighting"
+								<alarm>
+								(gLodge,gAlert)
+
+String							Light_Alert_LodgeWall1
+								"Alert Lodge Wall light 1"
+								<alarm>
+								(gLight_Alert_Lodge)
+								{channel="hue:0100:0017882ec5b3:bulb_lodge1:alert"}
+
+String							Light_Alert_LodgeWall2
+								"Alert Lodge Wall light 2"
+								<alarm>
+								(gLight_Alert_Lodge)
+								{channel="hue:0100:0017882ec5b3:bulb_lodge2:alert"}
+
 //--------------------------------------------------------------------------------------------------
 // Hue motion sensors
 //--------------------------------------------------------------------------------------------------
@@ -757,7 +923,7 @@ Number:Temperature				Motion_Temperature_Toilet
 								<temperature>
 								(gToilet,gTemp)
 								["CurrentTemperature"]
-
+								{channel="hue:0302:0017882ec5b3:temp_toilet:temperature"}
 
 // Hallway Motion Sensor
 Number:Illuminance				Motion_Lux_Hall

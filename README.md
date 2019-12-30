@@ -87,43 +87,35 @@ Adding a collaborator.
 (Especially as _USER-ID_ contains _key-description_, meaning `crypt-admin` can have, for example, USER-ID equal to James Smith (mac) jsmith@email.com on one machine and James Smith (PC) jsmith@email.com on another.)
 
 To be added, a collaborator should satisfy prerequisites.
-Create a GPG user for themselves:
+Create a GPG user for themselves. Export public key to a file (optionally import on another device and make it trusted).
 
 ```bash
 $ gpg --list-keys
-pub 2048R/<public-key-id> 2018-08-30
+$ gpg --output _public-key-filename_.gpg --armor --export _public-key-id_
+$ gpg --import /path/to/public-key-filename.gpg
+$ gpg --list-keys
+$ gpg --edit-key <public-key-id>
+gpg> sign
+gpg> save
 ```
 
-Export public key to a file:
+Unlock the crypt:
 
 ```bash
-gpg --output _public-key-filename_.gpg --armor --export _public-key-id_
+git-crypt unlock
 ```
 
-Send file to `crypt-admin`
-Get `crypt-admin` to
-Add the collaborator’s public key to their key ring gpg --import /path/to/public-key-filename.gpg
+Add the key to the crypt:
 
 ```bash
-gpg --list-keys
+git-crypt add-gpg-user _public-key-id_
 ```
 
-Make the key trustworthy
-
-```bash
-gpg --edit-key <public-key-id>
-```
-
-At the gpg> prompt
-Enter sign
-Enter save (which should exit the prompt)
-Unlock the crypt git-crypt unlock
-Add the key to the crypt git-crypt add-gpg-user _public-key-id_
-Push auto-generated commit up to Git host
+Push auto-generated commit up to Git host.
 Pull down `openhab-conf` from Git host
 
 ```bash
 git-crypt unlock
 ```
 
-Verify the files are decrypted
+Confirm that the files are decrypted.

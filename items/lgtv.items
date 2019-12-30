@@ -1,0 +1,27 @@
+//==================================================================================================
+// lgtv.items - 
+//==================================================================================================
+//  v01	20191229    Initial version.
+//--------------------------------------------------------------------------------------------------
+//
+//==================================================================================================
+
+Switch							LGTV_Power_Livingroom
+
+Switch							LGTV_WoL_Livingroom
+
+Switch							LGTV_Mute_Livingroom
+
+String							LGTV_Volume_Livingroom
+
+Switch							LGTV_VolDummy
+
+String							LGTV_ChannelNo_Livingroom
+
+Switch							LGTV_ChannelDummy
+
+String							LGTV_Channel_Livingroom
+
+// Default LGTV_Player
+String							LGTV_Application_Livingroom
+

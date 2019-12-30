@@ -17,56 +17,56 @@ sitemap default label="At Home"
         Text item=Astro_Day_Time label="Climate [%1$tA, %1$td.%1$tm.%1$tY]" icon="sun_clouds"
         {
             Text item=Temp_Avg_Livingroom valuecolor=[>22="red",>20="green",>19="orange",<19="blue"]
-            {
-                Switch item=Climate_Period1 mappings=[TDY_30="Today", YDY_30="Yesterday", WK_1="Week", LWK_1="Wk-1", MNT_1D="Month", LMNT_1D="M-1"] label="" icon="calendar"
-                Webview label="Climate Livingroom" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period1&panelItem=Climate_Panel1" height=12 icon="line"
-            }
+            // {
+            //     Switch item=Climate_Period1 mappings=[TDY_30="Today", YDY_30="Yesterday", WK_1="Week", LWK_1="Wk-1", MNT_1D="Month", LMNT_1D="M-1"] label="" icon="calendar"
+            //     Webview label="Climate Livingroom" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period1&panelItem=Climate_Panel1" height=12 icon="line"
+            // }
     
             Text item=NHC_CO2_Livingroom label="CO2 level livingroom [%.0f ppm]" valuecolor=[>1900="red",>1400="orange",<1400="green"]
-            {
-                Switch item=Climate_Period2 mappings=[TDY_30="Vandaag", YDY_30="Gisteren", WK_1="Week", LWK_1="Wk-1", MNT_1D="Maand", LMNT_1D="Mnd-1"] label="" icon="calendar"
-                Webview label="Climate Livingroom" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel2" height=12 icon="line"
-            }
+            // {
+            //     Switch item=Climate_Period2 mappings=[TDY_30="Vandaag", YDY_30="Gisteren", WK_1="Week", LWK_1="Wk-1", MNT_1D="Maand", LMNT_1D="Mnd-1"] label="" icon="calendar"
+            //     Webview label="Climate Livingroom" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel2" height=12 icon="line"
+            // }
 
             Text item=NHC_Humidity_Livingroom valuecolor=[>60="orange",>40="green",<=40="red"]
-            {
-                Switch item=Climate_Period1 mappings=[TDY_30="Vandaag", YDY_30="Gisteren", WK_1="Week", LWK_1="Wk-1", MNT_1D="Maand", LMNT_1D="Mnd-1"] label="" icon="calendar"
-                Webview label="Climate Livingroom" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period1&panelItem=Climate_Panel1" height=12 icon="line"
-                Text item=VS_GarageHum
-                Text item=VS_CorridorHum
-            }
+            // {
+            //     Switch item=Climate_Period1 mappings=[TDY_30="Vandaag", YDY_30="Gisteren", WK_1="Week", LWK_1="Wk-1", MNT_1D="Maand", LMNT_1D="Mnd-1"] label="" icon="calendar"
+            //     Webview label="Climate Livingroom" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period1&panelItem=Climate_Panel1" height=12 icon="line"
+                Text item=Alarm_Humidity_SmokeGarage
+                Text item=Alarm_Humidity_SmokeCorridor
+            // }
 
             Text item=Weather_TempAverage_Outdoor label="Outdoor temperature [%.0f °C]"
-            {
-                Switch item=Climate_Period6 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
-                Webview label="Outdoor temperature left side of the house" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period6&panelItem=Climate_Panel6" height=12 icon="none"
-            }
+            // {
+            //     Switch item=Climate_Period6 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
+            //     Webview label="Outdoor temperature left side of the house" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period6&panelItem=Climate_Panel6" height=12 icon="none"
+            // }
 
             Text item=Motion_Temperature_Toilet     label="Toilet temperature [%.1f °C]"
-            Text item=VS_GarageTemp1    label="Garage temperature [%.1f °C]"
-            Text item=VS_CorridorTemp   label="Corridor temperature [%.1f °C]"
-            Text item=VS_KitchenTemp    label="Kitchen temperature [%.1f °C]"
+            Text item=Alarm_Temp_SmokeGarage    label="Garage temperature [%.1f °C]"
+            Text item=Alarm_Temp_SmokeCorridor   label="Corridor temperature [%.1f °C]"
+            Text item=Alarm_Temp_SirenKitchen    label="Kitchen temperature [%.1f °C]"
 
             Text item=AC_Temp_Bedroom label="Bedroom [%.1f °C]" valuecolor=[>23="red",>18="orange",<=18="green"]
-            {
-                Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
-                Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
-            }
+            // {
+            //     Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
+            //     Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
+            // }
             Text item=AC_Temp_Study label="Study [%.1f °C]" valuecolor=[>23="red",>18="orange",<=18="green"]
-            {
-                Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
-                Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
-            }
+            // {
+            //     Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
+            //     Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
+            // }
             Text item=AC_Temp_Laundry label="Stephan's room [%.1f °C]" valuecolor=[>23="red",>20="orange",>10="green",<=10="blue"]
-            {
-                Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
-                Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
-            }
+            // {
+            //     Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
+            //     Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
+            // }
             Text item=AC_Temp_Guestroom label="Menno's room [%.1f °C]" valuecolor=[>23="red",>19="orange",>10="green",<=10="blue"]
-            {
-                Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
-                Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
-            }
+            // {
+            //     Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
+            //     Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
+            // }
         }
         Text item=Temp_Avg_Livingroom           valuecolor=[>22="red",>20="green",>19="orange",<19="blue"]
         Text item=Weather_TempAverage_Outdoor   label="Outdoor temperature [%.0f °C]"
@@ -334,7 +334,8 @@ sitemap default label="At Home"
         }
     }
 
-    Frame label="Alarm" {
+    Frame label="Alarm"
+    {
         Switch item=Alarm_Status label="Alarm []" icon="alarm" mappings=[DISARMED="Disarm", ARMED_HOME="Arm Home", ARMED_AWAY="Arm Away"]
         Group item=gDoors valuecolor=[>3="red",>1="orange",<2="green"]
         Text item=Alarm_LastChange
@@ -396,71 +397,69 @@ sitemap default label="At Home"
         // Text item=dayGasUseCost
     }
 
-    // Frame label="Heating" {
-    //     Switch item=aNefitCVActive mappings=[ON="On"] visibility=[aNefitCVActive==ON]
-    //     Switch item=aNefitCVActive mappings=[OFF="Off"] visibility=[aNefitCVActive==OFF]
-    //     Text item=aHeaterSetPoint {
-    //         Setpoint item=aHeaterSetPoint minValue=18 maxValue=23 step=0.5 
-    //         Text item=Temp_Avg_Livingroom
-    //         Text item=aHeaterPressure
-    //         Switch item=aBurnerActive mappings=[ON="On", OFF="Off"] visibility=[aBurnerActive==ON]
-    //         Switch item=aHotWaterActive mappings=[ON="On", OFF="Off"] visibility=[aHotWaterActive==ON]
+    Frame label="Heating"
+    {
+        Switch item=CV_Heater_Active mappings=[ON="On"] visibility=[CV_Heater_Active==ON]
+        Switch item=CV_Heater_Active mappings=[OFF="Off"] visibility=[CV_Heater_Active==OFF]
+        Text item=CV_SetPoint_Livingroom {
+            Setpoint item=CV_SetPoint_Livingroom minValue=18 maxValue=23 step=0.5 
+            Text item=Temp_Avg_Livingroom
+            Text item=CV_Pressure
+            Switch item=CV_Burner_Active mappings=[ON="On", OFF="Off"] visibility=[CV_Burner_Active==ON]
+            Switch item=CV_HotWater_Active mappings=[ON="On", OFF="Off"] visibility=[CV_HotWater_Active==ON]
     //         Switch item=CV_Panel1 mappings=[CH_BURN="Heating", HW_BURN="Warm Water"] label="Graph" icon="chart"
     //         Switch item=CV_Period1 mappings=[HR4_5="4 Hr",TDY_5="5 Hr",YDY_5="Yesterday",DBYDY_5="Day before yesterday"] label="Periode" icon="calendar"
     //         Webview label="Brander actief uren Nefit CV ketel" url="/static/grafana-small.html?kiosk&theme=dark&dashboard=openhab&fromItem=CV_Period1&panelItem=CV_Panel1" height=4 icon="line"
     //         Switch item=GasPeriod4 mappings=[WK_1D="Week",LWK_1D="Wk-1",MNT_1D="Month",LMNT_1D="Mn-1",YR_1D="Year",YRL_1W="Yr-1"] icon="calendar"
     //         Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Gas_Period4&panelItem=Gas_Panel4" height=12 icon="none"
-    //     }
-    // }
+        }
+    }
 
-    // Frame label="heating Example" {
-    //     Webview url="http://192.18.2.2:5080/static/time-line-picker/index.html?ip=192.168.2.2:5080&transferItem=TransferItem&lang=en&dark=yes&states=19.5,20,20.5,21&yAxisLabel=1,2,3,4,5,6,7"
-    // }
-
-    // Frame label="TV Wake on LAN" {
-    //     Switch item=LG_TV0_Power
-    //     Switch item=LG_TV1_WoL
-    //     Switch item=LG_TV0_Mute
-    //     Text item=LG_TV0_Volume icon="none"
-    //     Switch item=LG_TV0_VolDummy icon="soundvolume" label="Volume" mappings=[1="▲", 0="▼"]
-    //     Text item=LG_TV0_ChannelNo icon="none"
-    //     Switch item=LG_TV0_ChannelDummy icon="screen" label="Channel" mappings=[1="▲", 0="▼"]
-    //     Text item=LG_TV0_Channel icon="none"
-    //     Default item=LG_TV0_Player
-    //     Text item=LG_TV0_Application icon="none"
-    //     Selection item=LG_TV0_Application icon="none" mappings=[
-    //         "amazon"="Amazon Prime",
-    //         "netflix"="Netflix",
-    //         "npo"="NPO",
-    //         "rtl"="RTL XL",
-    //         "spotify-beehive"="Spotify",
-    //         "youtube.leanback.v4"="YouTube",
-    //         "com.davidxo.uhdf"="UHD Fireplace",
-    //         "com.xstars.app.fireplace2"="Fireplace Relax",
-    //         "com.webos.app.livetv"="Live TV",
-    //         "com.webos.app.livemenu"="Tv-gids",
-    //         "com.webos.app.igallery"="Galerij",
-    //         "com.webos.app.photovideo"="Foto en video",
-    //         "com.webos.app.recordings"="Opnamen",
-    //         "com.webos.app.music"="Muziek",
-    //         "com.webos.app.hdmi1"="HDMI1",
-    //         "com.webos.app.hdmi2"="HDMI2",
-    //         "com.webos.app.scheduler"="Planner",
-    //         "com.webos.app.miracast"="Screen Share",
-    //         "com.webos.app.multiview"="Multi-view",
-    //         "de.2kit.castbrowserlg"="TV Cast",
-    //         "com.webos.app.screensaver"="Screen Saver",
-    //         "com.webos.app.tvsimpleviewer"="Viewer",
-    //         "com.webos.app.voice"="Zoeken",
-    //         "com.webos.app.browser"="Webbrowser",
-    //         "com.webos.app.cheeringtv"="Cheering Mode",
-    //         "com.webos.app.discovery"="LG Content Store",
-    //         "com.webos.app.notificationcenter"="Meldingen",
-    //         "com.webos.app.remotesetting"="Instellingen afstandsbediening",
-    //         "com.webos.app.googleassistant"="Google Assistant",
-    //         "com.webos.app.softwareupdate"="Software Update",
-    //         "com.palm.app.settings"="Instellingen"]
-    // }
+    Frame label="TV Wake on LAN"
+    {
+        Switch item=LGTV_Power_Livingroom
+        Switch item=LGTV_WoL_Livingroom
+        Switch item=LGTV_Mute_Livingroom
+        Text item=LGTV_Volume_Livingroom icon="none"
+        Switch item=LGTV_VolDummy icon="soundvolume" label="Volume" mappings=[1="▲", 0="▼"]
+        Text item=LGTV_ChannelNo_Livingroom icon="none"
+        Switch item=LGTV_ChannelDummy icon="screen" label="Channel" mappings=[1="▲", 0="▼"]
+        Text item=LGTV_Channel_Livingroom icon="none"
+        Default item=LGTV_Player_Livingroom
+        Text item=LGTV_Application_Livingroom icon="none"
+        Selection item=LGTV_Application_Livingroom icon="none" mappings=[
+            "amazon"="Amazon Prime",
+            "netflix"="Netflix",
+            "npo"="NPO",
+            "rtl"="RTL XL",
+            "spotify-beehive"="Spotify",
+            "youtube.leanback.v4"="YouTube",
+            "com.davidxo.uhdf"="UHD Fireplace",
+            "com.xstars.app.fireplace2"="Fireplace Relax",
+            "com.webos.app.livetv"="Live TV",
+            "com.webos.app.livemenu"="Tv-gids",
+            "com.webos.app.igallery"="Galerij",
+            "com.webos.app.photovideo"="Foto en video",
+            "com.webos.app.recordings"="Opnamen",
+            "com.webos.app.music"="Muziek",
+            "com.webos.app.hdmi1"="HDMI1",
+            "com.webos.app.hdmi2"="HDMI2",
+            "com.webos.app.scheduler"="Planner",
+            "com.webos.app.miracast"="Screen Share",
+            "com.webos.app.multiview"="Multi-view",
+            "de.2kit.castbrowserlg"="TV Cast",
+            "com.webos.app.screensaver"="Screen Saver",
+            "com.webos.app.tvsimpleviewer"="Viewer",
+            "com.webos.app.voice"="Zoeken",
+            "com.webos.app.browser"="Webbrowser",
+            "com.webos.app.cheeringtv"="Cheering Mode",
+            "com.webos.app.discovery"="LG Content Store",
+            "com.webos.app.notificationcenter"="Meldingen",
+            "com.webos.app.remotesetting"="Instellingen afstandsbediening",
+            "com.webos.app.googleassistant"="Google Assistant",
+            "com.webos.app.softwareupdate"="Software Update",
+            "com.palm.app.settings"="Instellingen"]
+    }
 
     // Frame label="Media" {
     //     Switch item=LR_Denon_Power label="Power"
