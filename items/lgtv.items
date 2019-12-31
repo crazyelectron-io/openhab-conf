@@ -1,27 +1,70 @@
 //==================================================================================================
-// lgtv.items - 
+// lgtv.items - LG WebOS TV Items.
 //==================================================================================================
-//  v01	20191229    Initial version.
+//  v01	20191230    Initial version.
 //--------------------------------------------------------------------------------------------------
 //
 //==================================================================================================
 
+// Current power setting (RW).
+// Note: TV can only be powered off, not on (see WoL below).
 Switch							LGTV_Power_Livingroom
+                                "TV Power Off"
+                                <television>
+                                {autoupdate="false", channel="lgwebos:WebOSTV:tvlivingroom:power"}
 
+// Wake-On-LAN to turn on the TV.
 Switch							LGTV_WoL_Livingroom
+                                "TV Power On"
+                                {wol="192.168.2.255#78:5d:c8:90:10:73"}
 
+// Current mute setting (RW).
 Switch							LGTV_Mute_Livingroom
+                                "TV Mute"
+                                {channel="lgwebos:WebOSTV:tvlivingroom:mute"}
 
-String							LGTV_Volume_Livingroom
+// Current volume setting (RW).
+// Setting and reporting absolute percent values only works when using internal speakers.
+// When connected to an external amp, the volume should be controlled using Increase and Decrease
+// commands.
+Dimmer							LGTV_Volume_Livingroom
+                                "TV Volume [%S]"
+                                {channel="lgwebos:WebOSTV:tvlivingroom:volume"}
+//
+Number                          LGTV_VolDummy_Livingroom
+                                "VolumeUpDown"
 
-Switch							LGTV_VolDummy
-
+// Current channel number (RW).
 String							LGTV_ChannelNo_Livingroom
+                                "TV Channel [%d]"
+                                {channel="lgwebos:WebOSTV:tvlivingroom:channel"}
 
-Switch							LGTV_ChannelDummy
-
+// Current channel name (R).
 String							LGTV_Channel_Livingroom
+                                "TV Channel [%s]"
+                                {channel="lgwebos:WebOSTV:tvlivingroom:channelName"}
 
-// Default LGTV_Player
-String							LGTV_Application_Livingroom
+//
+Number                          LGTV_ChannelDummy_Livingroom
+                                "ChannelUpDown"
 
+// Displays a short message on the TV screen (W).
+String                          LGTV_Toast_Livingroom
+                                "TV Toast"
+                                {channel="lgwebos:WebOSTV:tvlivingroom:toast"}
+
+// Media control player (W).
+Player                          LGTV_Player_Livingroom
+                                "TV Player"
+                                {channel="lgwebos:WebOSTV:tvlivingroom:mediaPlayer"}
+
+// Media control stop (W).
+Switch							LGTV_MediaStop_Livingroom
+                                "TV Media Stop"
+                                {autoupdate="false", channel="lgwebos:WebOSTV:tvlivingroom:mediaStop"}
+
+// Application ID of currently running application (RW).
+// This also allows to start applications on the TV by sending a specific Application ID to this channel.
+String                          LGTV_Application_Livingroom
+                                "TV Application [%s]"
+                                {channel="lgwebos:WebOSTV:tvlivingroom:appLauncher"}

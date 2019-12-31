@@ -421,9 +421,9 @@ sitemap default label="At Home"
         Switch item=LGTV_WoL_Livingroom
         Switch item=LGTV_Mute_Livingroom
         Text item=LGTV_Volume_Livingroom icon="none"
-        Switch item=LGTV_VolDummy icon="soundvolume" label="Volume" mappings=[1="▲", 0="▼"]
+        Switch item=LGTV_VolDummy_Livingroom icon="soundvolume" label="Volume" mappings=[1="▲", 0="▼"]
         Text item=LGTV_ChannelNo_Livingroom icon="none"
-        Switch item=LGTV_ChannelDummy icon="screen" label="Channel" mappings=[1="▲", 0="▼"]
+        Switch item=LGTV_ChannelDummy_Livingroom icon="screen" label="Channel" mappings=[1="▲", 0="▼"]
         Text item=LGTV_Channel_Livingroom icon="none"
         Default item=LGTV_Player_Livingroom
         Text item=LGTV_Application_Livingroom icon="none"
