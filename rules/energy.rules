@@ -92,13 +92,13 @@ end
 
 
 //=================================================================================================
-// Calculate the periodic natural gas usage (in m3).
+// Calculate the periodic natural gas usage (in m3) and it's cost (in €).
 //=================================================================================================
-rule "DSMRGasUse - Gas usage day cummulation"
+rule "DSMR.GasUse.Change - Gas usage day cummulation"
 when
     Item Gas_Use_Total changed
 then
-    val String TAG = "DSMRGasUse.Gas_Use_Total.Changed"
+    val String TAG = "DSMR.GasUse.Change"
 
     val Number price = GAS_PRICE_PER_DM3.state as Number
 
@@ -113,7 +113,7 @@ then
     Gas_Use_Hour.postUpdate(used)
     cost = used * price
     Gas_Use_Hour_Cost.postUpdate(cost)
-    Gas_Use_Hour_Summary.postUpdate(String.format("%.2f m3", used/1000) + String.format(", € %.2f", cost/100))
+    Gas_Use_Hour_Summary.postUpdate(String.format("%.2f m3", used/1000) + String.format(", € %.2f", cost))
 
     //------------------------------------------------------------------------------------------
     // Calculate consumption today
@@ -123,7 +123,7 @@ then
     Gas_Use_Day.postUpdate(used)
     cost = used * price
     Gas_Use_Day_Cost.postUpdate(cost)
-    Gas_Use_Day_Summary.postUpdate(String.format("%.1f m3", used/1000) + String.format(", € %.2f", cost/100))
+    Gas_Use_Day_Summary.postUpdate(String.format("%.1f m3", used/1000) + String.format(", € %.2f", cost))
 
     //------------------------------------------------------------------------------------------
     // Calculate consumption this month
@@ -133,22 +133,22 @@ then
     Gas_Use_Month.postUpdate(used)
     cost = (used * price)
     Gas_Use_Month_Cost.postUpdate(cost)
-    Gas_Use_Month_Summary.postUpdate(String.format("%.0f m3", used/1000) + String.format(", € %.2f", cost/100))
+    Gas_Use_Month_Summary.postUpdate(String.format("%.0f m3", used/1000) + String.format(", € %.2f", cost))
 
     //------------------------------------------------------------------------------------------
     // Calculate consumption this year
     //------------------------------------------------------------------------------------------
     used = Gas_Use_Total.deltaSince(contractStart, "influxdb")
-    if (used === null)
+    if (null === used)
     {
         used = Gas_Use_Total.state as Number - 5611000
         logInfo(TAG, "Temporary fix for missing year data, pre-fill '{}'", used)
     }
-        logInfo(TAG, "This contract years gas usage = {}", used)
+    logInfo(TAG, "This contract years gas usage = {}", used)
     Gas_Use_Year.postUpdate(used)
     cost = (used * price)
     Gas_Use_Year_Cost.postUpdate(cost)
-    Gas_Use_Year_Summary.postUpdate(String.format("%.0f m3", used/1000) + String.format(", € %.0f", cost/100))
+    Gas_Use_Year_Summary.postUpdate(String.format("%.0f m3", used/1000) + String.format(", € %.0f", cost))
 end
 
 

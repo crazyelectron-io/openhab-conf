@@ -179,17 +179,11 @@ then
 		case "34.0":
 		{
 			if (Light_Scene_Dining.state == "OFF" || Light_Scene_Dining.state == "BRIGHT")
-			{
 				Light_Scene_Dining.sendCommand("EVENING")
-			}
 			else if (Light_Scene_Dining.state == "EVENING")
-			{
 				Light_Scene_Dining.sendCommand("READ")
-			}
 			else
-			{
 				Light_Scene_Dining.sendCommand("BRIGHT")
-			}
 		}
 		//--- Lower right button press?		
 		case "18.0":
@@ -204,17 +198,11 @@ then
 		case "16.0":
 		{
 			if (Light_Scene_Livingroom.state == "OFF" || Light_Scene_Livingroom.state == "READ")
-			{
 				Light_Scene_Livingroom.sendCommand("EVENING")
-			}
 			else if (Light_Scene_Livingroom.state == "EVENING")
-			{
 				Light_Scene_Livingroom.sendCommand("MOVIE")
-			}
 			else
-			{
 				Light_Scene_Livingroom.sendCommand("READ")
-			}
 		}
 		//--- Lower left button press?
 		case "17.0":
@@ -253,17 +241,11 @@ then
 		case "16.0":
 		{
 			if (Light_Scene_Kitchen.state == "OFF" || Light_Scene_Kitchen.state == "BRIGHT")
-			{
 				Light_Scene_Kitchen.sendCommand("EVENING")
-			}
 			else if (Light_Scene_Kitchen.state == "EVENING")
-			{
 				Light_Scene_Kitchen.sendCommand("WORK")
-			}
 			else
-			{
 				Light_Scene_Kitchen.sendCommand("BRIGHT")
-			}
 		}
 		//--- Lower left button press?
 		case "17.0": 
@@ -1178,67 +1160,83 @@ then
 	logInfo(tag, "---> HUE Dimmer switch event {}", receivedEvent)
 
 	switch(receivedEvent.getEvent()) {
-		case "1000.0": {
+		case "1000.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 1 initial pressed")
 			Light_Scene_Toilet.sendCommand("EVENING")
 		}		
-		case "1001.0": {
+		case "1001.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 1 hold")
 			//do more stuff
 		}
-		case "1002.0": {
+		case "1002.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 1 short released")
 			Light_Scene_Toilet.sendCommand("EVENING")
 		}	
-		case "1003.0": {
+		case "1003.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 1 long released")
 			//do any stuff
 		}
-		case "2000.0": {
+		case "2000.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 2 initial pressed")
 			//do stuff
 		}		
-		case "2001.0": {
+		case "2001.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 2 hold")
 			//do more stuff
 		}
-		case "2002.0": {
+		case "2002.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 2 short released")
 			//do other stuff
 		}	
-		case "2003.0": {
+		case "2003.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 2 long released")
 			//do any stuff
 		}
-		case "3000.0": {
+		case "3000.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 3 initial pressed")
 			//do stuff
 		}		
-		case "3001.0": {
+		case "3001.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 3 hold")
 			//do more stuff
 		}
-		case "3002.0": {
+		case "3002.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 3 short released")
 			//do other stuff
 		}	
-		case "3003.0": {
+		case "3003.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 3 long released")
 			//do any stuff
 		}
-		case "4000.0": {
+		case "4000.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 4 initial pressed")
 			Light_Scene_Toilet.sendCommand("OFF")
 		}		
-		case "4001.0": {
+		case "4001.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 4 hold")
 			//do more stuff
 		}
-		case "4002.0": {
+		case "4002.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 4 short released")
 			Light_Scene_Toilet.sendCommand("OFF")
 		}	
-		case "4003.0": {
+		case "4003.0":
+		{
 		    logInfo(tag,"---> Dimmer Button 4 long released")
 			//do any stuff
 		}
