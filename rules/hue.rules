@@ -316,7 +316,9 @@ end
 // Key 1 (ON) second press:
 //		Turn on Hall Ceiling lighting (Scene EVENING)
 // Key 1 (ON) third press:
-//		Turn on Hall Ceiling lighting to Scene READ
+//		Turn on Hall Ceiling lighting to Scene READ and Hall to Scene READ
+// Key 1 (ON) fourth press:
+//		Turn off Hall Ceiling lighting, and Hall to Scene EVENING
 // Key 1 (ON) Hold:
 //		Turn on Hall, Kitchen, Dining, Livingroom lighting to Scene EVENING
 //==================================================================================================
@@ -328,8 +330,6 @@ then
 
 	logInfo(TAG, "Event '{}' received", receivedEvent)
 
-	var Number dimLevel = 0
-
 	switch(receivedEvent.getEvent())
 	{
 		//--- Key 1 (ON) Initial Press = Not always triggered, ignoring it.
@@ -337,14 +337,22 @@ then
 		{
 		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Initial Press event triggered [1000] - ignored")
 		}
+
 		//--- Key 1 (ON) Hold
 		case "1001.0":
 		{
-		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001]")
-			if (Light_Scene_Hall.state == "OFF") Light_Scene_Hall.sendCommand("EVENING")
-			Light_Scene_Dining.sendCommand("EVENING")
-			Light_Scene_Livingroom.sendCommand("EVENING")
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001] - Switch (more) lights on")
+
+			if (Light_Scene_Hall.state == "OFF")
+				Light_Scene_Hall.sendCommand("EVENING")
+			else if (Light_Scene_Kitchen.state == "OFF")
+				Light_Scene_Kitchen.sendCommand("EVENING")
+			else if (Light_Scene_Dining.state == "OFF")
+				Light_Scene_Dining.sendCommand("EVENING")
+			else if (Light_Scene_Livingroom.state == "OFF")
+				Light_Scene_Livingroom.sendCommand("EVENING")
 		}
+
 		//--- Key 1 (ON) Short Release
 		case "1002.0":
 		{
@@ -367,31 +375,42 @@ then
 				Light_Scene_HallCeiling.sendCommand("READ")
 				Light_Scene_Hall.sendCommand("READ")
 			}
+			else if (Light_Scene_HallCeiling.state == "READ" && Light_Scene_Hall.state == "READ")
+			{
+				logInfo(TAG, "Fourth Button 1 (ON) Short Release - Set Hall (Ceiling) Scene back")
+				Light_Scene_HallCeiling.sendCommand("OFF")
+				Light_Scene_Hall.sendCommand("EVENING")
+			}
 			else
 			{
-				logInfo(TAG, "Forth Button 1 (ON) Short Release - Set Hall (Ceiling) Scene to EVENING")
+				logInfo(TAG, "Unknown Button 1 (ON) Short Release state - reset to all EVENING scene")
 				Light_Scene_HallCeiling.sendCommand("EVENING")
 				Light_Scene_Hall.sendCommand("EVENING")
 			}
 		}
+
 		//--- Key 1 (ON) Long Release
 		case "1003.0":
 		{
 		    logInfo(TAG,"Dimmer Button 1 (ON) Long Release event triggered [1003] - ignored")
-			if (Light_Scene_Hall.state == "OFF") Light_Scene_Hall.sendCommand("EVENING")
-			Light_Scene_Dining.sendCommand("EVENING")
-			Light_Scene_Livingroom.sendCommand("EVENING")
 		}
+
 		//--- Key 2 (INCREASE) Initial Press
 		case "2000.0":
 		{
 		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Initial Press [2000] - ignored")
 		}
+
 		//--- Key 2 (INCREASE) Hold
 		case "2001.0":
 		{
-		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Hold [2001] - ignored")
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Hold [2001] - increade brightness Lighting")
+			if (Light_Scene_Hall.state != "OFF")
+				gLight_Brightness_Hall.sendCommand(INCREASE)
+			if (Light_Scene_HallCeiling.state != "OFF")
+				gLight_Brightness_HallCeiling.sendCommand(INCREASE)
 		}
+
 		//--- Key 2 (INCREASE) Short Release
 		case "2002.0":
 		{
@@ -399,33 +418,38 @@ then
 			if (Light_Scene_Hall.state != "OFF")
 			{
 				logInfo(TAG, "Increase Hall Wall Lighting brightness")
-				dimLevel = gLight_Brightness_Hall.state as Number + 10
-				if (dimLevel > 100) dimLevel = 100
-				gLight_Brightness_Hall.sendCommand(dimLevel)
+				gLight_Brightness_Hall.sendCommand(INCREASE)
 			}
 			if (Light_Scene_HallCeiling.state != "OFF")
 			{
 				logInfo(TAG, "Increase Hall Ceiling Lighting brightness")
-				dimLevel = gLight_Brightness_HallCeiling.state as Number + 10
-				if (dimLevel > 100) dimLevel = 100
-				gLight_Brightness_HallCeiling.sendCommand(dimLevel)
+				gLight_Brightness_HallCeiling.sendCommand(DECREASE)
 			}
 		}
+
 		//--- Key 2 (INCREASE) Long Release
 		case "2003.0":
 		{
 		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Long Release [2003] - ignored")
 		}
+
 		//--- Key 3 (DECREASE) Initial Press
 		case "3000.0":
 		{
 		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Initial Press [3000] - ignored")
 		}
+
 		//--- Key 3 (DECREASE) Hold
 		case "3001.0":
 		{
-		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Hold [3001] - ignored")
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Hold [3001] - Decrease brightness Lighting")
+			if (Light_Scene_Hall.state != "OFF")
+				gLight_Brightness_Hall.sendCommand(DECREASE)
+			if (Light_Scene_HallCeiling.state != "OFF")
+				gLight_Brightness_HallCeiling.sendCommand(DECREASE)
+
 		}
+
 		//--- Key 3 (DECREASE) Short Release
 		case "3002.0":
 		{
@@ -433,49 +457,63 @@ then
 			if (Light_Scene_Hall.state != "OFF")
 			{
 				logInfo(TAG, "Decrease Hall Wall Lighting brightness")
-				dimLevel = gLight_Brightness_Hall.state as Number - 10
-				if (dimLevel < 5) dimLevel = 5
-				gLight_Brightness_Hall.sendCommand(dimLevel)
+				gLight_Brightness_Hall.sendCommand(DECREASE)
 			}
 			if (Light_Scene_HallCeiling.state != "OFF")
 			{
 				logInfo(TAG, "Decrease Hall Ceiling Lighting brightness")
-				dimLevel = gLight_Brightness_HallCeiling.state as Number - 10
-				if (dimLevel < 5) dimLevel = 5
-				gLight_Brightness_HallCeiling.sendCommand(dimLevel)
+				gLight_Brightness_HallCeiling.sendCommand(DECREASE)
 			}
 		}
+
 		//--- Key 3 (DECREASE) Long Release
 		case "3003.0":
 		{
 		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Long Releas3 [3003] - ignored")
 		}
+
 		//--- Key 4 (OFF) Initial Press. Ignored, not always triggered.
 		case "4000.0":
 		{
-			logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - ignored")
+			logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - Turn off Lighting")
 		}
+
 		//--- Key 4 (OFF) Hold
 		case "4001.0":
 		{
 		    logInfo(TAG,"Dimmer Button 4 (OFF) Hold [4001]")
-			Light_Scene_Livingroom.sendCommand("OFF")
-			Light_Scene_Dining.sendCommand("OFF")
+			if (Light_Scene_Livingroom.state != "OFF")
+				Light_Scene_Livingroom.sendCommand("OFF")
+			else if (Light_Scene_Dining.state != "OFF")
+				Light_Scene_Dining.sendCommand("OFF")
+			else if (Light_Scene_Kitchen.state != "OFF")
+				Light_Scene_Kitchen.sendCommand("OFF")
+			else
+			{
+				Light_Scene_HallCeiling.sendCommand("OFF")
+				Light_Scene_Hall.sendCommand("OFF")
+			}
 		}
+
 		//--- Key 4 (OFF) Short Release
 		case "4002.0":
 		{
 		    logInfo(TAG,"Dimmer Button 4 (OFF) Short Release [4002]")
+
 			if (Light_Scene_HallCeiling.state != "OFF")
-			{
 				Light_Scene_HallCeiling.sendCommand("OFF")
-			}
-			else
+
+			if (Light_Scene_Hall.state == "READ")
 			{
-				Light_Scene_Kitchen.sendCommand("OFF")
+				Light_Scene_Hall.sendCommand("EVENING")
+			}
+			else if (Light_Scene_Hall.state == "EVENING")
+			{
 				Light_Scene_Hall.sendCommand("OFF")
+				Light_Scene_Kitchen.sendCommand("OFF")
 			}
 		}
+
 		//--- Key 4 (OFF) Long Release
 		case "4003.0":
 		{
@@ -492,244 +530,637 @@ end
 
 
 //==================================================================================================
-// Key 1 (ON) Long released
+// Dimmer Switch Bedroom Left handling rule.
+//--------------------------------------------------------------------------------------------------
+// Key 1 (ON) first press:
+//		Turn on Bedroom lighting (Scene EVENING)
+// Key 1 (ON) second press:
+//		Turn on Bedroom lighting (Scene READ)
+// Key 1 (ON) third press:
+//		Turn on Bedroom lighting (Scene COSY)
+// Key 1 (ON) Hold:
+//		Turn on left Bedroom light (rotate through EVENING and READ Scene)
+// Key 4 (OFF) Hold:
+//		Turn of Livingroom, Dining, Bedroom light and turn on alarm (ARMED_HOME)
 //==================================================================================================
-rule "Hue Dimmer Hall - Trigger key 1 (ON) Long released"
+rule "Hue.BedLDim.Event - Dimmer Switch Bedroom Left rule"
 when
-	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 1003.0
+	Channel "hue:0820:0017882ec5b3:dim_lbed:dimmer_switch_event" triggered
 then
-    val String TAG = "HUE.HallDim.Event1003"
-	logInfo(TAG, "HUE Hall Dimmer switch event 1003.0")
+    val String TAG = "HUE.BedLDim.Event"
 
-end
+	logInfo(TAG, "Event '{}' received", receivedEvent)
 
-
-//==================================================================================================
-// Key 2 (INCREASE) hold
-//==================================================================================================
-rule "Hue Dimmer Switch Hall - Trigger Key 2 (INCREASE) Hold"
-when
-	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 2001.0
-then
-    val String TAG = "HUE.HallDim.Event2001"
-	logInfo(TAG, "HUE Hall Dimmer switch event 2001.0")
-
-	if (gLight_OnOff_Hall.state != OFF) gLight_Brightness_Hall.sendCommand(INCREASE)
-	if (Light_Scene_HallCeiling.state != OFF) gLight_Brightness_HallCeiling.sendCommand(INCREASE)
-end
-
-
-//==================================================================================================
-// Key 3 (DECREASE) hold
-//==================================================================================================
-rule "Hue Dimmer Switch Hall - Trigger Key 3 (DECREASE) Hold"
-when
-	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 3001.0
-then
-    val String TAG = "HUE.HallDim.Event3001"
-	logInfo(TAG, "HUE Hall Dimmer switch event 3001.0")
-
-	if (gLight_OnOff_Hall.state != OFF) gLight_Brightness_Hall.sendCommand(DECREASE)
-	if (Light_Scene_HallCeiling.state != OFF) gLight_Brightness_HallCeiling.sendCommand(DECREASE)
-end
-
-
-//==================================================================================================
-// Key 4 (OFF) Initial pressed
-//==================================================================================================
-rule "Hue Dimmer Switch Hall - Trigger Key 4 (OFF) Initial pressed"
-when
-	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 4000.0
-then
-    val String TAG = "HUE.HallDim.Event4000"
-	logInfo(TAG, "HUE Hall Dimmer switch event 4000.0")
-
-	Light_Scene_Kitchen.sendCommand("OFF")
-end
-
-
-//==================================================================================================
-// Key 4 (OFF) Hold (can repeat)
-//==================================================================================================
-rule "Hue Dimmer Switch Hall - Trigger Key 4 (OFF) Hold"
-when
-	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 4001.0
-then
-    val String TAG = "HUE.HallDim.Event4001"
-	logInfo(TAG, "HUE Hall Dimmer switch event 4001.0")
-
-	Light_Scene_Livingroom.sendCommand("OFF")
-	Light_Scene_Dining.sendCommand("OFF")
-end
-
-
-//==================================================================================================
-// Key 4 (OFF) short released
-//==================================================================================================
-rule "Hue Dimmer Switch Hall - Trigger Key 4 (OFF) Short released"
-when
-	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 4002.0
-then
-    val String TAG = "HUE.HallDim.Event4002"
-	logInfo(TAG, "HUE Hall Dimmer switch event 4002.0")
-
-	Light_Scene_Hall.sendCommand("OFF")
-	Light_Scene_Kitchen.sendCommand("OFF")
-	Light_Scene_Livingroom.sendCommand("OFF")
-	Light_Scene_Dining.sendCommand("OFF")
-	Light_Scene_HallCeiling.sendCommand("OFF")
-end
-
-
-//==================================================================================================
-// Key 4 (OFF) long release
-//==================================================================================================
-rule "Hue Dimmer Switch Hall - Trigger Key 4 (OFF) Long released"
-when
-	Channel "hue:0820:0017882ec5b3:dim_hall:dimmer_switch_event" triggered 4003.0
-then
-    val String TAG = "HUE.HallDim.Event4003"
-	logInfo(TAG, "HUE Hall Dimmer switch event 4003.0")
-
-	Light_Scene_Livingroom.sendCommand("OFF")
-	Light_Scene_Dining.sendCommand("OFF")
-end
-
-
-//==================================================================================================
-// Bedroom Dimmer Switch Key 1 (ON)
-//==================================================================================================
-rule "Hue Dimmer Switch Bedroom - Trigger Key 1 (ON)"
-when
-	Channel "hue:0820:0017882ec5b3:dim_bedleft:dimmer_switch_event" triggered 1000.0 or
-	Channel "hue:0820:0017882ec5b3:dim_bedleft:dimmer_switch_event" triggered 1002.0 or
-	Channel "hue:0820:0017882ec5b3:dim_bedright:dimmer_switch_event" triggered 1000.0 or
-	Channel "hue:0820:0017882ec5b3:dim_bedright:dimmer_switch_event" triggered 1002.0
-then
-    val String TAG = "HUE.BedroomDim.Event100x"
-	logInfo(TAG, "HUE Bedroom Dimmer switch event {}", receivedEvent.getEvent())
-	if (gLight_OnOff_Bedroom.state != ON) Light_Scene_Bedroom.sendCommand("EVENING")
-end
-
-
-//==================================================================================================
-// Bedroom Dimmer Switch Key 4 (OFF)
-//==================================================================================================
-rule "Hue Dimmer Switch Bedroom - Trigger Key 4 (OFF)"
-when
-	Channel "hue:0820:0017882ec5b3:dim_bedleft:dimmer_switch_event" triggered 4000.0 or
-	Channel "hue:0820:0017882ec5b3:dim_bedright:dimmer_switch_event" triggered 4000.0 or
-	Channel "hue:0820:0017882ec5b3:dim_bedleft:dimmer_switch_event" triggered 4002.0 or
-	Channel "hue:0820:0017882ec5b3:dim_bedright:dimmer_switch_event" triggered 4002.0
-then
-    val String TAG = "HUE.BedroomDim.Event400x"
-	logInfo(TAG, "HUE Bedroom Dimmer Switch event {}", receivedEvent.getEvent())
-	Light_Scene_Bedroom.sendCommand("OFF")
-end
-
-
-//==================================================================================================
-// Bathroom Dimmer Switch Key 1 (ON)
-//==================================================================================================
-rule "Hue Dimmer Switch Bathroom - Trigger Key 1 (ON)"
-when
-	Channel "hue:0820:0017882ec5b3:dim_bathroom:dimmer_switch_event" triggered 1000.0 or
-	Channel "hue:0820:0017882ec5b3:dim_bathroom:dimmer_switch_event" triggered 1002.0
-then
-    val String TAG = "HUE.BathroomDim.Event100x"
-	logInfo(TAG, "HUE Bathroom Dimmer switch event {}", receivedEvent.getEvent())
-	if (gLight_OnOff_Bathroom.state != ON) Light_Scene_Bathroom.sendCommand("EVENING")
-end
-
-
-//==================================================================================================
-// Bathroom Dimmer Switch Key 4 (OFF)
-//==================================================================================================
-rule "Hue Dimmer Switch Bathroom - Trigger Key 4 (OFF)"
-when
-	Channel "hue:0820:0017882ec5b3:dim_bathroom:dimmer_switch_event" triggered 4000.0 or
-	Channel "hue:0820:0017882ec5b3:dim_bathroom:dimmer_switch_event" triggered 4002.0
-then
-    val String TAG = "HUE.BathroomDim.Event400x"
-	logInfo(TAG, "HUE Bathroom Dimmer switch event {}", receivedEvent.getEvent())
-	Light_Scene_Bathroom.sendCommand("OFF")
-end
-
-
-//==================================================================================================
-// Laundry room Dimmer Switch
-//==================================================================================================
-rule "Hue Dimmer Laundry Room"
-when
-	Channel "hue:0820:0017882ec5b3:dim_stephan:dimmer_switch_event" triggered
-then
-    val String tag = "HUErule.LaundryDimmer.Event"
-	logInfo(tag, "HUE Dimmer switch event {}", receivedEvent)
-
-	switch(receivedEvent.getEvent()) {
-		case "1000.0": {
-		    logInfo(tag,"Dimmer Button 1 initial pressed")
-			Light_Scene_Laundry.postUpdate("EVENING")
-		}		
-		case "1001.0": {
-		    logInfo(tag,"Dimmer Button 1 hold")
-			//do more stuff
+	switch(receivedEvent.getEvent())
+	{
+		//--- Key 1 (ON) Initial Press = Not always triggered, ignoring it.
+		case "1000.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Initial Press event triggered [1000] - ignored")
 		}
-		case "1002.0": {
-		    logInfo(tag,"Dimmer Button 1 short released")
-			Light_Scene_Laundry.postUpdate("EVENING")
-		}	
-		case "1003.0": {
-		    logInfo(tag,"Dimmer Button 1 long released")
-			//do any stuff
+
+		//--- Key 1 (ON) Hold
+		case "1001.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001] - Switch left bed light on")
+
+			if (Light_Dim_BedroomLeft.state == OFF || Light_Dim_BedroomLeft.state as Number == Bedroom_Brightness_READ.state as Number)
+			{
+				logInfo(TAG, "Turn on left bedroom light to EVENING scene")
+				Light_Dim_BedroomLeft.sendCommand(Bedroom_Brightness_EVENING.state as Number)
+				Light_ColorTemp_BedroomLeft.sendCommand(Bedroom_ColorTemp_EVENING.state as Number)
+			}
+			else if (Light_Dim_BedroomLeft.state as Number == Bedroom_Brightness_EVENING.state as Number)
+			{
+				logInfo(TAG, "Turn on left bedroom light to READ scene")
+				Light_Dim_BedroomLeft.sendCommand(Bedroom_Brightness_READ.state as Number)
+				Light_ColorTemp_BedroomLeft.sendCommand(Bedroom_ColorTemp_READ.state as Number)
+			}
+			else
+			{
+				logInfo(TAG, "Turn on left bedroom light back to EVENING scene")
+				Light_Dim_BedroomLeft.sendCommand(Bedroom_Brightness_EVENING.state as Number)
+				Light_ColorTemp_BedroomLeft.sendCommand(Bedroom_ColorTemp_EVENING.state as Number)
+			}
 		}
-		case "2000.0": {
-		    logInfo(tag,"Dimmer Button 2 initial pressed")
-			//do stuff
-		}		
-		case "2001.0": {
-		    logInfo(tag,"Dimmer Button 2 hold")
-			//do more stuff
+
+		//--- Key 1 (ON) Short Release
+		case "1002.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Short Release event triggered [1002]")
+	
+			if (Light_Scene_Bedroom.state == "OFF")
+				Light_Scene_Bedroom.sendCommand("EVENING")
+			else if (Light_Scene_Bedroom.state == "EVENING")
+				Light_Scene_Bedroom.sendCommand("READ")
+			else if (Light_Scene_Bedroom.state == "READ")
+				Light_Scene_Bedroom.sendCommand("COSY")
+			else
+				Light_Scene_Bedroom.sendCommand("EVENING")
 		}
-		case "2002.0": {
-		    logInfo(tag,"Dimmer Button 2 short released")
-			//do other stuff
-		}	
-		case "2003.0": {
-		    logInfo(tag,"Dimmer Button 2 long released")
-			//do any stuff
+
+		//--- Key 1 (ON) Long Release
+		case "1003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 1 (ON) Long Release event triggered [1003] - ignored")
 		}
-		case "3000.0": {
-		    logInfo(tag,"Dimmer Button 3 initial pressed")
-			//do stuff
-		}		
-		case "3001.0": {
-		    logInfo(tag,"Dimmer Button 3 hold")
-			//do more stuff
+
+		//--- Key 2 (INCREASE) Initial Press
+		case "2000.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Initial Press [2000] - ignored")
 		}
-		case "3002.0": {
-		    logInfo(tag,"Dimmer Button 3 short released")
-			//do other stuff
-		}	
-		case "3003.0": {
-		    logInfo(tag,"Dimmer Button 3 long released")
-			//do any stuff
+
+		//--- Key 2 (INCREASE) Hold
+		case "2001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Hold [2001] - increade brightness Lighting")
+			if (Light_Dim_BedroomLeft.state != OFF)
+				Light_Dim_BedroomLeft.sendCommand(INCREASE)
+			if (Light_Dim_BedroomRight.state != OFF)
+				Light_Dim_BedroomRight.sendCommand(INCREASE)
 		}
-		case "4000.0": {
-		    logInfo(tag,"Dimmer Button 4 initial pressed")
-			Light_Scene_Laundry.postUpdate("OFF")
-		}		
-		case "4001.0": {
-		    logInfo(tag,"Dimmer Button 4 hold")
-			//do more stuff
+
+		//--- Key 2 (INCREASE) Short Release
+		case "2002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Short Release [2002]")
+			if (Light_Dim_BedroomLeft.state != OFF)
+				Light_Dim_BedroomLeft.sendCommand(INCREASE)
+			if (Light_Dim_BedroomRight.state != OFF)
+				Light_Dim_BedroomRight.sendCommand(INCREASE)
 		}
-		case "4002.0": {
-		    logInfo(tag,"Dimmer Button 4 short released")
-			Light_Scene_Laundry.postUpdate("OFF")
-		}	
-		case "4003.0": {
-		    logInfo(tag,"Dimmer Button 4 long released")
-			//do any stuff
+
+		//--- Key 2 (INCREASE) Long Release
+		case "2003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Long Release [2003] - ignored")
+		}
+
+		//--- Key 3 (DECREASE) Initial Press
+		case "3000.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Initial Press [3000] - ignored")
+		}
+
+		//--- Key 3 (DECREASE) Hold
+		case "3001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Hold [3001] - Decrease brightness Lighting")
+			if (Light_Dim_BedroomLeft.state != OFF)
+				Light_Dim_BedroomLeft.sendCommand(DECREASE)
+			if (Light_Dim_BedroomRight.state != OFF)
+				Light_Dim_BedroomRight.sendCommand(DECREASE)
+		}
+
+		//--- Key 3 (DECREASE) Short Release
+		case "3002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Short Release [3002]")
+			if (Light_Dim_BedroomLeft.state != OFF)
+				Light_Dim_BedroomLeft.sendCommand(INCREASE)
+			if (Light_Dim_BedroomRight.state != OFF)
+				Light_Dim_BedroomRight.sendCommand(INCREASE)
+		}
+
+		//--- Key 3 (DECREASE) Long Release
+		case "3003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Long Releas3 [3003] - ignored")
+		}
+
+		//--- Key 4 (OFF) Initial Press. Ignored, not always triggered.
+		case "4000.0":
+		{
+			logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - Turn off Lighting")
+		}
+
+		//--- Key 4 (OFF) Hold
+		case "4001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Hold [4001]")
+			Light_Scene_Bedroom.sendCommand("OFF")
+		}
+
+		//--- Key 4 (OFF) Short Release
+		case "4002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Short Release [4002]")
+
+			if (Light_Scene_Bedroom.state != "OFF")
+				Light_Scene_Bedroom.sendCommand("OFF")
+		}
+
+		//--- Key 4 (OFF) Long Release
+		case "4003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Long Release [4003] - Turn off lights, turn on alarm")
+			Light_Scene_Bedroom.sendCommand("OFF")
+			Light_Scene_Livingroom.sendCommand("OFF")
+			Light_Scene_Dining.sendCommand("OFF")
+			Alarm_Status.sendCommand("ARMED_HOME")
+		}
+	}
+end
+
+
+//==================================================================================================
+// Dimmer Switch Bedroom Right handling rule.
+//--------------------------------------------------------------------------------------------------
+// Key 1 (ON) first press:
+//		Turn on Bedroom lighting (Scene EVENING)
+// Key 1 (ON) second press:
+//		Turn on Bedroom lighting (Scene READ)
+// Key 1 (ON) third press:
+//		Turn on Bedroom lighting (Scene COSY)
+// Key 1 (ON) Hold:
+//		Turn on right Bedroom light (rotate through EVENING and READ Scene)
+//
+//==================================================================================================
+rule "Hue.BedRDim.Event - Dimmer Switch Bedroom Right rule"
+when
+	Channel "hue:0820:0017882ec5b3:dim_rbed:dimmer_switch_event" triggered
+then
+    val String TAG = "HUE.BedRDim.Event"
+
+	logInfo(TAG, "Event '{}' received", receivedEvent)
+
+	switch(receivedEvent.getEvent())
+	{
+		//--- Key 1 (ON) Initial Press = Not always triggered, ignoring it.
+		case "1000.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Initial Press event triggered [1000] - ignored")
+		}
+
+		//--- Key 1 (ON) Hold
+		case "1001.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001] - Switch right bed light on")
+
+			if (Light_Dim_BedroomRight.state == OFF || Light_Dim_BedroomRight.state as Number == Bedroom_Brightness_READ.state as Number)
+			{
+				logInfo(TAG, "Turn on Right Bedroom light to EVENING Scene")
+				Light_Dim_BedroomRight.sendCommand(Bedroom_Brightness_EVENING.state as Number)
+				Light_ColorTemp_BedroomRight.sendCommand(Bedroom_ColorTemp_EVENING.state as Number)
+			}
+			else if (Light_Dim_BedroomRight.state as Number == Bedroom_Brightness_EVENING.state as Number)
+			{
+				logInfo(TAG, "Turn on Right Bedroom light to READ Scene")
+				Light_Dim_BedroomRight.sendCommand(Bedroom_Brightness_READ.state as Number)
+				Light_ColorTemp_BedroomRight.sendCommand(Bedroom_ColorTemp_READ.state as Number)
+			}
+			else
+			{
+				logInfo(TAG, "Turn on Right Bedroom light back to EVENING Scene")
+				Light_Dim_BedroomRight.sendCommand(Bedroom_Brightness_EVENING.state as Number)
+				Light_ColorTemp_BedroomRight.sendCommand(Bedroom_ColorTemp_EVENING.state as Number)
+			}
+		}
+
+		//--- Key 1 (ON) Short Release
+		case "1002.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Short Release event triggered [1002]")
+	
+			if (Light_Scene_Bedroom.state == "OFF")
+				Light_Scene_Bedroom.sendCommand("EVENING")
+			else if (Light_Scene_Bedroom.state == "EVENING")
+				Light_Scene_Bedroom.sendCommand("READ")
+			else if (Light_Scene_Bedroom.state == "READ")
+				Light_Scene_Bedroom.sendCommand("COSY")
+			else
+				Light_Scene_Bedroom.sendCommand("EVENING")
+		}
+
+		//--- Key 1 (ON) Long Release
+		case "1003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 1 (ON) Long Release event triggered [1003] - ignored")
+		}
+
+		//--- Key 2 (INCREASE) Initial Press
+		case "2000.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Initial Press [2000] - ignored")
+		}
+
+		//--- Key 2 (INCREASE) Hold
+		case "2001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Hold [2001] - increade brightness Lighting")
+			if (Light_Dim_BedroomLeft.state != OFF)
+				Light_Dim_BedroomLeft.sendCommand(INCREASE)
+			if (Light_Dim_BedroomRight.state != OFF)
+				Light_Dim_BedroomRight.sendCommand(INCREASE)
+		}
+
+		//--- Key 2 (INCREASE) Short Release
+		case "2002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Short Release [2002]")
+			if (Light_Dim_BedroomLeft.state != OFF)
+				Light_Dim_BedroomLeft.sendCommand(INCREASE)
+			if (Light_Dim_BedroomRight.state != OFF)
+				Light_Dim_BedroomRight.sendCommand(INCREASE)
+		}
+
+		//--- Key 2 (INCREASE) Long Release
+		case "2003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Long Release [2003] - ignored")
+		}
+
+		//--- Key 3 (DECREASE) Initial Press
+		case "3000.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Initial Press [3000] - ignored")
+		}
+
+		//--- Key 3 (DECREASE) Hold
+		case "3001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Hold [3001] - Decrease brightness Lighting")
+			if (Light_Dim_BedroomLeft.state != OFF)
+				Light_Dim_BedroomLeft.sendCommand(DECREASE)
+			if (Light_Dim_BedroomRight.state != OFF)
+				Light_Dim_BedroomRight.sendCommand(DECREASE)
+		}
+
+		//--- Key 3 (DECREASE) Short Release
+		case "3002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Short Release [3002]")
+			if (Light_Dim_BedroomLeft.state != OFF)
+				Light_Dim_BedroomLeft.sendCommand(INCREASE)
+			if (Light_Dim_BedroomRight.state != OFF)
+				Light_Dim_BedroomRight.sendCommand(INCREASE)
+		}
+
+		//--- Key 3 (DECREASE) Long Release
+		case "3003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Long Releas3 [3003] - ignored")
+		}
+
+		//--- Key 4 (OFF) Initial Press. Ignored, not always triggered.
+		case "4000.0":
+		{
+			logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - Turn off Lighting")
+		}
+
+		//--- Key 4 (OFF) Hold
+		case "4001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Hold [4001]")
+			Light_Scene_Bedroom.sendCommand("OFF")
+		}
+
+		//--- Key 4 (OFF) Short Release
+		case "4002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Short Release [4002]")
+
+			if (Light_Scene_Bedroom.state != "OFF")
+				Light_Scene_Bedroom.sendCommand("OFF")
+		}
+
+		//--- Key 4 (OFF) Long Release
+		case "4003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Long Release [4003] - Turn off lights, turn on alarm")
+			Light_Scene_Bedroom.sendCommand("OFF")
+			Light_Scene_Livingroom.sendCommand("OFF")
+			Light_Scene_Dining.sendCommand("OFF")
+			Alarm_Status.sendCommand("ARMED_HOME")
+		}
+	}
+end
+
+
+//==================================================================================================
+// Dimmer Switch Bathroom handling rule.
+//--------------------------------------------------------------------------------------------------
+// Key 1 (ON) first press:
+//		Turn on Bathroom lighting (Scene EVENING)
+// Key 1 (ON) second press:
+//		Turn on Bathroom lighting (Scene READ)
+// Key 1 (ON) third press:
+//		Turn on Bathroom lighting (Scene BRIGHT)
+// Key 1 (ON) fourth press:
+//		TUrn on Bathroom lighting (Scene EVENING)
+//
+//==================================================================================================
+rule "Hue.BathDim.Event - Dimmer Switch Bathroom rule"
+when
+	Channel "hue:0820:0017882ec5b3:dim_bathroom:dimmer_switch_event" triggered
+then
+    val String TAG = "HUE.BathDim.Event"
+
+	logInfo(TAG, "Event '{}' received", receivedEvent)
+
+	switch(receivedEvent.getEvent())
+	{
+		//--- Key 1 (ON) Initial Press = Not always triggered, ignoring it.
+		case "1000.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Initial Press event triggered [1000] - ignored")
+		}
+
+		//--- Key 1 (ON) Hold
+		case "1001.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001] - ignored")
+		}
+
+		//--- Key 1 (ON) Short Release
+		case "1002.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Short Release event triggered [1002]")
+	
+			if (Light_Scene_Bathroom.state == "OFF")
+				Light_Scene_Bathroom.sendCommand("EVENING")
+			else if (Light_Scene_Bathroom.state == "EVENING")
+				Light_Scene_Bathroom.sendCommand("READ")
+			else if (Light_Scene_Bathroom.state == "READ")
+				Light_Scene_Bathroom.sendCommand("BRIGHT")
+			else
+				Light_Scene_Bathroom.sendCommand("EVENING")
+		}
+
+		//--- Key 1 (ON) Long Release
+		case "1003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 1 (ON) Long Release event triggered [1003] - ignored")
+		}
+
+		//--- Key 2 (INCREASE) Initial Press
+		case "2000.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Initial Press [2000] - ignored")
+		}
+
+		//--- Key 2 (INCREASE) Hold
+		case "2001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Hold [2001] - increade brightness Lighting")
+			if (gLight_Brightness_Bathroom.state != OFF)
+				gLight_Brightness_Bathroom.sendCommand(INCREASE)
+		}
+
+		//--- Key 2 (INCREASE) Short Release
+		case "2002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Short Release [2002]")
+			if (gLight_Brightness_Bathroom.state != OFF)
+				gLight_Brightness_Bathroom.sendCommand(INCREASE)
+		}
+
+		//--- Key 2 (INCREASE) Long Release
+		case "2003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Long Release [2003] - ignored")
+		}
+
+		//--- Key 3 (DECREASE) Initial Press
+		case "3000.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Initial Press [3000] - ignored")
+		}
+
+		//--- Key 3 (DECREASE) Hold
+		case "3001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Hold [3001] - Decrease brightness Lighting")
+			if (gLight_Brightness_Bathroom.state != OFF)
+				gLight_Brightness_Bathroom.sendCommand(DECREASE)
+		}
+
+		//--- Key 3 (DECREASE) Short Release
+		case "3002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Short Release [3002]")
+			if (gLight_Brightness_Bathroom.state != OFF)
+				gLight_Brightness_Bathroom.sendCommand(DECREASE)
+		}
+
+		//--- Key 3 (DECREASE) Long Release
+		case "3003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Long Releas3 [3003] - ignored")
+		}
+
+		//--- Key 4 (OFF) Initial Press. Ignored, not always triggered.
+		case "4000.0":
+		{
+			logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - Turn off Lighting")
+		}
+
+		//--- Key 4 (OFF) Hold
+		case "4001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Hold [4001]")
+			Light_Scene_Bathroom.sendCommand("OFF")
+		}
+
+		//--- Key 4 (OFF) Short Release
+		case "4002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Short Release [4002]")
+
+			if (Light_Scene_Bathroom.state != "OFF")
+				Light_Scene_Bathroom.sendCommand("OFF")
+		}
+
+		//--- Key 4 (OFF) Long Release
+		case "4003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Long Release [4003] - Turn off lighting")
+			Light_Scene_Bathroom.sendCommand("OFF")
+		}
+	}
+end
+
+
+//==================================================================================================
+// Dimmer Switch Laundry room handling rule.
+//--------------------------------------------------------------------------------------------------
+// Key 1 (ON) first press:
+//		Turn on lighting (Scene EVENING)
+// Key 1 (ON) second press:
+//		Turn on lighting (Scene READ)
+// Key 1 (ON) third press:
+//		Turn on lighting (Scene BRIGHT)
+// Key 1 (ON) fourth press:
+//		TUrn on lighting (Scene EVENING)
+//
+//==================================================================================================
+rule "Hue.LaundryDim.Event - Dimmer Switch Laundry room rule"
+when
+	Channel "hue:0820:0017882ec5b3:dim_laundry:dimmer_switch_event" triggered
+then
+    val String TAG = "HUE.LaundryDim.Event"
+
+	logInfo(TAG, "Event '{}' received", receivedEvent)
+
+	switch(receivedEvent.getEvent())
+	{
+		//--- Key 1 (ON) Initial Press = Not always triggered, ignoring it.
+		case "1000.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Initial Press event triggered [1000] - ignored")
+		}
+
+		//--- Key 1 (ON) Hold
+		case "1001.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001] - ignored")
+		}
+
+		//--- Key 1 (ON) Short Release
+		case "1002.0":
+		{
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Short Release event triggered [1002]")
+	
+			if (Light_Scene_Laundry.state == "OFF")
+				Light_Scene_Laundry.sendCommand("EVENING")
+			else if (Light_Scene_Laundry.state == "EVENING")
+				Light_Scene_Laundry.sendCommand("READ")
+			else if (Light_Scene_Laundry.state == "READ")
+				Light_Scene_Laundry.sendCommand("BRIGHT")
+			else
+				Light_Scene_Laundry.sendCommand("EVENING")
+		}
+
+		//--- Key 1 (ON) Long Release
+		case "1003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 1 (ON) Long Release event triggered [1003] - ignored")
+		}
+
+		//--- Key 2 (INCREASE) Initial Press
+		case "2000.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Initial Press [2000] - ignored")
+		}
+
+		//--- Key 2 (INCREASE) Hold
+		case "2001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Hold [2001] - increade brightness Laundry Lighting")
+			if (gLight_Brightness_Laundry.state != OFF)
+				gLight_Brightness_Laundry.sendCommand(INCREASE)
+		}
+
+		//--- Key 2 (INCREASE) Short Release
+		case "2002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Short Release [2002]")
+			if (gLight_Brightness_Laundry.state != OFF)
+				gLight_Brightness_Laundry.sendCommand(INCREASE)
+		}
+
+		//--- Key 2 (INCREASE) Long Release
+		case "2003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Long Release [2003] - ignored")
+		}
+
+		//--- Key 3 (DECREASE) Initial Press
+		case "3000.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Initial Press [3000] - ignored")
+		}
+
+		//--- Key 3 (DECREASE) Hold
+		case "3001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Hold [3001] - Decrease brightness Bedroom Lighting")
+			if (gLight_Brightness_Laundry.state != OFF)
+				gLight_Brightness_Laundry.sendCommand(DECREASE)
+		}
+
+		//--- Key 3 (DECREASE) Short Release
+		case "3002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Short Release [3002]")
+			if (gLight_Brightness_Laundry.state != OFF)
+				gLight_Brightness_Laundry.sendCommand(DECREASE)
+		}
+
+		//--- Key 3 (DECREASE) Long Release
+		case "3003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Long Releas3 [3003] - ignored")
+		}
+
+		//--- Key 4 (OFF) Initial Press. Ignored, not always triggered.
+		case "4000.0":
+		{
+			logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - Turn off Lighting")
+		}
+
+		//--- Key 4 (OFF) Hold
+		case "4001.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Hold [4001]")
+			Light_Scene_Laundry.sendCommand("OFF")
+		}
+
+		//--- Key 4 (OFF) Short Release
+		case "4002.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Short Release [4002]")
+
+			if (Light_Scene_Laundry.state != "OFF")
+				Light_Scene_Laundry.sendCommand("OFF")
+		}
+
+		//--- Key 4 (OFF) Long Release
+		case "4003.0":
+		{
+		    logInfo(TAG,"Dimmer Button 4 (OFF) Long Release [4003] - Turn off light")
+			Light_Scene_Laundry.sendCommand("OFF")
 		}
 	}
 end
