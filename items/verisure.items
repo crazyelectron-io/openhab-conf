@@ -50,6 +50,7 @@ Number							Alarm_SiteId
 								<alarm>
 								{channel="verisure:alarm:myverisure:alarm1:installationId"}
 
+//--- Items linked to channels of the Smoke Detector in the Garage.
 Number:Temperature				Alarm_Temp_SmokeGarage
 								"Temperature garage [%.1f °C]"
 								<temperature>
@@ -60,9 +61,14 @@ Number							Alarm_Humidity_SmokeGarage
 								<humidity>
 								{channel="verisure:smokeDetector:myverisure:garageSmokeDetector:humidity"}
 
-String							Alarm_Update_SmokeGarage
-								"Garage Last Update [%s]"
+DateTime						Alarm_Update_SmokeGarage
+								"Garage Last Update [%1$tH:%1$tM]"
 								{channel="verisure:smokeDetector:myverisure:garageSmokeDetector:timestamp"}
+
+String							Alarm_HumidityEnabled_SmokeGarage
+								"Humidity Enabled in Garage [%s]"
+								<humidity>
+								{channel="verisure:smokeDetector:myverisure:garageSmokeDetector:humidityEnabled"}
 
 Number:Temperature				Alarm_Temp_SmokeCorridor
 								"Temperature corridor [%.1f °C]"
@@ -74,8 +80,8 @@ Number							Alarm_Humidity_SmokeCorridor
 								<humidity>
 								{channel="verisure:smokeDetector:myverisure:corridorSmokeDetector:humidity"}
 
-String							Alarm_Update_SmokeCorridor
-								"Last Update [%s]"
+DateTime						Alarm_Update_SmokeCorridor
+								"Last Update [%1$tH:%1$tM]"
 								{channel="verisure:smokeDetector:myverisure:corridorSmokeDetector:timestamp"}
 
 Number:Temperature				Alarm_Temp_SirenKitchen
@@ -83,8 +89,8 @@ Number:Temperature				Alarm_Temp_SirenKitchen
 								<temperature>
 								{channel="verisure:siren:myverisure:kitchenSiren:temperature"}
 
-String							Alarm_Update_SirenKitchen
-								"Kitchen Last Update [%s]"
+DateTime						Alarm_Update_SirenKitchen
+								"Kitchen Last Update [%1$tH:%1$tM]"
 								{channel="verisure:siren:myverisure:kitchenSiren:timestamp"}
 
 // This channel reports the current humidity in percentage.
@@ -93,8 +99,8 @@ Number:Temperature				Alarm_Temp_NightControl
 								<temperature>
 								{channel="verisure:nightControl:myverisure:corridorNightControl:temperature"}
 
-String							Alarm_Update_NightControl
-								"Corridor Last Update [%s]"
+DateTime						Alarm_Update_NightControl
+								"Corridor Last Update [%1$tH:%1$tM]"
 								{channel="verisure:nightControl:myverisure:corridorNightControl:timestamp"}
 
 // Door sensors
@@ -103,15 +109,21 @@ Group:Contact:OR(OPEN, CLOSED)	gDoors
 
 Contact							Alarm_Door_Scullery
 								"Scullery Door Open"
-								(gDoors)
 								["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:sculleryDoorSensor:state"}
 
+DateTime						Alarm_Update_Door_Scullery
+								"Scullery Door Last Update [%1$tH:%1$tM]"
+								{channel="verisure:doorWindowSensor:myverisure:sculleryDoorSensor:timestamp"}
+
 Contact							Alarm_Door_Bedroom
 								"Bedroom Door Open"
-								(gDoors)
 								["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:bedroomDoorSensor:state"}
+
+DateTime						Alarm_Update_Door_Bedroom
+								"Bedroom Door Last Update [%1$tH:%1$tM]"
+								{channel="verisure:doorWindowSensor:myverisure:bedroomDoorSensor:timestamp"}
 
 Contact							Alarm_Door_Livingroom
 								"Livingroom Door Open"
@@ -119,11 +131,19 @@ Contact							Alarm_Door_Livingroom
 								["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:livingroomDoorSensor:state"}
 
+DateTime						Alarm_Update_Door_Livingroom
+								"Livingroom Door Last Update [%1$tH:%1$tM]"
+								{channel="verisure:doorWindowSensor:myverisure:livingroomDoorSensor:timestamp"}
+
 Contact							Alarm_Door_GarageSide
 								"Garage Side door Open"
 								(gDoors)
 								["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:garageDoorSensor:state"}
+
+DateTime						Alarm_Update_Door_GarageSide
+								"Garage Side door Last Update [%1$tH:%1$tM]"
+								{channel="verisure:doorWindowSensor:myverisure:garageDoorSensor:timestamp"}
 
 Contact							Alarm_Door_Dining
 								"Diningroom Door Open"
@@ -131,11 +151,19 @@ Contact							Alarm_Door_Dining
 								["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:diningDoorSensor:state"}
 
+DateTime						Alarm_Update_Door_Dining
+								"Dining door Last Update [%1$tH:%1$tM]"
+								{channel="verisure:doorWindowSensor:myverisure:diningDoorSensor:timestamp"}
+
 Contact							Alarm_Door_Front
 								"Front Door Open"
 								(gDoors)
 								["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:frontDoorSensor:state"}
+
+DateTime						Alarm_Update_Door_Front
+								"Frontdoor Last Update [%1$tH:%1$tM]"
+								{channel="verisure:doorWindowSensor:myverisure:frontDoorSensor:timestamp"}
 
 Contact							Alarm_Door_Fusebox
 								"FuseBox Door open"
@@ -143,11 +171,15 @@ Contact							Alarm_Door_Fusebox
 								["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:fuseboxDoorSensor:state"}
 
+Contact							Alarm_Update_Door_Fusebox
+								"FuseBox Door Last Update [%1$tH:%1$tM]"
+								{channel="verisure:doorWindowSensor:myverisure:fuseboxDoorSensor:timestamp"}
+
 // Connectbox online status
-String							Alarm_Connect_Timestamp
-								"Connectbox Timestamp [%s]"
+DateTime						Alarm_Update_Connect
+								"Connectbox Timestamp [%1$tH:%1$tM]"
 								{channel="verisure:broadbandConnection:myverisure:bc57046073518:timestamp"}
 
-String							Alarm_Connect_Status
+String							Alarm_Status_Connect
 								"Internet connection [%s]"
 								{channel="verisure:broadbandConnection:myverisure:broadband1:connected"}
