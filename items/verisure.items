@@ -150,4 +150,4 @@ String							Alarm_Connect_Timestamp
 
 String							Alarm_Connect_Status
 								"Internet connection [%s]"
-								{channel="verisure:broadbandConnection:myverisure:bc57046073518:connected"}
+								{channel="verisure:broadbandConnection:myverisure:broadband1:connected"}

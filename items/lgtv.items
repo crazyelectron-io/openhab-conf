@@ -13,7 +13,7 @@ Switch							LGTV_Power_Livingroom
                                 <television>
                                 {autoupdate="false", channel="lgwebos:WebOSTV:tvlivingroom:power"}
 
-// Wake-On-LAN to turn on the TV.
+// Wake-On-LAN to turn on the TV (W).
 Switch							LGTV_WoL_Livingroom
                                 "TV Power On"
                                 {wol="192.168.2.255#78:5d:c8:90:10:73"}

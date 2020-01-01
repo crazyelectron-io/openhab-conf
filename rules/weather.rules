@@ -64,7 +64,6 @@ then
     val String weather = Weather_Condition.state.toString
 	if (weather == "bewolkt" ||
         weather == "zwaarbewolkt" ||
-        weather == "halfbewolkt" ||
         weather == "regen" ||
 		weather == "mist" ||
         weather == "hagel" ||

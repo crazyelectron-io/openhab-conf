@@ -112,7 +112,7 @@ Number							Power_Use_T2_Total
 								{channel="mqtt:topic:mosquitto:dsmr:P_UseTotT2"}
 
 Number							Power_Use_Total
-								"Usage meter [%d Wh]"
+								"Power usage meter [%d Wh]"
 								<energy>
 								(gHist5,gPersist)
 
@@ -144,7 +144,7 @@ Number							Power_Ret_T2_Total
 								{channel="mqtt:topic:mosquitto:dsmr:P_RetTotT2"}
 
 Number							Power_Ret_Total
-								"Return meter [%d Wh]"
+								"Power Return meter [%d Wh]"
 								<energy>
 								(gHist5,gPersist)
 
@@ -154,69 +154,69 @@ Number							Power_Ret_Total
 
 // Items to store the delta of consumed and returned actual power.
 Number							Power_Delta_All_Current
-								"Net usage [%d W]"
+								"Current Net usage [%d W]"
 								<energy>
 								(gHist)
 
 Number							Power_Delta_L1_Current
-								"Net usage L1 [%d W]"
+								"Current L1 Net usage [%d W]"
 								<energy>
 								(gHist)
 
 Number							Power_Delta_L2_Current
-								"Net usage L2 [%d W]"
+								"Current L2 Net usage [%d W]"
 								<energy>
 								(gHist)
 
 Number							Power_Delta_L3_Current
-								"Net usage L3 [%d W]"
+								"Current L3 Net usage [%d W]"
 								<energy>
 								(gHist)
 
 
 // Items to store periodic power usage.
 Number							Power_Delta_Hour
-								"Last hours power use [%d Wh]"
+								"Last hour's net power use [%d Wh]"
 								<energy>
 								(gHist5,gPersist)
 
 Number							Power_Delta_Hour_Cost
-								"Last hours power cost [%.2f]"
+								"Last hour's net power cost [%.2f]"
 								<piggybank>
 								(gHist5,gPersist)
 
 String							Power_Delta_Hour_Summary
-								"Last hour's power use summary [%s]"
+								"Last hour's net power use [%s]"
 								<energy>
 								(gPersist)
 
 Number							Power_Delta_Day
-								"Today's power use [%d Wh]"
+								"Today's net power use [%d Wh]"
 								<energy>
 								(gHist60,gPersist)
 
 Number							Power_Delta_Day_Cost
-								"Today's power cost [%.2f]"
+								"Today's net power cost [%.2f]"
 								<piggybank>
 								(gHist60,gPersist)
 
 String							Power_Delta_Day_Summary
-								"Today's power use summary [%s]"
+								"Today's net power use [%s]"
 								<energy>
 								(gPersist)
 
 Number							Power_Delta_Month
-								"This month's power use [%d Wh]"
+								"This month's net power use [%d Wh]"
 								<energy>
 								(gDaily,gPersist)
 
 Number							Power_Delta_Month_Cost
-								"This month's power cost [%.2f]"
+								"This month's net power cost [%.2f]"
 								<piggybank>
 								(gDaily,gPersist)
 
 String							Power_Delta_Month_Summary
-								"This month's power use summary [%s]"
+								"This month's net power use [%s]"
 								<energy>
 								(gPersist)
 

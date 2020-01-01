@@ -2,6 +2,11 @@ sitemap default label="At Home"
 {
     Frame label="Home"
     {
+        Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[MORNING="Morning"] visibility=[Day_Mode=="MORNING"]
+        Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[DAY="Day"] visibility=[Day_Mode=="DAY"]
+        Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[EVENING="Evening"] visibility=[Day_Mode=="EVENING"]
+        Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[NIGHT="Night"] visibility=[Day_Mode=="NIGHT"]
+
         Text item=Astro_Day_Phase label="Astro [%s]" icon="sun_clouds"
         {
             Text item=Astro_Sun_RiseNext
@@ -14,7 +19,7 @@ sitemap default label="At Home"
             Text item=Astro_Moon_NewNext
         }
 
-        Text item=Astro_Day_Time label="Climate [%1$tA, %1$td.%1$tm.%1$tY]" icon="sun_clouds"
+        Text item=Weather_Condition label="Weather [%s]" icon="sun_clouds"
         {
             Text item=Temp_Avg_Livingroom valuecolor=[>22="red",>20="green",>19="orange",<19="blue"]
             // {
@@ -336,9 +341,18 @@ sitemap default label="At Home"
 
     Frame label="Alarm"
     {
-        Switch item=Alarm_Status label="Alarm []" icon="alarm" mappings=[DISARMED="Disarm", ARMED_HOME="Arm Home", ARMED_AWAY="Arm Away"]
-        Group item=gDoors valuecolor=[>3="red",>1="orange",<2="green"]
+        Switch item=Alarm_Status label="Alarm []" icon="alarm" mappings=[DISARMED="Off", ARMED_HOME="Arm Home", ARMED_AWAY="Away"]
         Text item=Alarm_LastChange
+        Group item=gDoors valuecolor=[>3="red",>1="orange",<2="green"]
+        Text item=Alarm_Connect_Status
+        Switch item=Presence_Ron label="Ron is []" mappings=[ON="Home"] visibility=[Presence_Ron==ON]
+        Switch item=Presence_Ron label="Ron is []" mappings=[OFF="Away"] visibility=[Presence_Ron==OFF]
+        Switch item=Presence_Arniel label="Arniël is []" icon="woman_1" mappings=[ON="Home"] visibility=[Presence_Arniel==ON]
+        Switch item=Presence_Arniel label="Arniël is []" icon="woman_1" mappings=[OFF="Away"] visibility=[Presence_Arniel==OFF]
+        Switch item=Presence_Stephan label="Stephan is[]" mappings=[ON="Home"] visibility=[Presence_Stephan==ON]
+        Switch item=Presence_Stephan label="Stephan is[]" mappings=[OFF="Away"] visibility=[Presence_Stephan==OFF]
+        Switch item=Presence_Menno label="Menno is []" mappings=[ON="Home"] visibility=[Presence_Menno==ON]
+        Switch item=Presence_Menno label="Menno is []" mappings=[OFF="Away"] visibility=[Presence_Menno==OFF]
     }
 
     Frame label="Energy"
@@ -348,9 +362,9 @@ sitemap default label="At Home"
             // Switch item=PwrPeriod1 mappings=[HR6_5="6 Hr",HR12_5="12 Hr",TDY_5="Today",YDY_5="Day-1",DBYDY_5="Day-2",WK_1="Week",LWK_1="Wk-1",MNT_1="Month",LMNT_1="Mn-1"] label="" icon="calendar"
             // Webview url="/static/grafana.html?kiosk&dashboard=openhab&fullscreen&theme=dark&fromItem=PwrPeriod1&panelItem=PwrPanel1" icon="none" height=15
             Text item=Power_Delta_All_Current
-            Text item=Power_Delta_L1
-            Text item=Power_Delta_L2
-            Text item=Power_Delta_L3
+            Text item=Power_Delta_L1_Current
+            Text item=Power_Delta_L2_Current
+            Text item=Power_Delta_L3_Current
         }
 
         Text item=Solar_Prod_Current
@@ -358,22 +372,16 @@ sitemap default label="At Home"
             // Switch item=Solar_Panel1 mappings=[SOLAR_PWR="Production", SOLAR_FREQ="Frequency"] icon="chart"
             // Switch item=Solar_Period1 mappings=[HR8_15="8 Hr", TDY_30="Today", YDY_30="Yesterday", WK_1="Week", LWK_1="Last week"] label="" icon="calendar"
             // Webview url="/static/grafana.html?kiosk&dashboard=openhab&fullscreen&theme=dark&fromItem=Solar_Period1&panelItem=Solar_Panel1" height=12 icon="line"
-            Text item=Solar_Prod_Day label="Dagproductie zonnepanelen [%.2f kWh]"
-            // Text item=dSolarProdCost
-            Text item=Solar_Prod_Month
-            // Text item=Solar_Prod_MonthCost
-            Text item=Solar_Prod_Year
-            // Text item=ySolarProdCost
-            // Text item=SELYearProd
-            // Text item=SELYearProdCost
+            Text item=Solar_Prod_Day_Summary label="Today's Solar production [%s]"
+            Text item=Solar_Prod_Month_Summary label="This month's Solar production [%s]"
+            Text item=Solar_Prod_Year_Summary label="This year's Solar production [%s]"
+            // Text item=Solar_Prod_LastYear_Summary label="Last Year's Solar production [%s]"
         }
 
-        Text item=Power_Delta_Day
+        Text item=Power_Delta_Day_Summary //label="Today's Power usage [%s]"
         {
-            Text item=Power_Use_Day
-            // Text item=dayPwrUseCost
-            Text item=Power_Ret_Day
-            // Text item=dayPwrRetCost
+            Text item=Power_Use_Day_Summary
+            Text item=Power_Ret_Day_Summary
             Text item=Power_Use_Total icon="pressure"
             Text item=Power_Ret_Total icon="pressure"
             // Switch item=PwrPanel2 mappings=[HIST_USE="Usage", PWR_RET="Return"] icon="chart"
@@ -383,16 +391,15 @@ sitemap default label="At Home"
 
         // Text item=dayPwrDeltaCost
 
-        Text item=Gas_Use_Day
+        Text item=Gas_Use_Hour_Summary label="Last Hour's Gas use [%s]"
         {
             // Switch item=GasPeriod3 mappings=[TDY_1="Today", YDY_1="Yesterday", WK_1D="Week",LWK_1D="Wk-1",MNT_1D="Month",LMNT_1D="Mn-1",YR_1D="Year",YRL_1W="Yr-1"] icon="calendar"
             // Webview url="/static/grafana.html?kiosk&dashboard=openhab&fullscreen&theme=dark&fromItem=GasPeriod3&panelItem=GasPanel3" height=12 icon="none"
-            Text item=Gas_Use_Hour
-            // Text item=dayGasUseCost
-            Text item=Gas_Use_Day
-            Text item=Gas_Use_Month
-            Text item=Gas_Use_year
-            Text item=Gas_Use_Total
+            Text item=Gas_Use_Hour_Summary label="Last Hour's Gas use [%s]"
+            Text item=Gas_Use_Day_Summary label="Today's Gas use [%s]"
+            Text item=Gas_Use_Month_Summary label="This Month's Gas use [%s]"
+            Text item=Gas_Use_Year_Summary label="This Year's Gas use [%s]"
+            Text item=Gas_Use_Total label="Gas Meter [%s]" icon="pressure"
         }
         // Text item=dayGasUseCost
     }
@@ -401,18 +408,21 @@ sitemap default label="At Home"
     {
         Switch item=CV_Heater_Active mappings=[ON="On"] visibility=[CV_Heater_Active==ON]
         Switch item=CV_Heater_Active mappings=[OFF="Off"] visibility=[CV_Heater_Active==OFF]
-        Text item=CV_SetPoint_Livingroom {
+        Text item=CV_SetPoint_Livingroom
+        {
             Setpoint item=CV_SetPoint_Livingroom minValue=18 maxValue=23 step=0.5 
             Text item=Temp_Avg_Livingroom
             Text item=CV_Pressure
-            Switch item=CV_Burner_Active mappings=[ON="On", OFF="Off"] visibility=[CV_Burner_Active==ON]
-            Switch item=CV_HotWater_Active mappings=[ON="On", OFF="Off"] visibility=[CV_HotWater_Active==ON]
+            Switch item=CV_Burner_Active mappings=[ON="On", OFF="Off"]
+            Switch item=CV_HotWater_Active mappings=[ON="On", OFF="Off"]
     //         Switch item=CV_Panel1 mappings=[CH_BURN="Heating", HW_BURN="Warm Water"] label="Graph" icon="chart"
     //         Switch item=CV_Period1 mappings=[HR4_5="4 Hr",TDY_5="5 Hr",YDY_5="Yesterday",DBYDY_5="Day before yesterday"] label="Periode" icon="calendar"
     //         Webview label="Brander actief uren Nefit CV ketel" url="/static/grafana-small.html?kiosk&theme=dark&dashboard=openhab&fromItem=CV_Period1&panelItem=CV_Panel1" height=4 icon="line"
     //         Switch item=GasPeriod4 mappings=[WK_1D="Week",LWK_1D="Wk-1",MNT_1D="Month",LMNT_1D="Mn-1",YR_1D="Year",YRL_1W="Yr-1"] icon="calendar"
     //         Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Gas_Period4&panelItem=Gas_Panel4" height=12 icon="none"
         }
+        Text item=Temp_Avg_Livingroom
+        Switch item=CV_HotWater_Active mappings=[ON="On", OFF="Off"]
     }
 
     Frame label="TV Wake on LAN"
@@ -461,14 +471,16 @@ sitemap default label="At Home"
             "com.palm.app.settings"="Instellingen"]
     }
 
-    // Frame label="Media" {
+    // Frame label="Media"
+    // {
     //     Switch item=LR_Denon_Power label="Power"
     //     Slider item=LR_Denon_Volume label="Volume" visibility=[LR_Denon_Power==ON]
     //     Switch item=LR_Denon_Mute label="Mute [%s]" visibility=[LR_Denon_Power==ON]
     //     Selection item=LR_Denon_Input icon="none" label="Source" visibility=[LR_Denon_Power==ON]
     // }
 
-    // Frame label="Kodi Livingroom" {
+    // Frame label="Kodi Livingroom"
+    // {
     //     Switch    item=LR_Kodi_mute
     //     Slider    item=LR_Kodi_volume icon="none"
     //     Selection item=LR_Kodi_control mappings=[PLAY='Play', PAUSE='Pause', NEXT='Next', PREVIOUS='Prev', FASTFORWARD='FF', REWIND='REW']
@@ -489,8 +501,10 @@ sitemap default label="At Home"
     //     Text      item=LR_Kodi_duration
     // }
 
-    Frame label="Airco" {
-        Text item=AC_Temp_Bedroom label="AC Bedroom" icon="snow" {
+    Frame label="Airco"
+    {
+        Text item=AC_Temp_Bedroom label="AC Bedroom" icon="snow"
+        {
             Switch item=AC_Power_Bedroom
             Setpoint item=AC_SetTemp_Bedroom minValue=18 maxValue=23 step=1
             Switch item=AC_Mode_Bedroom label=" " mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
@@ -498,21 +512,24 @@ sitemap default label="At Home"
             Text item=AC_FanDirection_Bedroom label=" "
             Switch item=AC_Vacation_Bedroom
         }
-        Text item=AC_Temp_Study label="AC Study" icon="snow" {
+        Text item=AC_Temp_Study label="AC Study" icon="snow"
+        {
             Switch item=AC_Power_Study
             Setpoint item=AC_SetTemp_Study minValue=18 maxValue=23 step=1
             Switch item=AC_Mode_Study label="" mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
             Switch item=AC_FanSpeed_Study label="" mappings=["AUTO"="Auto", "SILENCE"="Silent", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
             Text item=AC_FanDirection_Study label=""
         }
-        Text item=AC_Temp_Laundry label="AC Stephan" icon="snow"{
+        Text item=AC_Temp_Laundry label="AC Stephan" icon="snow"
+        {
             Switch item=AC_Power_Laundry 
             Setpoint item=AC_SetTemp_Laundry minValue=18 maxValue=23 step=1
             Switch item=AC_Mode_Laundry label="" mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
             Switch item=AC_FanSpeed_Laundry label="" mappings=["AUTO"="Auto", "SILENCE"="Silent", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
             Text item=AC_FanDirection_Laundry label=""
         }
-        Text item=AC_Temp_Guestroom label="AC Menno" icon="snow" {
+        Text item=AC_Temp_Guestroom label="AC Menno" icon="snow"
+        {
             Switch item=AC_Power_Guestroom
             Setpoint item=AC_SetTemp_Guestroom minValue=18 maxValue=23 step=1
             Switch item=AC_Mode_Guestroom label="" mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
@@ -521,18 +538,20 @@ sitemap default label="At Home"
         }
     }
 
-    Frame label="Volvo V90" {
-        Switch  item=gVoC_Door_Status
+    Frame label="Volvo V90"
+    {
+        Group item=gVoC_Door_Status label="Car doors [%s]" icon="car" valuecolor=[>3="red",>1="orange",<2="green"]
         // Switch  item=VoC_Doors_Tailgate
-        Switch  item=gVoC_Window_Status
-        Switch  item=VoC_Car_Locked
+        // Switch  item=gVoC_Window_Status
+        Switch  item=VoC_Car_Locked label="Car is []" icon="car" mappings=[ON="Locked", OFF="Open"]
         Text    item=VoC_Fuel_Level
         Text    item=VoC_Fuel_Amount
         Text    item=VoC_Consumption_Average
         Text    item=VoC_Distance_Left
-        Switch  item=VoC_Fuel_Alert
+        // Switch  item=VoC_Fuel_Alert
         Text    item=VoC_Washer_Level
-        Text    item=VoC_Location icon="movecontrol" {
+        Text    item=VoC_Location icon="movecontrol"
+        {
             Mapview item=VoC_Location height=10 icon="none" label="Huidige locatie Volvo V90 (idien niet ingebruik)"
             Text    item=VoC_Location_LUD
             Switch  item=VoC_Calculated_Location

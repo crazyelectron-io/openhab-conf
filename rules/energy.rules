@@ -395,35 +395,30 @@ end
 //==================================================================================================
 rule "DSMRPhaseDelta - Calculate delta power per phase"
 when
-    Item Power_Ret_All_CurrentL1 changed or
-    Item Power_Use_All_CurrentL1 changed or
-    Item Power_Ret_All_CurrentL2 changed or
-    Item Power_Use_All_CurrentL2 changed or
-    Item Power_Ret_All_CurrentL3 changed or
-    Item Power_Use_All_CurrentL3 changed
+    Item Power_Ret_L1_Current changed or
+    Item Power_Use_L1_Current changed or
+    Item Power_Ret_L2_Current changed or
+    Item Power_Use_L2_Current changed or
+    Item Power_Ret_L3_Current changed or
+    Item Power_Use_L3_Current changed
 then
     val String TAG = "DSMRPhaseDelta." + triggeringItem.name + ".Changed"
 
-    val String phase = triggeringItem.name.substring(triggeringItem.name.length-2, triggeringItem.name.length)
+    // val String phase = triggeringItem.name.substring(triggeringItem.name.length-2, triggeringItem.name.length)
+    val String phase = triggeringItem.name.split("_").get(2)
 
-    val ItemPwrRet = ScriptServiceUtil.getItemRegistry.getItem("Power_Ret_All_Current" + phase)
-    val ItemPwrUse = ScriptServiceUtil.getItemRegistry.getItem("Power_Use_All_Current" + phase)
-    val ItemPwrDelta = ScriptServiceUtil.getItemRegistry.getItem("aPwrDelta" + phase)
+    val ItemPwrRet = ScriptServiceUtil.getItemRegistry.getItem("Power_Ret_" + phase + "_Current")
+    val ItemPwrUse = ScriptServiceUtil.getItemRegistry.getItem("Power_Use_" + phase + "_Current")
+    val ItemPwrDelta = ScriptServiceUtil.getItemRegistry.getItem("Power_Delta_" + phase + "_Current")
 
     if (ItemPwrRet.state != NULL && ItemPwrUse.state != NULL)
-    {
         ItemPwrDelta.postUpdate(ItemPwrUse.state as Number - ItemPwrRet.state as Number)
-    }
     else
     {
         if (ItemPwrRet.state == NULL)
-        {
-            logWarn(TAG, "'{}'' not initialzed, skip aPwrDelta{} calculation", ItemPwrRet.name, phase)
-        }
+            logWarn(TAG, "'{}'' not initialzed, skip Power_Delta_{}_Current calculation", ItemPwrRet.name, phase)
         if (ItemPwrUse.state == NULL)
-        {
-            logWarn(TAG, "'{}'' not initialzed, skip aPwrDelta{} calculation", ItemPwrUse.name, phase)
-        }
+            logWarn(TAG, "'{}'' not initialzed, skip Power_Delta_{}_Current calculation", ItemPwrUse.name, phase)
     }
 end
 

@@ -1,21 +1,20 @@
 // Presence items
 Switch							Presence_Ron
-								"Ron's presence [MAP(unifi.map):%s]"
+								"Ron is [MAP(unifi.map):%s]"
 								<man_1>
 								{channel="unifi:wirelessClient:home:ronsPhone:online"}
 
 Switch							Presence_Arniel
-								"Arniël's presence [MAP(unifi.map):%s]"
-								<vrouw_1>
+								"Arniël is [MAP(unifi.map):%s]"
+								<woman_1>
 								{channel="unifi:wirelessClient:home:arnielsPhone:online"}
 
 Switch							Presence_Stephan
-								"Stephan's presence [MAP(unifi.map):%s]"
+								"Stephan is [MAP(unifi.map):%s]"
 								<man_2>
 								{channel="unifi:wirelessClient:home:stephansPhone:online"}
 
 Switch							Presence_Menno
-								"Menno's presence [MAP(unifi.map):%s]"
+								"Menno is [MAP(unifi.map):%s]"
 								<man_3>
 								{channel="unifi:wirelessClient:home:mennosPhone:online"}
-
