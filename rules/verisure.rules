@@ -20,16 +20,12 @@ then
 
     var String msg = "The alarm has been "
     if (triggeringItem.state.toString == "ARMED_AWAY" || triggeringItem.state.toString == "ARMED_HOME")
-    {
         msg = msg + "Armed."
-    }
     else
-    {
         msg = msg + "Disarmed."
-    }
 
     Echo_TTS_Livingroom.sendCommand("<speak>Hi, " + msg + "</speak>")
-    sendPushoverMessage(pushoverBuilder(msg).withDevice("Family").withTitle("Alarm").withPriority(1))
+    sendBroadcastNotification(msg)
 end
 
 

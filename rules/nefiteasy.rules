@@ -38,14 +38,15 @@ rule "Initialize NefitEasy Panel view parameters"
 
 //--------------------------------------------------------------------------------------------------
 // Triggered when watchdog timer expires indicating we didn't receive data for 30 minutes.
-// Send a notification to the user via Pushover.
+// Send a notification to the user via OH Cloud Notifications.
 //--------------------------------------------------------------------------------------------------
 rule "Watchdog timeout triggered"
     when
 	Item CV_Watchdog changed to OFF
     then
-        logWarn("Nefit.Watchdog.Timeout", "NEFIT WATCHDOG TIMER TRIGGERED!")
-        sendPushoverMessage(pushoverBuilder("Nefit readings missing, check the Easy-Server status").withDevice("NCC-1701").withPriority(1).withTitle("WatchDog Alert"))
+        val String msg = "Nefit readings missing, check the Easy-Server status"
+        logWarn("Nefit.Watchdog.Timeout", msg)
+        sendBroadcastNotification(msg)
     end
 
 
@@ -100,9 +101,7 @@ rule "Nefit Easy status"
 		//--- Get Nefit Easy CV and thermostat info in JSON format from the easy-server API.
 		json = sendHttpGetRequest(NEFIT_API + "/status")
 		if (json === null || json == NULL || json == "")
-        {
 			logWarn(TAG, "Empty API status response")
-        }
         else
         {
             //--- Extract the relevant parameters ('in house temp' and 'temp setpoint') from the JSON data.
@@ -133,9 +132,7 @@ rule "Nefit Easy status"
 		json = sendHttpGetRequest(NEFIT_BRIDGE + "/system/appliance/systemPressure")
         // Format: {"id":"/system/appliance/systemPressure","type":"floatValue","recordable":0,"writeable":0,"value":1.9,"unitOfMeasure":"bar","minValue":0,"maxValue":25}
 		if (json === null || json == NULL || json == "")
-        {
 			logWarn(TAG, "Empty API pressure response")
-        }
         else
         {
             // Extract the relevant data (the 'value' parameter) from the JSON data
@@ -155,9 +152,7 @@ rule "Nefit Easy status"
         json = " "
 		json = sendHttpGetRequest(NEFIT_BRIDGE + "/ecus/rrc/uiStatus")
 		if (json === null || json === null || json == "")
-        {
 			logWarn(TAG, "Empty Nefit API burner status response")
-        }
         else
         {
             // Reset watchdog timer if we received update from EasyServer
@@ -214,13 +209,9 @@ rule "Calculate average livingroom temperature"
 
         //--- Reset watchdog timer if we received update from EasyServer or Netatmo Home Coach
         if (triggeringItem.name == "CV_Temp_Livingroom")
-        {
             CV_Watchdog.sendCommand(ON)
-        }
         if (triggeringItem.name == "NHC_Temp_Livingroom")
-        {
             NHC_Watchdog.sendCommand(ON)
-        }
         
         //--- Calculate the average livingroom temp from two sensor values (if available)
         var Number temp = 0
@@ -415,9 +406,7 @@ rule "POST SetTemp Change"
             logInfo(TAG, "Nefit Setpoint 3: {}", output);
         }
         else
-        {
             logWarn(TAG, "{} is NULL, skipping rule", triggeringItem.name)
-        }
 
         logInfo(TAG, "<<<<<< Exit rule <<<<<<")
     end
@@ -472,9 +461,7 @@ rule "Restore setpoint when doors are closed"
             nSavedSetpoint = 0
         }
         else
-        {
             logInfo(TAG, "Skip restore of heater SetPoint, not all doors are closed")
-        }
     end
 
 
@@ -493,7 +480,6 @@ rule "Nefit_Presence - Heating adjustment based on presence"
         if ((Presence_Ron.state != NULL && Presence_Ron.state == ON) || (Presence_Arniel.state != NULL && Presence_Arniel.state == ON))
         {
             // Someone is home, increase setpoint based on TOD
-            //if ()
         }
 
         logInfo(TAG, "<<<<<< Exit rule <<<<<<")

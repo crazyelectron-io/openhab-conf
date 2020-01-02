@@ -73,17 +73,11 @@ then
 
     // Check if day or day/night/morning
     if (now.getHourOfDay() >=19 || now.getHourOfDay() <= 6)
-    {
         tempThreshold = tempNightThreshold
-    }
     else if (now.getHourOfDay() <= 7)
-    {
         tempThreshold = tempMorningThreshold
-    }
     else
-    {
         tempThreshold = tempDayThreshold
-    }
     logDebug(tag, "03. Inside temp threshold of {} used", tempThreshold)
 
     // Turn on the airco if it is very hot outside, regardless of time of day or bedroom temperature 
@@ -104,6 +98,7 @@ then
             AC_Power_Bedroom.sendCommand(OFF)
             return;
         }
+
         // Check if bedroom temperature is above threshold to turn AC on
         if (tempBedroom > tempThreshold)
         {
@@ -122,9 +117,7 @@ then
                 logDebug(tag, "06. Bedroom temp is {}, turn-AC-on flag set to '{}'", tempBedroom, turnOn)
             }
             else
-            {
                 logDebug(tag, "07.Bedroom temp {} below threshold, but outside temp ({}), not turning off the AC if still on, AC-on is {}", tempBedroom, tempOutside, acIsOn)
-            }
         }
     }
 
@@ -196,31 +189,23 @@ then
 
     if (msg != "" && acIsOn != turnOn)
     {
-        sendPushoverMessage(pushoverBuilder(msg).withDevice("Family").withTitle("Airco Alert"))
+        sendBroadcastNotification(msg)
         logInfo(tag, msg)
         if (AC_MessageRepeat.state != ON)
         {
             logDebug(tag, "Sending message '{}' to Alexa", msg)
             if (warn != 0)
-            {
                 msg = "WARNING! " + msg
-            }
             else
-            {
                 msg = "Hi, " + msg
-            }
             Echo_TTS_Livingroom.sendCommand(msg)
             AC_MessageRepeat.sendCommand(ON)
             lastTime = new DateTime(now())
             acIsOn = 0
         }
         else
-        {
             logDebug(tag, "14. Skipping message '{}' to Alexa", msg)
-        }
     }
     else
-    {
         logDebug(tag, "15. Airco on state is {}, desired turn on state {}", acIsOn, turnOn)
-    }
 end

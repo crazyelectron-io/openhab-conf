@@ -30,13 +30,9 @@ then
 	logInfo(TAG, "{} changed to {}", triggeringItem.name, triggeringItem.state)
 
 	if (Day_Mode.state == "DAY")
-	{
 		command = "OFF"
-	}
 	else if (Day_Mode.state == "EVENING" || Day_Mode.state == "MORNING")
-	{
 		command = "EVENING"
-	}
 	
 	if (command != "")
 	{
@@ -50,7 +46,7 @@ then
 		Light_Scene_Outside.sendCommand(command)
 		// Light_Scene_Lodge.sendCommand(command)
 		val String msg = "Day mode change: lights switched to "+command
-        sendPushoverMessage(pushoverBuilder(msg).withDevice("Family").withTitle("Astro Alert"))
+		sendBroadcastNotification(msg)
 	}
 end
 

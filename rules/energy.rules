@@ -60,6 +60,7 @@ import org.eclipse.smarthome.model.script.ScriptServiceUtil
 // Define global variables.
 //==================================================================================================
 
+
 val contractStart = now.withTimeAtStartOfDay.withDayOfYear(15)  // Contract started at January 15.
 
 
@@ -79,14 +80,14 @@ end
 
 //=================================================================================================
 // Triggered when watchdog timer expires indicating we didn't receive data for 10 minutes.
-// Send a notification to the user via Pushalot.
+// Send a notification to the user via OH Cloud Notification.
 //=================================================================================================
 rule "DSMRTimeout - Watchdog timeout"
 when
 	Item DSMR_Watchdog changed to OFF
 then
     logError("DSMR.Watchdog", "DSMR DATA MISSING - WATCHDOG TRIGGERED!")
-    sendPushoverMessage(pushoverBuilder("SmartMeter readings missing, check the connection").withDevice("NCC-1701").withTitle("WatchDog Alert"))
+    sendBroadcastNotification("SmartMeter readings missing, check the connection")
     DSMR_Watchdog.sendCommand(ON)
 end
 
@@ -163,19 +164,13 @@ then
     val String TAG = "DSMRSumTarifs." + triggeringItem.name + ".Changed"
 
     if (Power_Use_T1_Total.state != NULL && Power_Use_T2_Total.state != NULL)
-    {
         Power_Use_Total.postUpdate(Power_Use_T1_Total.state as Number + Power_Use_T2_Total.state as Number)
-    }
     else
     {
         if (Power_Use_T1_Total.state == NULL)
-        {
             logWarn(TAG, "Item 'Power_Use_T1_Total' is NULL, skip tarif meter readings sum update")
-        }
         if (Power_Use_T2_Total.state == NULL)
-        {
             logWarn(TAG, "Item 'Power_Use_T2_Total' is NULL, skip tarif meter readings sum update")
-        }
     }
 end
 
@@ -191,19 +186,13 @@ then
     val String TAG = "DSMRSumTarifs." + triggeringItem.name + ".Changed"
 
     if (Power_Ret_T1_Total.state != NULL && Power_Ret_T2_Total.state != NULL)
-    {
         Power_Ret_Total.postUpdate(Power_Ret_T1_Total.state as Number + Power_Ret_T2_Total.state as Number)
-    }
     else
     {
         if (Power_Ret_T1_Total.state == NULL)
-        {
             logWarn(TAG, "Item 'Power_Ret_T1_Total' is NULL, skip tarif meter readings total update")
-        }
         if (Power_Ret_T2_Total.state == NULL)
-        {
             logWarn(TAG, "Item 'Power_Ret_T2_Total' is NULL, skip tarif meter readings total update")
-        }
     }
 end
 
@@ -379,13 +368,9 @@ then
     else
     {
         if (Power_Ret_All_Current.state == NULL)
-        {
             logWarn(TAG, "'Power_Ret_All_Current' not initialized, skip calculation of aPwrDelta")
-        }
         if (Power_Use_All_Current.state == NULL)
-        {
             logWarn(TAG, "'Power_Use_All_Current' not initialized, skip calculation of aPwrDelta")
-        }
     }
 end
 
