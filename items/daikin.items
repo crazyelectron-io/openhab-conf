@@ -15,28 +15,28 @@ Group				gACLaundry
 Switch				AC_Power_Laundry
 					"Airco On/Off Stephan"
 					(gLaundry,gHist5,gACLaundry)
-					["Thermostat"]
+					// ["Thermostat"]
 					{channel="daikin:ac_unit:192_168_2_125:power" }
 
 Number				AC_SetTemp_Laundry
 					"Target Temp [%s °C]"
 					<temperature>
 					(gLaundry,gACLaundry)
-					["TargetTemperature"]
+					// ["TargetTemperature"]
 					{channel="daikin:ac_unit:192_168_2_125:settemp" }
 
 Number				AC_Temp_Laundry
 					"Room Temp [%s °C]"
 					<temperature>
 					(gLaundry,gTempSensor,gHist5,gACLaundry)
-					["CurrentTemperature"]
+					// ["CurrentTemperature"]
 					{channel="daikin:ac_unit:192_168_2_125:indoortemp" }
 
 String				AC_Mode_Laundry
 					"AC Mode"
 					<heating>
 					(gLaundry,gACLaundry)
-					["homekit:HeatingCoolingMode"]
+					// ["homekit:HeatingCoolingMode"]
 					{channel="daikin:ac_unit:192_168_2_125:mode" }
 
 String				AC_FanSpeed_Laundry
@@ -62,28 +62,28 @@ Group				gACGuestroom
 Switch				AC_Power_Guestroom
 					"Airco On/Off Menno"
 					(gGuestroom,gHist5,gACGuestroom)
-					["Thermostat"]
+					// ["Thermostat"]
 					{channel="daikin:ac_unit:192_168_2_109:power" }
 
 Number				AC_SetTemp_Guestroom
 					"Target Temp [%.0f °C]"
 					<temperature>
 					(gGuestroom,gACGuestroom)
-					["TargetTemperature"]
+					// ["TargetTemperature"]
 					{channel="daikin:ac_unit:192_168_2_109:settemp" }
 
 Number				AC_Temp_Guestroom
 					"Room Temp [%s °C]"
 					<temperature>
 					(gGuestroom,gTempSensor,gHist5,gACGuestroom)
-					["CurrentTemperature"]
+					// ["CurrentTemperature"]
 					{channel="daikin:ac_unit:192_168_2_109:indoortemp" }
 
 String				AC_Mode_Guestroom
 					"AC Mode"
 					<heating>
 					(gGuestroom,gACGuestroom)
-					["homekit:HeatingCoolingMode"]
+					// ["homekit:HeatingCoolingMode"]
 					{channel="daikin:ac_unit:192_168_2_109:mode" }
 
 String				AC_FanSpeed_Guestroom
@@ -109,28 +109,28 @@ Group				gACStudy
 Switch				AC_Power_Study
 					"Airco On/Off Study"
 					(gStudy,gHist5,gACStudy)
-					["Thermostat"]
+					// ["Thermostat"]
 					{channel="daikin:ac_unit:192_168_2_137:power"}
 
 Number				AC_SetTemp_Study
 					"Target Temp [%S °C]"
 					<temperature>
 					(gStudy,gACStudy)
-					["TargetTemperature"]
+					// ["TargetTemperature"]
 					{channel="daikin:ac_unit:192_168_2_137:settemp"}
 
 Number				AC_Temp_Study
 					"Inner Temp [%s °C]"
 					<temperature>
 					(gStudy,gTempSensor,gHist5,gACStudy)
-					["CurrentTemperature"]
+					// ["CurrentTemperature"]
 					{channel="daikin:ac_unit:192_168_2_137:indoortemp"}
 
 String				AC_Mode_Study
 					"AC Mode"
 					<heating>
 					(gStudy,gACStudy)
-					["homekit:HeatingCoolingMode"]
+					// ["homekit:HeatingCoolingMode"]
 					{channel="daikin:ac_unit:192_168_2_137:mode"}
 
 String				AC_FanSpeed_Study
@@ -155,35 +155,35 @@ Group				gACBedroom
 Switch				AC_Power_Bedroom
 					"Airco On/Off bedroom"
 					(gBedroom,gHist5,gBedroom)
-					["Thermostat"]
+					// ["Thermostat"]
 					{channel="daikin:ac_unit:192_168_2_135:power"}
 
 Number				AC_SetTemp_Bedroom
 					"Target temp [%.0f °C]"
 					<temperature>
 					(gBedroom,gACBedroom)
-					["TargetTemperature"]
+					// ["TargetTemperature"]
 					{channel="daikin:ac_unit:192_168_2_135:settemp"}
 
 Number				AC_Temp_Bedroom
 					"Bedroom temp [%s °C]"
 					<temperature>
 					(gBedroom,gTempSensor,gHist10,gACBedroom)
-					["CurrentTemperature"]
+					// ["CurrentTemperature"]
 					{channel="daikin:ac_unit:192_168_2_135:indoortemp"}
 
 Number				AC_Temp_Outdoor
 					"Outdoor left temp [%s °C]"
 					<temperature>
 					(gTempSensor,gHist10)
-					["CurrentTemperature"]
+					// ["CurrentTemperature"]
 					{channel="daikin:ac_unit:192_168_2_135:outdoortemp"}
 
 String				AC_Mode_Bedroom
 					"AC Mode [%s]"
 					<heating>
 					(gBedroom,gACBedroom)
-					["homekit:HeatingCoolingMode"]
+					// ["homekit:HeatingCoolingMode"]
 					{channel="daikin:ac_unit:192_168_2_135:mode"}
 
 String				AC_FanSpeed_Bedroom

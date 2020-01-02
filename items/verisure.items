@@ -109,7 +109,7 @@ Group:Contact:OR(OPEN, CLOSED)	gDoors
 
 Contact							Alarm_Door_Scullery
 								"Scullery Door Open"
-								["ContactSensor"]
+								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:sculleryDoorSensor:state"}
 
 DateTime						Alarm_Update_Door_Scullery
@@ -118,7 +118,7 @@ DateTime						Alarm_Update_Door_Scullery
 
 Contact							Alarm_Door_Bedroom
 								"Bedroom Door Open"
-								["ContactSensor"]
+								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:bedroomDoorSensor:state"}
 
 DateTime						Alarm_Update_Door_Bedroom
@@ -128,7 +128,7 @@ DateTime						Alarm_Update_Door_Bedroom
 Contact							Alarm_Door_Livingroom
 								"Livingroom Door Open"
 								(gDoors)
-								["ContactSensor"]
+								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:livingroomDoorSensor:state"}
 
 DateTime						Alarm_Update_Door_Livingroom
@@ -138,7 +138,7 @@ DateTime						Alarm_Update_Door_Livingroom
 Contact							Alarm_Door_GarageSide
 								"Garage Side door Open"
 								(gDoors)
-								["ContactSensor"]
+								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:garageDoorSensor:state"}
 
 DateTime						Alarm_Update_Door_GarageSide
@@ -148,7 +148,7 @@ DateTime						Alarm_Update_Door_GarageSide
 Contact							Alarm_Door_Dining
 								"Diningroom Door Open"
 								(gDoors)
-								["ContactSensor"]
+								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:diningDoorSensor:state"}
 
 DateTime						Alarm_Update_Door_Dining
@@ -158,7 +158,7 @@ DateTime						Alarm_Update_Door_Dining
 Contact							Alarm_Door_Front
 								"Front Door Open"
 								(gDoors)
-								["ContactSensor"]
+								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:frontDoorSensor:state"}
 
 DateTime						Alarm_Update_Door_Front
@@ -168,7 +168,7 @@ DateTime						Alarm_Update_Door_Front
 Contact							Alarm_Door_Fusebox
 								"FuseBox Door open"
 								(gDoors)
-								["ContactSensor"]
+								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:fuseboxDoorSensor:state"}
 
 Contact							Alarm_Update_Door_Fusebox
