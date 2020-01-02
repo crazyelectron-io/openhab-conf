@@ -1,7 +1,7 @@
 //==================================================================================================
 // hue.items - All Hue lighting, switch and motion sensor items.
 //==================================================================================================
-//	v13 20200101	Updated Labels and tags/metadata for Alexa Skill.
+//	v13 20200101	Updated Labels and added metadata for Alexa V3 Skill.
 //	v12 20191230	Added Alert channels; removed expire switches.
 //	v11 20191226	Updated formatting (empty line between items).
 //					Added missing OnOff groupm to Hall and Haill Ceiling dimmer items.
@@ -64,7 +64,6 @@ Dimmer							Light_Dim_Chair
 								"Brightness Chair light"
 								<slider>
 								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_chair:brightness"}
 
 Dimmer							Light_ColorTemp_Chair
@@ -77,7 +76,6 @@ Dimmer							Light_Dim_Corner
 								"Brightness Corner Table light"
 								<slider>
 								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_corner:brightness"}
 
 Dimmer							Light_ColorTemp_Corner
@@ -90,7 +88,6 @@ Dimmer							Light_Dim_SideTable
 								"Brightness Side Table Light"
 								<slider>
 								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_side:brightness"}
 
 Dimmer							Light_ColorTemp_SideTable
@@ -109,7 +106,6 @@ Dimmer							Light_Dim_Backdoor
 								"Brightness Backdoor light"
 								<slider>
 								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_bdoor:brightness"}
 
 Dimmer							Light_ColorTemp_Backdoor
@@ -128,7 +124,6 @@ Dimmer							Light_Dim_Couch
 								"Brightness Couch light"
 								<slider>
 								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_couch:brightness"}
 
 Dimmer							Light_ColorTemp_Couch
@@ -350,7 +345,6 @@ Dimmer							Light_Dim_HallDoor
 								"Brightness Frontdoor light"
 								<slider>
 								(gLight_OnOff_Hall,gLight_Brightness_Hall)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_hallfd:brightness"}
 
 Dimmer							Light_ColorTemp_HallDoor
@@ -363,7 +357,6 @@ Dimmer							Light_Dim_HallWall
 								"Brightness Hall Corner light"
 								<slider>
 								(gLight_OnOff_Hall,gLight_Brightness_Hall)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_hallwl:brightness"}
 
 Dimmer							Light_ColorTemp_HallWall
@@ -419,7 +412,6 @@ Dimmer							Light_Dim_HallCeiling
 								"Brightness Hallway Ceiling light"
 								<slider>
 								(gLight_OnOff_HallCeiling,gLight_Brightness_HallCeiling)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_hallcl:brightness"}
 
 Dimmer							Light_ColorTemp_HallCeiling
@@ -464,7 +456,6 @@ Dimmer							Light_Dim_ToiletCeiling
 								"Brightness Toilet Ceiling light"
 								<slider>
 								(gLight_OnOff_Toilet, gLight_Brightness_Toilet)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_toilet:brightness"}
 
 Dimmer							Light_ColorTemp_ToiletCeiling
@@ -503,7 +494,6 @@ Dimmer							Light_Dim_BathroomCeiling
 								"Brightness Bathroom Ceiling light"
 								<slider>
 								(gLight_OnOff_Bathroom,gLight_Brightness_Bathroom)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:brightness"}
 
 Dimmer							Light_ColorTemp_BathroomCeiling
@@ -553,7 +543,6 @@ Dimmer							Light_Dim_BedroomLeft
 								"Brightness Bedroom light Ron"
 								<slider>
 								(gLight_OnOff_Bedroom,gLight_Brightness_Bedroom)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_lbed:brightness"}
 
 Dimmer							Light_ColorTemp_BedroomLeft
@@ -566,7 +555,6 @@ Dimmer							Light_Dim_BedroomRight
 								"Brightness Bedroom light Arniël"
 								<slider>
 								(gLight_OnOff_Bedroom,gLight_Brightness_Bedroom)
-								{alexa="Lighting"}
 								{channel="hue:0220:0017882ec5b3:bulb_rbed:brightness"}
 
 Dimmer							Light_ColorTemp_BedroomRight
