@@ -250,18 +250,23 @@ when
     Item AlarmClock changed
 then
     val String TAG = "Alarm.Clock.Changed"
+    logInfo(TAG, ">>>>>> Enter rule with '{}' >>>>>>", AlarmClock)
 
-    if (AlarmClock.state as Number == 0) {
-        if (timerAlarm !== null) {
+    if (AlarmClock.state as Number == 0)
+    {
+        logInfo(TAG, "AlarmClock state changed to 0, cancel all alarms")
+        if (timerAlarm !== null)
+        {
+            //timerAlarm?.cancel
+            logInfo(TAG, "AlarmClock timerAlarm is running, cancel it")
             timerAlarm.cancel
             timerAlarm = null
         }
-        logInfo(TAG, "All Android alarms are cancelled")
     }
     else
     {
         var epoch = new DateTime((AlarmClock.state as Number).longValue)
-        logInfo(TAG, "Scheduling Android alarm for {}", epoch.toString)
+        logInfo(TAG, "Schedule Android alarm for {}", epoch.toString)
 
         if (timerAlarm !== null)
         {
@@ -270,7 +275,7 @@ then
         }
         else
         {
-            logInfo(TAG, "New Android Alarm set for {}", epoch.toString)
+            logInfo(TAG, "New Android Alarm set to {}", epoch.toString)
             timerAlarm = createTimer(epoch,
                 [|
                     // Turn off the House Alarm and turn on the hallway lighting

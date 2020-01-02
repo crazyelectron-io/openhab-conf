@@ -142,3 +142,10 @@ Group							gArea_Trigger
 								"Area Triggers"
 Group							gArea_Action
 								"Area Actions"
+
+//--------------------------------------------------------------------------------------------------
+// Call state item (fed by Android App) for Ron's Smartphone.
+//--------------------------------------------------------------------------------------------------
+
+String							CallState
+								"Android call state Ron [%s]"

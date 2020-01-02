@@ -1,0 +1,1 @@
+Switch MyDevice "Ping my device" {channel="network:pingdevice:192_168_2_123:online" }

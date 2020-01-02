@@ -142,7 +142,7 @@ then
     if (null === used)
     {
         used = Gas_Use_Total.state as Number - 5611000
-        logInfo(TAG, "Temporary fix for missing year data, pre-fill '{}'", used)
+        logDebug(TAG, "Temporary fix for missing year data, pre-fill '{}'", used)
     }
     logInfo(TAG, "This contract years gas usage = {}", used)
     Gas_Use_Year.postUpdate(used)
@@ -262,13 +262,13 @@ then
         if (usedYear === null || usedYear == 0)
         {
             usedYear = Power_Use_Total.state as Number - 23887000
-            logInfo(TAG, "Temporary fix for missing year used power start data, default to '{}'", usedYear)
+            logDebug(TAG, "Temporary fix for missing year used power start data, default to '{}'", usedYear)
         }
         usedContract = Power_Use_Total.deltaSince(contractStart, "influxdb")
         if (usedContract === null || usedContract == 0)
         {
             usedContract = Power_Use_Total.state as Number - 23887000
-            logInfo(TAG, "Temporary fix for missing contract used power start data, default to '{}'", usedContract)
+            logDebug(TAG, "Temporary fix for missing contract used power start data, default to '{}'", usedContract)
         }
     }
 
