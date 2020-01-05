@@ -54,7 +54,7 @@ Number							Power_Use_L1_Current
 								(gHist)
 								{channel="mqtt:topic:mosquitto:dsmr:P_UseL1"}
 
-Number							Power_Use_L2_CUrrent
+Number							Power_Use_L2_Current
 								"Current use L2 [%d W]"
 								<energy>
 								(gHist)
