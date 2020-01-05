@@ -109,7 +109,7 @@ sitemap default label="At Home"
                 Slider item=Light_Dim_Couch  
                 Slider item=Light_ColorTemp_Couch    
             }
-            Text item=gLight_OnOff_Kitchen
+            Text item=gLight_Brightness_Kitchen
             {
                 // Kitchen lighting
                 Switch item=Light_Dim_KitchenLeft
@@ -119,7 +119,7 @@ sitemap default label="At Home"
                 Slider item=Light_Dim_KitchenRight
                 Slider item=Light_ColorTemp_KitchenRight
             }
-            Text item=gLight_OnOff_Dining
+            Text item=gLight_Brightness_Dining
             {
             // Dining table lighing
                 Switch item=Light_Dim_Dining1
