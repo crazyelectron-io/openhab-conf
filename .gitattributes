@@ -1,5 +1,4 @@
 /automation/lib/python/configuration.py filter=git-crypt diff=git-crypt
-/services/influxdb.cfg filter=git-crypt diff=git-crypt
 /services/runtime.cfg filter=git-crypt diff=git-crypt
 /services/http.cfg filter=git-crypt diff=git-crypt
 /things/alexa.things filter=git-crypt diff=git-crypt
