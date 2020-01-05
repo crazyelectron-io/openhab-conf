@@ -72,7 +72,7 @@ then
 	val String scene = receivedCommand.toString
 	logDebug(TAG, "Received command '{}' for area '{}'", scene, lightArea)
 
-	val lightGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_OnOff_" + lightArea)
+	val lightGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_Brightness_" + lightArea)
 
 	logInfo(TAG, "Set Lighting Scene to {} for {}", scene, lightGroup.name)
 
@@ -83,7 +83,7 @@ then
 	}
 	else
 	{
-		lightGroup.postUpdate(ON)
+		// lightGroup.postUpdate(ON)
 		val brightnessGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_Brightness_" + lightArea)
 		val String brightness = ScriptServiceUtil.getItemRegistry.getItem(lightArea + "_Brightness_" + receivedCommand).state.toString
 		logDebug(TAG, "Brightness command {}, group {}", brightness, brightnessGroup)
@@ -214,7 +214,7 @@ then
 		// Upper Left+Right buttons press?
 		case "101.0":
 		{
-			Light_Scene_Dining.sendCommand("BRIGHT")
+			Light_Scene_Dining.sendCommand("READ")
 			Light_Scene_Livingroom.sendCommand("READ")
 		}
 	}
