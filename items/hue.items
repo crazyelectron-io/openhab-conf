@@ -12,7 +12,7 @@
 // All the Hue lights are defined here, including OH groups to handle them, as well as all the wall
 // switched (both Tap and Dimmer Switch).
 // Currently the Hue binding does not support Scenes and Groups defined in the bridge.
-// 
+//
 //==================================================================================================
 
 
@@ -39,29 +39,30 @@ Group							gLight_Alert_Livingroom
 								(gLivingroom,gAlert)
 
 Group:Switch:AND(ON, OFF)		gLight_OnOff_Livingroom
-								"Livingroom lights [(%d)]"
+								"Living Room [(%d)]"
 								<light>
 								(gLight,gLivingroom)
-								{alexa="Switchable"}
+								// ["Lighting"]
 
 Group:Dimmer					gLight_Brightness_Livingroom
-								"Brightness Livingroom lights"
+								"Living Room"
 								<slider>
 								(gLicht,gLivingroom)
-								{alexa="Lighting"}
+								{alexa="BrightnessController.brightness,PowerController.powerState"}
 
 Group:Dimmer					gLight_ColorTemp_Livingroom
-								"Colortemperature Livingroom lights"
+								"Livingroom"
 								<slider>
 								(gLicht,gLivingroom)
+								{alexa="ColorTemperature.colorTemperatureInKelvin"}
 
 String							Light_Scene_Livingroom
-								"Scene Livingroom lights"
+								"Scene Livingroom"
 								<light>
 								(gLight,gLivingroom,gPersist,gLighting_Scene)
 
 Dimmer							Light_Dim_Chair
-								"Brightness Chair light"
+								"Chair light"
 								<slider>
 								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
 								{channel="hue:0220:0017882ec5b3:bulb_chair:brightness"}
@@ -121,19 +122,19 @@ String							Light_Alert_Backdoor
 								{channel="hue:0220:0017882ec5b3:bulb_bdoor:alert"}
 
 Dimmer							Light_Dim_Couch
-								"Brightness Couch light"
+								"Couch"
 								<slider>
 								(gLight_OnOff_Livingroom,gLight_Brightness_Livingroom)
 								{channel="hue:0220:0017882ec5b3:bulb_couch:brightness"}
 
 Dimmer							Light_ColorTemp_Couch
-								"ColorTemperature Couch light"
+								"Couch"
 								<slider>
 								(gLight_ColorTemp_Livingroom)
 								{channel="hue:0220:0017882ec5b3:bulb_couch:color_temperature"}
 
 String							Light_Alert_Couch
-								"Alert Couch light"
+								"Alert Couch Light"
 								<alarm>
 								(gLight_Alert_Livingroom)
 								{channel="hue:0220:0017882ec5b3:bulb_couch:alert"}
@@ -142,106 +143,115 @@ String							Light_Alert_Couch
 // Kitchen lights
 //--------------------------------------------------------------------------------------------------
 
-Group:Switch:AND(ON, OFF)		gLight_OnOff_Kitchen
-								"Kitchen light [(%d)]"
+Group							gLight_Kitchen
+								"Kitchen"
 								<light>
 								(gLight,gKitchen)
-								{alexa="Switchable"}
-
-Group:Dimmer					gLight_Brightness_Kitchen
-								"Brightness Kitchen light"
-								<slider>
-								(gLicht,gKitchen)
-								{alexa="Lighting"}
-
-Group:Dimmer					gLight_ColorTemp_Kitchen
-								"ColorTemperature Kitchen light"
-								<slider>
-								(gLicht,gKitchen)
+								// {alexa="Endpoint.Light"}
 
 String							Light_Scene_Kitchen
 								"Scene Kitchen light"
 								<light>
-								(gLight,gKitchen,gPersist,gLighting_Scene)
+								(gLight_Kitchen,gPersist,gLighting_Scene)
+
+// Group:Switch:AND(ON, OFF)		gLight_OnOff_Kitchen
+// 								"Kitchen"
+// 								<light>
+// 								(gLight_Kitchen)
+
+Group:Dimmer					gLight_Brightness_Kitchen
+								"Kitchen"
+								<brightness>
+								(gLicht_Kitchen)
+								{alexa="PowerController.powerState,BrightnessController.brightness"}
+
+Group:Dimmer					gLight_ColorTemp_Kitchen
+								"ColorTemperature Kitchen light"
+								<slider>
+								(gLicht_Kitchen)
 
 Dimmer							Light_Dim_KitchenLeft
-								"Brightness Kitchen light left"
+								"Brightness Left Kitchen"
 								<slider>
-								(gLight_OnOff_Kitchen,gLight_Brightness_Kitchen)
+								(gLight_Brightness_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:brightness"}
 
 Dimmer							Light_ColorTemp_KitchenLeft
-								"ColorTemperature Kitchen light left"
+								"ColorTemperature Left Kitchen"
 								<slider>
 								(gLight_ColorTemp_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:color_temperature"}
 
 Dimmer							Light_Dim_KitchenRight
-								"Brightness Kitchen light right"
+								"Brightness Right Kitchen"
 								<slider>
-								(gLight_OnOff_Kitchen,gLight_Brightness_Kitchen)
+								(gLight_Brightness_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:brightness"}
 
 Dimmer							Light_ColorTemp_KitchenRight
-								"ColorTemperature Kitchen light right"
+								"ColorTemperature Right Kitchen"
 								<slider>
 								(gLight_ColorTemp_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:color_temperature"}
 
 Group							gLight_Alert_Kitchen
-								"Alert Kitchen Lighting"
+								"Alert Kitchen"
 								<alarm>
-								(gKitchen,gAlert)
+								(gLight_Kitchen,gAlert)
 
 String							Light_Alert_KitchenLeft
-								"Alert Kitchen light left"
+								"Alert Left Kitchen"
 								<alarm>
 								(gLight_Alert_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:alert"}
 
 String							Light_Alert_KitchenRight
-								"Alert Kitchen light right"
+								"Alert Right Kitchen"
 								<alarm>
 								(gLight_Alert_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:alert"}
-
-//Switch  Light1_Effect       { channel="hue:0210:1:bulb1:effect" }
 
 //--------------------------------------------------------------------------------------------------
 // Dining table lights                                                                                                                                                                                                          // Dining table lights
 //--------------------------------------------------------------------------------------------------
 
-Group:Switch:AND(ON, OFF)		gLight_OnOff_Dining
-								"Dining light [(%d)]"
+// Group:Switch:AND(ON, OFF)		gLight_OnOff_Dining
+// 								"Dining light [(%d)]"
+// 								<light>
+// 								(gLight,gDining)
+// 								{alexa="Switchable"}
+Group							gLight_Dining
+								"Dining"
 								<light>
 								(gLight,gDining)
-								{alexa="Switchable"}
 
 Group:Dimmer					gLight_Brightness_Dining
 								"Brightness Dining light"
 								<slider>
-								(gLicht,gDining)
-								{alexa="Lighting"}
+								(gLicht_Dining)
+								// {alexa="Lighting"}
 
 Group:Dimmer					gLight_ColorTemp_Dining
 								"ColorTemperature Dining light"
 								<slider>
-								(gLicht,gDining)
+								(gLicht_Dining)
 
 Group:Color						gLight_Color_Dining
 								"Color Dining light"
 								<slider>
-								(gLicht,gDining)
+								(gLicht_Dining)
+								["Lighting"]
+								// {alexa="PowerController.powerState,BrightnessController.brightness"}
 
 String							Light_Scene_Dining
 								"Scene Dining light"
 								<light>
-								(gLight,gDining,gPersist,gLighting_Scene)
+								(gLight_Dining,gPersist,gLighting_Scene)
 
 Dimmer							Light_Dim_Dining1
 								"Brightness Dining Light 1"
 								<slider>
-								(gLight_OnOff_Dining,gLight_Brightness_Dining)
+								(gLight_Brightness_Dining)
 								{channel="hue:0210:0017882ec5b3:bulb_dining1:color"}
 
 Dimmer							Light_ColorTemp_Dining1
@@ -253,7 +263,7 @@ Dimmer							Light_ColorTemp_Dining1
 Dimmer							Light_Dim_Dining2
 								"Brightness Dining Light 2"
 								<slider>
-								(gLight_OnOff_Dining,gLight_Brightness_Dining)
+								(gLight_Brightness_Dining)
 								{channel="hue:0210:0017882ec5b3:bulb_dining2:color"}
 
 Dimmer							Light_ColorTemp_Dining2
@@ -265,7 +275,7 @@ Dimmer							Light_ColorTemp_Dining2
 Dimmer							Light_Dim_Dining3
 								"Brightness Dining Light 3"
 								<slider>
-								(gLight_OnOff_Dining,gLight_Brightness_Dining)
+								(gLight_Brightness_Dining)
 								{channel="hue:0210:0017882ec5b3:bulb_dining3:color"}
 
 Dimmer							Light_ColorTemp_Dining3
@@ -277,19 +287,19 @@ Dimmer							Light_ColorTemp_Dining3
 Color							Light_Color_Dining1
 								"Color Dining Light 1"
 								<colorwheel>
-								(gDining,gLight,gLight_Color_Dining)
+								(gLight_Color_Dining)
 								{channel="hue:0210:0017882ec5b3:bulb_dining1:color"}
 
 Color							Light_Color_Dining2
 								"Color Dining Light 2"
 								<colorwheel>
-								(gDining,gLight,gLight_Color_Dining)
+								(gLight_Color_Dining)
 								{channel="hue:0210:0017882ec5b3:bulb_dining2:color"}
 
 Color							Light_Color_Dining3
 								"Color Dining Light 3"
 								<colorwheel>
-								(gDining,gLight,gLight_Color_Dining)
+								(gLight_Color_Dining)
 								{channel="hue:0210:0017882ec5b3:bulb_dining3:color"}
 
 Group							gLight_Alert_Dining
@@ -426,10 +436,10 @@ String							Light_Alert_HallCeiling
 								(gLight_Alert_Hall)
 								{channel="hue:0220:0017882ec5b3:bulb_hallcl:alert"}
 
+
 //--------------------------------------------------------------------------------------------------
 // Toilet lighting
 //--------------------------------------------------------------------------------------------------
-
 Group:Switch:AND(ON, OFF)		gLight_OnOff_Toilet
 								"Toilet light [(%d)]"
 								<light>
@@ -463,6 +473,7 @@ Dimmer							Light_ColorTemp_ToiletCeiling
 								<slider>
 								(gLight_ColorTemp_Toilet)
 								{channel="hue:0220:0017882ec5b3:bulb_toilet:color_temperature"}
+
 
 //--------------------------------------------------------------------------------------------------
 // Bathroom  lighting
@@ -513,10 +524,10 @@ String							Light_Alert_BathroomCeiling
 								(gLight_Alert_Bathroom)
 								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:alert"}
 
+
 //--------------------------------------------------------------------------------------------------
 // Master bedroom lighting
 //--------------------------------------------------------------------------------------------------
-
 Group:Switch:AND(ON, OFF)		gLight_OnOff_Bedroom
 								"Bedroom light"
 								<light>
@@ -524,13 +535,13 @@ Group:Switch:AND(ON, OFF)		gLight_OnOff_Bedroom
 								{alexa="Switchable"}
 
 Group:Dimmer					gLight_Brightness_Bedroom
-								"Brightness Bedroom light"
+								"Brightness Bedroom"
 								<slider>
 								(gLicht,gBedroom)
 								{alexa="Lighting"}
 
 Group:Dimmer					gLight_ColorTemp_Bedroom
-								"ColorTemperature Bedroom light"
+								"ColorTemperature Bedroom"
 								<slider>
 								(gLicht,gBedroom)
 
@@ -580,10 +591,10 @@ String							Light_Alert_BedroomRight
 								(gLight_Alert_Bedroom)
 								{channel="hue:0220:0017882ec5b3:bulb_rbed:alert"}
 
+
 //--------------------------------------------------------------------------------------------------
 // Guestroom lighting
 //--------------------------------------------------------------------------------------------------
-
 Group:Switch:OR(ON, OFF)		gLight_OnOf_Guestroom
 								"Menno's light"
 								<light>
@@ -647,10 +658,10 @@ String							Light_Alert_GuestroomCeiling2
 								(gLight_Alert_Guestroom)
 								{channel="hue:0220:0017882ec5b3:bulb_guest2:alert"}
 
+
 //--------------------------------------------------------------------------------------------------
 // Laundry room lighting
 //--------------------------------------------------------------------------------------------------
-
 Group:Switch:AND(ON,OFF)		gLight_OnOff_Laundry
 								"Stephan's Light"
 								<light>
@@ -685,6 +696,7 @@ Dimmer							Light_ColorTemp_LaundryCeiling
 								(gLight_ColorTemp_Laundry,gLaundry,gLight)
 								{channel="hue:0220:0017882ec5b3:bulb_laundry:color_temperature"}
 
+
 // Dimmer                      Light_Dim_LaundryBureau
 //                             "Dim Stephan's Bureau light"
 //                             <slider>
@@ -696,7 +708,6 @@ Dimmer							Light_ColorTemp_LaundryCeiling
 //                             <slider>
 //                             (gLight_ColorTemp_Laundry)
 //                             {channel="hue:0220:0017882ec5b3:bulb_laundrybr:color_temperature"}
-
 Group							gLight_Alert_Laundry
 								"Alert Laundry Lighting"
 								<alarm>
@@ -708,6 +719,7 @@ String							Light_Alert_LaundryCeiling
 								(gLight_Alert_Laundry)
 								{channel="hue:0220:0017882ec5b3:bulb_laundry:alert"}
 
+
 // String							Light_Alert_LaundryBureau
 // 								"Alert Laundry Bureau light"
 // 								<alarm>
@@ -717,7 +729,6 @@ String							Light_Alert_LaundryCeiling
 //--------------------------------------------------------------------------------------------------
 // Outside lighting
 //--------------------------------------------------------------------------------------------------
-
 Group:Switch:AND(ON, OFF)		gLight_OnOff_Outside
 								"Outdoor light [(%d)]"
 								<light>
@@ -764,6 +775,7 @@ Dimmer							Light_Dim_OutsideTerrace
 								<slider>
 								(gLight_OnOff_Outside,gLight_Brightness_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_terrace:brightness"}
+
 Dimmer							Light_Dim_OutsideToolshed
 								"Tuinhuis Lantaarn"
 								<slider>
@@ -811,10 +823,10 @@ String							Light_Alert_OutsideToolshed
 								(gLight_Alert_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_shed:alert"}
 
+
 //--------------------------------------------------------------------------------------------------
 // The Lodge lighting
 //--------------------------------------------------------------------------------------------------
-
 Group:Switch:AND(ON,OFF)		gLight_OnOff_Lodge
 								"Lodge light [(%d)]"
 								<light>
@@ -861,6 +873,7 @@ String							Light_Alert_LodgeWall2
 								(gLight_Alert_Lodge)
 								{channel="hue:0100:0017882ec5b3:bulb_lodge2:alert"}
 
+
 //--------------------------------------------------------------------------------------------------
 // Hue motion sensors
 //--------------------------------------------------------------------------------------------------
@@ -886,8 +899,8 @@ Number:Temperature				Motion_Temperature_Toilet
 								"Toilet Temperature [%.1f °C]"
 								<temperature>
 								(gToilet,gTemp)
-								// ["CurrentTemperature"]
-								{channel="hue:0302:0017882ec5b3:temp_toilet:temperature"}
+
+								// ["CurrentTemperature"]								{channel="hue:0302:0017882ec5b3:temp_toilet:temperature"}
 
 // Hallway Motion Sensor
 Number:Illuminance				Motion_Lux_Hall
@@ -922,6 +935,7 @@ Number:Temperature				Motion_Temperature_Hall
 								"Hallway Temperature [%.1f °C]"
 								<temperature>
 								(gHall,gTemp)
+
 								// ["CurrentTemperature"]
 
 //--------------------------------------------------------------------------------------------------
@@ -953,6 +967,7 @@ Dimmer							Livingroom_ColorTemp_READ
 								"Living colortemp READ"
 								(gPersist)
 
+
 // Kitchen lighting Scene configuration
 Dimmer							Kitchen_Brightness_EVENING
 								"Kitchen brightness EVENING"
@@ -977,6 +992,7 @@ Dimmer							Kitchen_ColorTemp_WORK
 Dimmer							Kitchen_ColorTemp_BRIGHT
 								"Kitchen colortemp BRIGHT"
 								(gPersist)
+
 
 // Dining lighting Scene configuration
 Dimmer							Dining_Brightness_EVENING
@@ -1003,6 +1019,7 @@ Dimmer							Dining_ColorTemp_BRIGHT
 								"Dining colortemp BRIGHT"
 								(gPersist)
 
+
 // Hallway lighting Scene configuration
 Dimmer							Hall_Brightness_EVENING
 								"Hall brightness EVENING"
@@ -1027,6 +1044,7 @@ Dimmer							Hall_ColorTemp_READ
 Dimmer							Hall_ColorTemp_BRIGHT
 								"Hall colortemp BRIGHT (%d)"
 								(gPersist)
+
 
 // Hall Ceiling lighting Scene configuration
 Dimmer							HallCeiling_Brightness_EVENING
@@ -1053,6 +1071,7 @@ Dimmer							HallCeiling_ColorTemp_BRIGHT
 								"HallCeiling colortemp BRIGHT"
 								(gPersist)
 
+
 // Bathroom lighting Scene configuration
 Dimmer							Bathroom_Brightness_EVENING
 								"Bathroom brightness EVENING"
@@ -1077,6 +1096,7 @@ Dimmer							Bathroom_ColorTemp_READ
 Dimmer							Bathroom_ColorTemp_BRIGHT
 								"Bathroom colortemp BRIGHT"
 								(gPersist)
+
 
 // Bedroom lighting Scene configuration
 Dimmer							Bedroom_Brightness_EVENING
@@ -1103,6 +1123,7 @@ Dimmer							Bedroom_ColorTemp_COSY
 								"Bedroom colortemp COSY"
 								(gPersist)
 
+
 // Lodge lighting Scene configuration
 Dimmer							Lodge_Brightness_EVENING
 								"Lodge brightness EVENING"
@@ -1116,6 +1137,7 @@ Dimmer							Lodge_Brightness_BRIGHT
 								"Lodge brightness BRIGHT"
 								(gPersist)
 
+
 // Outside lighting Scene configuration
 Dimmer							Outside_Brightness_EVENING
 								"Outside brightness EVENING"
@@ -1128,3 +1150,4 @@ Dimmer							Outside_Brightness_WORK
 Dimmer							Outside_Brightness_BRIGHT
 								"Outside brightness BRIGHT"
 								(gPersist)
+
