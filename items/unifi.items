@@ -2,11 +2,13 @@
 Switch							Presence_Ron
 								"Ron is [MAP(unifi.map):%s]"
 								<man_1>
+								(gHist5)
 								{channel="unifi:wirelessClient:home:ronsPhone:online"}
 
 Switch							Presence_Arniel
 								"Arniël is [MAP(unifi.map):%s]"
 								<woman_1>
+								(gHist5)
 								{channel="unifi:wirelessClient:home:arnielsPhone:online"}
 
 Switch							Presence_Stephan
