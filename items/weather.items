@@ -50,9 +50,10 @@ Number							Weather_Temp_WeatherStation
 
 // Average outdoor temperature.
 Number							Weather_TempAverage_Outdoor
-								"Buitentemperatuur [%.1f °C]"
+								"Outdoor [%.1f °C]"
 								<temperature>
 								(gWeather,gPersist,gTempSensor)
+								["CurrentTemperature"]
 
 // Feel temperature outdoor (from KNMI API).
 Number							Weather_TempFeel_WeatherStation

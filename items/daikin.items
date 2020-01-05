@@ -145,10 +145,10 @@ String				AC_FanDirection_Study
 					(gStudy,gACStudy)
 					{channel="daikin:ac_unit:192_168_2_137:fandir"}
 
-
 //--------------------------------------------------------------------------------------------------
 // Daikin Master Bedroom items
 //--------------------------------------------------------------------------------------------------
+
 Group				gACBedroom
 					"Aircp Bedroom"
 
@@ -159,21 +159,21 @@ Switch				AC_Power_Bedroom
 					{channel="daikin:ac_unit:192_168_2_135:power"}
 
 Number				AC_SetTemp_Bedroom
-					"Target temp [%.0f °C]"
+					"Bedroom [%.0f °C]"
 					<temperature>
 					(gBedroom,gACBedroom)
-					// ["TargetTemperature"]
+					["TargetTemperature"]
 					{channel="daikin:ac_unit:192_168_2_135:settemp"}
 
 Number				AC_Temp_Bedroom
-					"Bedroom temp [%s °C]"
+					"Bedroom [%d °C]"
 					<temperature>
 					(gBedroom,gTempSensor,gHist10,gACBedroom)
-					// ["CurrentTemperature"]
+					["CurrentTemperature"]
 					{channel="daikin:ac_unit:192_168_2_135:indoortemp"}
 
 Number				AC_Temp_Outdoor
-					"Outdoor left temp [%s °C]"
+					"Outdoor [%s °C]"
 					<temperature>
 					(gTempSensor,gHist10)
 					// ["CurrentTemperature"]
@@ -183,7 +183,6 @@ String				AC_Mode_Bedroom
 					"AC Mode [%s]"
 					<heating>
 					(gBedroom,gACBedroom)
-					// ["homekit:HeatingCoolingMode"]
 					{channel="daikin:ac_unit:192_168_2_135:mode"}
 
 String				AC_FanSpeed_Bedroom

@@ -34,7 +34,6 @@ Number							CV_Temp_Livingroom
 								"Livingroom temperature [%.1f °C]"
 								<temperature>
 								(gPersist,gTempSensor)
-								// ["CurrentTemperature"]
 
 // Hot water tapped switch
 Switch							CV_HotWater_Active
@@ -46,7 +45,6 @@ Number							CV_SetPoint_Livingroom
 								"Set point [%.1f °C]"
 								<heating>
 								(gPersist,gTemp,gLivingroom,gThermostat)
-								// ["TargetTemperature"]
 
 // CV water pressure (bar)
 Number							CV_Pressure
@@ -58,7 +56,6 @@ Switch							CV_Burner_Active
 								"CV active"
 								<fire>
 								(gPersist,gHist1)
-								// ["homekit:HeatingCoolingMode"]
 
 // Retry reading the gas usage after a HTTP failure
 Switch							CV_Retry_GasUsage
@@ -67,10 +64,10 @@ Switch							CV_Retry_GasUsage
 
 // Average livingroom temperature (derived from NefitEasy and Netatmo HC)
 Number							Temp_Avg_Livingroom
-								"Livingroom temperature [%.1f °C]"
+								"Livingroom [%.1f °C]"
 								<temperature>
 								(gHist5,gTempSensor,gLivingroom,gPersist)
-								// ["CurrentTemperature"]
+								["CurrentTemperature"]
 
 // CV heater active switch
 Switch							CV_Heater_Active
