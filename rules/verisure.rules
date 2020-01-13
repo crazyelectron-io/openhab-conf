@@ -14,8 +14,7 @@ rule "Alarm.Status.Report - Report that the alarm is switched on or off"
 when
     Item Alarm_Status changed
 then
-    val String TAG = "Alarm.Status.Report"
-
+    // val String TAG = "Alarm.Status.Report"
     // logInfo(TAG, "Alarm changed from {} to {}, report it via Echo Dot in Livingroom", triggeringItem.previousState.toString, triggeringItem.state.toString)
 
     var String msg = "The alarm has been "
