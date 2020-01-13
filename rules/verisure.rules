@@ -16,10 +16,10 @@ when
 then
     val String TAG = "Alarm.Status.Report"
 
-    logInfo(TAG, "Alarm changed from {} to {}, report it via Echo Dot in Livingroom", triggeringItem.previousState.toString, triggeringItem.state.toString)
+    // logInfo(TAG, "Alarm changed from {} to {}, report it via Echo Dot in Livingroom", triggeringItem.previousState.toString, triggeringItem.state.toString)
 
     var String msg = "The alarm has been "
-    if (triggeringItem.state.toString == "ARMED_AWAY" || triggeringItem.state.toString == "ARMED_HOME")
+    if (Alarm_Status.state == "ARMED_AWAY" || Alarm_Status.state == "ARMED_HOME")
         msg = msg + "Armed."
     else
         msg = msg + "Disarmed."
