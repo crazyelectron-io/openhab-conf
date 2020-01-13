@@ -83,7 +83,7 @@ rule "Watchdog timeout triggered"
 // }
 //
 // The info retrieved is store in Items:
-//  CV_Temp_Livingroom  - The current measured room temperature
+//  CV_Temp_Livingroom  - The current Nefit measured room temperature
 //  CV_SetPoint_Livingroom     - The set temperature
 //  CV_Pressure     - The pressure in the pipes (in bar)
 //  CV_Burner_Active      - Switch indicating the CV is active
@@ -109,7 +109,8 @@ rule "Nefit Easy status"
             {
                 val String inhouseTemp = transform("JSONPATH", "$.['in house temp']", json)
                 logDebug(TAG, "In house temperature: {}", inhouseTemp)
-                CV_Temp_Livingroom.postUpdate(inhouseTemp)
+                if (inhouseTemp != NULL)
+                    CV_Temp_Livingroom.postUpdate(inhouseTemp)
             }
             catch (Throwable e)
             {
@@ -119,7 +120,8 @@ rule "Nefit Easy status"
             {
                 val String setpointTemp = transform("JSONPATH", "$.['temp setpoint']", json)
                 logDebug(TAG, "Setpoint temperature: {}", setpointTemp)
-                CV_Temp_Livingroom.postUpdate(setpointTemp)
+                if (setpointTemp != NULL)
+                    CV_SetPoint_Livingroom.postUpdate(setpointTemp)
             }
             catch (Throwable e)
             {
