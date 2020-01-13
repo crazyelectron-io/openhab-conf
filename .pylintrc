@@ -1,7 +1,7 @@
 [MASTER]
 
-jobs=2      # use 2 cores
-#jobs=4      # use 4 cores
+#jobs=2      # use 2 cores
+jobs=4      # use 4 cores
 #jobs=8      # use 8 cores
 
 
