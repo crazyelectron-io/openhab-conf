@@ -31,7 +31,7 @@ then
 
 	if (Day_Mode.state == "DAY")
 		command = "OFF"
-	else if (Day_Mode.state == "EVENING" || Day_Mode.state == "MORNING")
+	else if (Day_Mode.state == "EVENING")
 		command = "EVENING"
 	
 	if (command != "")
@@ -45,7 +45,7 @@ then
 		// Light_Scene_HallCeiling.sendCommand(command)
 		Light_Scene_Outside.sendCommand(command)
 		// Light_Scene_Lodge.sendCommand(command)
-		val String msg = "Day mode change: lights switched to "+command
+		val String msg = "Day mode change: lights switched to Scene "+command
 		sendBroadcastNotification(msg)
 	}
 end
