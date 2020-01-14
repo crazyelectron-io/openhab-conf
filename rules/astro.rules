@@ -280,7 +280,7 @@ then
                 [|
                     // Turn off the House Alarm and turn on the hallway lighting
                     Light_Scene_Hall.sendCommand("EVENING")
-                    Alarm_Status.sendCommand("DISARMED")
+                    // Alarm_Status.sendCommand("DISARMED")
                     logInfo(TAG, "Android AlarmClock expired, turn on hall light and disarm the alarm")
                 ]
             )

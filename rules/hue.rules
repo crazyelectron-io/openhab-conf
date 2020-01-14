@@ -676,7 +676,7 @@ then
 			Light_Scene_Bedroom.sendCommand("OFF")
 			Light_Scene_Livingroom.sendCommand("OFF")
 			Light_Scene_Dining.sendCommand("OFF")
-			Alarm_Status.sendCommand("ARMED_HOME")
+			// Alarm_Status.sendCommand("ARMED_HOME")
 		}
 	}
 end
@@ -850,7 +850,7 @@ then
 			Light_Scene_Bedroom.sendCommand("OFF")
 			Light_Scene_Livingroom.sendCommand("OFF")
 			Light_Scene_Dining.sendCommand("OFF")
-			Alarm_Status.sendCommand("ARMED_HOME")
+			// Alarm_Status.sendCommand("ARMED_HOME")
 		}
 	}
 end

@@ -471,18 +471,17 @@ rule "Restore setpoint when doors are closed"
 // Check if the livingroom or dining door is open and lower the thermostat while
 // either is open.
 //--------------------------------------------------------------------------------------------------
-rule "Nefit_Presence - Heating adjustment based on presence"
+rule "Nefit.Presence.Change - Heating adjustment based on presence"
 	when
         Item Presence_Ron changed or
         Item Presence_Arniel changed
 	then
-        val String TAG = "Nefit."+triggeringItem.name+".Presence"
-        logInfo(TAG, ">>>>>> Enter rule >>>>>> with trigger {}", triggeringItem.name)
+        val String TAG = "Nefit."+triggeringItem.name+".Change"
+        logInfo(TAG, ">>>>>> Enter rule - with trigger {}, prev {}", triggeringItem, previousState.toString)
 
         if ((Presence_Ron.state != NULL && Presence_Ron.state == ON) || (Presence_Arniel.state != NULL && Presence_Arniel.state == ON))
         {
             // Someone is home, increase setpoint based on TOD
+            logInfo(TAG, "We're home, do something usefull with that information...")
         }
-
-        logInfo(TAG, "<<<<<< Exit rule <<<<<<")
     end

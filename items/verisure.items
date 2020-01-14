@@ -178,7 +178,7 @@ Contact							Alarm_Update_Door_Fusebox
 // Connectbox online status
 DateTime						Alarm_Update_Connect
 								"Connectbox Timestamp [%1$tH:%1$tM]"
-								{channel="verisure:broadbandConnection:myverisure:bc57046073518:timestamp"}
+								{channel="verisure:broadbandConnection:myverisure:broadband1:timestamp"}
 
 String							Alarm_Status_Connect
 								"Internet connection [%s]"

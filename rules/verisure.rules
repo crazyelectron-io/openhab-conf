@@ -23,7 +23,7 @@ then
     else
         msg = msg + "Disarmed."
 
-    Echo_TTS_Livingroom.sendCommand("<speak>Hi, " + msg + "</speak>")
+    // Echo_TTS_Livingroom.sendCommand("<speak>Hi, " + msg + "</speak>")
     sendBroadcastNotification(msg)
 end
 
