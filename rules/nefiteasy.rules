@@ -1,11 +1,12 @@
 //==================================================================================================
 // nefiteasy.rules - These rules handle Nefit Easy Item updates
 //--------------------------------------------------------------------------------------------------
-//  20199120    v1  Created initial version
-//  20190210    v2  Updated commands and error checking
-//  20190317    v3  Adapted to new container setup
-//  20190928    v4  Truncate Temp_Avg_Livingroom to 1 decimal
-//  20191218    v5  Renamed items
+//  20200114 v06    Split watchdog rule
+//  20191218 v05    Renamed items
+//  20190928 v04    Truncate Temp_Avg_Livingroom to 1 decimal
+//  20190317 v03    Adapted to new container setup
+//  20190210 v02    Updated commands and error checking
+//  20199120 v01    Created initial version
 //==================================================================================================
 
 
@@ -30,7 +31,7 @@ rule "Initialize NefitEasy Panel view parameters"
     when
 	    System started
     then
-        //--- Arm the watchdog timer (to detect stalled/stopped input from EasyServer)
+        //--- Arm the watchdog timer (to detect stalled/stopped input from asyServer)
         CV_Watchdog.sendCommand(ON)
         logInfo("Nefit.Delayed.Start", "Set EasyServer watchdog timer at activation of rule")
     end
@@ -199,22 +200,35 @@ rule "Nefit Easy status"
 
 
 //--------------------------------------------------------------------------------------------------
-// Calculate average living room temp from two different sensors, the Nefit Easy
-// thermostat and the Netatmo Healthy Home Coach.
+// Check if Netfit and Netatmo devices are still sending updates.
 //--------------------------------------------------------------------------------------------------
-rule "Calculate average livingroom temperature"
+rule "Check if Netatmo NHC and Nefit Easy are online"
 	when
         Item CV_Temp_Livingroom received update or
         Item NHC_Temp_Livingroom received update
 	then
         val String TAG = "Nefit.AvgTemp.Livingroom"
+        logInfo(TAG, "Received update from {}, reset watchdog", triggeringItem.name.toString)
 
         //--- Reset watchdog timer if we received update from EasyServer or Netatmo Home Coach
         if (triggeringItem.name == "CV_Temp_Livingroom")
             CV_Watchdog.sendCommand(ON)
         if (triggeringItem.name == "NHC_Temp_Livingroom")
             NHC_Watchdog.sendCommand(ON)
-        
+
+
+//--------------------------------------------------------------------------------------------------
+// Calculate average living room temp from two different sensors, the Nefit Easy
+// thermostat and the Netatmo Healthy Home Coach.
+//--------------------------------------------------------------------------------------------------
+rule "Calculate average livingroom temperature"
+	when
+        Item CV_Temp_Livingroom changed or
+        Item NHC_Temp_Livingroom changed
+	then
+        val String TAG = "Nefit.AvgTemp.Livingroom"
+        logInfo(TAG, "Updating avg livingroom temp from changed {}", triggeringItem.name.toString)
+
         //--- Calculate the average livingroom temp from two sensor values (if available)
         var Number temp = 0
         if (CV_Temp_Livingroom.state != NULL)
@@ -386,7 +400,7 @@ rule "POST SetTemp Change"
         Item CV_Temp_Livingroom received command
     then
         val String TAG = "Nefit."+triggeringItem.name+".Command"
-        logInfo(TAG, ">>>>>> Enter rule >>>>>> {}", CV_Temp_Livingroom)
+        logInfo(TAG, ">>>>>> Enter rule with {} >>>>>>", CV_Temp_Livingroom)
 
         val String endpoint1 = "/heatingCircuits/hc1/temperatureRoomManual"
         val String contenttype = "application/json"
@@ -424,7 +438,7 @@ rule "Heating off when livingroom or kitchen door open"
         Item Alarm_Door_Dining changed to OPEN
 	then
         val String TAG = "NefitEasy."+triggeringItem.name+".DoorOpen"
-        logInfo(TAG, ">>>>>> Enter rule >>>>>>")
+        logInfo(TAG, ">>>>>> Enter rule with {} >>>>>>", triggeringItem)
 
         // Save the current setpoint if this is the first door open event
         if (nSavedSetpoint == 0)
@@ -478,6 +492,8 @@ rule "Nefit.Presence.Change - Heating adjustment based on presence"
 	then
         val String TAG = "Nefit."+triggeringItem.name+".Change"
         logInfo(TAG, ">>>>>> Enter rule - with trigger {}, prev {}", triggeringItem, previousState.toString)
+        if (previousState == NULL)
+            return;
 
         if ((Presence_Ron.state != NULL && Presence_Ron.state == ON) || (Presence_Arniel.state != NULL && Presence_Arniel.state == ON))
         {

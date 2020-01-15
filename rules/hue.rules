@@ -1,7 +1,7 @@
 //==================================================================================================
 // hue.rules - Lights and switches rules.
 //--------------------------------------------------------------------------------------------------
-//	20200114 v15	Ignore Day_Mode change if restored from NULL.
+//	20200114 v15	Ignore Day_Mode or Scene change if restored from NULL.
 //	v14 20191224	Updated Dimmer Switch handling.
 //	v13 20191215	Added Bedroom Dimmer scene selections.
 //	v12 20191210	Removed superfluous 'sendCommand(ON)' to start lighting scene.

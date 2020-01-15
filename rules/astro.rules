@@ -250,7 +250,9 @@ when
     Item AlarmClock changed
 then
     val String TAG = "Alarm.Clock.Changed"
-    logInfo(TAG, ">>>>>> Enter rule with '{}' >>>>>>", AlarmClock)
+    logInfo(TAG, ">>>>>> Enter rule with '{}' from '{}' >>>>>>", AlarmClock.state, previousState.toString)
+    if (previousState == NULL)
+        return;
 
     if (AlarmClock.state as Number == 0)
     {

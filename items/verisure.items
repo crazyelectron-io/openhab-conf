@@ -1,7 +1,8 @@
 //==================================================================================================
-// verisure.items - VeriSure alarm Item definitions.
+// verisure.items - VeriSure Alarm Item definitions.
 //==================================================================================================
-//	v02 20191227	Reformatted and updated Items types to latest binding; changed item names.
+//	20200114 v03	Remove persistence from Alarm Items
+//	20191227 v02	Reformatted and updated Items types to latest binding; changed item names.
 //--------------------------------------------------------------------------------------------------
 //
 //==================================================================================================
@@ -10,7 +11,6 @@
 String							Alarm_Status
 								"Alarm [%s]"
 								<alarm>
-								(gPersist)
 								{channel="verisure:alarm:myverisure:alarm1:alarmStatus"}
 
 // This item shows the last time the alarm status was changed.
@@ -22,20 +22,17 @@ DateTime						Alarm_Time
 String							Alarm_LastChange
 								"Last changed [%s]"
 								<alarm>
-								(gPersist)
 
 // This item shows the user that last changed the state of the alarm.
 String							Alarm_User
 								"Alarm changed by [%s]"
 								<alarm>
-								(gPersist)
 								{channel="verisure:alarm:myverisure:alarm1:changedByUser"}
 
 // This item shows how the alarm status was last changed.
 String							Alarm_Changed
 								"Alarm changed via [%s]"
 								<alarm>
-								(gPersist)
 								{channel="verisure:alarm:myverisure:alarm1:changedVia"}
 
 // This item shows the name of the site.

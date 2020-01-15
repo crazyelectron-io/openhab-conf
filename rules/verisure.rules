@@ -14,8 +14,10 @@ rule "Alarm.Status.Report - Report that the alarm is switched on or off"
 when
     Item Alarm_Status changed
 then
-    // val String TAG = "Alarm.Status.Report"
-    // logInfo(TAG, "Alarm changed from {} to {}, report it via Echo Dot in Livingroom", triggeringItem.previousState.toString, triggeringItem.state.toString)
+    val String TAG = "Alarm.Status.Report"
+    logInfo(TAG, "Alarm changed from {} to {}, report it", previousState.toString, Alarm_Status.state.toString)
+    if (previousState == NULL)
+        return;
 
     var String msg = "The alarm has been "
     if (Alarm_Status.state == "ARMED_AWAY" || Alarm_Status.state == "ARMED_HOME")
