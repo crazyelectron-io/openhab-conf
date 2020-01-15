@@ -215,6 +215,7 @@ rule "Check if Netatmo NHC and Nefit Easy are online"
             CV_Watchdog.sendCommand(ON)
         if (triggeringItem.name == "NHC_Temp_Livingroom")
             NHC_Watchdog.sendCommand(ON)
+    end
 
 
 //--------------------------------------------------------------------------------------------------
