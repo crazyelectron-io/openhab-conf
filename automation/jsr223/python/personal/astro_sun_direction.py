@@ -1,25 +1,9 @@
 '''
-astro.rules - Astro related processing, including sun and moon data and day/night triggers.
 ----------------------------------------------------------------------------------------------------
-v14 21091229 Changed extra logging to debug level.
-v13 20191226 Merged tomorrow sunset/rise rules; fixed Item name 'Astro_Sun_Elevation'.
-v12 20191222 Renamed Items.
-v11 20191025 Added next day sunrise/sunset handling.
---------------------------------------------------------------------------------------------------
-Rules in this file:
-Astro.DayPhase - Calculate current day Mode and next sunrise/sunset times.
-Astro_Sun.Position - Translate sun position to text (wind direction).
-Astro.Sun.Tomorrow - Calculate tomorrow's sunrise and sunset time.
-Alarm.Clock.Change - Android Alarm clock actions.
---------------------------------------------------------------------------------------------------
-Items changes in these rules:
-Day_Mode - MORNING, DAY, EVENING, NIGHT; based on time, sun and cloudiness.
-Astro_Sun_Direction - Textual description of the wind direction of the sun position.
-Astro_Sun_RiseTomorrow - Tomorrow's sunrise time, calculated with Python astral library (since
-    the Astro binding only gives today's times). 
-Astro_Sun_SetTomorrow - Tomorrow's sunset time, calculated with Python astral library.
-Astro_Sun_RiseNext - The next sunrise time (either today or tomorrow).
-Astro_Sun_SetNext - The next sunset time (either today or tomorrow).
+astro_sun_direction.py - Translate Sun azimuth to wind direction.
+----------------------------------------------------------------------------------------------------
+Changelog:
+20200115 v01    Created initial script.
 ----------------------------------------------------------------------------------------------------
 '''
 
@@ -27,12 +11,6 @@ from core.rules import rule
 from core.triggers import when
 from org.slf4j import LoggerFactory
 from configuration import LOG_PREFIX
-
-# from core.jsr223 import scope
-# from core.items import add_item
-# from core.actions import HTTP
-# from core.utils import postUpdate as post_update
-# from datetime import datetime, timedelta
 
 log = LoggerFactory.getLogger("{}.my.astro".format(LOG_PREFIX))
 
@@ -42,32 +20,33 @@ log = LoggerFactory.getLogger("{}.my.astro".format(LOG_PREFIX))
 @rule("AstroSunPosition", description="Translate Sun Azimut to Wind Direction", tags=["astro"])
 @when("Item Astro_Sun_Azimuth changed")
 def update_sun_direction(event):
-    log.info("Update textual Sun direction Item '{}' from Azumith [{}]", event.itemName, event.itemState)
+    log.info("Update textual Sun direction Item [{}] from Azumith [{}]", event.itemName, event.itemState)
 
     wind_directions = {
-        range(0, 12) : 'North',
-        range(12, 34) : 'North-NorthEast',
-        range(34, 57) : 'North-East',
-        range(57, 79) : 'East-NorthEast',
-        range(79, 102) : 'East',
-        range(102, 125) : 'East-SouthEast',
-        range(125, 147) : 'SouthEast',
-        range(147, 170) : 'South-SouthEast',
-        range(170, 192) : 'South',
-        range(192, 215) : 'South-SouthWest',
-        range(215, 237) : 'SouthWest',
-        range(237, 259) : 'West-SouthWest',
-        range(259, 283) : 'West',
-        range(283, 305) : 'West-NorthWest',
-        range(305, 327) : 'NorthWest',
-        range(327, 349) : 'North-NorthWest',
-        range(349, 366) : 'North'
+        xrange(0, 12) : 'North',
+        xrange(12, 34) : 'North-NorthEast',
+        xrange(34, 57) : 'North-East',
+        xrange(57, 79) : 'East-NorthEast',
+        xrange(79, 102) : 'East',
+        xrange(102, 125) : 'East-SouthEast',
+        xrange(125, 147) : 'SouthEast',
+        xrange(147, 170) : 'South-SouthEast',
+        xrange(170, 192) : 'South',
+        xrange(192, 215) : 'South-SouthWest',
+        xrange(215, 237) : 'SouthWest',
+        xrange(237, 259) : 'West-SouthWest',
+        xrange(259, 283) : 'West',
+        xrange(283, 305) : 'West-NorthWest',
+        xrange(305, 327) : 'NorthWest',
+        xrange(327, 349) : 'North-NorthWest',
+        xrange(349, 366) : 'North'
     }
 
+    azimuth = int(float(str(event.itemState)))
     for key in wind_directions:
-        if event.itemState in key:
+        # log.info("Wind direction translation table key [{}]", key)
+        if azimuth in key:
             wind_direction = wind_directions[key]
-            log.info("Wind direction translate is '{}', wind_direction)
             events.postUpdate("Astro_Sun_Direction", wind_direction)
             break
 
