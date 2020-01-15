@@ -1,6 +1,6 @@
 from core.jsr223 import scope
-from core.actions import NotificationAction, Mail
-from configuration import admin_email, alert_email
+# from core.actions import NotificationAction, Mail
+# from configuration import admin_email, alert_email
 
 log = logging.getLogger("{}.personal.utils".format(LOG_PREFIX))
 

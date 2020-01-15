@@ -23,18 +23,56 @@ Astro_Sun_SetNext - The next sunset time (either today or tomorrow).
 ----------------------------------------------------------------------------------------------------
 '''
 
-# from core.jsr223 import scope
 from core.rules import rule
 from core.triggers import when
+from org.slf4j import LoggerFactory
+from configuration import LOG_PREFIX
+
+# from core.jsr223 import scope
 # from core.items import add_item
 # from core.actions import HTTP
-from core.utils import postUpdate as post_update
+# from core.utils import postUpdate as post_update
 # from datetime import datetime, timedelta
 
+log = LoggerFactory.getLogger("{}.my.astro".format(LOG_PREFIX))
 
-log = logging.getLogger("{}.personal.astro".format(LOG_PREFIX))
+#==================================================================================================
+# Update String Item Astro_Sun_Direction with textual representation of current sun angle.
+#==================================================================================================
+@rule("AstroSunPosition", description="Translate Sun Azimut to Wind Direction", tags=["astro"])
+@when("Item Astro_Sun_Azimuth changed")
+def update_sun_direction(event):
+    log.info("Update textual Sun direction Item '{}' from Azumith [{}]", event.itemName, event.itemState)
+
+    wind_directions = {
+        range(0, 12) : 'North',
+        range(12, 34) : 'North-NorthEast',
+        range(34, 57) : 'North-East',
+        range(57, 79) : 'East-NorthEast',
+        range(79, 102) : 'East',
+        range(102, 125) : 'East-SouthEast',
+        range(125, 147) : 'SouthEast',
+        range(147, 170) : 'South-SouthEast',
+        range(170, 192) : 'South',
+        range(192, 215) : 'South-SouthWest',
+        range(215, 237) : 'SouthWest',
+        range(237, 259) : 'West-SouthWest',
+        range(259, 283) : 'West',
+        range(283, 305) : 'West-NorthWest',
+        range(305, 327) : 'NorthWest',
+        range(327, 349) : 'North-NorthWest',
+        range(349, 366) : 'North'
+    }
+
+    for key in wind_directions:
+        if event.itemState in key:
+            wind_direction = wind_directions[key]
+            log.info("Wind direction translate is '{}', wind_direction)
+            events.postUpdate("Astro_Sun_Direction", wind_direction)
+            break
 
 
+'''
 #==================================================================================================
 # Update the next sunset/rise times and Day Mode when the Astro day phase changes or the Cloudiness
 #  changes.
@@ -117,51 +155,6 @@ def set_day_mode_and_sunset_rise_time(event):
 
 
 #==================================================================================================
-# Update String Item Astro_Sun_Direction with textual representation of current sun angle.
-#==================================================================================================
-@rule("AstroSunPosition", description="Translate Sun Azimut to Wind direction", tags=["astro"])
-@when("Item Astro_Sun_Azimuth changed")
-def update_sun_direction(event):
-    log.info("Update textual Sun direction Item 'Astro_Sun_Direction'")
-
-    if (Astro_Sun_Azimuth.state < 12)
-        Astro_Sun_Direction.postUpdate("North")
-    else if (Astro_Sun_Azimuth.state < 34)
-        Astro_Sun_Direction.postUpdate("North-NorthEast")
-    else if (Astro_Sun_Azimuth.state < 57)
-        Astro_Sun_Direction.postUpdate("North-East")
-    else if (Astro_Sun_Azimuth.state < 79)
-        Astro_Sun_Direction.postUpdate("East-NorthEast")
-    else if (Astro_Sun_Azimuth.state < 102)
-        Astro_Sun_Direction.postUpdate("East")
-    else if (Astro_Sun_Azimuth.state < 125)
-        Astro_Sun_Direction.postUpdate("East-SouthEast")
-    else if (Astro_Sun_Azimuth.state < 147)
-        Astro_Sun_Direction.postUpdate("SouthEast")
-    else if (Astro_Sun_Azimuth.state < 170)
-        Astro_Sun_Direction.postUpdate("South-SouthEast")
-    else if (Astro_Sun_Azimuth.state < 192)
-        Astro_Sun_Direction.postUpdate("South")
-    else if (Astro_Sun_Azimuth.state < 215)
-        Astro_Sun_Direction.postUpdate("South-SouthWest")
-    else if (Astro_Sun_Azimuth.state < 237)
-        Astro_Sun_Direction.postUpdate("SouthWest")
-    else if (Astro_Sun_Azimuth.state < 259)
-        Astro_Sun_Direction.postUpdate("West-SouthWest")
-    else if (Astro_Sun_Azimuth.state < 283)
-        Astro_Sun_Direction.postUpdate("West")
-    else if (Astro_Sun_Azimuth.state < 305)
-        Astro_Sun_Direction.postUpdate("West-NorthWest")
-    else if (Astro_Sun_Azimuth.state < 327)
-        Astro_Sun_Direction.postUpdate("NorthWest")
-    else if (Astro_Sun_Azimuth.state < 349)
-        Astro_Sun_Direction.postUpdate("North-NorthWest")
-    else
-        Astro_Sun_Direction.postUpdate("North")
-end
-
-
-#==================================================================================================
 # Calculate tomorrow's sunrise/sunset time using the python astral library (via script).
 #==================================================================================================
 @rule("AstroSunTomorrow", description="Astro.Sun.Tomorrow - Calculate tomorrow's sunrise and sunset time", tags=["astro"])
@@ -217,3 +210,4 @@ def alarm_clock_update(event):
                     log.info("Android AlarmClock expired, turn on hall light and disarm the alarm")
                 ]
             )
+'''

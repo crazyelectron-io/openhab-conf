@@ -208,7 +208,7 @@ rule "Check if Netatmo NHC and Nefit Easy are online"
         Item NHC_Temp_Livingroom received update
 	then
         val String TAG = "Nefit.AvgTemp.Livingroom"
-        logInfo(TAG, "Received update from {}, reset watchdog", triggeringItem.name.toString)
+        logDebug(TAG, "Received update from {}, reset watchdog", triggeringItem.name.toString)
 
         //--- Reset watchdog timer if we received update from EasyServer or Netatmo Home Coach
         if (triggeringItem.name == "CV_Temp_Livingroom")

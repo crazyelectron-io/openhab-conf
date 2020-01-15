@@ -1,17 +1,18 @@
 //==================================================================================================
 // hue.rules - Lights and switches rules.
 //--------------------------------------------------------------------------------------------------
-//	20200114 v15	Ignore Day_Mode or Scene change if restored from NULL.
-//	v14 20191224	Updated Dimmer Switch handling.
-//	v13 20191215	Added Bedroom Dimmer scene selections.
-//	v12 20191210	Removed superfluous 'sendCommand(ON)' to start lighting scene.
-//	v11 20191019	Generalized Scene settings for light groups.
+//	20200114 v15	Ignore Items restored from NULL and unknown Scenes.
+//	20191224 v14	Updated Dimmer Switch handling.
+//	20191215 v13	Added Bedroom Dimmer scene selections.
+//	20191210 v12	Removed superfluous 'sendCommand(ON)' to start lighting scene.
+//	20191019 v11	Generalized Scene settings for light groups.
 //--------------------------------------------------------------------------------------------------
 // Rules in this file:
-//	HueDayNight - xxxx
+//	HueDayNight - ...
 //..................................................................................................
 // Items changed by these rules:
-//	xxxx
+//	Light_Scene_*
+//
 //==================================================================================================
 
 
@@ -45,7 +46,6 @@ then
 		Light_Scene_Dining.sendCommand(command)
 		Light_Scene_Kitchen.sendCommand(command)
 		Light_Scene_Hall.sendCommand(command)
-		// Light_Scene_HallCeiling.sendCommand(command)
 		Light_Scene_Outside.sendCommand(command)
 		// Light_Scene_Lodge.sendCommand(command)
 		val String msg = "Day mode change: lights switched to Scene "+command
@@ -59,51 +59,50 @@ end
 //==================================================================================================
 rule "Hue scene changing rule"
 when
-	Item Light_Scene_Livingroom received command or
-	Item Light_Scene_Kitchen received command or
-	Item Light_Scene_Dining received command or
-	Item Light_Scene_Hall received command or
-	Item Light_Scene_HallCeiling received command or
-	Item Light_Scene_Bathroom received command or
-	Item Light_Scene_Bedroom received command or
-	Item Light_Scene_Lodge received command or
-	Item Light_Scene_Outside received command
+	Item Light_Scene_Livingroom changed or
+	Item Light_Scene_Kitchen changed or
+	Item Light_Scene_Dining changed or
+	Item Light_Scene_Hall changed or
+	Item Light_Scene_HallCeiling changed or
+	Item Light_Scene_Bathroom changed or
+	Item Light_Scene_Bedroom changed or
+	Item Light_Scene_Lodge changed or
+	Item Light_Scene_Outside changed
 then
-	val String TAG = "HUE."+triggeringItem.name+".Change "
-
-	// Check if we are triggered by persistence restore
-	logInfo(TAG, "{} changed to {} from {}", triggeringItem.name, triggeringItem.state, previousState.toString)
+	val String TAG = "HUE." + triggeringItem.name + ".Change"
+	logDebug(TAG, "[{}] changed, state is [{}], previous state [{}]", triggeringItem.name.toString, triggeringItem.state.toString, previousState)
 	if (previousState == NULL)
 		return;
 
 	val String lightArea = triggeringItem.name.split('_').get(2)
-	val String scene = receivedCommand.toString
-	logDebug(TAG, "Received command '{}' for area '{}'", scene, lightArea)
+	val String scene = triggeringItem.state.toString
+	logDebug(TAG, "Received update [{}] for area [{}]", scene, lightArea)
 
 	val lightGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_Brightness_" + lightArea)
 
-	logInfo(TAG, "Set Lighting Scene to {} for {}", scene, lightGroup.name)
+	logInfo(TAG, "Set Lighting Scene to [{}] for [{}]", scene, lightGroup.name)
 
-	if (scene == "OFF")
-	{
-		logDebug(TAG, "Send Command OFF to {}", lightGroup)
+	if (scene == "OFF") {
+		logDebug(TAG, "Send Command OFF to [{}]", lightGroup)
 		lightGroup.sendCommand(OFF)
 	}
-	else
-	{
+	else if (scene == "EVENING" || scene == "READ" || scene == "WORK" || scene == "BRIGHT" || scene == "MOVIE") {
 		// lightGroup.postUpdate(ON)
 		val brightnessGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_Brightness_" + lightArea)
 		val String brightness = ScriptServiceUtil.getItemRegistry.getItem(lightArea + "_Brightness_" + receivedCommand).state.toString
-		logDebug(TAG, "Brightness command {}, group {}", brightness, brightnessGroup)
+		logDebug(TAG, "Brightness command [{}], group [{}]", brightness, brightnessGroup)
 		brightnessGroup.sendCommand(brightness)
 
-		if (lightArea != "Lodge" && lightArea != "Outside")
-		{
+		if (lightArea != "Lodge" && lightArea != "Outside") {
 			val colorTempGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_ColorTemp_" + lightArea)
 			val String colorTemp = ScriptServiceUtil.getItemRegistry.getItem(lightArea + "_ColorTemp_" + receivedCommand).state.toString
-			logDebug(TAG, "ColorTemp command is {}, group is {}", colorTemp, colorTempGroup)
+			logDebug(TAG, "ColorTemp command [{}], group [{}]", colorTemp, colorTempGroup)
 			colorTempGroup.sendCommand(colorTemp)
 		}
+	}
+	else {
+		logWarn(TAG, "Unknown Scene command [{}] received, restore previous state [{}]", scene, previousState)
+		Light_Scene_Dining.postUpdate(previousState)
 	}
 end
 
@@ -902,7 +901,7 @@ then
 		//--- Key 1 (ON) Short Release
 		case "1002.0":
 		{
-		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Short Release event triggered [1002]")
+		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Short Release event triggered [1002], state is {}", Light_Scene_Bathroom.state)
 	
 			if (Light_Scene_Bathroom.state == "OFF")
 				Light_Scene_Bathroom.sendCommand("EVENING")
