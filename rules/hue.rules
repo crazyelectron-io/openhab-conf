@@ -1,6 +1,7 @@
 //==================================================================================================
 // hue.rules - Lights and switches rules.
 //--------------------------------------------------------------------------------------------------
+//	20200114 v15	Ignore Day_Mode change if restored from NULL.
 //	v14 20191224	Updated Dimmer Switch handling.
 //	v13 20191215	Added Bedroom Dimmer scene selections.
 //	v12 20191210	Removed superfluous 'sendCommand(ON)' to start lighting scene.
@@ -27,15 +28,17 @@ then
 	val String TAG = "HUE."+triggeringItem.name+".Change"
 	var String command = ""
 
-	logInfo(TAG, "{} changed to {}", triggeringItem.name, triggeringItem.state)
+	// Check if we are triggered by persistence restore
+	logInfo(TAG, "{} changed to {} from {}", triggeringItem.name, triggeringItem.state, previousState.toString)
+	if (previousState == NULL)
+		return;
 
 	if (Day_Mode.state == "DAY")
 		command = "OFF"
 	else if (Day_Mode.state == "EVENING")
 		command = "EVENING"
 	
-	if (command != "")
-	{
+	if (command != "") {
 		logInfo(TAG, "Send command {} to Light Scenes", command)
 		// gLight_Automatic.sendCommand(command)
 		Light_Scene_Livingroom.sendCommand(command)
@@ -67,6 +70,11 @@ when
 	Item Light_Scene_Outside received command
 then
 	val String TAG = "HUE."+triggeringItem.name+".Change "
+
+	// Check if we are triggered by persistence restore
+	logInfo(TAG, "{} changed to {} from {}", triggeringItem.name, triggeringItem.state, previousState.toString)
+	if (previousState == NULL)
+		return;
 
 	val String lightArea = triggeringItem.name.split('_').get(2)
 	val String scene = receivedCommand.toString
@@ -107,7 +115,7 @@ rule "Hue Alert Kitchen"
 when
 	Item Light_Alert_Kitchen changed
 then
-	val String TAG = "HUE."+triggeringItem+".Changed"
+	val String TAG = "HUE."+triggeringItem+".Change"
 
 	if (triggeringItem.previousState() == NULL)
 	{
