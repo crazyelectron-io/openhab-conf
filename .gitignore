@@ -7,3 +7,7 @@ packages.idx
 /html/matrix-theme/original-svgs/
 
 /automation/jsr223/python/core/*
+/automation/jsr223/python/community/*
+!/automation/lib/python/configuration.pyc
+!/automation/lib/python/personal/*
+/automation/lib/python/*
