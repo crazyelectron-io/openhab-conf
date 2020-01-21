@@ -413,3 +413,10 @@ Switch							Solar_Watchdog
 								"Watchdog timer switch"
 								(gResetExpire)
 								{expire="1h,command=OFF"}
+
+String 							SolarEdge_API_Status
+
+//--------------------------------------------------------------------------------------------------
+// MQTT Broker Thing status
+//--------------------------------------------------------------------------------------------------
+String							MQTT_Broker_Status

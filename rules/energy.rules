@@ -142,8 +142,8 @@ then
     used = Gas_Use_Total.deltaSince(contractStart, "influxdb")
     if (null === used)
     {
-        used = Gas_Use_Total.state as Number - 5611000
-        logDebug(TAG, "Temporary fix for missing year data, pre-fill '{}'", used)
+        used = Gas_Use_Total.state as Number - 7374000
+        logInfo(TAG, "Temporary fix for missing year data, pre-fill '{}'", used)
     }
     logInfo(TAG, "This contract years gas usage = {}", used)
     Gas_Use_Year.postUpdate(used)
@@ -165,8 +165,7 @@ then
 
     if (Power_Use_T1_Total.state != NULL && Power_Use_T2_Total.state != NULL)
         Power_Use_Total.postUpdate(Power_Use_T1_Total.state as Number + Power_Use_T2_Total.state as Number)
-    else
-    {
+    else {
         if (Power_Use_T1_Total.state == NULL)
             logWarn(TAG, "Item 'Power_Use_T1_Total' is NULL, skip tarif meter readings sum update")
         if (Power_Use_T2_Total.state == NULL)
@@ -187,8 +186,7 @@ then
 
     if (Power_Ret_T1_Total.state != NULL && Power_Ret_T2_Total.state != NULL)
         Power_Ret_Total.postUpdate(Power_Ret_T1_Total.state as Number + Power_Ret_T2_Total.state as Number)
-    else
-    {
+    else {
         if (Power_Ret_T1_Total.state == NULL)
             logWarn(TAG, "Item 'Power_Ret_T1_Total' is NULL, skip tarif meter readings total update")
         if (Power_Ret_T2_Total.state == NULL)

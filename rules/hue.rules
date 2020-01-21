@@ -803,13 +803,13 @@ then
 		//--- Key 1 (ON) Initial Press = Not always triggered, ignoring it.
 		case "1000.0":
 		{
-		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Initial Press event triggered [1000] - ignored")
+		    // logInfo(TAG,"Dimmer Switch Button 1 (ON) Initial Press event triggered [1000] - ignored")
 		}
 
 		//--- Key 1 (ON) Hold
 		case "1001.0":
 		{
-		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001] - ignored")
+		    // logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001] - ignored")
 		}
 
 		//--- Key 1 (ON) Short Release
@@ -830,13 +830,13 @@ then
 		//--- Key 1 (ON) Long Release
 		case "1003.0":
 		{
-		    logInfo(TAG,"Dimmer Button 1 (ON) Long Release event triggered [1003] - ignored")
+		    // logInfo(TAG,"Dimmer Button 1 (ON) Long Release event triggered [1003] - ignored")
 		}
 
 		//--- Key 2 (INCREASE) Initial Press
 		case "2000.0":
 		{
-		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Initial Press [2000] - ignored")
+		    // logInfo(TAG,"Dimmer Button 2 (INCREASE) Initial Press [2000] - ignored")
 		}
 
 		//--- Key 2 (INCREASE) Hold
@@ -858,7 +858,7 @@ then
 		//--- Key 2 (INCREASE) Long Release
 		case "2003.0":
 		{
-		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Long Release [2003] - ignored")
+		    // logInfo(TAG,"Dimmer Button 2 (INCREASE) Long Release [2003] - ignored")
 		}
 
 		//--- Key 3 (DECREASE) Initial Press
@@ -886,13 +886,13 @@ then
 		//--- Key 3 (DECREASE) Long Release
 		case "3003.0":
 		{
-		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Long Releas3 [3003] - ignored")
+		    // logInfo(TAG,"Dimmer Button 3 (DECREASE) Long Releas3 [3003] - ignored")
 		}
 
 		//--- Key 4 (OFF) Initial Press. Ignored, not always triggered.
 		case "4000.0":
 		{
-			logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - Turn off Lighting")
+			// logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - Turn off Lighting")
 		}
 
 		//--- Key 4 (OFF) Hold
@@ -946,13 +946,13 @@ then
 		//--- Key 1 (ON) Initial Press = Not always triggered, ignoring it.
 		case "1000.0":
 		{
-		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Initial Press event triggered [1000] - ignored")
+		    // logInfo(TAG,"Dimmer Switch Button 1 (ON) Initial Press event triggered [1000] - ignored")
 		}
 
 		//--- Key 1 (ON) Hold
 		case "1001.0":
 		{
-		    logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001] - ignored")
+		    // logInfo(TAG,"Dimmer Switch Button 1 (ON) Hold event triggered [1001] - ignored")
 		}
 
 		//--- Key 1 (ON) Short Release
@@ -973,13 +973,13 @@ then
 		//--- Key 1 (ON) Long Release
 		case "1003.0":
 		{
-		    logInfo(TAG,"Dimmer Button 1 (ON) Long Release event triggered [1003] - ignored")
+		    // logInfo(TAG,"Dimmer Button 1 (ON) Long Release event triggered [1003] - ignored")
 		}
 
 		//--- Key 2 (INCREASE) Initial Press
 		case "2000.0":
 		{
-		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Initial Press [2000] - ignored")
+		    // logInfo(TAG,"Dimmer Button 2 (INCREASE) Initial Press [2000] - ignored")
 		}
 
 		//--- Key 2 (INCREASE) Hold
@@ -1001,13 +1001,13 @@ then
 		//--- Key 2 (INCREASE) Long Release
 		case "2003.0":
 		{
-		    logInfo(TAG,"Dimmer Button 2 (INCREASE) Long Release [2003] - ignored")
+		    // logInfo(TAG,"Dimmer Button 2 (INCREASE) Long Release [2003] - ignored")
 		}
 
 		//--- Key 3 (DECREASE) Initial Press
 		case "3000.0":
 		{
-		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Initial Press [3000] - ignored")
+		    // logInfo(TAG,"Dimmer Button 3 (DECREASE) Initial Press [3000] - ignored")
 		}
 
 		//--- Key 3 (DECREASE) Hold
@@ -1029,13 +1029,13 @@ then
 		//--- Key 3 (DECREASE) Long Release
 		case "3003.0":
 		{
-		    logInfo(TAG,"Dimmer Button 3 (DECREASE) Long Releas3 [3003] - ignored")
+		    // logInfo(TAG,"Dimmer Button 3 (DECREASE) Long Release [3003] - ignored")
 		}
 
 		//--- Key 4 (OFF) Initial Press. Ignored, not always triggered.
 		case "4000.0":
 		{
-			logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - Turn off Lighting")
+			// logInfo(TAG,"Dimmer Button 4 (OFF) Initial press [4000] - Turn off Lighting")
 		}
 
 		//--- Key 4 (OFF) Hold
@@ -1083,7 +1083,7 @@ then
 		}		
 		case "1001.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 1 hold")
+		    // logInfo(tag,"---> Dimmer Button 1 hold")
 			//do more stuff
 		}
 		case "1002.0":
@@ -1093,47 +1093,47 @@ then
 		}	
 		case "1003.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 1 long released")
+		    // logInfo(tag,"---> Dimmer Button 1 long released")
 			//do any stuff
 		}
 		case "2000.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 2 initial pressed")
+		    // logInfo(tag,"---> Dimmer Button 2 initial pressed")
 			//do stuff
 		}		
 		case "2001.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 2 hold")
+		    // logInfo(tag,"---> Dimmer Button 2 hold")
 			//do more stuff
 		}
 		case "2002.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 2 short released")
+		    // logInfo(tag,"---> Dimmer Button 2 short released")
 			//do other stuff
 		}	
 		case "2003.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 2 long released")
+		    // logInfo(tag,"---> Dimmer Button 2 long released")
 			//do any stuff
 		}
 		case "3000.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 3 initial pressed")
+		    // logInfo(tag,"---> Dimmer Button 3 initial pressed")
 			//do stuff
 		}		
 		case "3001.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 3 hold")
+		    // logInfo(tag,"---> Dimmer Button 3 hold")
 			//do more stuff
 		}
 		case "3002.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 3 short released")
+		    // logInfo(tag,"---> Dimmer Button 3 short released")
 			//do other stuff
 		}	
 		case "3003.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 3 long released")
+		    // logInfo(tag,"---> Dimmer Button 3 long released")
 			//do any stuff
 		}
 		case "4000.0":
@@ -1143,7 +1143,7 @@ then
 		}		
 		case "4001.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 4 hold")
+		    // logInfo(tag,"---> Dimmer Button 4 hold")
 			//do more stuff
 		}
 		case "4002.0":
@@ -1153,7 +1153,7 @@ then
 		}	
 		case "4003.0":
 		{
-		    logInfo(tag,"---> Dimmer Button 4 long released")
+		    // logInfo(tag,"---> Dimmer Button 4 long released")
 			//do any stuff
 		}
 	}

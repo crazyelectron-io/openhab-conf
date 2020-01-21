@@ -1,0 +1,6 @@
+network:pingdevice:ac_study [ hostname="192.168.2.137", retry=1, timeout=2000, refreshInterval=60000 ]
+network:pingdevice:ac_laundry [ hostname="192.168.2.125", retry=1, timeout=2000, refreshInterval=60000 ]
+network:pingdevice:ac_guestroom [ hostname="192.168.2.109", retry=1, timeout=2000, refreshInterval=60000 ]
+network:pingdevice:ac_bedroom [ hostname="192.168.2.135", retry=1, timeout=2000, refreshInterval=60000 ]
+network:servicedevice:grafana [ hostname="192.168.2.2", retry=1, port=3000, timeout=2000, refreshInterval=60000 ]
+network:servicedevice:nefit [ hostname="192.168.2.2", retry=1, port=4000, timeout=5000, refreshInterval=60000 ]

@@ -9,218 +9,227 @@
 //--------------------------------------------------------------------------------------------------
 // Daikin AC Laundry room items
 //--------------------------------------------------------------------------------------------------
-Group				gACLaundry
-					"Airco Stephan"
+Group							gACLaundry
+								"Airco Stephan"
 
-Switch				AC_Power_Laundry
-					"Airco On/Off Stephan"
-					(gLaundry,gHist5,gACLaundry)
-					// ["Thermostat"]
-					{channel="daikin:ac_unit:192_168_2_125:power" }
+Switch							AC_Online_Laundry
+								"AC Status Stephan [%s]"
+								<network>
+								(gSensorStatus, gResetExpire)
+								{channel="network:pingdevice:ac_laundry:online", expire="5m", Static="meta"[name="Airco"]}
 
-Number				AC_SetTemp_Laundry
-					"Target Temp [%s °C]"
-					<temperature>
-					(gLaundry,gACLaundry)
-					// ["TargetTemperature"]
-					{channel="daikin:ac_unit:192_168_2_125:settemp" }
+Switch							AC_Power_Laundry
+								"Airco On/Off Stephan"
+								(gLaundry,gHist5,gACLaundry)
+								{channel="daikin:ac_unit:192_168_2_125:power"}
 
-Number				AC_Temp_Laundry
-					"Room Temp [%s °C]"
-					<temperature>
-					(gLaundry,gTempSensor,gHist5,gACLaundry)
-					// ["CurrentTemperature"]
-					{channel="daikin:ac_unit:192_168_2_125:indoortemp" }
+Number							AC_SetTemp_Laundry
+								"Target Temp [%s °C]"
+								<temperature>
+								(gLaundry,gACLaundry)
+								{channel="daikin:ac_unit:192_168_2_125:settemp"}
 
-String				AC_Mode_Laundry
-					"AC Mode"
-					<heating>
-					(gLaundry,gACLaundry)
-					// ["homekit:HeatingCoolingMode"]
-					{channel="daikin:ac_unit:192_168_2_125:mode" }
+Number							AC_Temp_Laundry
+								"Room Temp [%s °C]"
+								<temperature>
+								(gLaundry,gTempSensor,gHist5,gACLaundry)
+								{channel="daikin:ac_unit:192_168_2_125:indoortemp"}
 
-String				AC_FanSpeed_Laundry
-					"Fan speed"
-					<fan>
-					(gLaundry)
-					{channel="daikin:ac_unit:192_168_2_125:fanspeed" }
+String							AC_Mode_Laundry
+								"AC Mode"
+								<heating>
+								(gLaundry,gACLaundry)
+								{channel="daikin:ac_unit:192_168_2_125:mode"}
 
-String				AC_FanDirection_Laundry
-					"Ventilatorrichting"
-					<fan>
-					(gLaundry)
-					{channel="daikin:ac_unit:192_168_2_125:fandir" }
+String							AC_FanSpeed_Laundry
+								"Fan speed"
+								<fan>
+								(gLaundry)
+								{channel="daikin:ac_unit:192_168_2_125:fanspeed"}
 
+String							AC_FanDirection_Laundry
+								"Ventilatorrichting"
+								<fan>
+								(gLaundry)
+								{channel="daikin:ac_unit:192_168_2_125:fandir"}
 
 //--------------------------------------------------------------------------------------------------
 // Daikin AC Guest room items
 //--------------------------------------------------------------------------------------------------
+Group							gACGuestroom
+								"Airo Menno"
 
-Group				gACGuestroom
-					"Airo Menno"
+Switch							AC_Online_Guestroom
+								"AC Status Menno [%s]"
+								<network>
+								(gSensorStatus, gResetExpire)
+								{channel="network:pingdevice:ac_guestroom:online", expire="5m", Static="meta"[name="Airco"]}
 
-Switch				AC_Power_Guestroom
-					"Airco On/Off Menno"
-					(gGuestroom,gHist5,gACGuestroom)
-					// ["Thermostat"]
-					{channel="daikin:ac_unit:192_168_2_109:power" }
+Switch							AC_Power_Guestroom
+								"Airco On/Off Menno"
+								(gGuestroom,gHist5,gACGuestroom)
+								{channel="daikin:ac_unit:192_168_2_109:power"}
+	
+Number							AC_SetTemp_Guestroom
+								"Target Temp [%.0f °C]"
+								<temperature>
+								(gGuestroom,gACGuestroom)
+								{channel="daikin:ac_unit:192_168_2_109:settemp"}
 
-Number				AC_SetTemp_Guestroom
-					"Target Temp [%.0f °C]"
-					<temperature>
-					(gGuestroom,gACGuestroom)
-					// ["TargetTemperature"]
-					{channel="daikin:ac_unit:192_168_2_109:settemp" }
+Number							AC_Temp_Guestroom
+								"Room Temp [%s °C]"
+								<temperature>
+								(gGuestroom,gTempSensor,gHist5,gACGuestroom)
+								{channel="daikin:ac_unit:192_168_2_109:indoortemp"}
 
-Number				AC_Temp_Guestroom
-					"Room Temp [%s °C]"
-					<temperature>
-					(gGuestroom,gTempSensor,gHist5,gACGuestroom)
-					// ["CurrentTemperature"]
-					{channel="daikin:ac_unit:192_168_2_109:indoortemp" }
+String							AC_Mode_Guestroom
+								"AC Mode"
+								<heating>
+								(gGuestroom,gACGuestroom)
+								{channel="daikin:ac_unit:192_168_2_109:mode"}
 
-String				AC_Mode_Guestroom
-					"AC Mode"
-					<heating>
-					(gGuestroom,gACGuestroom)
-					// ["homekit:HeatingCoolingMode"]
-					{channel="daikin:ac_unit:192_168_2_109:mode" }
+String							AC_FanSpeed_Guestroom
+								"Fan speed [%s]"
+								<fan>
+								(gGuestroom)
+								{channel="daikin:ac_unit:192_168_2_109:fanspeed"}
 
-String				AC_FanSpeed_Guestroom
-					"Fan speed [%s]"
-					<fan>
-					(gGuestroom)
-					{channel="daikin:ac_unit:192_168_2_109:fanspeed" }
-
-String				AC_FanDirection_Guestroom
-					"Fan direction [%s]"
-					<fan>
-					(gGuestroom)
-					{channel="daikin:ac_unit:192_168_2_109:fandir" }
-
+String							AC_FanDirection_Guestroom
+								"Fan direction [%s]"
+								<fan>
+								(gGuestroom)
+								{channel="daikin:ac_unit:192_168_2_109:fandir"}
 
 //--------------------------------------------------------------------------------------------------
 // Daikin AC Study items
 //--------------------------------------------------------------------------------------------------
+Group							gACStudy
+								"Airco Study"
 
-Group				gACStudy
-					"Airco Study"
+Switch							AC_Online_Study
+								"AC Status Study [%s]"
+								<network>
+								(gSensorStatus, gResetExpire)
+								{channel="network:pingdevice:ac_study:online", expire="5m", Static="meta"[name="Airco"]}
 
-Switch				AC_Power_Study
-					"Airco On/Off Study"
-					(gStudy,gHist5,gACStudy)
-					// ["Thermostat"]
-					{channel="daikin:ac_unit:192_168_2_137:power"}
+Switch							AC_Power_Study
+								"Airco On/Off Study"
+								(gStudy,gHist5,gACStudy)
+								{channel="daikin:ac_unit:192_168_2_137:power"}
 
-Number				AC_SetTemp_Study
-					"Target Temp [%S °C]"
-					<temperature>
-					(gStudy,gACStudy)
-					// ["TargetTemperature"]
-					{channel="daikin:ac_unit:192_168_2_137:settemp"}
+Number							AC_SetTemp_Study
+								"Target Temp [%S °C]"
+								<temperature>
+								(gStudy,gACStudy)
+								{channel="daikin:ac_unit:192_168_2_137:settemp"}
 
-Number				AC_Temp_Study
-					"Inner Temp [%s °C]"
-					<temperature>
-					(gStudy,gTempSensor,gHist5,gACStudy)
-					// ["CurrentTemperature"]
-					{channel="daikin:ac_unit:192_168_2_137:indoortemp"}
+Number							AC_Temp_Study
+								"Inner Temp [%s °C]"
+								<temperature>
+								(gStudy,gTempSensor,gHist5,gACStudy)
+								{channel="daikin:ac_unit:192_168_2_137:indoortemp"}
 
-String				AC_Mode_Study
-					"AC Mode"
-					<heating>
-					(gStudy,gACStudy)
-					// ["homekit:HeatingCoolingMode"]
-					{channel="daikin:ac_unit:192_168_2_137:mode"}
+String							AC_Mode_Study
+								"AC Mode"
+								<heating>
+								(gStudy,gACStudy)
+								{channel="daikin:ac_unit:192_168_2_137:mode"}
 
-String				AC_FanSpeed_Study
-					"Fan speed [%s]"
-					<fan>
-					(gStudy,gACStudy)
-					{channel="daikin:ac_unit:192_168_2_137:fanspeed"}
+String							AC_FanSpeed_Study
+								"Fan speed [%s]"
+								<fan>
+								(gStudy,gACStudy)
+								{channel="daikin:ac_unit:192_168_2_137:fanspeed"}
 
-String				AC_FanDirection_Study
-					"Fan direction [%s]"
-					<fan>
-					(gStudy,gACStudy)
-					{channel="daikin:ac_unit:192_168_2_137:fandir"}
+String							AC_FanDirection_Study
+								"Fan direction [%s]"
+								<fan>
+								(gStudy,gACStudy)
+								{channel="daikin:ac_unit:192_168_2_137:fandir"}
+
 
 //--------------------------------------------------------------------------------------------------
 // Daikin Master Bedroom items
 //--------------------------------------------------------------------------------------------------
+Group							gACBedroom
+								"Aircp Bedroom"
 
-Group				gACBedroom
-					"Aircp Bedroom"
+Switch							AC_Online_Bedroom
+								"AC Status Bedroom [%s]"
+								<network>
+								(gSensorStatus, gResetExpire)
+								{channel="network:pingdevice:ac_bedroom:online", expire="5m", Static="meta"[name="Airco"]}
 
-Switch				AC_Power_Bedroom
-					"Airco On/Off bedroom"
-					(gBedroom,gHist5,gBedroom)
-					// ["Thermostat"]
-					{channel="daikin:ac_unit:192_168_2_135:power"}
+Switch							AC_Power_Bedroom
+								"Airco On/Off bedroom"
+								(gBedroom,gHist5,gBedroom)
+								{channel="daikin:ac_unit:192_168_2_135:power"}
 
-Number				AC_SetTemp_Bedroom
-					"Bedroom [%.0f °C]"
-					<temperature>
-					(gBedroom,gACBedroom)
-					["TargetTemperature"]
-					{channel="daikin:ac_unit:192_168_2_135:settemp"}
+Number							AC_SetTemp_Bedroom
+								"Bedroom [%.0f °C]"
+								<temperature>
+								(gBedroom,gACBedroom)
+								["TargetTemperature"]
+								{channel="daikin:ac_unit:192_168_2_135:settemp"}
 
-Number				AC_Temp_Bedroom
-					"Bedroom [%d °C]"
-					<temperature>
-					(gBedroom,gTempSensor,gHist10,gACBedroom)
-					["CurrentTemperature"]
-					{channel="daikin:ac_unit:192_168_2_135:indoortemp"}
+Number							AC_Temp_Bedroom
+								"Bedroom [%d °C]"
+								<temperature>
+								(gBedroom,gTempSensor,gHist10,gACBedroom)
+								["CurrentTemperature"]
+								{channel="daikin:ac_unit:192_168_2_135:indoortemp"}
 
-Number				AC_Temp_Outdoor
-					"Outdoor [%s °C]"
-					<temperature>
-					(gTempSensor,gHist10)
-					// ["CurrentTemperature"]
-					{channel="daikin:ac_unit:192_168_2_135:outdoortemp"}
+Number							AC_Temp_Outdoor
+								"Outdoor [%s °C]"
+								<temperature>
+								(gTempSensor,gHist10)
+								{channel="daikin:ac_unit:192_168_2_135:outdoortemp"}
 
-String				AC_Mode_Bedroom
-					"AC Mode [%s]"
-					<heating>
-					(gBedroom,gACBedroom)
-					{channel="daikin:ac_unit:192_168_2_135:mode"}
+String							AC_Mode_Bedroom
+								"AC Mode [%s]"
+								<heating>
+								(gBedroom,gACBedroom)
+								{channel="daikin:ac_unit:192_168_2_135:mode"}
 
-String				AC_FanSpeed_Bedroom
-					"Fan speed [%s]"
-					<fan>
-					(gBedroom,gACBedroom)
-					{channel="daikin:ac_unit:192_168_2_135:fanspeed"}
+String							AC_FanSpeed_Bedroom
+								"Fan speed [%s]"
+								<fan>
+								(gBedroom,gACBedroom)
+								{channel="daikin:ac_unit:192_168_2_135:fanspeed"}
 
-String				AC_FanDirection_Bedroom
-					"Fan direction [%s]"
-					<fan>
-					(gBedroom,gACBedroom)
-					{channel="daikin:ac_unit:192_168_2_135:fandir"}
+String							AC_FanDirection_Bedroom
+								"Fan direction [%s]"
+								<fan>
+								(gBedroom,gACBedroom)
+								{channel="daikin:ac_unit:192_168_2_135:fandir"}
+
 
 
 //--------------------------------------------------------------------------------------------------
 // Expire item to suppress too much noise from Alexa
 //--------------------------------------------------------------------------------------------------
-Switch				AC_MessageRepeat
-					"ACmessage timeout"
-					(gResetExpire)
-					{expire="10m,command=OFF"}
+Switch							AC_MessageRepeat
+								"ACmessage timeout"
+								(gResetExpire)
+								{expire="10m,command=OFF"}
+
 
 //--------------------------------------------------------------------------------------------------
 // Vacation mode switch
 //--------------------------------------------------------------------------------------------------
-Switch				AC_Vacation_Bedroom
-					"AC Bedroom vacation Mode"
-					(gBedroom,gACBedroom)
+Switch							AC_Vacation_Bedroom
+								"AC Bedroom vacation Mode"
+								(gBedroom,gACBedroom)
 
-Switch				AC_Vacation_Guestroom
-					"AC Guestroom vacation Mode"
-					(gGuestroom,gACGuestroom)
+Switch							AC_Vacation_Guestroom
+								"AC Guestroom vacation Mode"
+								(gGuestroom,gACGuestroom)
 
-Switch				AC_Vacation_Laundry
-					"AC Laundry room vacation Mode"
-					(gLaundry,gACLaundry)
+Switch							AC_Vacation_Laundry
+								"AC Laundry room vacation Mode"
+								(gLaundry,gACLaundry)
 
-Switch				AC_Vacation_Study
-					"AC Study vacation Mode"
-					(gStudy,gACStudy)
+Switch							AC_Vacation_Study
+								"AC Study vacation Mode"
+								(gStudy,gACStudy)
+

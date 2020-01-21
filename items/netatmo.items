@@ -61,4 +61,5 @@ Switch				NHC_Watchdog
 					(gResetExpire)
 					{expire="30m, command=OFF", name="Healty HomeCoach CO2 sensor"}
 
-
+// Netatmo Thing status string
+String				NHC_API_Status

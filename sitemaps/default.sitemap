@@ -344,7 +344,6 @@ sitemap default label="At Home"
         Switch item=Alarm_Status label="Alarm []" icon="alarm" mappings=[DISARMED="Off", ARMED_HOME="Arm Home", ARMED_AWAY="Away"]
         Text item=Alarm_LastChange
         Group item=gDoors valuecolor=[>3="red",>1="orange",<2="green"]
-        Text item=Alarm_Status_Connect
         Switch item=Presence_Ron label="Ron is []" mappings=[ON="Home"] visibility=[Presence_Ron==ON]
         Switch item=Presence_Ron label="Ron is []" mappings=[OFF="Away"] visibility=[Presence_Ron==OFF]
         Switch item=Presence_Arniel label="Arniël is []" icon="woman_1" mappings=[ON="Home"] visibility=[Presence_Arniel==ON]

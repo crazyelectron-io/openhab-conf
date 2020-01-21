@@ -56,3 +56,10 @@ Image							imgTempOutdoor24H_20
 								"Buitentemperatuur 24H"
 								(gSnapshots15)
 								{channel="ftpupload:imagereceiver:grf_temp_outdoor24:image"}
+
+
+Switch							Grafana_Online
+								"Online Status Grafana [%s]"
+								<network>
+								(gSensorStatus, gResetExpire)
+								{channel="network:pingdevice:grafana:online", expire="2m", Static="meta"[name="Grafana"]}

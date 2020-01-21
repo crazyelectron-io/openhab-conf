@@ -17,10 +17,10 @@ log = LoggerFactory.getLogger("{}.my.astro".format(LOG_PREFIX))
 #==================================================================================================
 # Update String Item Astro_Sun_Direction with textual representation of current sun angle.
 #==================================================================================================
-@rule("AstroSunPosition", description="Translate Sun Azimut to Wind Direction", tags=["astro"])
+@rule("AstroSunPosition", description="Translate Sun Azimut degrees to Wind Direction", tags=["astro"])
 @when("Item Astro_Sun_Azimuth changed")
 def update_sun_direction(event):
-    log.info("Update textual Sun direction Item [{}] from Azumith [{}]", event.itemName, event.itemState)
+    log.debug("Update textual Sun direction Item [{}] from Azumith [{}]", event.itemName, event.itemState)
 
     wind_directions = {
         xrange(0, 12) : 'North',
@@ -63,8 +63,8 @@ def update_sun_direction(event):
 def set_day_mode_and_sunset_rise_time(event):
     cloudy = false
 
-    #---Sanity checks
-    if ir.item("Astro_Day_Phase").state == NULL:
+    #---Sanity check
+    if items["Astro_Day_Phase"] == NULL or :
         return
 
     phase = Astro_Day_Phase.state.toString()

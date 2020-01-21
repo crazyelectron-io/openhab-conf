@@ -81,3 +81,8 @@ Switch							CV_Watchdog
 								(gResetExpire)
 								{expire="30m,command=OFF"}
 
+Switch							CV_Online
+								"Nefit Status [%s]"
+								<network>
+								(gSensorStatus, gResetExpire)
+								{channel="network:servicedevice:nefit:online", expire="5m", Static="meta"[name="Heating"]}
