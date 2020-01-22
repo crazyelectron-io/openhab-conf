@@ -32,8 +32,7 @@ then
 
 	// Check if we are triggered by persistence restore
 	logInfo(TAG, "{} changed to {} from {}", triggeringItem.name, triggeringItem.state, previousState.toString)
-	if (previousState == NULL)
-		return;
+	if (previousState == NULL) return;
 
 	if (Day_Mode.state == "DAY")
 		command = "OFF"

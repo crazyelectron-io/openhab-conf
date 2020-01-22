@@ -19,60 +19,60 @@ var Timer timerAlarm = null
 // Update the next sunset/rise times and Day Mode when the Astro day phase changes or the Cloudiness
 //  changes.
 //==================================================================================================
-rule "Astro.DayPhase - Calculate current day Mode and next sunrise/sunset times"
-when
-    Item Astro_Day_Phase changed or
-    Item Weather_Cloudy changed or
-    System started
-then
-    val String TAG = "Astro.DayPhase.Change"
-    var Boolean cloudy = false
+// rule "Astro.DayPhase - Calculate current day Mode and next sunrise/sunset times"
+// when
+//     Item Astro_Day_Phase changed or
+//     Item Weather_Cloudy changed or
+//     System started
+// then
+//     val String TAG = "Astro.DayPhase.Change"
+//     var Boolean cloudy = false
 
-    //--- Sanity checks
-    if (Astro_Day_Phase.state == NULL)
-        return;
+//     //--- Sanity checks
+//     if (Astro_Day_Phase.state == NULL)
+//         return;
 
-    var String phase = Astro_Day_Phase.state.toString()
-    val Number hour = now.getHourOfDay()
+//     var String phase = Astro_Day_Phase.state.toString()
+//     val Number hour = now.getHourOfDay()
 
-    if (Weather_Cloudy.state != NULL && Weather_Cloudy.state == ON) {
-        logDebug(TAG, "Set Cloudy switch to TRUE")
-        cloudy = true
-    }
+//     if (Weather_Cloudy.state != NULL && Weather_Cloudy.state == ON) {
+//         logDebug(TAG, "Set Cloudy switch to TRUE")
+//         cloudy = true
+//     }
 
-    //-- Update Day Mode based on Astro Day Phase
-    //SUN_RISE, ASTRO_DAWN, NAUTIC_DAWN, CIVIL_DAWN, CIVIL_DUSK, NAUTIC_DUSK, ASTRO_DUSK, SUN_SET, DAYLIGHT, NIGHT
-    switch (phase) {
-        case "DAYLIGHT": {
-            logDebug(TAG, "Day Phase is DAYLIGHT, check time to set Day Mode to MORNING or DAY")
-            Day_Mode.sendCommand(if (hour>=7) "DAY" else "MORNING")
-        }
-        case "SUN_SET": {
-            logDebug(TAG, "Day Phase is sunset, check if cloudy")
-            Day_Mode.sendCommand(if (cloudy) "EVENING" else "DAY")
-        }
-        case "SUN_RISE": {
-            logDebug(TAG, "Day Phase is sunrise, check if cloudy")
-            Day_Mode.sendCommand(if (cloudy) "MORNING" else "DAY")
-        }
-        case "ASTRO_DAWN",
-        case "NAUTIC_DAWN",
-        case "CIVIL_DAWN": {
-            logDebug(TAG, "Day Phase is DAWN")
-            Day_Mode.sendCommand(if (hour >= 6) "MORNING" else "NIGHT")
-        }
-        case "ASTRO_DUSK",
-        case "NAUTIC_DUST",
-        case "CIVIL_DUSK": {
-            logDebug(TAG, "Day Phase is DUSK")
-            Day_Mode.sendCommand(if (hour<=23) "EVENING" else "NIGHT")
-        }
-        case "NIGHT": {
-            logDebug(TAG, "Day Phase is NIGHT")
-            Day_Mode.sendCommand(if (hour<=23) "EVENING" else "NIGHT")
-        }
-    }
-end
+//     //-- Update Day Mode based on Astro Day Phase
+//     //SUN_RISE, ASTRO_DAWN, NAUTIC_DAWN, CIVIL_DAWN, CIVIL_DUSK, NAUTIC_DUSK, ASTRO_DUSK, SUN_SET, DAYLIGHT, NIGHT
+//     switch (phase) {
+//         case "DAYLIGHT": {
+//             logDebug(TAG, "Day Phase is DAYLIGHT, check time to set Day Mode to MORNING or DAY")
+//             Day_Mode.sendCommand(if (hour>=7) "DAY" else "MORNING")
+//         }
+//         case "SUN_SET": {
+//             logDebug(TAG, "Day Phase is sunset, check if cloudy")
+//             Day_Mode.sendCommand(if (cloudy) "EVENING" else "DAY")
+//         }
+//         case "SUN_RISE": {
+//             logDebug(TAG, "Day Phase is sunrise, check if cloudy")
+//             Day_Mode.sendCommand(if (cloudy) "MORNING" else "DAY")
+//         }
+//         case "ASTRO_DAWN",
+//         case "NAUTIC_DAWN",
+//         case "CIVIL_DAWN": {
+//             logDebug(TAG, "Day Phase is DAWN")
+//             Day_Mode.sendCommand(if (hour >= 6) "MORNING" else "NIGHT")
+//         }
+//         case "ASTRO_DUSK",
+//         case "NAUTIC_DUST",
+//         case "CIVIL_DUSK": {
+//             logDebug(TAG, "Day Phase is DUSK")
+//             Day_Mode.sendCommand(if (hour<=23) "EVENING" else "NIGHT")
+//         }
+//         case "NIGHT": {
+//             logDebug(TAG, "Day Phase is NIGHT")
+//             Day_Mode.sendCommand(if (hour<=23) "EVENING" else "NIGHT")
+//         }
+//     }
+// end
 
 
 //==================================================================================================
@@ -115,7 +115,7 @@ then
                 [|
                     // Turn off the House Alarm and turn on the hallway lighting
                     Light_Scene_Hall.sendCommand("EVENING")
-                    // Alarm_Status.sendCommand("DISARMED")
+                    Alarm_Status.sendCommand("DISARMED")
                     logInfo(TAG, "Android AlarmClock expired, turn on hall light and disarm the alarm")
                 ]
             )

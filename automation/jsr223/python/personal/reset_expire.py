@@ -6,10 +6,13 @@
 
 from core.rules import rule
 from core.triggers import when
-from org.slf4j import LoggerFactory
+from core.log import logging, LOG_PREFIX
+import configuration
+reload(configuration)
 from configuration import LOG_PREFIX
 
-log = LoggerFactory.getLogger("{}.my.reset_expire".format(LOG_PREFIX))
+log = logging.getLogger("{}.rst_expire".format(LOG_PREFIX))
+
 
 @rule("Reset Expire Binding Timers", description="Sends an update to all members of gResetExpire of their restored state", tags=["admin"])
 @when("System started")

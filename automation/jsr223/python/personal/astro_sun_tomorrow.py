@@ -9,15 +9,17 @@ Changelog:
 
 from core.rules import rule
 from core.triggers import when
-from core.log import logging, LOG_PREFIX
+from core.log import logging
 import configuration
 reload(configuration)
 from configuration import LOG_PREFIX,COUNTRY,LATITUDE,LONGITUDE,CITY
 import datetime
 from org.joda.time import DateTime
-import astral
+import astral    # pylint: disable=import-error
+
 
 log = logging.getLogger("{}.astro_sun".format(LOG_PREFIX))
+
 
 #===================================================================================================
 # Determine next sunset/sunrise times for today and tomorrow.
@@ -30,7 +32,6 @@ def set_next_sun_times(event):
     if items["Astro_Day_Phase"] == "DAYLIGHT":
         # Set today's sunset and tomorrow's sunrise time.
         log.info("Daylight - next sunrise is tomorrow, next sunset is today")
-        events.sendCommand("Day_Mode", "DAY")
         events.postUpdate("Astro_Sun_RiseNext", items["Astro_Sun_RiseTomorrow"])
         events.postUpdate("Astro_Sun_SetNext", items["Astro_Sun_SetTime"])
     else:
@@ -44,6 +45,7 @@ def set_next_sun_times(event):
             events.postUpdate("Astro_Sun_RiseNext", items["Astro_Sun_RiseTime"].toString())
             events.postUpdate("Astro_Sun_SetNext", items["Astro_Sun_SetTime"].toString())
 
+
 #===================================================================================================
 # Calculate tomorrow's sunrise/sunset time using the python astral library
 #===================================================================================================
@@ -51,8 +53,6 @@ def set_next_sun_times(event):
 @when("Time cron 0 10 0 ? * * *")
 @when("System started")
 def calc_sun_tomorrow(event):
-    log.debug("Calculate tomorrows sunset and sunrise times")
-
     # Determine tomorrow's date
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
 
