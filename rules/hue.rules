@@ -20,38 +20,38 @@
 import org.eclipse.smarthome.model.script.ScriptServiceUtil
 
 
-//==================================================================================================
-// Switch lights on at sunset and off at sunrise (depending on cloudiness).
-//==================================================================================================
-rule "HueDayNight - Lighting change around sunset/sunrise"
-when
-	Item Day_Mode changed
-then
-	val String TAG = "HUE."+triggeringItem.name+".Change"
-	var String command = ""
+// //==================================================================================================
+// // Switch lights on at sunset and off at sunrise (depending on cloudiness).
+// //==================================================================================================
+// rule "HueDayNight - Lighting change around sunset/sunrise"
+// when
+// 	Item Day_Mode changed
+// then
+// 	val String TAG = "HUE."+triggeringItem.name+".Change"
+// 	var String command = ""
 
-	// Check if we are triggered by persistence restore
-	logInfo(TAG, "{} changed to {} from {}", triggeringItem.name, triggeringItem.state, previousState.toString)
-	if (previousState == NULL) return;
+// 	// Check if we are triggered by persistence restore
+// 	logInfo(TAG, "{} changed to {} from {}", triggeringItem.name, triggeringItem.state, previousState.toString)
+// 	if (previousState == NULL) return;
 
-	if (Day_Mode.state == "DAY")
-		command = "OFF"
-	else if (Day_Mode.state == "EVENING")
-		command = "EVENING"
+// 	if (Day_Mode.state == "DAY")
+// 		command = "OFF"
+// 	else if (Day_Mode.state == "EVENING")
+// 		command = "EVENING"
 	
-	if (command != "") {
-		logInfo(TAG, "Send command {} to Light Scenes", command)
-		// gLight_Automatic.sendCommand(command)
-		Light_Scene_Livingroom.sendCommand(command)
-		Light_Scene_Dining.sendCommand(command)
-		Light_Scene_Kitchen.sendCommand(command)
-		Light_Scene_Hall.sendCommand(command)
-		Light_Scene_Outside.sendCommand(command)
-		// Light_Scene_Lodge.sendCommand(command)
-		val String msg = "Day mode change: lights switched to Scene "+command
-		sendBroadcastNotification(msg)
-	}
-end
+// 	if (command != "") {
+// 		logInfo(TAG, "Send command {} to Light Scenes", command)
+// 		// gLight_Automatic.sendCommand(command)
+// 		Light_Scene_Livingroom.sendCommand(command)
+// 		Light_Scene_Dining.sendCommand(command)
+// 		Light_Scene_Kitchen.sendCommand(command)
+// 		Light_Scene_Hall.sendCommand(command)
+// 		Light_Scene_Outside.sendCommand(command)
+// 		// Light_Scene_Lodge.sendCommand(command)
+// 		val String msg = "Day mode change: lights switched to Scene "+command
+// 		sendBroadcastNotification(msg)
+// 	}
+// end
 
 
 //==================================================================================================

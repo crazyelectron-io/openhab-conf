@@ -2,7 +2,7 @@ from core.rules import rule
 from core.triggers import when
 from core.metadata import get_key_value, set_metadata
 from threading import Timer
-from core.actions import Transformation, NotificationAction
+from core.actions import NotificationAction
 from core.log import log_traceback
 
 #---------------------------------------------------------------------------------------------------
