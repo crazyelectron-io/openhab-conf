@@ -15,7 +15,7 @@ def alert_timer_expired(itemName, name, origState):
     status_alert.log.debug("Status alert timer expired for {} {} {}".format(name, origState, items[itemName]))
     del alertTimers[itemName]
     if items[itemName] == origState:
-        NotificationAction.sendBroadcastNotification("{} is now {}".format(name, Transformation.transform("MAP", "admin.map", str(items[itemName]))), status_alert.log)
+        NotificationAction.sendBroadcastNotification("{} is now {}".format(name, items[itemName])) #Transformation.transform("MAP", "admin.map", str(items[itemName]))
         set_metadata(itemName, "Alert", { "alerted" : "ON"}, overwrite=False)
     else:
         status_alert.log.warn("{} is flapping!".format(itemName))

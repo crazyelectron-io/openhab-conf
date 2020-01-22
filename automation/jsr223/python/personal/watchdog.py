@@ -1,12 +1,13 @@
 from core.rules import rule
 from core.triggers import when
-from org.eclipse.smarthome.core.thing import ThingUID
-
+try:
+    from org.openhab.core.thing import ThingUID
+except:
+    from org.eclipse.smarthome.core.thing import ThingUID
 from core.actions import LogAction
 from core.actions import NotificationAction
 from core.actions import Exec
 from core.actions import ScriptExecution
-
 from org.joda.time import DateTime
 
 keyThingsDict = {
@@ -93,7 +94,6 @@ rulePrefix = "Watchdog | "
 timers = {}
 # Binding restart counters
 binding_restarts = {}
-
 
 def schedule_binding_restart(
     binding_id,
