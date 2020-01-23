@@ -9,14 +9,20 @@ Changelog:
 
 from core.rules import rule
 from core.triggers import when
+from core.log import logging, LOG_PREFIX
+import configuration
+reload(configuration)
+from configuration import LOG_PREFIX
+from core.utils import postUpdateCheckFirst #,postUpdateIfDifferent
 
+log = logging.getLogger("{}.astro_azimuth".format(LOG_PREFIX))
 
-#==================================================================================================
-# Update String Item Astro_Sun_Direction with textual representation of current sun angle.
 #==================================================================================================
 @rule("AstroSunPosition", description="Translate Sun Azimut degrees to Wind Direction", tags=["astro"])
 @when("Item Astro_Sun_Azimuth changed")
+@when("System started")
 def update_sun_direction(event):
+
     wind_directions = {
         xrange(0, 12) : 'North',
         xrange(12, 34) : 'North-NorthEast',
@@ -37,45 +43,10 @@ def update_sun_direction(event):
         xrange(349, 366) : 'North'
     }
 
-    azimuth = int(float(str(event.itemState)))
+    azimuth = int(float(str(items["Astro_Sun_Azimuth"])))
     for key in wind_directions:
-        # log.info("Wind direction translation table key [{}]", key)
         if azimuth in key:
             wind_direction = wind_directions[key]
-            events.postUpdate("Astro_Sun_Direction", wind_direction)
+            postUpdateCheckFirst("Astro_Sun_Direction", str(wind_direction))
+            # postUpdateIfDifferent("Astro_Sun_Direction", str(wind_direction))
             break
-
-
-# #==================================================================================================
-# # Take morning actions when the Android Alarm goes off
-# #==================================================================================================
-# # @rule( "AlarmClock", description="Android Alarm clock actions", tags=["astro"])
-# @when("Item AlarmClock changed")
-# def alarm_clock_update(event):
-#     log.info(">>>>>> Enter rule with '{}' >>>>>>".format(AlarmClock))
-
-#     if ir.item("AlarmClock").state == 0:
-#         log.info(TAG, "AlarmClock state changed to 0, cancel all alarms")
-#         if timerAlarm !== null:
-#             #timerAlarm?.cancel
-#             log.info("AlarmClock timerAlarm is running, cancel it")
-#             timerAlarm.cancel
-#             timerAlarm = null
-#     else:
-#         epoch = new DateTime((AlarmClock.state).longValue)
-#         log.info("Schedule Android alarm for {}".format(epoch.toString))
-
-#         if timerAlarm !== null:
-#             log.info("Reschedule Android alarm to {}".format(epoch.toString))
-#             timerAlarm.reschedule(epoch)
-#         else:
-#             log.info("New Android Alarm set to {}".format(epoch.toString))
-#             timerAlarm = createTimer(epoch,
-#                 [|
-#                     # Turn off the House Alarm and turn on the hallway lighting
-#                     sendCommandIfDifferent("Light_Scene_Hall", "EVENING")
-#                     sendCommand("Alarm_Status", "DISARMED")
-#                     log.info("Android AlarmClock expired, turn on hall light and disarm the alarm")
-#                 ]
-#             )
-# '''

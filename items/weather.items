@@ -83,7 +83,7 @@ String							Weather_Condition
 								(gWeather)
 								{http="<[KNMI_JSON:10000:JSONPATH($.liveweer.[0].image)]"  [profile="transform:MAP", function="weather.map", sourceFormat="%s"]}
 
-// Cloudy or clear switch (based on Weather_Condition).
+// Cloudy or clear switch (based on Weather_Condition) used to switch lights.
 Switch 							Weather_Cloudy
 								"Cloudy"
 								<none>
@@ -95,4 +95,3 @@ String							Weather_Forcast
 								<none>
 								(gWeather)
 								{http="<[KNMI_JSON:10000:JSONPATH($.liveweer.[0].verw)]"}
-

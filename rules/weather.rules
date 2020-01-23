@@ -52,31 +52,31 @@ then
 end
 
 
-//==================================================================================================
-// Set Cloudy switch item based on reported weather condition.
-//==================================================================================================
-rule "WeatherCloudy - Determine Cloudiness of weather condition"
-when
-    Item Weather_Condition changed
-then
-    val String TAG = "Weather."+triggeringItem.name+".Cloudy"
+// //==================================================================================================
+// // Set Cloudy switch item based on reported weather condition.
+// //==================================================================================================
+// rule "WeatherCloudy - Determine Cloudiness of weather condition"
+// when
+//     Item Weather_Condition changed
+// then
+//     val String TAG = "Weather."+triggeringItem.name+".Cloudy"
 
-    val String weather = Weather_Condition.state.toString
-	if (weather == "bewolkt" ||
-        weather == "zwaarbewolkt" ||
-        weather == "regen" ||
-		weather == "mist" ||
-        weather == "hagel" ||
-        weather == "sneeuw" ||
-        weather == "nachtmist" ||
-        weather == "wolkennacht")
-    {
-        logInfo(TAG, "Cloudy conditions, set Cloudy switch")
-        Weather_Cloudy.sendCommand(ON)
-    }
-    else
-    {
-        logInfo(TAG, "Clear conditions, reset Cloudy switch")
-        Weather_Cloudy.sendCommand(OFF)
-    }
-end
+//     val String weather = Weather_Condition.state.toString
+// 	if (weather == "bewolkt" ||
+//         weather == "zwaarbewolkt" ||
+//         weather == "regen" ||
+// 		weather == "mist" ||
+//         weather == "hagel" ||
+//         weather == "sneeuw" ||
+//         weather == "nachtmist" ||
+//         weather == "wolkennacht")
+//     {
+//         logInfo(TAG, "Cloudy conditions, set Cloudy switch")
+//         Weather_Cloudy.sendCommand(ON)
+//     }
+//     else
+//     {
+//         logInfo(TAG, "Clear conditions, reset Cloudy switch")
+//         Weather_Cloudy.sendCommand(OFF)
+//     }
+// end

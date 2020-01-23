@@ -36,17 +36,11 @@ Number							Astro_Day_Light
 								(gAstro,gPersist)
 								{channel="astro:sun:home:daylight#duration"}
 
-//--- Night or Day switch; set via rule to 'DAY' (sun up) or 'NIGHT' (sun down)
-// Contact							Astro_NightState
-// 								"Night"
-// 								(gAstro,gPersist)
-
 //---Current season name, translated to local text
 String							Astro_Season_Name
 								"Season [%s]"
 								(gAstro,gPersist)
 								{channel="astro:sun:home:season#name"}
-
 
 //--------------------------------------------------------------------------------------------------
 // Sunrise and sunset related Items
@@ -70,19 +64,19 @@ DateTime						Astro_Sun_RiseTime
 DateTime						Astro_Sun_SetTomorrow
 								"Tomorrow's Sunset [%1$tH:%1$tMs]"
 								<sunset>
-								(gAstro,gPersist)
+								(gAstro)
 
 // Tomorrow's sunrise time, calculated with Python script using astral library at night and system start.
 DateTime						Astro_Sun_RiseTomorrow
 								"Tomorrow's Sunrise [%1$tH:%1$tM]"
 								<sunrise>
-								(gAstro,gPersist)
+								(gAstro)
 
 // Next sunset time: today's or tomorrow's sunset depending on time of day (through rule).
 DateTime						Astro_Sun_SetNext
 								"Next Sunset [%1$tH:%1$tM]"
 								<sunset>
-								(gAstro,gPersist)
+								(gAstro)
 
 // Next sunrise time: today's or tomorrow's sunset depending on time of day (through rule).
 DateTime						Astro_Sun_RiseNext
@@ -107,7 +101,7 @@ Number							Astro_Sun_Azimuth
 String							Astro_Sun_Direction
 								"Sun direction [%s]"
 								<sun>
-								(gAstro,gPersist)
+								(gAstro)
 
 
 //--------------------------------------------------------------------------------------------------
@@ -155,6 +149,7 @@ Number							Astro_Radiation_Diffuse
 								"Diffuse Radiation [%.2f %unit%]"
 								(gAstro)
 								{channel="astro:sun:home:radiation#diffuse"}
+
 
 //--------------------------------------------------------------------------------------------------
 // Other non-binding channel related Items.

@@ -15,35 +15,30 @@ reload(configuration)
 from configuration import LOG_PREFIX,COUNTRY,LATITUDE,LONGITUDE,CITY
 import datetime
 from org.joda.time import DateTime
-import astral    # pylint: disable=import-error
+import astral # pylint: disable=import-error
 
-
-log = logging.getLogger("{}.astro_sun".format(LOG_PREFIX))
-
+log = logging.getLogger("{}.astro_nextsun".format(LOG_PREFIX))
 
 #===================================================================================================
-# Determine next sunset/sunrise times for today and tomorrow.
-#===================================================================================================
-@rule("AstroNextSun", description="Calculate next sunrise/sunset time", tags=["astro"])
+@rule("AstroNextSun", description="Determine the next sunrise/sunset times for today and tomorrow", tags=["astro"])
 @when("Item Astro_Day_Phase changed")
-@when("Item Weather_Cloudy changed")
 @when("System started")
 def set_next_sun_times(event):
-    if items["Astro_Day_Phase"] == "DAYLIGHT":
+    if str(items["Astro_Day_Phase"]) == "DAYLIGHT":
         # Set today's sunset and tomorrow's sunrise time.
         log.info("Daylight - next sunrise is tomorrow, next sunset is today")
-        events.postUpdate("Astro_Sun_RiseNext", items["Astro_Sun_RiseTomorrow"])
-        events.postUpdate("Astro_Sun_SetNext", items["Astro_Sun_SetTime"])
+        events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"]))
+        events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
     else:
         # Set today's sunset and tomorrow's sunrise.
         if str(DateTime.now().getHourOfDay()) > 12:
             log.info("Evening - next sunrise and sunset is tomorrow")
-            events.postUpdate("Astro_Sun_RiseNext", items["Astro_Sun_RiseTomorrow"].toString())
-            events.postUpdate("Astro_Sun_SetNext", items["Astro_Sun_SetTomorrow"].toString())
+            events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"].toString()))
+            events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTomorrow"].toString()))
         else:
             log.info("Morning - next sunrise and sunset is today")
-            events.postUpdate("Astro_Sun_RiseNext", items["Astro_Sun_RiseTime"].toString())
-            events.postUpdate("Astro_Sun_SetNext", items["Astro_Sun_SetTime"].toString())
+            events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTime"].toString()))
+            events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"].toString()))
 
 
 #===================================================================================================
