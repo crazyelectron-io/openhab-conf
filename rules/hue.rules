@@ -54,56 +54,56 @@ import org.eclipse.smarthome.model.script.ScriptServiceUtil
 // end
 
 
-//==================================================================================================
-// Change lighting in area to the specified scene
-//==================================================================================================
-rule "Hue scene changing rule"
-when
-	Item Light_Scene_Livingroom changed or
-	Item Light_Scene_Kitchen changed or
-	Item Light_Scene_Dining changed or
-	Item Light_Scene_Hall changed or
-	Item Light_Scene_HallCeiling changed or
-	Item Light_Scene_Bathroom changed or
-	Item Light_Scene_Bedroom changed or
-	Item Light_Scene_Lodge changed or
-	Item Light_Scene_Outside changed
-then
-	val String TAG = "HUE." + triggeringItem.name + ".Change"
-	logDebug(TAG, "[{}] changed, state is [{}], previous state [{}]", triggeringItem.name.toString, triggeringItem.state.toString, previousState)
-	if (previousState == NULL)
-		return;
+// //==================================================================================================
+// // Change lighting in area to the specified scene
+// //==================================================================================================
+// rule "Hue scene changing rule"
+// when
+// 	Item Light_Scene_Livingroom changed or
+// 	Item Light_Scene_Kitchen changed or
+// 	Item Light_Scene_Dining changed or
+// 	Item Light_Scene_Hall changed or
+// 	Item Light_Scene_HallCeiling changed or
+// 	Item Light_Scene_Bathroom changed or
+// 	Item Light_Scene_Bedroom changed or
+// 	Item Light_Scene_Lodge changed or
+// 	Item Light_Scene_Outside changed
+// then
+// 	val String TAG = "HUE." + triggeringItem.name + ".Change"
+// 	logDebug(TAG, "[{}] changed, state is [{}], previous state [{}]", triggeringItem.name.toString, triggeringItem.state.toString, previousState)
+// 	if (previousState == NULL)
+// 		return;
 
-	val String lightArea = triggeringItem.name.split('_').get(2)
-	val String scene = triggeringItem.state.toString
-	logDebug(TAG, "Received update [{}] for area [{}]", scene, lightArea)
+// 	val String lightArea = triggeringItem.name.split('_').get(2)
+// 	val String scene = triggeringItem.state.toString
+// 	logDebug(TAG, "Received update [{}] for area [{}]", scene, lightArea)
 
-	val lightGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_Brightness_" + lightArea)
+// 	val lightGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_Brightness_" + lightArea)
 
-	logInfo(TAG, "Set Lighting Scene to [{}] for [{}]", scene, lightGroup.name)
+// 	logInfo(TAG, "Set Lighting Scene to [{}] for [{}]", scene, lightGroup.name)
 
-	if (scene == "OFF") {
-		lightGroup.sendCommand(OFF)
-	}
-	else if (scene == "EVENING" || scene == "READ" || scene == "WORK" || scene == "BRIGHT" || scene == "MOVIE") {
-		// lightGroup.postUpdate(ON)
-		val brightnessGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_Brightness_" + lightArea)
-		val String brightness = ScriptServiceUtil.getItemRegistry.getItem(lightArea + "_Brightness_" + triggeringItem.state.toString).state.toString
-		logDebug(TAG, "Brightness command [{}], group [{}]", brightness, brightnessGroup.name)
-		brightnessGroup.sendCommand(brightness)
+// 	if (scene == "OFF") {
+// 		lightGroup.sendCommand(OFF)
+// 	}
+// 	else if (scene == "EVENING" || scene == "READ" || scene == "WORK" || scene == "BRIGHT" || scene == "MOVIE") {
+// 		// lightGroup.postUpdate(ON)
+// 		val brightnessGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_Brightness_" + lightArea)
+// 		val String brightness = ScriptServiceUtil.getItemRegistry.getItem(lightArea + "_Brightness_" + triggeringItem.state.toString).state.toString
+// 		logDebug(TAG, "Brightness command [{}], group [{}]", brightness, brightnessGroup.name)
+// 		brightnessGroup.sendCommand(brightness)
 
-		if (lightArea != "Lodge" && lightArea != "Outside") {
-			val colorTempGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_ColorTemp_" + lightArea)
-			val String colorTemp = ScriptServiceUtil.getItemRegistry.getItem(lightArea + "_ColorTemp_" + triggeringItem.state.toString).state.toString
-			logDebug(TAG, "ColorTemp command [{}], group [{}]", colorTemp, colorTempGroup)
-			colorTempGroup.sendCommand(colorTemp)
-		}
-	}
-	else {
-		logWarn(TAG, "Unknown Scene command [{}] received, restore previous state [{}]", scene, previousState)
-		Light_Scene_Dining.postUpdate(previousState)
-	}
-end
+// 		if (lightArea != "Lodge" && lightArea != "Outside") {
+// 			val colorTempGroup = ScriptServiceUtil.getItemRegistry.getItem("gLight_ColorTemp_" + lightArea)
+// 			val String colorTemp = ScriptServiceUtil.getItemRegistry.getItem(lightArea + "_ColorTemp_" + triggeringItem.state.toString).state.toString
+// 			logDebug(TAG, "ColorTemp command [{}], group [{}]", colorTemp, colorTempGroup)
+// 			colorTempGroup.sendCommand(colorTemp)
+// 		}
+// 	}
+// 	else {
+// 		logWarn(TAG, "Unknown Scene command [{}] received, restore previous state [{}]", scene, previousState)
+// 		Light_Scene_Dining.postUpdate(previousState)
+// 	}
+// end
 
 
 //==================================================================================================

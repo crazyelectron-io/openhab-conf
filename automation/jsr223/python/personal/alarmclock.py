@@ -14,7 +14,6 @@ import configuration
 reload(configuration)
 from configuration import LOG_PREFIX
 from core.actions import ScriptExecution
-from org.joda.time import DateTime
 
 log = logging.getLogger("{}.alarmclock".format(LOG_PREFIX))
 
@@ -37,5 +36,5 @@ def alarm_clock_update(event):
             log.info("Reschedule Android alarm to {}".format(items["AlarmClock"]))
             timerAlarm.cancel()
         else:
-            log.info("New Android Alarm set to {}".format(items["AlarmClock"])
+            log.info("New Android Alarm set to {}".format(items["AlarmClock"]))
             timerAlarm = ScriptExecution.createTimer(items["AlarmClock"], lambda: events.sendCommand("Light_Scene_Bedroom","EVENING"))
