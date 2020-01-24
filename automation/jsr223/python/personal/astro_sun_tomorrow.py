@@ -25,20 +25,34 @@ log = logging.getLogger("{}.astro_nextsun".format(LOG_PREFIX))
 @when("System started")
 def set_next_sun_times(event):
     if str(items["Astro_Day_Phase"]) == "DAYLIGHT":
-        # Set today's sunset and tomorrow's sunrise time.
         log.info("Daylight - next sunrise is tomorrow, next sunset is today")
         events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"]))
         events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
+    elif str(items["Astro_Day_Phase"]) == "SUN_RISE":
+        log.info("Sunrise - next sunrise and sunset is today")
+        events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTime"]))
+        events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
+    elif str(items["Astro_Day_Phase"]) == "SUN_SET":
+        log.info("Sunset - next sunrise is tomorrow and sunset is today")
+        events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"]))
+        events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
+    elif str(items["Astro_Day_Phase"]) in ["ASTRO_DAWN", "NAUTIC_DAWN", "CIVIL_DAWN"]:
+        log.info("Dawn - next sunrise and sunset is today")
+        events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTime"]))
+        events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
+    elif str(items["Astro_Day_Phase"]) in ["ASTRO_DUSK", "NAUTIC_DUSK", "CIVIL_DUSK"]:
+        log.info("Dusk - next sunrise and sunset is tomorrow")
+        events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"]))
+        events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTomorrow"]))
     else:
-        # Set today's sunset and tomorrow's sunrise.
-        if str(DateTime.now().getHourOfDay()) > 12:
-            log.info("Evening - next sunrise and sunset is tomorrow")
-            events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"].toString()))
-            events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTomorrow"].toString()))
+        if DateTime.now().getHourOfDay() > 12:
+            log.info("Before midnight - next sunrise and sunset is tomorrow")
+            events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"]))
+            events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTomorrow"]))
         else:
-            log.info("Morning - next sunrise and sunset is today")
-            events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTime"].toString()))
-            events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"].toString()))
+            log.info("After midnight - next sunrise and sunset is today")
+            events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTime"]))
+            events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
 
 
 #===================================================================================================

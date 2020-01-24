@@ -36,5 +36,5 @@ def alarm_clock_update(event):
             log.info("Reschedule Android alarm to {}".format(items["AlarmClock"]))
             timerAlarm.cancel()
         else:
-            log.info("New Android Alarm set to {}".format(items["AlarmClock"]))
-            timerAlarm = ScriptExecution.createTimer(items["AlarmClock"], lambda: events.sendCommand("Light_Scene_Bedroom","EVENING"))
+            log.info("New Android Alarm set for [{}]".format(items["AlarmClock"]))
+            timerAlarm = ScriptExecution.createTimer(items["AlarmClock"], lambda: events.sendCommand("Light_Scene_Hall","EVENING"))

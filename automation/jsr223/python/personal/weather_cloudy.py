@@ -24,8 +24,8 @@ cloudyConditions = ["bewolkt", "zwaarbewolkt", "regen", "mist", "hagel", "sneeuw
 def set_cloudy_state(event):
     weather = str(items["Weather_Condition"])
     if weather in cloudyConditions:
-        log.info("Cloudy conditions, set Cloudy item")
+        log.debug("Cloudy conditions, set Cloudy item")
         events.postUpdate("Weather_Cloudy", "ON")
     else:
-        log.info("Clear conditions, reset Cloudy item")
+        log.debug("Clear conditions, reset Cloudy item")
         events.postUpdate("Weather_Cloudy", "OFF")

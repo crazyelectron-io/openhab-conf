@@ -36,7 +36,7 @@ log = logging.getLogger("{}.hue_hallway".format(LOG_PREFIX))
 def hue_hall_switch1000(event):
     log.info("Event [{}] received".format(event.event))
     
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
 
@@ -89,7 +89,7 @@ def hue_hall_switch1002(event):
 def hue_hall_switch1003(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
 #===================================================================================================
@@ -98,7 +98,7 @@ def hue_hall_switch1003(event):
 def hue_hall_switch2000(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
 #===================================================================================================
@@ -122,7 +122,7 @@ def hue_hall_switch20012(event):
 def hue_hall_switch2003(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
 #===================================================================================================
@@ -131,7 +131,7 @@ def hue_hall_switch2003(event):
 def hue_hall_switch3000(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
 #===================================================================================================
@@ -155,7 +155,7 @@ def hue_hall_switch30012(event):
 def hue_hall_switch3003(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
 #===================================================================================================
@@ -164,7 +164,7 @@ def hue_hall_switch3003(event):
 def hue_hall_switch4000(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
 #===================================================================================================
