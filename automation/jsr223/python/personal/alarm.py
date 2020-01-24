@@ -13,8 +13,6 @@ from core.log import logging
 import configuration
 reload(configuration)
 from configuration import LOG_PREFIX
-# from org.joda.time import DateTime
-# from core.utils import postUpdateCheckFirst #,postUpdateIfDifferent
 from core.actions import NotificationAction
 
 
