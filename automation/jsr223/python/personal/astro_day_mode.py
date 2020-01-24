@@ -14,9 +14,9 @@ import configuration
 reload(configuration)
 from configuration import LOG_PREFIX,DAY_PHASES_DICT
 from org.joda.time import DateTime
+from core.utils import postUpdateCheckFirst #,postUpdateIfDifferent
 
 log = logging.getLogger("{}.astro_day".format(LOG_PREFIX))
-
 
 #==================================================================================================
 @rule("AstroDayPhase", description="Update current Day Mode based on time, weather and sun position", tags=["astro"])
@@ -24,22 +24,17 @@ log = logging.getLogger("{}.astro_day".format(LOG_PREFIX))
 @when("Item Weather_Cloudy changed")
 @when("System started")
 def set_day_mode(event):
-    log.info("Start update Day_Mode base on time, phase and cloudiness")
+    log.info("Start update Day_Mode based on time, astro day phase and cloudiness")
 
     #--- Is it currently cloudy?
     cloudy = items["Weather_Cloudy"] or "OFF"
-    log.info("Cloudy state is {}".format(cloudy))
 
     #--- Update Day Mode based on Astro Day Phase, time and/or cloudiness
     keyItem = DAY_PHASES_DICT.get(str(items["Astro_Day_Phase"]))
     if keyItem.get("mode") == "time":
-        phaseTime = keyItem.get("mode_time")
-        if phaseTime < 12:
-            before = "before" if DateTime.now().getHourOfDay()<=phaseTime else "after"
-        else:
-            before = "before" if DateTime.now().getHourOfDay()>=phaseTime else "after"
+        newState = keyItem.get("before_state") if DateTime.now().getHourOfDay() <= keyItem.get("mode_time") else keyItem.get("after_state")
     else:
-        before = "before" if cloudy=="ON" else "after"
+        newState = keyItem.get("clear_state") if cloudy == "OFF" else keyItem.get("cloudy_state")
 
-    log.info("Set Day_Mode to {} = {}".format(before, str(keyItem.get(before))))
-    events.postUpdate("Day_Mode", str(keyItem.get(before)))
+    log.info("Set Day_Mode to [{}] if different from [{}]".format(newState, items["Day_Mode"]))
+    postUpdateCheckFirst("Day_Mode", str(newState))
