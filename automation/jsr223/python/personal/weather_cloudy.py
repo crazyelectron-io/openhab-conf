@@ -22,7 +22,7 @@ cloudyConditions = ["bewolkt", "zwaarbewolkt", "regen", "mist", "hagel", "sneeuw
 @rule("WeatherCloudy", description="Determine Cloudiness of weather condition and set global variable", tags=["weather"])
 @when("Item Weather_Condition changed")
 def set_cloudy_state(event):
-    weather = str(items["Weather_Condition"])
+    weather = str(items.Weather_Condition)
     if weather in cloudyConditions:
         log.debug("Cloudy conditions, set Cloudy item")
         events.postUpdate("Weather_Cloudy", "ON")

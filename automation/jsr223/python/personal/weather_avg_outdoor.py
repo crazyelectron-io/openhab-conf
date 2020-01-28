@@ -22,14 +22,14 @@ log = logging.getLogger("{}.astro_nextsun".format(LOG_PREFIX))
 @when("Item Weather_Temp_WeatherStation changed")
 def weather_avg_outdoor(event):
     #--- Calc average of two measurements if available, else use just one value.
-    if items["Weather_Temp_WeatherStation"] is not None:
-        if items["AC_Temp_Outdoor"] is not None:
-            events.postUpdate( "Weather_TempAverage_Outdoor", str((float(str(items["Weather_Temp_WeatherStation"])) + float(str(items["AC_Temp_Outdoor"])))/2))
+    if items.Weather_Temp_WeatherStation is not None:
+        if items.AC_Temp_Outdoor is not None:
+            events.postUpdate( "Weather_TempAverage_Outdoor", str((float(str(items.Weather_Temp_WeatherStation)) + float(str(items.AC_Temp_Outdoor)))/2))
         else:
-            events.postUpdate("Weather_TempAverage_Outdoor", str(items["Weather_Temp_WeatherStation"]))
+            events.postUpdate("Weather_TempAverage_Outdoor", str(items.Weather_Temp_WeatherStation))
             log.info("Daikin outdoor temp sensor data not initialized, using weather station data only")
-    elif items["AC_Temp_Outdoor"] is not None:
-        events.postUpdate("Weather_TempAverage_Outdoor", str(items["AC_Temp_Outdoor"]))
+    elif items.AC_Temp_Outdoor is not None:
+        events.postUpdate("Weather_TempAverage_Outdoor", str(items.AC_Temp_Outdoor))
         log.info("Weather station temp not initialized, using Daikin outdoor temp sensor data only")
     else:
         log.info("Both outdoor temperature values are NULL, skipping average calculation")

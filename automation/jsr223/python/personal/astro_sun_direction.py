@@ -13,7 +13,7 @@ from core.log import logging, LOG_PREFIX
 import configuration
 reload(configuration)
 from configuration import LOG_PREFIX
-from core.utils import postUpdateCheckFirst #,postUpdateIfDifferent
+from core.utils import postUpdateCheckFirst
 
 log = logging.getLogger("{}.astro_azimuth".format(LOG_PREFIX))
 
@@ -43,10 +43,9 @@ def update_sun_direction(event):
         xrange(349, 366) : 'North'
     }
 
-    azimuth = int(float(str(items["Astro_Sun_Azimuth"])))
+    azimuth = int(float(str(items.Astro_Sun_Azimuth)))
     for key in wind_directions:
         if azimuth in key:
             wind_direction = wind_directions[key]
             postUpdateCheckFirst("Astro_Sun_Direction", str(wind_direction))
-            # postUpdateIfDifferent("Astro_Sun_Direction", str(wind_direction))
             break

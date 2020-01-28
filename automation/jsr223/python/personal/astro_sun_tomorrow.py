@@ -24,39 +24,37 @@ log = logging.getLogger("{}.astro_nextsun".format(LOG_PREFIX))
 @when("Item Astro_Day_Phase changed")
 @when("System started")
 def set_next_sun_times(event):
-    if str(items["Astro_Day_Phase"]) == "DAYLIGHT":
+    if str(items.Astro_Day_Phase) == "DAYLIGHT":
         log.info("Daylight - next sunrise is tomorrow, next sunset is today")
-        events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"]))
-        events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
-    elif str(items["Astro_Day_Phase"]) == "SUN_RISE":
+        events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTomorrow))
+        events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTime))
+    elif str(items.Astro_Day_Phase) == "SUN_RISE":
         log.info("Sunrise - next sunrise and sunset is today")
-        events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTime"]))
-        events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
-    elif str(items["Astro_Day_Phase"]) == "SUN_SET":
+        events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTime))
+        events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTime))
+    elif str(items.Astro_Day_Phase) == "SUN_SET":
         log.info("Sunset - next sunrise is tomorrow and sunset is today")
-        events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"]))
-        events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
-    elif str(items["Astro_Day_Phase"]) in ["ASTRO_DAWN", "NAUTIC_DAWN", "CIVIL_DAWN"]:
+        events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTomorrow))
+        events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTime))
+    elif str(items.Astro_Day_Phase) in ["ASTRO_DAWN", "NAUTIC_DAWN", "CIVIL_DAWN"]:
         log.info("Dawn - next sunrise and sunset is today")
-        events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTime"]))
-        events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
-    elif str(items["Astro_Day_Phase"]) in ["ASTRO_DUSK", "NAUTIC_DUSK", "CIVIL_DUSK"]:
+        events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTime))
+        events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTime))
+    elif str(items.Astro_Day_Phase) in ["ASTRO_DUSK", "NAUTIC_DUSK", "CIVIL_DUSK:
         log.info("Dusk - next sunrise and sunset is tomorrow")
-        events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"]))
-        events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTomorrow"]))
+        events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTomorrow))
+        events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTomorrow))
     else:
         if DateTime.now().getHourOfDay() > 12:
             log.info("Before midnight - next sunrise and sunset is tomorrow")
-            events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTomorrow"]))
-            events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTomorrow"]))
+            events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTomorrow))
+            events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTomorrow))
         else:
             log.info("After midnight - next sunrise and sunset is today")
-            events.postUpdate("Astro_Sun_RiseNext", str(items["Astro_Sun_RiseTime"]))
-            events.postUpdate("Astro_Sun_SetNext", str(items["Astro_Sun_SetTime"]))
+            events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTime))
+            events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTime))
 
 
-#===================================================================================================
-# Calculate tomorrow's sunrise/sunset time using the python astral library
 #===================================================================================================
 @rule("AstroSunTomorrow", description="Calculate tomorrow's sunrise/sunset time", tags=["astro"])
 @when("Time cron 0 10 0 ? * * *")

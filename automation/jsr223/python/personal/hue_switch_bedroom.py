@@ -49,15 +49,15 @@ def hue_bedroom_switch1001(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if items["Light_Dim_BedroomLeft"] == 0 or items["Light_Dim_BedroomLeft"] == items["Bedroom_Brightness_READ"]:
+    if items.Light_Dim_BedroomLeft == 0 or items.Light_Dim_BedroomLeft == items.Bedroom_Brightness_READ:
         log.info("Turn on left bedroom light to EVENING scene")
         events.sendCommand("Light_Dim_BedroomLeft", str(items["Bedroom_Brightness_EVENING"]))
         events.sendCommand("Light_ColorTemp_BedroomLeft", str(items["Bedroom_ColorTemp_EVENING"]))
-    elif items["Light_Dim_BedroomLeft"] == items["Bedroom_Brightness_EVENING"]:
+    elif items.Light_Dim_BedroomLeft == items.Bedroom_Brightness_EVENING:
         log.info("Turn on left bedroom light to READ scene")
         events.sendCommand("Light_Dim_BedroomLeft", str(items["Bedroom_Brightness_READ"]))
         events.sendCommand("Light_ColorTemp_BedroomLeft", str(items["Bedroom_ColorTemp_READ"]))
-    elif items["Light_Dim_BedroomLeft"] == items["Bedroom_Brightness_READ"]:
+    elif items.Light_Dim_BedroomLeft == items.Bedroom_Brightness_READ:
         log.info("Turn left bedroom light back to EVENING scene")
         events.sendCommand("Light_Dim_BedroomLeft", str(items["Bedroom_Brightness_EVENING"]))
         events.sendCommand("Light_ColorTemp_BedroomLeft", str(items["Bedroom_ColorTemp_EVENING"]))
@@ -73,13 +73,13 @@ def hue_bedroom_switch1002(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items["Light_Scene_Bedroom"]) == "OFF":
+    if str(items.Light_Scene_Bedroom) == "OFF":
         log.info("First Button 1 (ON) Short Release - Set bedroom Scene to EVENING")
         events.sendCommand("Light_Scene_Bedroom", "EVENING")
-    elif str(items["Light_Scene_Bedroom"]) == "EVENING":
+    elif str(items.Light_Scene_Bedroom) == "EVENING":
         log.info("Second Button 1 (ON) Short Release - Set bedroom Scene to READ")
         events.sendCommand("Light_Scene_Bedroom", "READ")
-    elif str(items["Light_Scene_Bedroom"]) == "READ":
+    elif str(items.Light_Scene_Bedroom) == "READ":
         log.info("Third Button 1 (ON) Short Release - Set bedroom Scene to COSY")
         events.sendCommand("Light_Scene_Bedroom", "COSY")
     else:
@@ -121,9 +121,9 @@ def hue_bedroom_switch20012(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if items["Light_Dim_BedroomLeft"] != 0:
+    if items.Light_Dim_BedroomLeft != 0:
         events.sendCommand("Light_Dim_BedroomLeft", "INCREASE")
-    if items["Light_Dim_BedroomRight"] != 0:
+    if items.Light_Dim_BedroomRight != 0:
         events.sendCommand("Light_Dim_BedroomRight", "INCREASE")
 
 
@@ -161,9 +161,9 @@ def hue_bedroom_switch30012(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if items["Light_Dim_BedroomLeft"] != 0:
+    if items.Light_Dim_BedroomLeft != 0:
         events.sendCommand("Light_Dim_BedroomLeft", "DECREASE")
-    if items["Light_Dim_BedroomRight"] != 0:
+    if items.Light_Dim_BedroomRight != 0:
         events.sendCommand("Light_Dim_BedroomRight", "DECREASE")
 
 
@@ -212,7 +212,7 @@ def hue_bedroom_switch4002(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items["Light_Scene_Bedroom"]) != "OFF":
+    if str(items.Light_Scene_Bedroom) != "OFF":
         events.sendCommand("Light_Scene_Bedroom", "OFF")
 
 

@@ -52,8 +52,8 @@ Number							CV_Pressure
 								(gHourly,gPersist)
 
 // CV gas burner active switch
-Switch							CV_Burner_Active
-								"CV active"
+Group:Switch:OR(ON,OFF)			CV_Burner_Active
+								"CV Burner active [%s]"
 								<fire>
 								(gPersist,gHist1)
 

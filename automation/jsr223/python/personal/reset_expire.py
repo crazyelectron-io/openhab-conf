@@ -20,3 +20,16 @@ def reset_expire(event):
     log.info("Restarting Expire binding Timers")
     for timer in ir.getItem("gResetExpire").members:
         events.postUpdate(timer, timer.getState())
+
+# // //--------------------------------------------------------------------------------------------------
+# // // Triggered when watchdog timer expires indicating we didn't receive data for 30 minutes.
+# // // Send a notification to the user via OH Cloud Notifications.
+# // //--------------------------------------------------------------------------------------------------
+# // rule "Watchdog timeout triggered"
+# //     when
+# // 	Item CV_Watchdog changed to OFF
+# //     then
+# //         val String msg = "Nefit readings missing, check the Easy-Server status"
+# //         logWarn("Nefit.Watchdog.Timeout", msg)
+# //         sendBroadcastNotification(msg)
+# //     end

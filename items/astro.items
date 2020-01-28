@@ -145,11 +145,11 @@ Number							Astro_Radiation_Direct
 								(gAstro)
 								{channel="astro:sun:home:radiation#direct"}
 
-Number							Astro_Radiation_Diffuse
-								"Diffuse Radiation [%.2f %unit%]"
-								(gAstro)
+Number:Intensity				Astro_Radiation_Diffuse
+								"Diffuse Radiation [%.0f W/m\u00B2]"
+								<sun>
+								(gAstro,gHist5)
 								{channel="astro:sun:home:radiation#diffuse"}
-
 
 //--------------------------------------------------------------------------------------------------
 // Other non-binding channel related Items.

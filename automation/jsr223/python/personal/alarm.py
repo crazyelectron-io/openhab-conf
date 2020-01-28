@@ -26,7 +26,7 @@ def alarm_status_update(event):
     log.info("Alarm changed from [{}] to [{}]".format(event.oldItemState, event.itemState))
     if event.oldItemState is None:
         return
-    state = "Armed" if str(items["Alarm_Status"]) == "ARMED_AWAY" or str(items["Alarm_Status"]) == "ARMED_HOME" else "Disarmed"
+    state = "Armed" if str(items.Alarm_Status) == "ARMED_AWAY" or str(items.Alarm_Status) == "ARMED_HOME" else "Disarmed"
     # Echo_TTS_Livingroom.sendCommand("<speak>Hi, " + msg + "</speak>")
     NotificationAction.sendBroadcastNotification("The alarm has been " + state)
 
@@ -35,6 +35,6 @@ def alarm_status_update(event):
 @rule("AlarmTimeChange", description="The alarm status has changed, retrieve user and time of day summary", tags=["alarm"])
 @when("Item Alarm_Time changed")
 def alarm_time_update(event):
-    summary = str(items["Alarm_User"]).split(' ')[0] + " at " + ((str(items["Alarm_Time.state"]).split('T')[1]).split('\\.')[0])[0:5] + " via " + str(items["Alarm_Changed"])
+    summary = str(items.Alarm_User).split(' ')[0] + " at " + ((str(items.Alarm_Time).split('T')[1]).split('\\.')[0])[0:5] + " via " + str(items.Alarm_Changed)
     log.info("Alarm summary [{}]".format(summary))
     events.postUpdate("Alarm_LastChange", summary)

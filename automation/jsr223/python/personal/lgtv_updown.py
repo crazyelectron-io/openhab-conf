@@ -13,6 +13,8 @@ from core.log import logging, LOG_PREFIX
 import configuration
 reload(configuration)
 from configuration import LOG_PREFIX
+# from core.jsr223 import scope
+from core.jsr223.scope import actions
 
 
 log = logging.getLogger("{}.lgtv_updown".format(LOG_PREFIX))
@@ -34,11 +36,11 @@ def lgtv_volume_updown(event):
 #==================================================================================================
 @rule("LGTVChannelUpDn", description="Handle channel up/down commands", tags=["media"])
 @when("Item LGTV_ChannelDummy_Livingroom received command")
-def lgtv_volume_updown(event):
+def lgtv_channel_updown(event):
     log.info("LGTV Channel Up-Down [{}]".format(event.event))
 
-    actions = getActions("lgwebos","lgwebos:WebOSTV:tvlivingroom")
-    if actions is None:
+    action = actions.get("lgwebos","lgwebos:WebOSTV:tvlivingroom")
+    if action is None:
         log.info("LGTV.Channel.UpDn", "Actions not found (check thing ID)")
         return
 
@@ -46,8 +48,8 @@ def lgtv_volume_updown(event):
     log.info("LGTV.Channel.UpDn", "Received command [{}]".format(cmd))
                 
     if cmd == 0:
-        actions.decreaseChannel()
+        action.decreaseChannel()
     elif cmd == 1:
-        actions.increaseChannel()
+        action.increaseChannel()
     else:
         log.warn("Invalid channle up-down command")

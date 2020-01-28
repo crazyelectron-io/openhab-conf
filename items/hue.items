@@ -44,7 +44,7 @@ Group:Switch:AND(ON, OFF)		gLight_OnOff_Livingroom
 								(gLight,gLivingroom)
 								// ["Lighting"]
 
-Group:Dimmer					gLight_Brightness_Livingroom
+Group:Dimmer:AVG				gLight_Brightness_Livingroom
 								"Living Room"
 								<slider>
 								(gLicht,gLivingroom)

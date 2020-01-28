@@ -25,16 +25,16 @@ timerAlarm = None
 def alarm_clock_update(event):
     global timerAlarm
 
-    if items["AlarmClock"] == 0:
+    if items.AlarmClock == 0:
         log.info("AlarmClock state changed to 0, cancel all alarms")
         if timerAlarm is not None and not timerAlarm.hasTerminated():
             log.info("AlarmClock timerAlarm is running, cancel it")
             timerAlarm.cancel()
     else:
-        log.info("Schedule Android alarm for {}".format(items["AlarmClock"]))
+        log.info("Schedule Android alarm for {}".format(items.AlarmClock))
         if timerAlarm is not None and not timerAlarm.hasTerminated():
-            log.info("Reschedule Android alarm to {}".format(items["AlarmClock"]))
+            log.info("Reschedule Android alarm to {}".format(items.AlarmClock))
             timerAlarm.cancel()
         else:
-            log.info("New Android Alarm set for [{}]".format(items["AlarmClock"]))
-            timerAlarm = ScriptExecution.createTimer(items["AlarmClock"], lambda: events.sendCommand("Light_Scene_Hall","EVENING"))
+            log.info("New Android Alarm set for [{}]".format(items.AlarmClock))
+            timerAlarm = ScriptExecution.createTimer(event.itemState, lambda: events.sendCommand("Light_Scene_Hall","EVENING"))

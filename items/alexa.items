@@ -7,15 +7,23 @@
 //
 //==================================================================================================
 
+// Alexa last vocie command grouo
+Group							gAlexa_LastVoiceCommand
+
 // Alexa Living Room group
 Group							gEcho_Livingroom
 								"Echo Dot Livingroom"
 								(gLivingroom)
 // Commands
 String							Echo_TTS_Livingroom
-								"Text to Speech"
+								"Text to Speech [%s]"
 								(gEcho_Livingroom)
 								{channel="amazonechocontrol:echo:account1:echodot1:textToSpeech"}
+
+String							Echo_LastVoiceCommand_Livingroom
+								"Last Voice Command [%s]"
+								(gEcho_Livingroom,gAlexa_LastVoiceCommand)
+								{channel="amazonechocontrol:echo:account1:echodot1:lastVoiceCommand"}
 
 String 							Echo_Message_Livingroom
 								"Alexa message"

@@ -41,6 +41,14 @@
 // Items to store data received from the DSMR meter (through MQTT Thing)
 //--------------------------------------------------------------------------------------------------
 
+// Current tariff for power consumption and return
+Number							Power_Tariff
+								"Current Power Tariff [%d]"
+								<energy>
+								(gPersist,gHist5)
+								{channel="mqtt:topic:mosquitto:dsmr:P_Tariff"}
+
+
 // Items to store current actual power usage readings from DSMR P1 interface.
 Number							Power_Use_All_Current
 								"Current use [%d W]"
@@ -66,10 +74,10 @@ Number							Power_Use_L3_Current
 								(gHist)
 								{channel="mqtt:topic:mosquitto:dsmr:P_UseL3"}
 
+
 //--------------------------------------------------------------------------------------------------
 // Items to store current actual power return readings from DSMR (received through MQTT Thing).
 //--------------------------------------------------------------------------------------------------
-
 Number							Power_Ret_All_Current
 								"Current return [%d W]"
 								<energy>
@@ -94,21 +102,21 @@ Number							Power_Ret_L3_Current
 								(gHist)
 								{channel="mqtt:topic:mosquitto:dsmr:P_RetL3"}
 
+
 //--------------------------------------------------------------------------------------------------
 // Items to store meter readings of total power usage since install time of the DSMR
 // (received through MQTT Thing).
 //--------------------------------------------------------------------------------------------------
-
 Number							Power_Use_T1_Total
 								"Usage meter T1 [%d Wh]"
 								<energy>
-								(gPersist)
+								(gHist5,gPersist)
 								{channel="mqtt:topic:mosquitto:dsmr:P_UseTotT1"}
 
 Number							Power_Use_T2_Total
 								"Usage meter T2 [%d Wh]"
 								<energy>
-								(gPersist)
+								(gHist5,gPersist)
 								{channel="mqtt:topic:mosquitto:dsmr:P_UseTotT2"}
 
 Number							Power_Use_Total
@@ -116,21 +124,21 @@ Number							Power_Use_Total
 								<energy>
 								(gHist5,gPersist)
 
+
 //--------------------------------------------------------------------------------------------------
 // Items to store meter reading of total gas consumption since install time of the DSMR smart meter.
 // The gas meter updates it readings only once an hour in the DSMR 4.x standard.
 //--------------------------------------------------------------------------------------------------
-
 Number							Gas_Use_Total
 								"Gas meter [%d dm3]"
 								<gas>
 								(gHist15,gPersist)
 								{channel="mqtt:topic:mosquitto:dsmr:G_UseTot"}
 
+
 //--------------------------------------------------------------------------------------------------
 // Items to store meter readings of total return of energy since install time of the solar panels.
 //--------------------------------------------------------------------------------------------------
-
 Number							Power_Ret_T1_Total
 								"Return meter T1 [%d Wh]"
 								<energy>
@@ -147,6 +155,7 @@ Number							Power_Ret_Total
 								"Power Return meter [%d Wh]"
 								<energy>
 								(gHist5,gPersist)
+
 
 //----------------------------------------------------------------------------------------
 // Items to store calculated data for the DSMR meter.
@@ -173,6 +182,46 @@ Number							Power_Delta_L3_Current
 								<energy>
 								(gHist)
 
+Number							Power_Use_Hour
+								"Last hour's power use [%d Wh]"
+								<energy>
+								(gHist15,gPersist)
+
+Number							Power_Use_Hour_Cost
+								"Last hour's power cost [%.2f]"
+								<piggybank>
+								(gHist15,gPersist)
+
+Number							Power_Use_Day
+								"Today's power use [%d Wh]"
+								<energy>
+								(gHist60,gPersist)
+
+Number							Power_Use_Day_Cost
+								"Today's power cost [%.2f]"
+								<piggybank>
+								(gHist60,gPersist)
+
+
+Number							Power_Ret_Hour
+								"Last hour's power return [%d Wh]"
+								<energy>
+								(gHist15,gPersist)
+
+Number							Power_Ret_Hour_Cost
+								"Last hour's power return price [%.2f]"
+								<piggybank>
+								(gHist15,gPersist)
+
+Number							Power_Ret_Day
+								"Today's power return [%d Wh]"
+								<energy>
+								(gHist60,gPersist)
+
+Number							Power_Ret_Day_Cost
+								"Today's power return price [%.2f]"
+								<piggybank>
+								(gHist60,gPersist)
 
 // Items to store periodic power usage.
 Number							Power_Delta_Hour
@@ -220,7 +269,7 @@ String							Power_Delta_Month_Summary
 								<energy>
 								(gPersist)
 
-//
+// Power Delta Items
 Number							Power_Delta_Year
 								"This year's power use [%d Wh]"
 								<energy>
@@ -317,9 +366,10 @@ Number							Gas_Use_YearLast
 								<piggybank>
 								(gPersist)
 
+
 // Gas & Power price for this period (persist daily for historic tracking)                                                                                                                                // Set once (manually in Karaf console) at start of contract period.
 Number							GAS_PRICE_PER_DM3
-								"Gasprice per dm3"
+								"Gas price per dm3"
 								<piggybank>
 								(gPersist,gDaily)
 
@@ -334,16 +384,17 @@ Number							POWER_RET_PRICE
 								(gPersist,gDaily)
 
 
+
 // Watchdog 'timer' item - to detect if the DSMR input is stalled/stopped for more than 10m
 Switch							DSMR_Watchdog
 								"Watchdog timer switch"
 								(gResetExpire)
 								{expire="10m,command=OFF"}
 
+
 //--------------------------------------------------------------------------------------------------
 // SolarEdge API-based Items.
 //--------------------------------------------------------------------------------------------------
-
 Number							Solar_Prod_Current
 								"Current Solar power [%d W]"
 								<solarplant>
@@ -408,15 +459,18 @@ Number							Solar_Prod_LastYear_Cost
 								<piggybank>
 								(gPersist)
 
+
 // Watchdog 'timer' item - to detect if the SolarEdge input is stalled/stopped for more than 1h
 Switch							Solar_Watchdog
 								"Watchdog timer switch"
 								(gResetExpire)
 								{expire="1h,command=OFF"}
 
-String 							SolarEdge_API_Status
+String							SolarEdge_API_Status
+
 
 //--------------------------------------------------------------------------------------------------
 // MQTT Broker Thing status
 //--------------------------------------------------------------------------------------------------
 String							MQTT_Broker_Status
+
