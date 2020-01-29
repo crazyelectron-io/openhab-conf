@@ -11,7 +11,7 @@ sitemap default label="At Home"
         {
             Text item=Astro_Sun_RiseNext
             Text item=Astro_Sun_SetNext
-            Text item=Astro_Sun_Direction       visibility=[Astro_Sun_Elevation > 0]
+            Text item=Astro_Sun_Azimuth         visibility=[Astro_Sun_Elevation > 0]
             Text item=Astro_Sun_Elevation       visibility=[Astro_Sun_Elevation > 0]
             Text item=Astro_Moon_Phase          visibility=[Astro_Sun_Elevation <= 0]
             Text item=Astro_Moon_Distance       visibility=[Astro_Sun_Elevation <= 0]

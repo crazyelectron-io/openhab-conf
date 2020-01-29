@@ -4,28 +4,23 @@
 //	v03 20191226	Reformatted file.
 //	v02	20191130	Renamed Items.
 //	v01 20181020	Initial version.
-//--------------------------------------------------------------------------------------------------
-//
-//
 //==================================================================================================
 
 // Group for all Astro Items
 Group							gAstro
 								<sun_clouds>
 
-
 //--------------------------------------------------------------------------------------------------
 // Date and time related Items
-//--------------------------------------------------------------------------------------------------
 
-//---The NTP-synced local date and time
+// The NTP-synced local date and time
 DateTime						Astro_Day_Time
 								"Today [%1$tA, %1$td.%1$tm.%1$tY]"
 								<clock>
 								(gAstro)
 								{channel="ntp:ntp:local:dateTime"}
 
-//---Current day phase (SUN_RISE, ASTRO_DAWN, NAUTIC_DAWN, CIVIL_DAWN, CIVIL_DUSK, NAUTIC_DUSK, ASTRO_DUSK, SUN_SET, DAYLIGHT, NIGHT)
+// Current day phase (SUN_RISE, ASTRO_DAWN, NAUTIC_DAWN, CIVIL_DAWN, CIVIL_DUSK, NAUTIC_DUSK, ASTRO_DUSK, SUN_SET, DAYLIGHT, NIGHT)
 String							Astro_Day_Phase
 								"Day Phase [%s]"
 								(gAstro,gPersist)
@@ -36,7 +31,7 @@ Number							Astro_Day_Light
 								(gAstro,gPersist)
 								{channel="astro:sun:home:daylight#duration"}
 
-//---Current season name, translated to local text
+// Current season name
 String							Astro_Season_Name
 								"Season [%s]"
 								(gAstro,gPersist)
@@ -44,7 +39,6 @@ String							Astro_Season_Name
 
 //--------------------------------------------------------------------------------------------------
 // Sunrise and sunset related Items
-//--------------------------------------------------------------------------------------------------
 
 // Today's sunset time
 DateTime						Astro_Sun_SetTime
@@ -60,31 +54,7 @@ DateTime						Astro_Sun_RiseTime
 								(gAstro,gPersist)
 								{channel="astro:sun:home:rise#start"}
 
-// Tomorrow's sunset time, calculated with Python script using astral library at night and system start.
-DateTime						Astro_Sun_SetTomorrow
-								"Tomorrow's Sunset [%1$tH:%1$tMs]"
-								<sunset>
-								(gAstro)
-
-// Tomorrow's sunrise time, calculated with Python script using astral library at night and system start.
-DateTime						Astro_Sun_RiseTomorrow
-								"Tomorrow's Sunrise [%1$tH:%1$tM]"
-								<sunrise>
-								(gAstro)
-
-// Next sunset time: today's or tomorrow's sunset depending on time of day (through rule).
-DateTime						Astro_Sun_SetNext
-								"Next Sunset [%1$tH:%1$tM]"
-								<sunset>
-								(gAstro)
-
-// Next sunrise time: today's or tomorrow's sunset depending on time of day (through rule).
-DateTime						Astro_Sun_RiseNext
-								"Next Sunrise [%1$tH:%1$tM]"
-								<sunset>
-								(gAstro)
-
-//--- Sun position parameters
+// Sun position Items
 Number							Astro_Sun_Elevation
 								"Sun elevation [%.0f °]"
 								<sun>
@@ -92,21 +62,13 @@ Number							Astro_Sun_Elevation
 								{channel="astro:sun:home:position#elevation"}
 
 Number							Astro_Sun_Azimuth
-								"Sun azimut [%.0f °]"
+								"Sun direction [SCALE(windDirection.scale):%s]"
 								<sun>
 								(gAstro)
 								{channel="astro:sun:home:position#azimuth"}
 
-//---Sun direction is 'calculated' from azimuth with a SDL Rule
-String							Astro_Sun_Direction
-								"Sun direction [%s]"
-								<sun>
-								(gAstro)
-
-
 //--------------------------------------------------------------------------------------------------
 // Moon related Items
-//--------------------------------------------------------------------------------------------------
 Number							Astro_Moon_Distance
 								"Moon distance [%.0f km]"
 								<moon>
@@ -154,11 +116,6 @@ Number:Intensity				Astro_Radiation_Diffuse
 //--------------------------------------------------------------------------------------------------
 // Other non-binding channel related Items.
 //--------------------------------------------------------------------------------------------------
-
-// Current Day Mode: NIGHT, MORNING, DAY, EVENING.
-String							Day_Mode
-								"Current day mode [%s]"
-								(gAstro,gPersist)
 
 // AlarmCLock of Ron's Android device
 DateTime						AlarmClock
