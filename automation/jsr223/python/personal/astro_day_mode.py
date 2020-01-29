@@ -12,11 +12,7 @@ from core.triggers import when
 from core.log import logging
 import configuration
 reload(configuration)
-from configuration import LOG_PREFIX,DAY_PHASES_DICT
-from org.joda.time import DateTime
-from core.utils import postUpdateCheckFirst #,postUpdateIfDifferent
-
-log = logging.getLogger("{}.astro_day".format(LOG_PREFIX))
+from configuration import LOG_PREFIX, DAY_PHASES_DICT
 
 
 #---------------------------------------------------------------------------------------------------
@@ -53,6 +49,8 @@ def setDayMode(event):
 
     cloudy = str(items.Weather_Cloudy) or "OFF"
 
+    from org.joda.time import DateTime
+
     keyItem = DAY_PHASES_DICT.get(str(items.Astro_Day_Phase))
     if keyItem.get("mode") == "time":
         newState = keyItem.get("before_state") if DateTime.now().getHourOfDay() <= keyItem.get("mode_time") else keyItem.get("after_state")
@@ -60,4 +58,7 @@ def setDayMode(event):
         newState = keyItem.get("clear_state") if cloudy == "OFF" else keyItem.get("cloudy_state")
 
     setDayMode.log.info("Set Day_Mode to [{}], if different from [{}]".format(newState, items.Day_Mode))
+
+    from core.utils import postUpdateCheckFirst #,postUpdateIfDifferent
+
     postUpdateCheckFirst("Day_Mode", str(newState))

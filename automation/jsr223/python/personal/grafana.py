@@ -82,6 +82,7 @@ def addGrafanaItems():
             log.info("Checking and creating item [{}]".format(imgItemName))
             if ir.getItems(imgItemName) == []:
                 add_item(imgItemName, item_type="String", groups=[entry.get("item_group")], label=entry.get("item_description"), tags=["Grafana"])
+                
                 # TODO: Add metadata
     except:
         import traceback

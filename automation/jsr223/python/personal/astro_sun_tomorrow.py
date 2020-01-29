@@ -12,9 +12,7 @@ from core.triggers import when
 from core.log import logging
 import configuration
 reload(configuration)
-from configuration import LOG_PREFIX,COUNTRY,LATITUDE,LONGITUDE,CITY
-import datetime
-from org.joda.time import DateTime
+from configuration import LOG_PREFIX, COUNTRY, LATITUDE, LONGITUDE, CITY
 
 
 #---------------------------------------------------------------------------------------------------
@@ -70,6 +68,8 @@ def calcNextSunTimes():
         events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTomorrow))
         events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTomorrow))
     else:
+        from org.joda.time import DateTime
+
         if DateTime.now().getHourOfDay() > 12:
             calcNextSunTimes.log.info("Before midnight - next sunrise and sunset is tomorrow")
             events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTomorrow))
@@ -95,6 +95,7 @@ def calcSunTomorrow(event):
     calcSunTomorrow.log = logging.getLogger("{}.addSunriseItems".format(LOG_PREFIX))
 
     import astral # pylint: disable=import-error
+    import datetime
 
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
 
