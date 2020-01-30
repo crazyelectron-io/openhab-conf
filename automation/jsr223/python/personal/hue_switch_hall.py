@@ -63,18 +63,18 @@ def hue_hall_switch1002(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items.Light_Scene_Hall) == "OFF" and str(items.Light_Scene_Kitchen) == "OFF":
+    if str(ir.getItem("Light_Scene_Hall").state) == "OFF" and str(ir.getItem("Light_Scene_Kitchen").state) == "OFF":
         log.info("First Button 1 (ON) Short Release - Set Hall and Kitchen Scene to EVENING")
         events.sendCommand("Light_Scene_Hall", "EVENING")
         events.sendCommand("Light_Scene_Kitchen", "EVENING")
-    elif str(items.Light_Scene_Hall) == "EVENING" and str(items.Light_Scene_HallCeiling) == "OFF":
+    elif str(ir.getItem("Light_Scene_Hall").state) == "EVENING" and str(ir.getItem("Light_Scene_HallCeiling").state) == "OFF":
         log.info("Second Button 1 (ON) Short Release - Set Hall Ceiling Scene to EVENING also")
         events.sendCommand("Light_Scene_HallCeiling", "EVENING")
-    elif str(items.Light_Scene_Hall) == "EVENING" and str(items.Light_Scene_HallCeiling) == "EVENING":
+    elif str(ir.getItem("Light_Scene_Hall").state) == "EVENING" and str(ir.getItem("Light_Scene_HallCeiling").state) == "EVENING":
         log.info("Third Button 1 (ON) Short Release - Set Hall (Ceiling) Scene to READ")
         events.sendCommand("Light_Scene_HallCeiling", "READ")
         events.sendCommand("Light_Scene_Hall", "READ")
-    elif str(items.Light_Scene_HallCeiling) == "READ" and str(items.Light_Scene_Hall) == "READ":
+    elif str(ir.getItem("Light_Scene_HallCeiling").state) == "READ" and str(ir.getItem("Light_Scene_Hall").state) == "READ":
         log.info("Fourth Button 1 (ON) Short Release - Set Hall (Ceiling) Scene back")
         events.sendCommand("Light_Scene_HallCeiling", "OFF")
         events.sendCommand("Light_Scene_Hall", "EVENING")
@@ -111,9 +111,9 @@ def hue_hall_switch20012(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items.Light_Scene_Hall) != "OFF":
+    if str(ir.getItem("Light_Scene_Hall").state) != "OFF":
         events.sendCommand("gLight_Brightness_Hall", "INCREASE")
-    if str(items.Light_Scene_HallCeiling) != "OFF":
+    if str(ir.getItem("Light_Scene_HallCeiling").state) != "OFF":
         events.sendCommand("gLight_Brightness_HallCeiling", "INCREASE")
 
 #===================================================================================================
@@ -144,9 +144,9 @@ def hue_hall_switch30012(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items.Light_Scene_Hall) != "OFF":
+    if str(ir.getItem("Light_Scene_Hall").state) != "OFF":
         events.sendCommand("gLight_Brightness_Hall", "DECREASE")
-    if str(items.Light_Scene_HallCeiling) != "OFF":
+    if str(ir.getItem("Light_Scene_HallCeiling").state) != "OFF":
         events.sendCommand("gLight_Brightness_HallCeiling", "DECREASE")
 
 #===================================================================================================
@@ -176,11 +176,11 @@ def hue_hall_switch4001(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items.Light_Scene_Livingroom) != "OFF":
+    if str(ir.getItem("Light_Scene_Livingroom").state) != "OFF":
         events.sendCommand("Light_Scene_Livingroom", "OFF")
-    elif str(items.Light_Scene_Dining) != "OFF":
+    elif str(ir.getItem("Light_Scene_Dining").state) != "OFF":
         events.sendCommand("Light_Scene_Dining", "OFF")
-    elif str(items.Light_Scene_Kitchen) != "OFF":
+    elif str(ir.getItem("Light_Scene_Kitchen").state) != "OFF":
         events.sendCommand("Light_Scene_Kitchen", "OFF")
     else:
         events.sendCommand("Light_Scene_HallCeiling", "OFF")
@@ -195,11 +195,11 @@ def hue_hall_switch4002(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items.Light_Scene_HallCeiling) != "OFF":
+    if str(ir.getItem("Light_Scene_HallCeiling").state) != "OFF":
         events.sendCommand("Light_Scene_HallCeiling", "OFF")
-    if str(items.Light_Scene_Hall) == "READ":
+    if str(ir.getItem("Light_Scene_Hall").state) == "READ":
         events.sendCommand("Light_Scene_Hall", "EVENING")
-    elif str(items.Light_Scene_Hall) == "EVENING":
+    elif str(ir.getItem("Light_Scene_Hall").state) == "EVENING":
         events.sendCommand("Light_Scene_Hall", "OFF")
         events.sendCommand("Light_Scene_Kitchen", "OFF")
 

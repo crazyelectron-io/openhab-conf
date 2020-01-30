@@ -1,6 +1,6 @@
 '''
 ----------------------------------------------------------------------------------------------------
-airco.py - handle AC related processing, including turning on/off based on door sensors.
+airco_bedroom.py - handle AC related processing, including turning on/off based on door sensors.
 ----------------------------------------------------------------------------------------------------
 Changelog:
 20200116 v01    Created initial script.
@@ -17,19 +17,19 @@ from core.actions import NotificationAction
 from core.date import ZonedDateTime,minutes_between
 from core.utils import iround
 
-
-log = logging.getLogger("{}.airco".format(LOG_PREFIX))
 lastTime = ZonedDateTime.now()
 
-
 #==================================================================================================
-@rule("ACBedroom", description="Turn on or off AC in Bedroom based on time and temperature", tags=["astro"])
+@rule("AC Bedroom Handling", description="Turn on or off AC in Bedroom based on time and temperature", tags=["astro"])
 @when("Item AC_Temp_Bedroom changed")
 @when("Item Alarm_Door_Bedroom changed")
 @when("Time cron 0 */10 * * * ?")
 @when("System started")
-def ac_bedroom_check(event):
+def aircoBedroom(event):
     global lastTime
+
+    aircoBedroom.log = logging.getLogger("{}.aircoBedroom".format(LOG_PREFIX))
+
     nowTime = ZonedDateTime.now()
 
     # Define threshold values
@@ -42,8 +42,8 @@ def ac_bedroom_check(event):
     delay = 8 # In minutes
 
     # Get current temperature readings
-    tempBedroom = iround(float(str(items.AC_Temp_Bedroom)))
-    tempOutside = iround(float(str(items.AC_Temp_Outdoor)))
+    tempBedroom = iround(float(str(ir.getItem("AC_Temp_Bedroom").state)))
+    tempOutside = iround(float(str(ir.getItem("AC_Temp_Outdoor").state)))
 
     # Set status variables to default state
     doorIsOpen = False
@@ -55,17 +55,17 @@ def ac_bedroom_check(event):
     warn = False
     msg = ""
 
-    log.debug(">>> Enter rule with inside temp [{}] and outside temp [{}]".format(tempBedroom, tempOutside))
+    aircoBedroom.log.debug(">>> Enter rule with inside temp [{}] and outside temp [{}]".format(tempBedroom, tempOutside))
 
     # Check the current airco on/off status
-    if items.AC_Power_Bedroom is not None and items.AC_Power_Bedroom == ON:
+    if not isinstance(ir.getItem("AC_Power_Bedroom"), UnDefType) and ir.getItem("AC_Power_Bedroom").state == ON:
         acIsOn = True
-        log.debug("01. Airco is currently ON")
+        aircoBedroom.log.debug("01. Airco is currently ON")
 
     # Check if the door is open
-    if items.Alarm_Door_Bedroom is not None and items.Alarm_Door_Bedroom == OPEN:
+    if not isinstance(ir.getItem("AC_Power_Bedroom"), UnDefType) and ir.getItem("Alarm_Door_Bedroom").state == OPEN:
         doorIsOpen = True
-        log.debug("02. Door currently OPEN")
+        aircoBedroom.log.debug("02. Door currently OPEN")
         turnOff = True
 
     # Check if day or evening/night/morning
@@ -75,17 +75,17 @@ def ac_bedroom_check(event):
         tempThreshold = tempMorningThreshold
     else:
         tempThreshold = tempDayThreshold
-    log.debug("03. Inside temp threshold of [{}] used".format(tempThreshold))
+    aircoBedroom.log.debug("03. Inside temp threshold of [{}] used".format(tempThreshold))
 
     # Turn on the airco if it is very hot outside, regardless of time of day or bedroom temperature 
     if tempOutside > outsideTempHiThreshold:
         if not acIsOn:
             msg = "It is hot outside, so I turned on the airco in the bedroom for you to keep it cool"
             turnOn = True
-        log.debug("04. Outside temp above [{}], set turn-AC-on flag [{}]".format(tempOutside, turnOn))
+        aircoBedroom.log.debug("04. Outside temp above [{}], set turn-AC-on flag [{}]".format(tempOutside, turnOn))
     else:
-        if items.AC_Vacation_Bedroom == ON:
-            log.debug("Vacation mode is on, turn off AC and exit Daikin rule")
+        if ir.getItem("AC_Vacation_Bedroom").state == ON:
+            aircoBedroom.log.debug("Vacation mode is on, turn off AC and exit Daikin rule")
             events.sendCommand("AC_Power_Bedroom", "OFF")
             return
 
@@ -93,16 +93,16 @@ def ac_bedroom_check(event):
         if tempBedroom > tempThreshold:
             msg = "The bedroom temperature is rising, so I turned on the airco to keep it cool"
             turnOn = True
-            log.debug("05. Bedroom temp [{}] > [{}], turn-AC-on flag is set to [{}]".format(tempBedroom, tempThreshold, turnOn))
+            aircoBedroom.log.debug("05. Bedroom temp [{}] > [{}], turn-AC-on flag is set to [{}]".format(tempBedroom, tempThreshold, turnOn))
         else:
             # If bedroom is cooled off, check if outside is cool as well
             if tempOutside < outsideTempLoThreshold:
                 msg = "The bedroom is cool now, so I turned off the airco for you"
                 turnOn = False
                 turnOff = True
-                log.debug("06. Bedroom temp is [{}], turn-AC-on flag set to [{}]".format(tempBedroom, turnOn))
+                aircoBedroom.log.debug("06. Bedroom temp is [{}], turn-AC-on flag set to [{}]".format(tempBedroom, turnOn))
             else:
-                log.debug("07.Bedroom temp [{}] below threshold, but outside temp [{}], not turning off the AC if still on, AC-on is [{}]".format(tempBedroom, tempOutside, acIsOn))
+                aircoBedroom.log.debug("07.Bedroom temp [{}] below threshold, but outside temp [{}], not turning off the AC if still on, AC-on is [{}]".format(tempBedroom, tempOutside, acIsOn))
 
     # Turn off the Airco if the door is open
     if doorIsOpen:
@@ -111,7 +111,7 @@ def ac_bedroom_check(event):
             warn = True
             turnOn = False
             turnOff = True
-            log.debug("08. The door is open and Turn-AC-On flag is set; set warn flag to [{}]".format(warn))
+            aircoBedroom.log.debug("08. The door is open and Turn-AC-On flag is set; set warn flag to [{}]".format(warn))
         if acIsOn:
             events.sendCommand("AC_Power_Bedroom", "OFF")
             lastTime = nowTime
@@ -119,40 +119,40 @@ def ac_bedroom_check(event):
             turnOn = False
             msg = "The bedroom airco is o n but the door is open. I turned off the airco for you. Please, close the door."
             warn = True
-            log.debug("09. AC is on and door is open, turn off the AC")
+            aircoBedroom.log.debug("09. AC is on and door is open, turn off the AC")
 
     duration = int(str(minutes_between(lastTime, ZonedDateTime.now())))
-    log.debug("Compare times, last time [{}], now [{}], diff [{}]".format(lastTime, nowTime, duration))
+    aircoBedroom.log.debug("Compare times, last time [{}], now [{}], diff [{}]".format(lastTime, nowTime, duration))
 
     if duration > delay:
-        log.debug("10. Check turn on/off change because more than [{}] seconds have passed since last check".format(delay))
+        aircoBedroom.log.debug("10. Check turn on/off change because more than [{}] seconds have passed since last check".format(delay))
         if turnOn:
             if not acIsOn:
-                log.info("Turn on the AC")
+                aircoBedroom.log.info("Turn on the AC")
                 events.sendCommand("AC_Power_Bedroom", "ON")
                 lastTime = ZonedDateTime.now()
                 # acIsOn = True
             else:
                 msg = ""
-                log.debug("11. AC already on, ignoring turn on action")
+                aircoBedroom.log.debug("11. AC already on, ignoring turn on action")
         else:
             if acIsOn and turnOff:
-                log.info("Turn off the AC")
+                aircoBedroom.log.info("Turn off the AC")
                 events.sendCommand("AC_Power_Bedroom", "OFF")
                 lastTime = ZonedDateTime.now()
                 acIsOn = False
             else:
                 msg = ""
-                log.debug("12. AC already off, ignoring turn off action")
+                aircoBedroom.log.debug("12. AC already off, ignoring turn off action")
     else:
         msg = ""
-        log.debug("13. Last update no more than [{}] minutes ago, ignoring change".format(duration))
+        aircoBedroom.log.debug("13. Last update no more than [{}] minutes ago, ignoring change".format(duration))
 
     if msg != "" and acIsOn != turnOn:
         NotificationAction.sendBroadcastNotification(msg)
-        log.debug(msg)
-        if items.AC_MessageRepeat != ON:
-            log.debug("Sending message [{}] to Alexa".format(msg))
+        aircoBedroom.log.debug(msg)
+        if ir.getItem("AC_MessageRepeat").state != ON:
+            aircoBedroom.log.debug("Sending message [{}] to Alexa".format(msg))
             if warn:
                 msg = "WARNING! " + msg
             else:
@@ -162,6 +162,6 @@ def ac_bedroom_check(event):
             lastTime = ZonedDateTime.now()
             acIsOn = False
         else:
-            log.debug("14. Skipping message [{}] to Alexa".format(msg))
+            aircoBedroom.log.debug("14. Skipping message [{}] to Alexa".format(msg))
     else:
-        log.debug("15. Airco on state is [{}], desired turn on state [{}]".format(acIsOn, turnOn))
+        aircoBedroom.log.debug("15. Airco on state is [{}], desired turn on state [{}]".format(acIsOn, turnOn))

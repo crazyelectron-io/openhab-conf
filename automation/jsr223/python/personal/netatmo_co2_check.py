@@ -1,6 +1,6 @@
 '''
 ----------------------------------------------------------------------------------------------------
-netatmo.py - handle Netatmo Healthy Home Coach Item updates and CO2 level checks.
+netatmo_co2_check.py - Netatmo Healthy Home Coach CO2 level checks.
 ----------------------------------------------------------------------------------------------------
 Changelog:
 20200116 v01    Created initial script.
@@ -24,33 +24,28 @@ CO2ThresholdLo = 950                 # Threshold for reset high CO2 level (ppm)
 CO2HiReportedToday = False           # CO2 Hi already reported today flag
 
 #---------------------------------------------------------------------------------------------------
-def get_co2_thresholds():
+# TODO: Get thresholds from metadata
+def getCO2Thresholds():
     return
-
-#===================================================================================================
-@rule("NetatmoOffline", description="Netatmo API watchdog timeout triggered (30m)", tags=["sensor"])
-@when("Item NHC_Watchdog changed")
-def netatmo_timeout(event):
-    #--- Send a push notification to the user
-    msg = "Netatmo Healthy Home Coach is not responding, please check the status of the device and online API."
-    log.warning(msg)
-    NotificationAction.sendBroadcastNotification(msg)
-    #Echo_TTS_Livingroom.sendCommand("The " + msg)
-    events.sendCommand("NHC_Watchdog", "ON")
 
 
 #===================================================================================================
 @rule("NetatmoCO2Check", description="Set CO2Reported switch if CO2 level above high treshold; reset if below low threshold", tags=["sensor"])
 @when("Item NHC_CO2_Livingroom changed")
-def netatmo_co2_check(event):
+def netatmoCO2Check(event):
     global CO2ThresholdHi
     global CO2ThresholdLo
     global CO2HiReportedToday
 
+    if event.oldItemState is None:
+        return
+
+    netatmoCO2Check.log = logging.getLogger("{}.netatmoCO2Check".format(LOG_PREFIX))
+
     msg = ""
 
     if event.itemState is None:
-        log.warn("Item [{}] state is NULL, exit rule".format(event.itemName))
+        netatmoCO2Check.log.warn("Item [{}] state is NULL, exit rule".format(event.itemName))
         return
     else:
         events.sendCommand("NHC_Watchdog", "ON")
@@ -62,10 +57,10 @@ def netatmo_co2_check(event):
 
     #--- Check if CO2 level is above high threshold
     if currentCO2level > CO2ThresholdHi:
-        log.info("CO2 level is above threshold [{}]".format(CO2ThresholdHi))
+        netatmoCO2Check.log.info("CO2 level is above threshold [{}]".format(CO2ThresholdHi))
 
         # Check if not yet reported in the last hour
-        if items["CO2HighReported_Livingroom"] is None or items["CO2HighReported_Livingroom"] == OFF:
+        if ir.getItem("CO2HighReported_Livingroom").state is None or ir.getItem("CO2HighReported_Livingroom").state == OFF:
             if not CO2HiReportedToday:
                 msg = "Current CO2 level in the livingroom is more than " + str(currentCO2level) + ". I suggest to open some ventilation."
             else:
@@ -79,9 +74,9 @@ def netatmo_co2_check(event):
 
     #--- Check if CO2 level below low threshold
     elif currentCO2level < CO2ThresholdLo:
-        log.debug("CO2 level is below threshold [{}]".format(CO2ThresholdLo))
+        netatmoCO2Check.log.debug("CO2 level is below threshold [{}]".format(CO2ThresholdLo))
         # Check if high CO2 level has been reported today, and low level not yet reported
-        if CO2HiReportedToday and (items["CO2LowReported_Livingroom"] is None or str(items["CO2LowReported_Livingroom"]) == "OFF"):
+        if CO2HiReportedToday and (ir.getItem("CO2LowReported_Livingroom").state is None or str(ir.getItem("CO2LowReported_Livingroom").state) == "OFF"):
             msg = "Current CO2 level in the livingroom has returned to a healthy level of about " + str(currentCO2level) + "."
             #Echo_TTS_Livingroom.sendCommand("Hi, the "+ msg)
             NotificationAction.sendBroadcastNotification(msg)
@@ -91,5 +86,5 @@ def netatmo_co2_check(event):
         events.postUpdate("CO2HighReported_Livingroom", "OFF")
         CO2HiReportedToday = False
     else:
-        log.debug("CO2 level [{}] is above low threshold [{}] and below high threshold [{}]".format(currentCO2level, CO2ThresholdLo, CO2ThresholdHi))
+        netatmoCO2Check.log.debug("CO2 level [{}] is above low threshold [{}] and below high threshold [{}]".format(currentCO2level, CO2ThresholdLo, CO2ThresholdHi))
  

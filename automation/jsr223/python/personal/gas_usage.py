@@ -22,14 +22,19 @@ contractStart = DateTime.now().withTimeAtStartOfDay().withDayOfYear(15)  #Contra
 
 
 #==================================================================================================
-@rule("DSMRGasUsage", description="Calculate the periodic natural gas usage (in m3) and it's cost (in EUR)", tags=["energy"])
+@rule("Calculate Gas Usage", description="Calculate the periodic gas usage and cost", tags=["energy"])
 @when("Item Gas_Use_Total changed")
-def calc_gas_usage(event):
+def gasUsage(event):
     global contractStart
+
+    if event.oldItemState is None:
+        return
+
+    gasUsage.log = logging.getLogger("{}.gasUsage".format(LOG_PREFIX))
 
     # Calculate consumption last hour
     used = float(str(PersistenceExtensions.deltaSince(ir.getItem("Gas_Use_Total"), DateTime.now().minusHours(1))))
-    log.info("Last Hours Gas Usage [{0:.3f}]".format(used/1000))
+    gasUsage.log.info("Last Hours Gas Usage [{0:.3f}]".format(used/1000))
     events.postUpdate("Gas_Use_Hour", "{0:.3f}".format(used))
     cost = used * GAS_PRICE_PER_DM3
     events.postUpdate("Gas_Use_Hour_Cost", "{0:.2f}".format(cost))
@@ -37,7 +42,7 @@ def calc_gas_usage(event):
 
     # # Calculate consumption today
     used = float(str(PersistenceExtensions.deltaSince(ir.getItem("Gas_Use_Total"), DateTime.now().withTimeAtStartOfDay())))
-    log.info("Today's Gas Ussage [{0:.3f}]".format(used/1000))
+    gasUsage.log.info("Today's Gas Ussage [{0:.3f}]".format(used/1000))
     events.postUpdate("Gas_Use_Day", "{0:.3f}".format(used))
     cost = used * GAS_PRICE_PER_DM3
     events.postUpdate("Gas_Use_Day_Cost", "{0:.2f}".format(cost))
@@ -45,7 +50,7 @@ def calc_gas_usage(event):
 
     # # Calculate consumption this month
     used = float(str(PersistenceExtensions.deltaSince(ir.getItem("Gas_Use_Total"), DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1))))
-    log.info("This Month's Gas Usage [{0:.3f}]".format(used/1000))
+    gasUsage.log.info("This Month's Gas Usage [{0:.3f}]".format(used/1000))
     events.postUpdate("Gas_Use_Month", "{0:.3f}".format(used))
     cost = used * GAS_PRICE_PER_DM3
     events.postUpdate("Gas_Use_Month_Cost", "{0:.2f}".format(cost))
@@ -56,9 +61,9 @@ def calc_gas_usage(event):
     used = float(str(PersistenceExtensions.deltaSince(ir.getItem("Gas_Use_Total"), contractStart)))
     if used is None:
         used = float(str(items["Gas_Use_Total"])) - 7374000
-        log.info("Fix for missing year data, pre-fill [{}]".format(used))
+        gasUsage.log.info("Fix for missing year data, pre-fill [{}]".format(used))
 
-    log.info("This Contract Year's Gas Usage [{0:.3f}]".format(used/1000))
+    gasUsage.log.info("This Contract Year's Gas Usage [{0:.3f}]".format(used/1000))
     # events.postUpdate("Gas_Use_Year", str(used))
     cost = used * GAS_PRICE_PER_DM3
     # events.postUpdate("Gas_Use_Year_Cost", str(cost))

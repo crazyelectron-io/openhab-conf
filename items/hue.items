@@ -1097,7 +1097,6 @@ Dimmer							Bathroom_ColorTemp_BRIGHT
 								"Bathroom colortemp BRIGHT"
 								(gPersist)
 
-
 // Bedroom lighting Scene configuration
 Dimmer							Bedroom_Brightness_EVENING
 								"Bedroom brightness EVENING"
@@ -1123,6 +1122,30 @@ Dimmer							Bedroom_ColorTemp_COSY
 								"Bedroom colortemp COSY"
 								(gPersist)
 
+// Guestroom lighting Scene configuration
+Dimmer							Guestroom_Brightness_EVENING
+								"Menno's room brightness EVENING"
+								(gPersist)
+
+Dimmer							Guestroom_Brightness_READ
+								"Menno's room brightness READ"
+								(gPersist)
+
+Dimmer							Guestroom_Brightness_BRIGHT
+								"Menno's room brightness BRIGHT"
+								(gPersist)
+
+Dimmer							Guestroom_ColorTemp_EVENING
+								"Menno's room colortemp EVENING"
+								(gPersist)
+
+Dimmer							Guestroom_ColorTemp_READ
+								"Menno's room colortemp READ"
+								(gPersist)
+
+Dimmer							Guestroom_ColorTemp_BRIGHT
+								"Menno's room colortemp BRIGHT"
+								(gPersist)
 
 // Lodge lighting Scene configuration
 Dimmer							Lodge_Brightness_EVENING

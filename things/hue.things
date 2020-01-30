@@ -149,10 +149,7 @@ Bridge hue:bridge:0017882ec5b3 [ipAddress="192.168.2.98", userName="BwV8002ZezIL
     // Dimmer Switch Toilet
     0820 dim_toilet [sensorId="26"]
     // Dimmer Switch Guest Room
-    // 0820 dim_guest [sensorId="??"]
+    0820 dim_guest [sensorId="12"]
     // Dimmer Switch Bathroom
     0820 dim_bathroom [sensorId="45"]
-
-    // Test Dimmer Switch
-    0820 dim_test [sensorId="12"]
 }

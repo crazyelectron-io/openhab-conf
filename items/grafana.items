@@ -4,23 +4,23 @@ Group							gSnapshots15
 								"Grafana snapshot images - 15 minutes refresh - light theme, today"
 Group							gSnapshots10
 								"Grafana snapshot images - 10 minutes refresh - dark theme, 7 days"
+Group							gSnapshot
 
-
-// Item to store the Grafana image for Indoor temperature last 24H
-Image							imgTempIndoor24H_2
-								"Indoor Temp last 24H"
-								(gSnapshots10)
+// Item to store the Grafana image for Indoor temperature last 24h
+Image							imgTempIndoor24h
+								"Indoor Temp last 24h"
+								(gSnapshot)
 								{channel="ftpupload:imagereceiver:grf_temp_indoor24h:image"}
-// Item to store the Grafana image for Outdoor temperature last 24H
-Image							imgTempOutdoor24H_4
-								"Outdoor Temp last 24H"
-								(gSnapshots10)
+// Item to store the Grafana image for Outdoor temperature last 24h
+Image							imgTempOutdoor24h
+								"Outdoor Temp last 24h"
+								(gSnapshot)
 								{channel="ftpupload:imagereceiver:grf_temp_outdoor24h:image"}
 // Item to store the Grafana image for Net power consumption last 24H
-Image							imgPwrDelta24H_6
-								"Power Consumption last 24H"
-								(gSnapshots10)
-								{channel="ftpupload:imagereceiver:grf_pwr_delta24h:image"}
+// Image							imgPwrDelta24H_6
+// 								"Power Consumption last 24H"
+// 								(gSnapshots10)
+// 								{channel="ftpupload:imagereceiver:grf_pwr_delta24h:image"}
 // Item to store the Grafana image for CPU Load last 24H
 Image							imgCPULoad24H_8
 								"CPU Load last 24H"

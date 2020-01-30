@@ -27,9 +27,9 @@ def hue_dining_tap34(event):
     
     tap = str(event.channel).split(":")[3].split("_")[1]
     log.info("Tap detected [{}]".format(tap))
-    if str(items["Light_Scene_Dining"]) == "OFF" or str(items["Light_Scene_Dining"]) == "BRIGHT":
+    if str(ir.getItem("Light_Scene_Dining").state) == "OFF" or str(ir,getItem("Light_Scene_Dining").state) == "BRIGHT":
         events.sendCommand("Light_Scene_Dining", "EVENING")
-    elif str(items["Light_Scene_Dining"]) == "EVENING":
+    elif str(ir.getItem("Light_Scene_Dining").state) == "EVENING":
         events.sendCommand("Light_Scene_Dining", "READ")
     else:
         events.sendCommand("Light_Scene_Dining", "BRIGHT")
@@ -57,9 +57,9 @@ def hue_dining_switch16(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items["Light_Scene_Livingroom"]) == "OFF" or str(items["Light_Scene_Livingroom"]) == "READ":
+    if str(ir.getItem("Light_Scene_Livingroom").state) == "OFF" or str(ir.getItem("Light_Scene_Livingroom").state) == "READ":
         events.sendCommand("Light_Scene_Livingroom", "EVENING")
-    elif str(items["Light_Scene_Livingroom"]) == "EVENING":
+    elif str(ir.getItem("Light_Scene_Livingroom").state) == "EVENING":
         events.sendCommand("Light_Scene_Livingroom", "MOVIE")
     else:
         events.sendCommand("Light_Scene_Livingroom", "READ")

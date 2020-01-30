@@ -15,22 +15,21 @@ reload(configuration)
 from configuration import LOG_PREFIX
 from core.actions import NotificationAction
 
-log = logging.getLogger("{}.hue_daynight".format(LOG_PREFIX))
-
-
 #==================================================================================================
-@rule("HueDayNight", description="Turn lights on and off based on the Day Mode", tags=["astro"])
+@rule("Hue Scene Switch", description="Turn lights on and off based on the Day Mode", tags=["astro"])
 @when("Item Day_Mode changed")
-def hue_scene_switch(event):
-    log.info("{name} changed to {newState} from {oldState}".format(name=event.itemName, newState=event.itemState, oldState=event.oldItemState))
-    if event.oldItemState == NULL:
+def hueSceneSwitch(event):
+    if event.oldItemState is None:
         return
 
+    hueSceneSwitch.log = logging.getLogger("{}.hueSceneSwitch".format(LOG_PREFIX))
+    hueSceneSwitch.log.info("{name} changed to {newState} from {oldState}".format(name=event.itemName, newState=event.itemState, oldState=event.oldItemState))
+
     # Determine the Scene to select (if any)
-    command = "OFF" if str(items["Day_Mode"]) == "DAY" else "EVENING" if str(items["Day_Mode"]) == "EVENING" else ""
+    command = "OFF" if str(ir.getItem("Day_Mode").state) == "DAY" else "EVENING" if str(ir.getItem("Day_Mode").state) == "EVENING" else ""
 	
     if command != "":
-        log.info("Send command [{}] to Light Scenes".format(command))
+        hueSceneSwitch.log.info("Send command [{}] to Light Scenes".format(command))
 		# gLight_Automatic.sendCommand(command)
         events.sendCommand("Light_Scene_Livingroom", command)
         events.sendCommand("Light_Scene_Dining", command)

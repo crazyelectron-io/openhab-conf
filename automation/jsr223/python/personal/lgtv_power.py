@@ -16,9 +16,7 @@ import configuration
 reload(configuration)
 from configuration import LOG_PREFIX
 
-
 log = logging.getLogger("{}.lgtv_power".format(LOG_PREFIX))
-
 
 #==================================================================================================
 @rule("LGTVPower", description="Power on TV via Wake on LAN", tags=["media"])

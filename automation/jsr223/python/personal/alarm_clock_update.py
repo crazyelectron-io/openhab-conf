@@ -1,6 +1,6 @@
 '''
 ----------------------------------------------------------------------------------------------------
-alarmclock.py - 
+alarm_clock_update.py - 
 ----------------------------------------------------------------------------------------------------
 Changelog:
 20200115 v01    Created initial script.
@@ -15,26 +15,29 @@ reload(configuration)
 from configuration import LOG_PREFIX
 from core.actions import ScriptExecution
 
-log = logging.getLogger("{}.alarmclock".format(LOG_PREFIX))
-
 timerAlarm = None
 
 #==================================================================================================
-@rule("AlarmClock", description="Take morning actions when the Android Alarm goes off", tags=["alarm"])
+@rule("Alarm Clock Update", description="Take morning actions when the Android Alarm goes off", tags=["alarm"])
 @when("Item AlarmClock changed")
-def alarm_clock_update(event):
+def alarmClockUpdate(event):
     global timerAlarm
 
-    if items.AlarmClock == 0:
-        log.info("AlarmClock state changed to 0, cancel all alarms")
+    if event.oldItemState is None:
+        return
+
+    alarmClockUpdate.log = logging.getLogger("{}.alarmClockUpdate".format(LOG_PREFIX))
+
+    if ir.getItem("AlarmClock").state == 0:
+        alarmClockUpdate.log.info("AlarmClock state changed to 0, cancel all alarms")
         if timerAlarm is not None and not timerAlarm.hasTerminated():
-            log.info("AlarmClock timerAlarm is running, cancel it")
+            alarmClockUpdate.log.info("AlarmClock timerAlarm is running, cancel it")
             timerAlarm.cancel()
     else:
-        log.info("Schedule Android alarm for {}".format(items.AlarmClock))
+        alarmClockUpdate.log.info("Schedule Android alarm for {}".format(ir.getItem("AlarmClock").state) )
         if timerAlarm is not None and not timerAlarm.hasTerminated():
-            log.info("Reschedule Android alarm to {}".format(items.AlarmClock))
+            alarmClockUpdate.log.info("Reschedule Android alarm to {}".format(ir.getItem("AlarmClock").state) )
             timerAlarm.cancel()
         else:
-            log.info("New Android Alarm set for [{}]".format(items.AlarmClock))
+            alarmClockUpdate.log.info("New Android Alarm set for [{}]".format(ir.getItem("AlarmClock").state) )
             timerAlarm = ScriptExecution.createTimer(event.itemState, lambda: events.sendCommand("Light_Scene_Hall","EVENING"))

@@ -1,6 +1,6 @@
 '''
 ----------------------------------------------------------------------------------------------------
-nefit_gas_retrieve.py - Retrieve yesterdays gas usage for Hot Water (HW) and Central Heating (CH).
+nefit_gas_history.py - Retrieve yesterdays gas usage for Hot Water (HW) and Central Heating (CH).
 ----------------------------------------------------------------------------------------------------
 Changelog:
 20200116 v01    Created initial script.
@@ -42,34 +42,33 @@ from org.joda.time import DateTime
 import json     # pylint: disable=unused-import
 import requests
 
-log = logging.getLogger("{}.nefit_gas_history".format(LOG_PREFIX))
-
 #===================================================================================================
-@rule("NefitGasHistory", description="Retrieve yesterdays gas usage for Hot Water Central Heating", tags=["energy"])
+@rule("Nefit Gas History", description="Retrieve yesterdays gas usage for Hot Water and Central Heating", tags=["energy"])
 @when("Time cron 0 5 0 * * ?")      # Shortly after midnight
 @when("Item CV_Retry_GasUsage changed to OFF")      # Retry trigger switch (expire)
-def nefit_retrieve_gas_history(event):
+def nefitGasHistory(event):
+    nefitGasHistory.log = logging.getLogger("{}.nefitGasHistory".format(LOG_PREFIX))
     httpHeader = {'Content-Type': 'application/json'}
 
     #--- Get the number of gas usage pages from Nefit server
     response = requests.get(NEFIT_BRIDGE_URL + "/ecus/rrc/recordings/gasusagePointer", headers=httpHeader)
     if response.status_code != 200:
-        log.warn("NefitEasy - Invalid API status response [{}]".format(response))
+        nefitGasHistory.log.warn("NefitEasy - Invalid API status response [{}]".format(response))
         events.sendCommand("CV_Retry_GasUsage", "ON")   #Set retry switch
     else:
-        log.debug("Received Pages JSON data [{}]".format(response.json()))
+        nefitGasHistory.log.debug("Received Pages JSON data [{}]".format(response.json()))
         entries = float(response.json()["value"])
-        log.info("Number of entries is [{0:.0f}]".format(entries))
+        nefitGasHistory.log.info("Number of entries is [{0:.0f}]".format(entries))
         page = (entries - 1) / 32
-        log.info("Page # is [{0:.0f}]".format(page))
+        nefitGasHistory.log.info("Page # is [{0:.0f}]".format(page))
 
         # Get the last web page for yesterdays data
         response = requests.get(NEFIT_BRIDGE_URL + "/ecus/rrc/recordings/gasusage?page="+str(page), headers=httpHeader)
         if response.status_code != 200:
-            log.warn("NefitEasy - Invalid API status response [{}]".format(response))
+            nefitGasHistory.log.warn("NefitEasy - Invalid API status response [{}]".format(response))
             events.sendCommand("CV_Retry_GasUsage", "ON")   #Set retry switch
         else:
-            log.debug("Received Nefit Bridge update [{}]".format(response.json()))
+            nefitGasHistory.log.debug("Received Nefit Bridge update [{}]".format(response.json()))
             # Walk through JSON Array and find yesterday's entry.
             yesterday = DateTime.now().minusDays(1).toString("dd-MM-yyyy")
             for g in response.json()['value']:
@@ -77,17 +76,17 @@ def nefit_retrieve_gas_history(event):
                     hotWater = "{0:.3f}".format(float(g['hw']) * 0.102365)
                     centralHeating = "{0:.3f}".format(float(g['ch']) * 0.102365)
                     influxTimestamp = DateTime.now().withTimeAtStartOfDay().minusSeconds(1).millis
-                    log.info("Yesterdays Hot Water [{}], Central Heating [{}]".format(hotWater, centralHeating))
+                    nefitGasHistory.log.info("Yesterdays Hot Water [{}], Central Heating [{}]".format(hotWater, centralHeating))
                     cmd = "/bin/sh@@-c@@/usr/bin/curl -s -X POST "+INFLUXDB_URL+"write?db="+INFLUXDB+"\\&precision=ms --data-binary '"+NEFIT_HW_SERIES+" value="+hotWater+" "+str(influxTimestamp)+"'"
-                    log.info("CMD1 [{}]".format(cmd))
+                    nefitGasHistory.log.info("CMD1 [{}]".format(cmd))
                     response = Exec.executeCommandLine(cmd, 4000)
                     if response != "":
-                        log.warn("Error writing "+NEFIT_HW_SERIES+" value to InfluxDB [{}]".format(response))
+                        nefitGasHistory.log.warn("Error writing "+NEFIT_HW_SERIES+" value to InfluxDB [{}]".format(response))
                     cmd = "/bin/sh@@-c@@/usr/bin/curl -s -X POST "+INFLUXDB_URL+"write?db="+INFLUXDB+"\\&precision=ms --data-binary '"+NEFIT_CH_SERIES+" value="+centralHeating+" "+str(influxTimestamp)+"'"
-                    log.info("CMD2 [{}]".format(cmd))
+                    nefitGasHistory.log.info("CMD2 [{}]".format(cmd))
                     Exec.executeCommandLine(cmd, 4000)
                     if response != "":
-                        log.warn("Error writing "+NEFIT_HW_SERIES+" value to InfluxDB [{}]".format(response))
+                        nefitGasHistory.log.warn("Error writing "+NEFIT_HW_SERIES+" value to InfluxDB [{}]".format(response))
                     return
 
-            log.warn("No historic gas usage entry found for [{}]".format(yesterday))
+            nefitGasHistory.log.warn("No historic gas usage entry found for [{}]".format(yesterday))

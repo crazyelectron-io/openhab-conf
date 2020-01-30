@@ -24,9 +24,7 @@ reload(configuration)
 from configuration import LOG_PREFIX
 # from core.utils import postUpdateCheckFirst #,postUpdateIfDifferent
 
-
 log = logging.getLogger("{}.hue_bathroom".format(LOG_PREFIX))
-
 
 #===================================================================================================
 @rule("HueSwBath1000", description="Hue Bathroom dimmer Key 1 (ON) Initial Press - ignored", tags=["lights"])
@@ -57,13 +55,13 @@ def hue_bathroom_switch1002(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items.Light_Scene_Bathroom) == "OFF":
+    if str(ir.getItem("Light_Scene_Bathroom").state) == "OFF":
         log.info("First Button 1 (ON) Short Release - Set Bathroom Scene to EVENING")
         events.sendCommand("Light_Scene_Bathroom", "EVENING")
-    elif str(items.Light_Scene_Bathroom) == "EVENING":
+    elif str(ir.getItem("Light_Scene_Bathroom").state) == "EVENING":
         log.info("Second Button 1 (ON) Short Release - Set Bathroom Scene to READ")
         events.sendCommand("Light_Scene_Bathroom", "READ")
-    elif str(items.Light_Scene_Bathroom) == "READ":
+    elif str(ir.getItem("Light_Scene_Bathroom").state) == "READ":
         log.info("Third Button 1 (ON) Short Release - Set Bathroom Scene to BRIGHT")
         events.sendCommand("Light_Scene_Bathroom", "BRIGHT")
     else:
@@ -101,7 +99,7 @@ def hue_bathroom_switch20012(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if items.Light_Scene_Bathroom != OFF:
+    if ir.getItem("Light_Scene_Bathroom != OFF").state:
         events.sendCommand("gLight_Brightness_Bathroom", "INCREASE")
 
 
@@ -135,7 +133,7 @@ def hue_bathroom_switch30012(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if items.Light_Scene_Bathroom != OFF:
+    if ir.getItem("Light_Scene_Bathroom != OFF").state:
         events.sendCommand("gLight_Brightness_Bathroom", "DECREASE")
 
 
@@ -180,7 +178,7 @@ def hue_bathroom_switch4002(event):
     switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items.Light_Scene_Bathroom) != "OFF":
+    if str(ir.getItem("Light_Scene_Bathroom").state) != "OFF":
         events.sendCommand("Light_Scene_Bathroom", "OFF")
 
 

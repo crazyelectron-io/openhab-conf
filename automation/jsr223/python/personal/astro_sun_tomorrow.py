@@ -21,25 +21,36 @@ def addSunriseItems():
     addSunriseItems.log = logging.getLogger("{}.addSunriseItems".format(LOG_PREFIX))
 
     scriptExtension.importPreset("RuleSupport")
-
     from core.items import add_item
 
     try:
         if ir.getItems("Astro_Sun_SetTomorrow") == []:
-            add_item("Astro_Sun_SetTomorrow", item_type="DateTime", groups=["gAstro"], label="Tomorrow's Sunset [%1$tH:%1$tMs]", category="sunset", tags=["Astro"])
+            add_item("Astro_Sun_SetTomorrow", item_type="DateTime", groups=["gAstro"], label="Tomorrow's Sunset [%1$tH:%1$tM]", category="sunset", tags=["Astro"])
         if ir.getItems("Astro_Sun_RiseTomorrow") == []:
-            add_item("Astro_Sun_RiseTomorrow", item_type="DateTime", groups=["gAstro"], label="Tomorrow's Sunrise [%1$tH:%1$tMs]", category="sunrise", tags=["Astro"])
+            add_item("Astro_Sun_RiseTomorrow", item_type="DateTime", groups=["gAstro"], label="Tomorrow's Sunrise [%1$tH:%1$tM]", category="sunrise", tags=["Astro"])
         if ir.getItems("Astro_Sun_SetNext") == []:
-            add_item("Astro_Sun_SetNext", item_type="DateTime", groups=["gAstro"], label="Next Sunset [%1$tH:%1$tMs]", category="sunset", tags=["Astro"])
+            add_item("Astro_Sun_SetNext", item_type="DateTime", groups=["gAstro"], label="Next Sunset [%1$tH:%1$tM]", category="sunset", tags=["Astro"])
         if ir.getItems("Astro_Sun_RiseNext") == []:
-            add_item("Astro_Sun_RiseNext", item_type="DateTime", groups=["gAstro"], label="Next Sunrise [%1$tH:%1$tMs]", category="sunrise", tags=["Astro"])
+            add_item("Astro_Sun_RiseNext", item_type="DateTime", groups=["gAstro"], label="Next Sunrise [%1$tH:%1$tM]", category="sunrise", tags=["Astro"])
     except:
         import traceback
         addSunriseItems.log.error(traceback.format_exc())
 
 
 #---------------------------------------------------------------------------------------------------
+# Use this to remove created items for testing
+def removeSunriseItems():
+    from core.items import remove_item
+
+    remove_item("Astro_Sun_SetTomorrow")
+    remove_item("Astro_Sun_RiseTomorrow")
+    remove_item("Astro_Sun_SetNext")
+    remove_item("Astro_Sun_RiseNext")
+
+
+#---------------------------------------------------------------------------------------------------
 def scriptLoaded(id):
+    # removeSunriseItems()
     addSunriseItems()
 
 
@@ -47,37 +58,37 @@ def scriptLoaded(id):
 def calcNextSunTimes():
     calcNextSunTimes.log = logging.getLogger("{}.calcNextSunTimes".format(LOG_PREFIX))
 
-    if str(items.Astro_Day_Phase) == "DAYLIGHT":
+    if str(ir.getItem("Astro_Day_Phase").state) == "DAYLIGHT":
         calcNextSunTimes.log.info("Daylight - next sunrise is tomorrow, next sunset is today")
-        events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTomorrow))
-        events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTime))
-    elif str(items.Astro_Day_Phase) == "SUN_RISE":
+        events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTomorrow").state))
+        events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTime").state))
+    elif str(ir.getItem("Astro_Day_Phase").state) == "SUN_RISE":
         calcNextSunTimes.log.info("Sunrise - next sunrise and sunset is today")
-        events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTime))
-        events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTime))
-    elif str(items.Astro_Day_Phase) == "SUN_SET":
+        events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTime").state))
+        events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTime").state))
+    elif str(ir.getItem("Astro_Day_Phase").state) == "SUN_SET":
         calcNextSunTimes.log.info("Sunset - next sunrise is tomorrow and sunset is today")
-        events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTomorrow))
-        events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTime))
-    elif str(items.Astro_Day_Phase) in ["ASTRO_DAWN", "NAUTIC_DAWN", "CIVIL_DAWN"]:
+        events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTomorrow").state))
+        events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTime").state))
+    elif str(ir.getItem("Astro_Day_Phase").state) in ["ASTRO_DAWN", "NAUTIC_DAWN", "CIVIL_DAWN"]:
         calcNextSunTimes.log.info("Dawn - next sunrise and sunset is today")
-        events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTime))
-        events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTime))
-    elif str(items.Astro_Day_Phase) in ["ASTRO_DUSK", "NAUTIC_DUSK", "CIVIL_DUSK"]:
+        events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTime").state))
+        events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTime").state))
+    elif str(ir.getItem("Astro_Day_Phase").state) in ["ASTRO_DUSK", "NAUTIC_DUSK", "CIVIL_DUSK"]:
         calcNextSunTimes.log.info("Dusk - next sunrise and sunset is tomorrow")
-        events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTomorrow))
-        events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTomorrow))
+        events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTomorrow").state))
+        events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTomorrow").state))
     else:
         from org.joda.time import DateTime
 
         if DateTime.now().getHourOfDay() > 12:
             calcNextSunTimes.log.info("Before midnight - next sunrise and sunset is tomorrow")
-            events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTomorrow))
-            events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTomorrow))
+            events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTomorrow").state))
+            events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTomorrow").state))
         else:
             calcNextSunTimes.log.info("After midnight - next sunrise and sunset is today")
-            events.postUpdate("Astro_Sun_RiseNext", str(items.Astro_Sun_RiseTime))
-            events.postUpdate("Astro_Sun_SetNext", str(items.Astro_Sun_SetTime))
+            events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTime").state))
+            events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTime").state))
 
 
 #===================================================================================================
@@ -106,5 +117,4 @@ def calcSunTomorrow(event):
     events.postUpdate("Astro_Sun_RiseTomorrow", str(sun['sunrise'].isoformat())[11:16])
     events.postUpdate("Astro_Sun_SetTomorrow", str(sun['sunset'].isoformat())[11:16])
     calcSunTomorrow.log.info("Tomorrow's sunrise [{}] and sunset [{}] calculated".format(str(sun['sunrise'].isoformat())[11:16], str(sun['sunset'].isoformat())[11:16]))
-
     calcNextSunTimes()

@@ -49,9 +49,9 @@ def hue_kitchen_switch16(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items["Light_Scene_Kitchen"]) == "OFF" or str(items["Light_Scene_Kitchen"]) == "BRIGHT":
+    if str(ir.getItem("Light_Scene_Kitchen").state) == "OFF" or str(ir,getItem("Light_Scene_Kitchen").state) == "BRIGHT":
         events.sendCommand("Light_Scene_Kitchen", "EVENING")
-    elif str(items["Light_Scene_Kitchen"]) == "EVENING":
+    elif str(ir,getItem("Light_Scene_Kitchen").state) == "EVENING":
         events.sendCommand("Light_Scene_Kitchen", "WORK")
     else:
         events.sendCommand("Light_Scene_Kitchen", "BRIGHT")

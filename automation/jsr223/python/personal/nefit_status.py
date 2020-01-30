@@ -47,48 +47,47 @@ import json # pylint: disable=unused-import
 import requests
 from core.utils import sendCommandCheckFirst
 
-log = logging.getLogger("{}.nefit_status".format(LOG_PREFIX))
-
 #==================================================================================================
-@rule("NefitEasyStatus", description="Get the Nefit CH/HW system status every minute", tags=["energy"])
+@rule("Nefit Easy Status Update", description="Get the Nefit CH/HW system status every minute", tags=["energy"])
 @when("Time cron 0 * * * * ?")
-def get_nefit_easy_status(event):
+def nefitStatus(event):
+    nefitStatus.log = logging.getLogger("{}.nefitStatus".format(LOG_PREFIX))
     httpHeader = {'Content-Type': 'application/json'} #,'Cache-Control': 'no-cache','Pragma': 'no-cache'}
 
     #--- Get Nefit thermostat info from the easy-server API
     response = requests.get(NEFIT_API_URL+"/status", headers=httpHeader)
     if response.status_code != 200:
-        log.warn("NefitEasy - Invalid API status response [{}]".format(response))
+        nefitStatus.log.warn("NefitEasy - Invalid API status response [{}]".format(response))
     else:
         #-- Get the relevant parameters ('in house temp' and 'temp setpoint') from the JSON response.
         try:
             events.postUpdate("CV_Temp_Livingroom", "{0:.1f}".format(response.json()["in house temp"]))
         except:
-            log.warn("Error setting in house temp; JSON response [{}]".format(response.json()))
+            nefitStatus.log.warn("Error setting in house temp; JSON response [{}]".format(response.json()))
         try:
             events.postUpdate("CV_SetPoint_Livingroom", "{0:.1f}".format(response.json()["temp setpoint"]))
         except:
-            log.warn("Error setting setpoint temp; JSON response [{}]".format(response.json()))
+            nefitStatus.log.warn("Error setting setpoint temp; JSON response [{}]".format(response.json()))
     #--- Get Nefit Heater water pressure
     response = requests.get(NEFIT_BRIDGE_URL+"/system/appliance/systemPressure", headers=httpHeader)
     if response.status_code != 200:
-        log.warn("NefitEasy - Invalid API pressure response [{}]".format(response))
+        nefitStatus.log.warn("NefitEasy - Invalid API pressure response [{}]".format(response))
     else:
         try:
             events.postUpdate("CV_Pressure", "{0:.1f}".format(response.json()['value']))
             events.sendCommand("CV_Watchdog", "ON")
         except:
-            log.warn("Error setting Nefit water pressure; JSON response [{}]".format(response.json()))
+            nefitStatus.log.warn("Error setting Nefit water pressure; JSON response [{}]".format(response.json()))
     #--- Get Nefit CV burner data
     response = requests.get(NEFIT_BRIDGE_URL+"/ecus/rrc/uiStatus", headers=httpHeader)
     if response.status_code != 200:
-        log.warn("NefitEasy - Invalid API burner status response [{}]".format(response))
+        nefitStatus.log.warn("NefitEasy - Invalid API burner status response [{}]".format(response))
     else:
         # Extract the relevant info from the JSON data
         try:
             burner = response.json()['value']['BAI']
         except:
-            log.warn("Error reading Nefit burner status; JSON response [{}]".format(response.json()))
+            nefitStatus.log.warn("Error reading Nefit burner status; JSON response [{}]".format(response.json()))
             burner = "No"
         if burner == "CH":
             sendCommandCheckFirst("CV_Heater_Active", "ON")
@@ -100,13 +99,17 @@ def get_nefit_easy_status(event):
             sendCommandCheckFirst("CV_Heater_Active", "OFF")
             sendCommandCheckFirst("CV_HotWater_Active", "OFF")
 
+
 #===================================================================================================
-@rule("NefitCheckStatus", description="Check if Netfit and Netatmo devices are still sending updates", tags=["heating"])
+@rule("Nefit Check Online", description="Check if Netfit and Netatmo devices are still sending updates", tags=["heating"])
 @when("Item CV_Temp_Livingroom received update")
 @when("Item NHC_Temp_Livingroom received update")
-def nefit_check_status(event):
-    log.debug("Received update from {}, reset watchdog".format(event.itemName))
+def nefitCheck(event):
+    nefitCheck.log = logging.getLogger("{}.nefitStatus".format(LOG_PREFIX))
+
+    nefitCheck.log.debug("Received update from {}, reset watchdog".format(event.itemName))
     events.sendCommand("CV_Watchdog" if event.itemName == "CV_Temp_Livingroom" else "NHC_Watchdog", "ON")
+
 
 #===================================================================================================
 #@rule("NefitNextProgram", description="Get the next programmed switch point (from the easy-server daemon)", tags=["heating"])

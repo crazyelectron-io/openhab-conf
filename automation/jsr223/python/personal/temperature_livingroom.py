@@ -26,13 +26,13 @@ def calc_avg_temp_livingroom(event):
     log.info("Updating avg livingroom temp from changed [{}]".format(event.itemName))
 
     # Calculate the average livingroom temp from two sensor values (if available)
-    if items.CV_Temp_Livingroom is not None:
-        if items.NHC_Temp_Livingroom is not None:
-            events.postUpdate("Temp_Avg_Livingroom", str((float(str(items.CV_Temp_Livingroom)) + float(str(items.NHC_Temp_Livingroom)))/2))
+    if ir.getItem("CV_Temp_Livingroom").state is not None:
+        if ir.getItem("NHC_Temp_Livingroom").state is not None:
+            events.postUpdate("Temp_Avg_Livingroom", str((float(str(ir.getItem("CV_Temp_Livingroom").state)) + float(str(ir.getItem("NHC_Temp_Livingroom").state)))/2))
         else:
-            log.info("Average temp is [{}] (from CV_Temp_Livingroom)", items.CV_Temp_Livingroom)
-            events.postUpdate("Temp_Avg_Livingroom", str(items.CV_Temp_Livingroom))
+            log.info("Average temp is [{}] (from CV_Temp_Livingroom)", ir.getItem("CV_Temp_Livingroom").state)
+            events.postUpdate("Temp_Avg_Livingroom", str(ir.getItem("CV_Temp_Livingroom").state))
     elif items.NHC_Temp_Livingroom is not None:
-        events.postUpdate("Temp_Avg_Livingroom", items.NHC_Temp_Livingroom)
+        events.postUpdate("Temp_Avg_Livingroom", str(ir.getItem("NHC_Temp_Livingroom").state))
     else:
         log.warn("Living room temp sensors are NULL")

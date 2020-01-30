@@ -57,13 +57,13 @@ def hue_toilet_switch1002(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items.Light_Scene_Toilet) == "OFF":
+    if str(ir.getItem("Light_Scene_Toilet").state) == "OFF":
         log.info("First Button 1 (ON) Short Release - Set toilet Scene to EVENING")
         events.sendCommand("Light_Scene_Toilet", "EVENING")
-    elif str(items.Light_Scene_Toilet) == "EVENING":
+    elif str(ir.getItem("Light_Scene_Toilet").state) == "EVENING":
         log.info("Second Button 1 (ON) Short Release - Set toilet Scene to READ")
         events.sendCommand("Light_Scene_Toilet", "READ")
-    elif str(items.Light_Scene_Toilet) == "READ":
+    elif str(ir.getItem("Light_Scene_Toilet").state) == "READ":
         log.info("Third Button 1 (ON) Short Release - Set toilet Scene to BRIGHT")
         events.sendCommand("Light_Scene_Toilet", "BRIGHT")
     else:
@@ -101,7 +101,7 @@ def hue_toilet_switch20012(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items["Light_Scene_Toilet"]) != "OFF":
+    if str(ir.getItem("Light_Scene_Toilet").state) != "OFF":
         events.sendCommand("gLight_Brightness_toilet", "INCREASE")
 
 
@@ -135,7 +135,7 @@ def hue_toilet_switch30012(event):
     switch = str(event.channel).split(":")[3]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items.Light_Scene_Toilet) != "OFF":
+    if str(ir.getItem("Light_Scene_Toilet").state) != "OFF":
         events.sendCommand("gLight_Brightness_toilet", "DECREASE")
 
 
@@ -180,7 +180,7 @@ def hue_toilet_switch4002(event):
     switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(items.Light_Scene_Toilet) != "OFF":
+    if str(ir.getItem("Light_Scene_Toilet").state) != "OFF":
         events.sendCommand("Light_Scene_Toilet", "OFF")
 
 
