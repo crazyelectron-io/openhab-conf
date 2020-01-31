@@ -42,8 +42,10 @@ def aircoBedroom(event):
     delay = 8 # In minutes
 
     # Get current temperature readings
-    tempBedroom = iround(float(str(ir.getItem("AC_Temp_Bedroom").state)))
-    tempOutside = iround(float(str(ir.getItem("AC_Temp_Outdoor").state)))
+    # tempBedroom = iround(float(str(ir.getItem("AC_Temp_Bedroom").state)))
+    tempBedroom = iround(float(str(items["AC_Temp_Bedroom"])))
+    # tempOutside = iround(float(str(ir.getItem("AC_Temp_Outdoor").state)))
+    tempOutside = iround(float(str(items["AC_Temp_Outdoor"])))
 
     # Set status variables to default state
     doorIsOpen = False

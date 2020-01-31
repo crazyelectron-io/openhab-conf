@@ -25,9 +25,8 @@ log = logging.getLogger("{}.hue_dining".format(LOG_PREFIX))
 def hue_dining_tap34(event):
     log.info("Event [{}] received".format(event.event))
     
-    tap = str(event.channel).split(":")[3].split("_")[1]
-    log.info("Tap detected [{}]".format(tap))
-    if str(ir.getItem("Light_Scene_Dining").state) == "OFF" or str(ir,getItem("Light_Scene_Dining").state) == "BRIGHT":
+    # tap = str(event.channel).split(":")[3].split("_")[1]
+    if str(ir.getItem("Light_Scene_Dining").state) == "OFF" or str(ir.getItem("Light_Scene_Dining").state) == "BRIGHT":
         events.sendCommand("Light_Scene_Dining", "EVENING")
     elif str(ir.getItem("Light_Scene_Dining").state) == "EVENING":
         events.sendCommand("Light_Scene_Dining", "READ")
@@ -42,8 +41,7 @@ def hue_dining_tap34(event):
 def hue_dining_switch1899(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3].split("_")[1]
-    log.info("Switch detected [{}]".format(switch))
+    # tap = str(event.channel).split(":")[3].split("_")[1]
 
     events.sendCommand("Light_Scene_Dining", "OFF")
 
@@ -54,8 +52,7 @@ def hue_dining_switch1899(event):
 def hue_dining_switch16(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
-    log.info("Switch detected [{}]".format(switch))
+    # tap = str(event.channel).split(":")[3]
 
     if str(ir.getItem("Light_Scene_Livingroom").state) == "OFF" or str(ir.getItem("Light_Scene_Livingroom").state) == "READ":
         events.sendCommand("Light_Scene_Livingroom", "EVENING")
@@ -71,8 +68,7 @@ def hue_dining_switch16(event):
 def hue_dining_switch17(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3].split("_")[1]
-    log.info("Switch detected [{}]".format(switch))
+    # tap = str(event.channel).split(":")[3].split("_")[1]
 
     events.sendCommand("Light_Scene_Livingroom", "OFF")
 
@@ -83,8 +79,7 @@ def hue_dining_switch17(event):
 def hue_dining_switch98(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3].split("_")[1]
-    log.info("Switch detected [{}]".format(switch))
+    # tap = str(event.channel).split(":")[3].split("_")[1]
 
     events.sendCommand("Light_Scene_Livingroom", "OFF")
     events.sendCommand("Light_Scene_Dining", "OFF")
@@ -96,8 +91,7 @@ def hue_dining_switch98(event):
 def hue_dining_switch101(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3].split("_")[1]
-    log.info("Switch detected [{}]".format(switch))
+    # tap = str(event.channel).split(":")[3].split("_")[1]
 
     events.sendCommand("Light_Scene_Livingroom", "READ")
     events.sendCommand("Light_Scene_Dining", "READ")

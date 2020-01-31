@@ -23,7 +23,6 @@ def netatmoStatus(event):
         return
 
     netatmoStatus.log = logging.getLogger("{}.netatmoStatus".format(LOG_PREFIX))
-    netatmoStatus.log.warn("Netatmo Healthy Home Coach is not responding")
 
     msg = "Netatmo Healthy Home Coach is not responding, please check the status of the device and online API."
     netatmoStatus.log.warning(msg)
