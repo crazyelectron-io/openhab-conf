@@ -23,11 +23,11 @@ import configuration
 reload(configuration)
 from configuration import LOG_PREFIX
 
-log = logging.getLogger("{}.hue_Guestroom".format(LOG_PREFIX))
+log = logging.getLogger("{}.hue_menno".format(LOG_PREFIX))
 
 #===================================================================================================
-@rule("HueSwGuest1000", description="Hue guestroom dimmer Key 1 (ON) Initial Press - ignored", tags=["lights"])
-@when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 1000.0")
+@rule("Hue Switch Guest 1000", description="Hue guestroom dimmer Key 1 (ON) Initial Pressed", tags=["lights"])
+@when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 1000.0") 
 def hue_Guestroom_switch1000(event):
     log.info("Event [{}] received".format(event.event))
     
@@ -36,7 +36,7 @@ def hue_Guestroom_switch1000(event):
 
 
 #===================================================================================================
-@rule("HueSwGuest1001", description="Hue guestroom dimmer Key 1 (ON) Hold - ignored", tags=["lights"])
+@rule("HueSwGuest1001", description="Hue guestroom dimmer Key 1 (ON) Hold", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 1001.0")
 def hue_Guestroom_switch1001(event):
     log.info("Event [{}] received".format(event.event))
@@ -47,12 +47,12 @@ def hue_Guestroom_switch1001(event):
 
 #===================================================================================================
 #
-@rule("HueSwGuest1002", description="Hue guestroom dimmer Key 1 (ON) Short release - turn off hall/kitchen light", tags=["lights"])
+@rule("HueSwGuest1002", description="Hue guestroom dimmer Key 1 (ON) Short Released", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 1002.0")
 def hue_Guestroom_switch1002(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
     if str(ir.getItem("Light_Scene_Guestroom").state) == "OFF":
@@ -70,7 +70,7 @@ def hue_Guestroom_switch1002(event):
 
 
 #===================================================================================================
-@rule("HueSwGuest1003", description="Hue guestroom dimmer Key 1 (ON) Long release - ignored", tags=["lights"])
+@rule("HueSwGuest1003", description="Hue guestroom dimmer Key 1 (ON) Long Released", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 1003.0")
 def hue_Guestroom_switch1003(event):
     log.info("Event [{}] received".format(event.event))
@@ -80,7 +80,7 @@ def hue_Guestroom_switch1003(event):
 
 
 #===================================================================================================
-@rule("HueSwGuest2000", description="Hue guestroom dimmer Key 2 (INCREASE) Initial Press - ignored", tags=["lights"])
+@rule("HueSwGuest2000", description="Hue guestroom dimmer Key 2 (INCREASE) Initial Pressed", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 2000.0")
 def hue_Guestroom_switch2000(event):
     log.info("Event [{}] received".format(event.event))
@@ -90,21 +90,21 @@ def hue_Guestroom_switch2000(event):
 
 
 #===================================================================================================
-@rule("HueSwGuest20012", description="Hue guestroom dimmer Key 2 (INCREASE) - increase brightness", tags=["lights"])
+@rule("HueSwGuest20012", description="Hue Dimmer Switch Key 2 (INCREASE) Hold", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 2001.0")
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 2002.0")
 def hue_Guestroom_switch20012(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
-    if ir.getItem("Light_Scene_Guestroom != OFF").state:
+    if ir.getItem("Light_Scene_Guestroom").state != OFF:
         events.sendCommand("gLight_Brightness_Guestroom", "INCREASE")
 
 
 #===================================================================================================
-@rule("HueSwGuest2003", description="Hue guestroom dimmer Key 2 (INCREASE) Long Release - ignored", tags=["lights"])
+@rule("HueSwGuest2003", description="Hue guestroom dimmer Key 2 (INCREASE) Long Released", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 2003.0")
 def hue_Guestroom_switch2003(event):
     log.info("Event [{}] received".format(event.event))
@@ -114,7 +114,7 @@ def hue_Guestroom_switch2003(event):
 
 
 #===================================================================================================
-@rule("HueSwGuest3000", description="Hue guestroom dimmer Key 3 (DECREASE) Initial Pressed - ignored", tags=["lights"])
+@rule("HueSwGuest3000", description="Hue guestroom dimmer Key 3 (DECREASE) Initial Pressed", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 3000.0")
 def hue_Guestroom_switch3000(event):
     log.info("Event [{}] received".format(event.event))
@@ -124,21 +124,21 @@ def hue_Guestroom_switch3000(event):
 
 
 #===================================================================================================
-@rule("HueSwGuest30012", description="Hue guestroom dimmer Key 3 (DECREASE) - decrease brightness", tags=["lights"])
+@rule("HueSwGuest30012", description="Hue guestroom dimmer Key 3 (DECREASE) Hold", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 3001.0")
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 3002.0")
 def hue_Guestroom_switch30012(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
-    if ir.getItem("Light_Scene_Guestroom != OFF").state:
+    if ir.getItem("Light_Scene_Guestroom").state != OFF:
         events.sendCommand("gLight_Brightness_Guestroom", "DECREASE")
 
 
 #===================================================================================================
-@rule("HueSwGuest3003", description="Hue guestroom dimmer Key 3 (DECREASE) Long Release - ignored", tags=["lights"])
+@rule("HueSwGuest3003", description="Hue guestroom dimmer Key 3 (DECREASE) Long Released", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 3003.0")
 def hue_Guestroom_switch3003(event):
     log.info("Event [{}] received".format(event.event))
@@ -148,7 +148,7 @@ def hue_Guestroom_switch3003(event):
 
 
 #===================================================================================================
-@rule("HueSwGuest4000", description="Hue guestroom dimmer Key 4 (OFF) Initial Pressed - ignored", tags=["lights"])
+@rule("HueSwGuest4000", description="Hue guestroom dimmer Key 4 (OFF) Initial Pressed", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 4000.0")
 def hue_Guestroom_switch4000(event):
     log.info("Event [{}] received".format(event.event))
@@ -158,19 +158,19 @@ def hue_Guestroom_switch4000(event):
 
 
 #===================================================================================================
-@rule("HueSwGuest4001", description="Hue guestroom dimmer Key 4 (OFF) Hold - Turn of guestroom lighting", tags=["lights"])
+@rule("HueSwGuest4001", description="Hue guestroom dimmer Key 4 (OFF) Hold", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 4001.0")
 def hue_Guestroom_switch4001(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
     events.sendCommand("Light_Scene_Guestroom", "OFF")
 
 
 #===================================================================================================
-@rule("HueSwGuest4002", description="Hue guestroom dimmer Key 4 (OFF) Short Release - Turn of guestroom lighting", tags=["lights"])
+@rule("HueSwGuest4002", description="Hue guestroom dimmer Key 4 (OFF) Short Released", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 4002.0")
 def hue_Guestroom_switch4002(event):
     log.info("Event [{}] received".format(event.event))
@@ -178,17 +178,17 @@ def hue_Guestroom_switch4002(event):
     switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
-    if str(ir.getItem("Light_Scene_Guestroom").state) != "OFF":
+    if ir.getItem("Light_Scene_Guestroom").state != StringType("OFF"):
         events.sendCommand("Light_Scene_Guestroom", "OFF")
 
 
 #===================================================================================================
-@rule("HueSwGuest4003", description="Hue guestroom dimmer Key 4 (OFF) Long Release - Turn of all guestroom lighting", tags=["lights"])
+@rule("HueSwGuest4003", description="Hue guestroom dimmer Key 4 (OFF) Long Released", tags=["lights"])
 @when("Channel hue:0820:0017882ec5b3:dim_guest:dimmer_switch_event triggered 4003.0")
 def hue_Guestroom_switch4003(event):
     log.info("Event [{}] received".format(event.event))
 
-    switch = str(event.channel).split(":")[3]
+    switch = str(event.channel).split(":")[3].split("_")[1]
     log.info("Switch detected [{}]".format(switch))
 
     events.sendCommand("Light_Scene_Guestroom", "OFF")

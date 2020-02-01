@@ -26,6 +26,8 @@ from configuration import LOG_PREFIX
 @when("Item Light_Scene_Bathroom changed")
 @when("Item Light_Scene_Bedroom changed")
 @when("Item Light_Scene_Lodge changed")
+@when("Item Light_Scene_Guestroom changed")
+@when("Item Light_Scene_Laundry changed")
 @when("Item Light_Scene_Outside changed")
 def hueSetScene(event):
     hueSetScene.log = logging.getLogger("{}.hueSetScene".format(LOG_PREFIX))

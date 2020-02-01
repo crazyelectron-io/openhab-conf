@@ -7,7 +7,7 @@ sitemap default label="At Home"
         Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[EVENING="Evening"] visibility=[Day_Mode=="EVENING"]
         Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[NIGHT="Night"] visibility=[Day_Mode=="NIGHT"]
 
-        Text item=Astro_Day_Phase label="Astro [%s]" icon="sun_clouds"
+        Text item=Weather_Condition label="Weather [%s]" icon="sun_clouds"
         {
             Text item=Astro_Sun_RiseNext
             Text item=Astro_Sun_SetNext
@@ -17,10 +17,7 @@ sitemap default label="At Home"
             Text item=Astro_Moon_Distance       visibility=[Astro_Sun_Elevation <= 0]
             Text item=Astro_Moon_FullNext
             Text item=Astro_Moon_NewNext
-        }
 
-        Text item=Weather_Condition label="Weather [%s]" icon="sun_clouds"
-        {
             Text item=Temp_Avg_Livingroom valuecolor=[>22="red",>20="green",>19="orange",<19="blue"]
             // {
             //     Switch item=Climate_Period1 mappings=[TDY_30="Today", YDY_30="Yesterday", WK_1="Week", LWK_1="Wk-1", MNT_1D="Month", LMNT_1D="M-1"] label="" icon="calendar"
@@ -94,7 +91,7 @@ sitemap default label="At Home"
 
         Text item=gLight
         {
-            Text item=gLight_OnOff_Livingroom
+            Text item=gLight_Brightness_Livingroom
             {
                 // Livingroom Lighting
                 Switch item=Light_Dim_Chair         
@@ -135,7 +132,7 @@ sitemap default label="At Home"
                 Slider item=Light_ColorTemp_Dining3
                 Colorpicker item=Light_Color_Dining3
             }
-            Text item=gLight_OnOff_Hall
+            Text item=gLight_Brightness_Hall
             {
                 // Hallway lighting
                 Switch item=Light_Dim_HallDoor
@@ -148,14 +145,14 @@ sitemap default label="At Home"
                 Slider item=Light_Dim_HallCeiling
                 Slider item=Light_ColorTemp_HallCeiling
             }
-            Text item=gLight_OnOff_Toilet
+            Text item=gLight_Brightness_Toilet
             {
                 // Toilet ceiling light
                 Switch item=Light_Dim_ToiletCeiling
                 Slider item=Light_Dim_ToiletCeiling
                 Slider item=Light_ColorTemp_ToiletCeiling
             }
-            Text item=gLight_OnOff_Bedroom
+            Text item=gLight_Brightness_Bedroom
             {
                 // Master bedroom lighting
                 Switch item=Light_Dim_BedroomLeft
@@ -165,7 +162,7 @@ sitemap default label="At Home"
                 Slider item=Light_Dim_BedroomRight
                 Slider item=Light_ColorTemp_BedroomRight
             }
-            Text item=gLight_OnOff_Guestroom label="Menno's Lighting"
+            Text item=gLight_Brightness_Guestroom label="Menno's Lighting"
             {
                 // Guestroom group switch
                 Switch item=gLight_OnOff_Guestroom
@@ -174,21 +171,21 @@ sitemap default label="At Home"
                 Slider item=Light_Dim_GuestroomCeiling2
                 Slider item=Light_ColorTemp_GuestroomCeiling2
             }
-            Text item=gLight_OnOff_Laundry label="Stephan's Lighting"
+            Text item=gLight_Brightness_Laundry label="Stephan's Lighting"
             {
                 // Laundry room lighting
                 Switch item=Light_Dim_LaundryCeiling
                 Slider item=Light_Dim_LaundryCeiling
                 Slider item=Light_ColorTemp_LaundryCeiling
             }
-            Text item=gLight_OnOff_Bathroom
+            Text item=gLight_Brightness_Bathroom
             {
                 // Bathroom lighting
                 Switch item=Light_Dim_BathroomCeiling
                 Slider item=Light_Dim_BathroomCeiling
                 Slider item=Light_ColorTemp_BathroomCeiling
             }
-            Text item=gLight_OnOff_Outside
+            Text item=gLight_Brightness_Outside
             {
                 // Outside lighting group switch
                 Switch item=Light_Dim_OutsideLeftBack
@@ -216,7 +213,7 @@ sitemap default label="At Home"
 
         Text item=gLighting_Scene
         {
-            Text item=gLivingroom
+            Text item=Light_scene_Livingroom
             {
                 Slider  item=Livingroom_Brightness_EVENING
                 Text    item=Livingroom_Brightness_EVENING label="Brightness [%d]"
@@ -231,7 +228,7 @@ sitemap default label="At Home"
                 Slider  item=Livingroom_ColorTemp_READ
                 Text    item=Livingroom_ColorTemp_READ label="ColorTemp [%d]"
             }
-            Text item=gKitchen
+            Text item=Light_Scene_Kitchen
             {
                 Slider  item=Kitchen_Brightness_EVENING
                 Text    item=Kitchen_Brightness_EVENING label="Brightness [%d]"
@@ -246,7 +243,7 @@ sitemap default label="At Home"
                 Slider  item=Kitchen_ColorTemp_BRIGHT
                 Text    item=Kitchen_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
-            Text item=gDining
+            Text item=Light_Scene_Dining
             {
                 Slider  item=Dining_Brightness_EVENING
                 Text    item=Dining_Brightness_EVENING label="Brightness [%d]"
@@ -261,7 +258,7 @@ sitemap default label="At Home"
                 Slider  item=Dining_ColorTemp_BRIGHT
                 Text    item=Dining_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
-            Text item=gHall
+            Text item=Light_Scene_Hall
             {
                 Slider  item=Hall_Brightness_EVENING
                 Text    item=Hall_Brightness_EVENING label="Brightness [%d]"
@@ -276,7 +273,7 @@ sitemap default label="At Home"
                 Slider  item=Hall_ColorTemp_BRIGHT
                 Text    item=Hall_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
-            Text item=gHallCeiling
+            Text item=Light_Scene_HallCeiling
             {
                 Slider  item=HallCeiling_Brightness_EVENING
                 Text    item=HallCeiling_Brightness_EVENING label="Brightness [%d]"
@@ -291,7 +288,7 @@ sitemap default label="At Home"
                 Slider  item=HallCeiling_ColorTemp_BRIGHT
                 Text    item=HallCeiling_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
-            Text item=gBedroom
+            Text item=Light_Scene_Bedroom
             {
                 Slider  item=Bedroom_Brightness_EVENING
                 Text    item=Bedroom_Brightness_EVENING label="Brightness [%d]"
@@ -306,7 +303,7 @@ sitemap default label="At Home"
                 Slider  item=Bedroom_ColorTemp_COSY
                 Text    item=Bedroom_ColorTemp_COSY label="ColorTemp [%d]"
             }
-            Text item=gBathroom
+            Text item=Light_Scene_Bathroom
             {
                 Slider  item=Bathroom_Brightness_EVENING
                 Text    item=Bathroom_Brightness_EVENING label="Brightness [%d]"
@@ -320,6 +317,36 @@ sitemap default label="At Home"
                 Text    item=Bathroom_Brightness_BRIGHT label="Brightness [%d]"
                 Slider  item=Bathroom_ColorTemp_BRIGHT
                 Text    item=Bathroom_ColorTemp_BRIGHT label="ColorTemp [%d]"
+            }
+            Text item=Light_Scene_Laundry
+            {
+                Slider  item=Laundry_Brightness_EVENING
+                Text    item=Laundry_Brightness_EVENING label="Brightness [%d]"
+                Slider  item=Laundry_ColorTemp_EVENING
+                Text    item=Laundry_ColorTemp_EVENING label="ColorTemp [%d]"
+                Slider  item=Laundry_Brightness_READ
+                Text    item=Laundry_Brightness_READ label="Brightness [%d]"
+                Slider  item=Laundry_ColorTemp_READ
+                Text    item=Laundry_ColorTemp_READ label="ColorTemp [%d]"
+                Slider  item=Laundry_Brightness_BRIGHT
+                Text    item=Laundry_Brightness_BRIGHT label="Brightness [%d]"
+                Slider  item=Laundry_ColorTemp_BRIGHT
+                Text    item=Laundry_ColorTemp_BRIGHT label="ColorTemp [%d]"
+            }
+            Text item=Light_Scene_Guestroom
+            {
+                Slider  item=Guestroom_Brightness_EVENING
+                Text    item=Guestroom_Brightness_EVENING label="Brightness [%d]"
+                Slider  item=Guestroom_ColorTemp_EVENING
+                Text    item=Guestroom_ColorTemp_EVENING label="ColorTemp [%d]"
+                Slider  item=Guestroom_Brightness_READ
+                Text    item=Guestroom_Brightness_READ label="Brightness [%d]"
+                Slider  item=Guestroom_ColorTemp_READ
+                Text    item=Guestroom_ColorTemp_READ label="ColorTemp [%d]"
+                Slider  item=Guestroom_Brightness_BRIGHT
+                Text    item=Guestroom_Brightness_BRIGHT label="Brightness [%d]"
+                Slider  item=Guestroom_ColorTemp_BRIGHT
+                Text    item=Guestroom_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
             Text item=gOutside
             {

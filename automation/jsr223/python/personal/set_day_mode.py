@@ -40,15 +40,16 @@ def scriptLoaded(id):
 @when("Item Weather_Cloudy changed")
 @when("Item Alarm_Status changed to ARMED_HOME")
 @when("Item Alarm_Status changed to ARMED_AWAY")
-@when("System started")
+# @when("System started")
 def setDayMode(event):
     setDayMode.log = logging.getLogger("{}.setDayMode".format(LOG_PREFIX))
 
     cloudy = str(ir.getItem("Weather_Cloudy").state)  or "OFF"
 
+    keyItem = DAY_PHASES_DICT.get(str(ir.getItem("Astro_Day_Phase").state) )
+
     from org.joda.time import DateTime
 
-    keyItem = DAY_PHASES_DICT.get(str(ir.getItem("Astro_Day_Phase").state) )
     if keyItem.get("mode") == "time":
         newState = keyItem.get("before_state") if DateTime.now().getHourOfDay() <= keyItem.get("mode_time") else keyItem.get("after_state")
     else:
