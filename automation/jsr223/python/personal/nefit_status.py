@@ -106,8 +106,7 @@ def nefitStatus(event):
 @when("Item NHC_Temp_Livingroom received update")
 def nefitCheck(event):
     nefitCheck.log = logging.getLogger("{}.nefitStatus".format(LOG_PREFIX))
-
-    nefitCheck.log.debug("Received update from {}, reset watchdog".format(event.itemName))
+    # nefitCheck.log.debug("Received update from {}, reset watchdog".format(event.itemName))
     events.sendCommand("CV_Watchdog" if event.itemName == "CV_Temp_Livingroom" else "NHC_Watchdog", "ON")
 
 

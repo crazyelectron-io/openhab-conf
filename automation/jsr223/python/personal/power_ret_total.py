@@ -25,9 +25,6 @@ def powerRetTotal(event):
     powerRetTotal.log = logging.getLogger("{}.powerRetTotal".format(LOG_PREFIX))
 
     if not isinstance(ir.getItem("Power_Use_T1_Total"), UnDefType) and not isinstance(ir.getItem("Power_Use_T2_Total"), UnDefType):
-
-
-    if ir.getItem("Power_Ret_T1_Total").state is not None and ir.getItem("Power_Ret_T2_Total").state is not None:
         events.postUpdate("Power_Ret_Total", str(float(str(ir.getItem("Power_Ret_T1_Total").state)) + float(str(ir.getItem("Power_Ret_T2_Total").state))))
     else:
         if isinstance(ir.getItem("Power_Ret_T1_Total"), UnDefType):

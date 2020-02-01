@@ -14,6 +14,8 @@ import configuration
 reload(configuration)
 from configuration import LOG_PREFIX
 from core.actions import ScriptExecution
+from core.date import to_joda_datetime
+from org.joda.time import DateTime
 
 timerAlarm = None
 
@@ -40,4 +42,4 @@ def alarmClockUpdate(event):
             timerAlarm.cancel()
         else:
             alarmClockUpdate.log.info("New Android Alarm set for [{}]".format(ir.getItem("AlarmClock").state) )
-            timerAlarm = ScriptExecution.createTimer(event.itemState, lambda: events.sendCommand("Light_Scene_Hall","EVENING"))
+            timerAlarm = ScriptExecution.createTimer(to_joda_datetime(event.itemState), lambda: events.sendCommand("Light_Scene_Hall","EVENING"))
