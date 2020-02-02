@@ -213,7 +213,7 @@ sitemap default label="At Home"
 
         Text item=gLighting_Scene
         {
-            Text item=Light_scene_Livingroom
+            Text item=Light_Scene_Livingroom
             {
                 Slider  item=Livingroom_Brightness_EVENING
                 Text    item=Livingroom_Brightness_EVENING label="Brightness [%d]"

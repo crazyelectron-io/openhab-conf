@@ -66,39 +66,39 @@ Switch							AC_Online_Guestroom
 								{channel="network:pingdevice:ac_guestroom:online", expire="5m", Static="meta"[name="Airco"]}
 
 Switch							AC_Power_Guestroom
-								"Airco On/Off Menno"
+								"Airco Menno On/Off Menno"
 								(gGuestroom,gHist5,gACGuestroom)
-								{channel="daikin:ac_unit:192_168_2_109:power"}
+								{channel="daikin:ac_unit:192_168_2_160:power"}
 	
 Number							AC_SetTemp_Guestroom
 								"Target Temp [%.0f °C]"
 								<temperature>
 								(gGuestroom,gACGuestroom)
-								{channel="daikin:ac_unit:192_168_2_109:settemp"}
+								{channel="daikin:ac_unit:192_168_2_160:settemp"}
 
 Number							AC_Temp_Guestroom
 								"Room Temp [%s °C]"
 								<temperature>
 								(gGuestroom,gTempSensor,gHist5,gACGuestroom)
-								{channel="daikin:ac_unit:192_168_2_109:indoortemp"}
+								{channel="daikin:ac_unit:192_168_2_160:indoortemp"}
 
 String							AC_Mode_Guestroom
 								"AC Mode"
 								<heating>
 								(gGuestroom,gACGuestroom)
-								{channel="daikin:ac_unit:192_168_2_109:mode"}
+								{channel="daikin:ac_unit:192_168_2_160:mode"}
 
 String							AC_FanSpeed_Guestroom
 								"Fan speed [%s]"
 								<fan>
 								(gGuestroom)
-								{channel="daikin:ac_unit:192_168_2_109:fanspeed"}
+								{channel="daikin:ac_unit:192_168_2_160:fanspeed"}
 
 String							AC_FanDirection_Guestroom
 								"Fan direction [%s]"
 								<fan>
 								(gGuestroom)
-								{channel="daikin:ac_unit:192_168_2_109:fandir"}
+								{channel="daikin:ac_unit:192_168_2_160:fandir"}
 
 //--------------------------------------------------------------------------------------------------
 // Daikin AC Study items
