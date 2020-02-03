@@ -1,8 +1,8 @@
 Strategies {
     everyMinute: "0 * * * * ?"
-    every5Minutes: "0 0/5 * * * ?"
-    every10Minutes: "0 0/10 * * * ?"
-    every15Minutes: "0 0/15 * * * ?"
+    every5Minutes: "0 */5 * * * ?"
+    every10Minutes: "0 */10 * * * ?"
+    every15Minutes: "0 */15 * * * ?"
     everyHour: "0 0 * * * ?"
     everyDay: "0 0 0 * * ?"
     default = everyChange

@@ -52,14 +52,14 @@ Number							Weather_Temp_WeatherStation
 Number							Weather_TempAverage_Outdoor
 								"Outdoor [%.1f °C]"
 								<temperature>
-								(gWeather,gPersist,gTempSensor)
+								(gWeather,gHist15,gPersist,gTempSensor)
 								["CurrentTemperature"]
 
 // Feel temperature outdoor (from KNMI API).
 Number							Weather_TempFeel_WeatherStation
 								"Gevoelstemperatuur [%.1f °C]"
 								<temperature>
-								(gWeather,gTempSensor)
+								(gWeather,gHist15,gTempSensor)
 								{http="<[KNMI_JSON:10000:JSONPATH($.liveweer.[0].gtemp)]" }
 
 // Humidity outdoor (from KNMI API).

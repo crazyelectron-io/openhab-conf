@@ -1,0 +1,1131 @@
+@charset "UTF-8";
+
+:root {
+	font-weight: 300;
+ -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */	
+}
+
+:root {
+  --body-bg: #000000;
+  --body-color: #a4a4a4;
+  --primary-color: #26bf75;
+  --box-bg: rgba(255, 255, 255, .01);
+  --header-bg: var(--body-bg);
+  --widget-design-bg: #191716;
+  --widget-text-color: #a4a4a4;
+  --widget-border-radius: 3px;
+  --widget-box-shadow: 0 1px 8px 0 rgba(0, 0, 0, .8), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
+  --icon-color-filter: invert(34%) sepia(100%) hue-rotate(116deg) saturate(1000%);
+  --icon-color-off-filter: invert(60%) sepia(80%) hue-rotate(180deg);
+  --icon-backdrop-filter: invert(60%) sepia(100%) hue-rotate(165deg) opacity(15%);
+  --chart-stroke: #456;
+  --chart-fill: #89a;
+  --chart-tooltip: #fff;
+  --colorpicker-border: #191716;
+  --colorpicker-stroke: #456;
+  --colorpicker-fill: #89a;
+  --image-border: #191716;
+  --switch-off-color: #89a;
+  --slider-pointer-color: #234;
+  --slider-pointer-bg-color: #def;
+  --slider-ceil-color: #def;
+  --slider-bubble-bg-color: #09120f;
+  --slider-bubble-border-color: #fff;
+  --slider-bubble-color: #a4a4a4;
+
+  --pride-icon-color: #666;
+  --pride-button-color: #222;
+
+  --pride-1-color: #f92672;
+  --pride-2-color: #57bd88;
+  --pride-3-color: #00b6da;
+  --pride-4-color: #ea8105;
+  --pride-5-color: #d4ce65;
+  --pride-6-color: #e53b27;
+  --pride-7-color: #ae81ff;
+  --pride-8-color: #9dd52b;
+}
+
+html, body {margin: 0; height: 100%; overflow: hidden}
+
+body {
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+	background: rgba(57, 57, 57, 0.5);
+	margin: 20px;
+}
+
+.rzslider {
+  font-weight: bold;
+}
+.section .rzslider .rz-bar {
+    background: #404040;
+}
+.drawer {
+    background: #000;
+}
+.drawer ul.menu {
+	background: #000;
+}
+.drawer ul.menu li {
+    font-weight: 500;
+    text-transform: none;
+    color: white;
+}
+.drawer ul.menu li.active:not(.head):after {
+	display: none;
+}
+.drawer ul.menu li.active:not(.head) {
+    background: #333;
+    color: white;
+}
+
+.icon-tile.colorize {
+    filter: invert(60%) sepia(100%) hue-rotate(185deg) saturate(1000%);
+    -webkit-filter: invert(60%) sepia(100%) hue-rotate(185deg) saturate(1000%);
+    filter: var(--icon-color-filter, invert(60%) sepia(100%) hue-rotate(185deg) saturate(1000%));
+    -webkit-filter: var(--icon-color-filter, invert(60%) sepia(100%) hue-rotate(185deg) saturate(1000%));
+}
+.dashboard-title {
+    color: white;
+    font-size: 35px;
+    font-weight: 500;
+}
+.header {
+  position: -webkit-sticky;
+  position: sticky;
+  -webkit-backdrop-filter: blur(10px);
+  margin: 0px;
+  width: 100%;
+  /* padding: 8px; */
+  z-index: 99;
+  background: rgba(57, 57, 57, 0.5);
+  border-bottom: 1px solid #262626;
+  top: 0px;
+}
+.container {
+	padding: 0px;
+}
+
+
+@media only screen {
+    /* For mobile: */
+    .section {
+    }
+    .section .hueSelect {
+      max-width: 100%;
+      padding-right: 15px;
+    }
+	.section .widget {
+		width: 100%;
+		float: left;
+    min-height: 35px;
+	}
+	.section .widget.wide {
+		width: 100%;
+		float: left;
+	}
+	.section .bigDash {
+		margin-left: auto;
+		width: calc(100% - 6px);
+	    margin-right: auto;
+	}      
+	.header a {
+		display: none;
+	}	  
+}
+@media only screen and (min-width: 650px) {
+    /* For tablet: */
+    .section {
+    }
+    .section .hueSelect {
+      width: 50%;
+      padding-right: 70px;
+    }    
+	.section .widget {
+		width: 50%;
+		float: left;
+	}
+	.section .widget.wide {
+		width: 50%;
+		float: left;
+	}
+	.section .bigDash {
+		margin-left: auto;
+		width: calc(50% - 6px);
+	  margin-right: auto;
+      min-width: 320px;
+
+	}     
+	.header a {
+		display: none;
+	}
+}
+@media only screen and (min-width: 1000px) {
+    /* For desktop: */
+    .section {
+    }
+    .section .hueSelect {
+      width: 33%;
+      padding-right: 70px;
+    }
+
+	.section .widget {
+		width: 33%;
+		float: left;
+	}
+	.section .widget.wide {
+		width: 33%;
+		float: left;
+	}
+	.section .bigDash {
+		margin-left: auto;
+	    width: calc(33% - 3px);
+	    min-width: 320px;
+	    margin-right: auto;
+	}   
+	.header a {
+		display: inline;
+	} 
+}
+
+
+.section {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 10px;
+    /* margin-right: 20px; */
+    /* float: left; */
+    text-align: left;
+    color: white;
+    border-bottom: 1px solid #2a2a2a;
+    /* padding: 3px; */
+    padding-bottom: 6px;
+}
+.section a {
+  color: #ff2c0a;
+}
+.section .title {
+	clear: left;
+	overflow: auto;
+  zoom: 1;
+	font-size: 25px;
+	font-weight: 500;
+	padding-bottom: 10px;
+  padding-left: 5px;
+}
+.section .title, .section .title .name {
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.section .bigDash:nth-of-type(1) .graph .legend {
+    border-top: 1px dashed var(--pride-1-color);
+}
+.section .bigDash:nth-of-type(2) .graph .legend {
+    border-top: 1px dashed var(--pride-2-color);
+}
+.section .bigDash:nth-of-type(3) .graph .legend {
+    border-top: 1px dashed var(--pride-3-color);
+}
+.section .bigDash:nth-of-type(4) .graph .legend {
+    border-top: 1px dashed var(--pride-4-color);
+}
+.section .bigDash:nth-of-type(5) .graph .legend {
+    border-top: 1px dashed var(--pride-5-color);
+}
+.section .bigDash:nth-of-type(6) .graph .legend {
+    border-top: 1px dashed var(--pride-6-color);
+}
+.section .bigDash:nth-of-type(7) .graph .legend {
+    border-top: 1px dashed var(--pride-7-color);
+}
+.section .bigDash:nth-of-type(8) .graph .legend {
+    border-top: 1px dashed var(--pride-8-color);
+}
+
+.section .bigDash:nth-of-type(1) .top .icon svg,
+.section:nth-of-type(1) .sectionIcon svg, 
+.section:nth-of-type(1) .icon.on svg, 
+.section:nth-of-type(1) .control svg, 
+.section:nth-of-type(1) .widget .appLogo 
+ {
+    stroke: var(--pride-1-color);    fill: var(--pride-1-color);  
+}
+.section .bigDash:nth-of-type(2) .top .icon svg,
+.section:nth-of-type(2) .sectionIcon svg, 
+.section:nth-of-type(2) .icon.on svg, 
+.section:nth-of-type(2) .control svg, 
+.section:nth-of-type(2) .widget .appLogo 
+ {
+    stroke: var(--pride-2-color);    fill: var(--pride-2-color);  
+}
+.section .bigDash:nth-of-type(3) .top .icon svg,
+.section:nth-of-type(3) .sectionIcon svg, 
+.section:nth-of-type(3) .icon.on svg, 
+.section:nth-of-type(3) .control svg, 
+.section:nth-of-type(3) .widget .appLogo 
+ {
+    stroke: var(--pride-3-color);    fill: var(--pride-3-color);  
+}
+.section .bigDash:nth-of-type(4) .top .icon svg,
+.section:nth-of-type(4) .sectionIcon svg, 
+.section:nth-of-type(4) .icon.on svg, 
+.section:nth-of-type(4) .control svg, 
+.section:nth-of-type(4) .widget .appLogo 
+ {
+    stroke: var(--pride-4-color);    fill: var(--pride-4-color);  
+}
+.section .bigDash:nth-of-type(5) .top .icon svg,
+.section:nth-of-type(5) .sectionIcon svg, 
+.section:nth-of-type(5) .icon.on svg, 
+.section:nth-of-type(5) .control svg, 
+.section:nth-of-type(5) .widget .appLogo 
+ {
+    stroke: var(--pride-5-color);    fill: var(--pride-5-color);  
+}
+.section .bigDash:nth-of-type(6) .top .icon svg,
+.section:nth-of-type(6) .sectionIcon svg, 
+.section:nth-of-type(6) .icon.on svg, 
+.section:nth-of-type(6) .control svg, 
+.section:nth-of-type(6) .widget .appLogo 
+ {
+    stroke: var(--pride-6-color);    fill: var(--pride-6-color);  
+}
+.section .bigDash:nth-of-type(7) .top .icon svg,
+.section:nth-of-type(7) .sectionIcon svg, 
+.section:nth-of-type(7) .icon.on svg, 
+.section:nth-of-type(7) .control svg, 
+.section:nth-of-type(7) .widget .appLogo 
+ {
+    stroke: var(--pride-7-color);    fill: var(--pride-7-color);  
+}
+.section .bigDash:nth-of-type(8) .top .icon svg,
+.section:nth-of-type(8) .sectionIcon svg, 
+.section:nth-of-type(8) .icon.on svg, 
+.section:nth-of-type(8) .control svg, 
+.section:nth-of-type(8) .widget .appLogo 
+ {
+    stroke: var(--pride-8-color);    fill: var(--pride-8-color);  
+}
+
+
+.section .bigDash:nth-of-type(1) .description, 
+.section:nth-of-type(1) .title, 
+.section:nth-of-type(1) .sub-title, 
+.section:nth-of-type(1) .value, 
+.section:nth-of-type(1) .controlGroup.control,
+.section:nth-of-type(1) :not(.bigslider).rz-bubble
+{
+  color: var(--pride-1-color);
+}
+.section .bigDash:nth-of-type(2) .description, 
+.section:nth-of-type(2) .title, 
+.section:nth-of-type(2) .sub-title, 
+.section:nth-of-type(2) .value, 
+.section:nth-of-type(2) .controlGroup.control,
+.section:nth-of-type(2) :not(.bigslider).rz-bubble
+{
+  color: var(--pride-2-color);
+}
+.section .bigDash:nth-of-type(3) .description, 
+.section:nth-of-type(3) .title, 
+.section:nth-of-type(3) .sub-title, 
+.section:nth-of-type(3) .value, 
+.section:nth-of-type(3) .controlGroup.control,
+.section:nth-of-type(3) :not(.bigslider).rz-bubble
+{
+  color: var(--pride-3-color);
+}
+.section .bigDash:nth-of-type(4) .description, 
+.section:nth-of-type(4) .title, 
+.section:nth-of-type(4) .sub-title, 
+.section:nth-of-type(4) .value, 
+.section:nth-of-type(4) .controlGroup.control,
+.section:nth-of-type(4) :not(.bigslider).rz-bubble 
+{
+  color: var(--pride-4-color);
+}
+.section .bigDash:nth-of-type(5) .description, 
+.section:nth-of-type(5) .title, 
+.section:nth-of-type(5) .sub-title, 
+.section:nth-of-type(5) .value, 
+.section:nth-of-type(5) .controlGroup.control,
+.section:nth-of-type(5) :not(.bigslider).rz-bubble 
+{
+  color: var(--pride-5-color);
+}
+.section .bigDash:nth-of-type(6) .description, 
+.section:nth-of-type(6) .title, 
+.section:nth-of-type(6) .sub-title, 
+.section:nth-of-type(6) .value, 
+.section:nth-of-type(6) .controlGroup.control,
+.section:nth-of-type(6) :not(.bigslider).rz-bubble 
+{
+  color: var(--pride-6-color);
+}
+.section .bigDash:nth-of-type(7) .description, 
+.section:nth-of-type(7) .title, 
+.section:nth-of-type(7) .sub-title, 
+.section:nth-of-type(7) .value, 
+.section:nth-of-type(7) .controlGroup.control,
+.section:nth-of-type(7) :not(.bigslider).rz-bubble 
+{
+  color: var(--pride-7-color);
+}
+.section .bigDash:nth-of-type(8) .description, 
+.section:nth-of-type(8) .title, 
+.section:nth-of-type(8) .sub-title, 
+.section:nth-of-type(8) .value, 
+.section:nth-of-type(8) .controlGroup.control,
+.section:nth-of-type(8) :not(.bigslider).rz-bubble 
+{
+  color: var(--pride-8-color);
+}
+
+
+.section:nth-of-type(1) .control.on,
+.section:nth-of-type(1) .rzslider .rz-pointer,
+.section:nth-of-type(1) .rzslider .rz-bar.rz-selection
+{
+    background-color: var(--pride-1-color);
+}
+.section:nth-of-type(2) .control.on,
+.section:nth-of-type(2) .rzslider .rz-pointer,
+.section:nth-of-type(2) .rzslider .rz-bar.rz-selection
+{
+    background-color: var(--pride-2-color);
+}
+.section:nth-of-type(3) .control.on,
+.section:nth-of-type(3) .rzslider .rz-pointer,
+.section:nth-of-type(3) .rzslider .rz-bar.rz-selection
+{
+    background-color: var(--pride-3-color);
+}
+.section:nth-of-type(4) .control.on,
+.section:nth-of-type(4) .rzslider .rz-pointer,
+.section:nth-of-type(4) .rzslider .rz-bar.rz-selection
+{
+    background-color: var(--pride-4-color);
+}
+.section:nth-of-type(5) .control.on,
+.section:nth-of-type(5) .rzslider .rz-pointer,
+.section:nth-of-type(5) .rzslider .rz-bar.rz-selection 
+{
+    background-color: var(--pride-5-color);
+}
+.section:nth-of-type(6) .control.on,
+.section:nth-of-type(6) .rzslider .rz-pointer,
+.section:nth-of-type(6) .rzslider .rz-bar.rz-selection 
+{
+    background-color: var(--pride-6-color);
+}
+.section:nth-of-type(7) .control.on,
+.section:nth-of-type(7) .rzslider .rz-pointer,
+.section:nth-of-type(7) .rzslider .rz-bar.rz-selection 
+{
+    background-color: var(--pride-7-color);
+}
+.section:nth-of-type(8) .control.on,
+.section:nth-of-type(8) .rzslider .rz-pointer,
+.section:nth-of-type(8) .rzslider .rz-bar.rz-selection 
+{
+    background-color: var(--pride-8-color);
+}
+
+
+.section .sectionIcon svg {
+    stroke-width: 2.5px;
+}
+.section .control.on svg {
+    stroke: #000; fill: #000;
+}
+
+
+.section .sub-title {
+    font-size: 20px;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    clear: both;
+    font-weight: 500;
+    opacity: 0.7;
+    padding-left: 5px;
+}
+.section .title .name {
+}
+.section .title .summary {
+  font-size: 16px;
+  color: #ffffff;
+  opacity: 0.7;
+}
+.section .sectionIconContainer {
+	position: relative;
+	width: 100%;
+}
+.section .sectionIcon {
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	right: 0px;
+}
+.section .bigDash {
+    float: left;
+    padding-bottom: 15px;
+    padding-top: 10px;
+    background: #212124;
+    /* margin-bottom: 3px; */
+    border-radius: 10px;
+    /* margin-right: 3px; */
+    box-sizing: content-box;
+    /* margin-left: 3px; */
+    margin: 3px;
+}
+.section .bigDash .description {
+    /* text-transform: uppercase; */
+    /* text-align: center; */
+    /* width: 45%; */
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    /* border: 1px solid #2b312e; */
+    /* border-radius: 5px; */
+    /* padding: 2px 2px 2px 2px; */
+    font-size: 18px;
+    /* line-height: 20px; */
+    padding-left: 15px;
+    font-weight: 500;
+}
+.section .bigDash .top {
+    clear: left;
+    margin-left: auto;
+    width: 205px;
+    margin-right: auto;
+    height: 74px;
+}
+.section .bigDash .bottom {
+    float: left;
+    margin-left: 21px;
+    /* margin-right: auto; */
+    /* height: 35px; */
+    width: calc(100% - 240px);
+    /* border: 1px solid; */
+    padding-top: 3px;
+}
+.section .bigDash .bottom .value {
+  padding-top: 5px;
+  padding-left: 5px;
+  /* padding-right: 25px; */
+  /* float: left; */
+  color: white;
+  /* clear: right; */
+  height: 33px;
+}
+.section .bigDash .top .icon {
+  width: 50px;
+  height: 50px;
+  margin-top: 10px;
+  margin-left: 15px;
+  float: left;
+}
+.section .bigDash .bottom .icon {
+    width: 30px;
+    height: 30px;
+    padding-top: 0px;
+    float: left;
+}
+.section .bigDash .graph {
+  text-align: center;
+  clear: left;
+  border-top: 1px dashed #333;
+  margin-top: 10px;
+  display: inline-block;
+}
+.section .bigDash .trend {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  display: inline-block;
+  top: -5px;
+  left: 0px;
+  /* width: 21px; */
+  margin-top: 43px;
+} 
+
+.section .bigDash .trend svg {
+    stroke: #888;
+    stroke-width: 5px;
+}
+.section .bigDash .trend.up svg {
+    stroke: #3ebf26;
+    animation: upy 0.2s ease-in-out infinite alternate;
+}
+.section .bigDash .trend.down svg {
+    stroke: #ff2c0a;
+    animation: downy 0.2s ease-in-out infinite alternate;
+}
+
+@keyframes upy {
+    0% {
+        transform: translate(0px, 0px);
+    }
+    100% {
+        transform: translate(0px, 5px);
+    }
+}
+@keyframes downy {
+    0% {
+        transform: translate(0px, 0px);
+    }
+    100% {
+        transform: translate(0px, -5px);
+    }
+}
+
+.sun {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+    text-align: center;
+    clear: left;
+    border-top: 1px dashed #333;
+    margin-top: 10px;
+    display: inline-block;
+    padding-left: 40px;
+    padding-right: 40px;
+    /* max-height: 200px; */
+}
+.sun object {
+   max-height: 189px;
+}
+.graph {
+  text-align: center;
+  clear: left;
+  margin-left: 20px;
+  margin-right: 20px; 
+}
+.graph img {
+  width: 100%;
+  max-height: 180px;
+  min-height: 180px;
+}
+.graph .legend {
+    opacity: 0.5;
+    font-size: 10px;
+    padding-top: 7px;
+    color: #aaa;
+    font-weight: 600;
+    height: 0px;
+}
+.graph .max {
+    position: relative;
+    top: 4px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 300;
+    color: #444;
+    height: 0px;
+}
+.graph .min {
+    position: relative;
+    top: -4px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 300;
+    color: #444;
+    height: 0px;
+}
+
+.section .widget {
+  cursor: pointer;
+}
+.section .widget .icon {
+	width: 30px;
+	height: 30px;
+  margin-right: 10px;
+  margin-left: 10px;
+	float: left;
+}
+.section .icon svg, .section .control svg {
+  stroke-width: 2px;
+}
+.section .icon.off svg {
+  stroke: var(--pride-icon-color);
+  fill: var(--pride-icon-color);
+}
+.section .icon.warn svg {
+  stroke: #ff2c0a;
+  fill: #ff2c0a;
+  animation: blinker 1s linear infinite;
+}
+.section .icon.blink svg {
+  stroke: #00afb8;
+  fill: #00afb8;
+	animation: blinker 1s linear infinite;
+}
+@keyframes blinker {  
+	50% { opacity: 0; }
+}	
+.section .icon.wind svg {
+  stroke: var(--pride-icon-color);  
+  fill: var(--pride-icon-color);  
+}
+.section .icon.on.wind svg {
+  stroke: #26bf75;  
+  fill: #26bf75;  
+}
+.section .icon.wind {
+  	animation: windy 0.5s ease-in-out infinite;
+}
+@keyframes windy {
+    0% {
+        transform: rotate(180deg);
+    }
+    50% {
+        transform: rotate(200deg);
+    }
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+.section .widget select {
+    background: rgba(0,0,0,0);
+    border: 0px;
+    outline: none;
+    text-align: right;
+    text-align-last: right;
+}
+
+.section .widget.disabled {
+  opacity: 0.2;
+}
+.section .widget.disabled:active .icon svg {
+  stroke: var(--pride-icon-color);
+  fill: var(--pride-icon-color);
+}
+.section .widget.disabled:active .name {
+  color:  white;
+}
+.section .widget.disabled .control:active {
+  background-color: var(--pride-button-color);
+}
+
+.section .widget:active .icon svg {
+  stroke: #fff;
+  fill: #fff;
+	-webkit-transition: 0.2s;
+}
+.section .widget:active .name {
+  color:  var(--pride-icon-color);
+  fill:  var(--pride-icon-color);
+	-webkit-transition: 0.2s;
+}
+
+
+.section .widget.wide .name {
+	width: 250px;
+}
+.section .widget .name {
+	height: 30px;
+	padding-top: 6px;
+  padding-right: 5px;
+	float: left;
+	font-weight: 500;
+}
+.section .widget .name .value {
+	font-weight: bold;
+	text-align: left;	
+  text-transform: none;
+}
+.section .widget .graph {
+	text-align: center;
+	padding:20px;
+	margin-left: 10px;
+}
+.section .widget .appLogo {
+    width: 150px;
+    margin-right: 20px;
+    margin-left: auto;
+    padding-top: 6px;
+    height: 50px;
+    text-align: right;
+    font-size: 25px;
+    font-weight: 300;
+}
+
+.section .widget .sceneGroup {
+  float: right;
+    font-size: 14px;
+    color: var(--pride-icon-color);
+    font-weight: 700;
+    padding-right: 20px;
+}
+.section .widget .sceneGroup .scene {
+    border: 1px solid var(--pride-icon-color);
+    border-radius: 5px;
+    padding: 6px 6px 6px 6px;
+    text-align: center;
+    margin-bottom: 8px;
+    width: 133px;
+    float: right;
+    margin-left: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.section .widget .sceneGroup .scene.on {
+  background-color: var(--pride-button-color);
+  border: 1px solid var(--pride-button-color);
+  color: #ddd;
+}
+
+.section .widget .valueGroup {
+	padding-right: 20px;
+  min-height: 35px;  
+}
+.section .widget .valueGroup .value {
+	text-align: right;
+	padding-top: 6px;
+	font-weight: bold;
+}
+.section .widget .valueGroup .value.warning {
+    color: #ff2c0a;
+    font-weight: 600;
+}
+.section .widget .valueGroup .value.active, .section .name .value.active {
+    color: #00afb8;
+}
+.section .widget .valueGroup .value:nth-child(n+2) {
+	opacity: 0.6;	
+}
+.section .controls {
+	margin-bottom: 10px;
+	overflow: hidden;
+  zoom: 1;
+}
+.section .controlGroup {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.section .controlGroup.volume {
+  padding-left: 10px;
+  padding-right: 10px;
+  clear: both;
+  width: calc(100% - 30px);
+  margin-left: 30px;
+  height: 75px;
+}
+
+.section .widget.wide .controlGroup {
+  clear:left;
+}
+.section .control {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background-color: var(--pride-button-color);
+  width: 40px;
+  height: 40px; 
+  float: right;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 41px;
+  font-weight: bold;  
+}
+.section .control:active {
+	background-color:	#fff;
+	-webkit-transition: 0.2s;
+}
+.section .control svg {
+	padding: 8px;
+}
+.section .bigDash .top {
+    float: left;
+    /* margin-left: auto; */
+    /* width: 330px; */
+    /* margin-right: auto; */
+    height: 74px;
+}
+.section .bigDash .top .value {
+    width: 208px;
+    /* border: 1px solid green; */
+    height: 80px;
+}
+.section .bigDash .top .value.large {
+    width: 258px;
+    /* border: 1px solid green; */
+    height: 80px;
+}
+
+.section .bigDash .value {
+    font-weight: 500;
+    /* width: 150px; */
+    /* border: 1px solid; */
+}
+.section .bigDash .top .icon svg{
+  stroke-width: 2px;
+}
+
+.section .bigDash .main {
+  font-size: 65px;
+  letter-spacing: 0px;
+  line-height: 70px;
+  float: left;
+  color: white;
+  width: 75px;
+  text-align: right;
+  font-weight: 500;
+}
+.section .bigDash .value.large .main {
+  width: 130px;
+}
+.section .bigDash .decimals {
+  font-weight: 300;
+  font-size: 45px;
+  letter-spacing: 0px;
+  line-height: 0px;
+  float: left;
+  color: #575f59;
+  padding-top: 43px;
+}
+.section .bigDash .value.large .sub {
+  margin-left: 0px;
+}
+.section .bigDash .sub {
+  font-size: 15px;
+  color: #575f59;
+  /* display: inline; */
+  text-align: left;
+  margin-left: -14px;
+  font-weight: 500;
+  /* width: 20px; */
+  float: left;
+}
+
+
+.batteryGroup {
+    padding-left: 20px;
+}
+.battery {
+	width: 100%;
+	height: 90px;	
+    box-sizing: border-box;
+    padding: 10px 30px 10px 30px;
+}
+
+.battery .batteryShell {
+    height: 100%;
+    box-sizing: border-box;
+	background: var(--pride-icon-color);	
+    border-radius: 10px 10px 10px 10px;
+	float: left;
+    width: 95%;    
+}
+.battery .batteryTip {
+	width: 4%;
+    height: 100%;
+    float: left;
+    margin-left: 1px;
+    max-width: 8px;
+}
+.battery .batteryTip1 {
+    width: 100%;
+    height: 30%;
+}
+.battery .batteryTip2 {
+    background: var(--pride-icon-color);
+    border-radius: 0px 10px 10px 0px;
+    width: 100%;
+    height: 40%;
+}
+
+.battery .batteryShell .batteryLevel {
+    width: 75%;
+    height: 100%;
+    background: repeating-linear-gradient( 90deg,  #67da66,  #67da66 20px,  #5cbc62 20px,  #5cbc62 21px );
+    box-shadow: 0 0 20px 10px rgba(92, 188, 98, 0.25);
+    border-radius: 10px 0px 0px 10px;
+}
+.battery .batteryShell .batteryLevel.full {
+    width: 75%;
+    height: 100%;
+    background: #67da66;
+    box-shadow: 0 0 20px 10px rgba(92, 188, 98, 0.25);
+    border-radius: 10px 10px 10px 10px;
+}
+.battery .batteryShell .batteryLevel.low {
+    background: repeating-linear-gradient( 90deg,  #ff2c0a,  #ff2c0a 20px,  #B82009 20px,  #B82009 21px );
+    box-shadow: 0 0 20px 10px rgba(222, 18, 17, 0.25);    
+}
+.battery .batteryTip2.full {
+    background: #11de7b;
+}
+
+
+
+.fuelGroup {
+    padding-left: 20px;
+}
+.fuel {
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    padding: 10px 30px 10px 30px;
+}
+
+.fuel .fuelShell {
+    height: 100%;
+    box-sizing: border-box;
+	background: var(--pride-icon-color);	
+    border-radius: 10px 10px 10px 10px;
+	float: left;
+    width: 95%;    
+}
+.fuel .fuelTip {
+    width: 8px;
+    height: 100%;
+    float: left;
+    margin-left: 1px;    
+}
+.fuel .fuelTip1 {
+    width: 100%;
+    height: 30%;
+}
+.fuel .fuelTip2 {
+    background: var(--pride-icon-color);
+    border-radius: 0px 10px 10px 0px;
+    width: 100%;
+    height: 40%;
+}
+
+.fuel .fuelShell .fuelLevel {
+    width: 75%;
+    height: 100%;
+    background: repeating-linear-gradient( 90deg,  #67da66,  #67da66 20px,  #5cbc62 20px,  #5cbc62 21px );
+    /* box-shadow: 0 0 20px 10px rgba(17, 222, 123, 0.25); */
+    border-radius: 10px 0px 0px 10px;
+}
+.fuel .fuelShell .fuelLevel.low {
+    background: repeating-linear-gradient( 90deg,  #ff2c0a,  #ff2c0a 20px,  #B82009 20px,  #B82009 21px );    
+}
+.fuel .fuelShell .fuelLevel.full {
+    border-radius: 10px 10px 10px 10px;
+}
+
+
+
+.section .controls .music {
+    width: 100%;
+    float: right;
+    padding-top: 15px;
+}
+.section .controls .music .cover {
+  width: 75px;
+    height: 75px;
+    background-size: cover;
+    margin-left: 40px;
+    margin-bottom: 20px;
+    float: left;
+}
+.section .controls .music .track {
+  width:100%;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 100;
+    color: #26bf75; 
+}
+.section .controls .music .artist {
+  width:100%;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--pride-icon-color);
+    padding-top:3px;
+    padding-bottom: 3px;
+}
+.section .controls .music .playback {
+    width: 60%;
+    height: 20px;
+    font-size: 14px;
+    font-weight: 100;
+    margin-left: auto;
+    margin-bottom: 15px;
+    float: right;
+}
+.section .controls .music .playbackTime {
+  width: 22%;
+    display: inline-block;
+    text-align: center;
+    /* border: 1px solid red; */
+    height: 100%;
+    /* line-height: 33px; */
+    float: left;
+}
+.section .controls .music .playbackBarDone {
+    background: #26bf75;
+    height: 100%;
+}
+.section .controls .music .playbackBar {
+    width: 52%;
+    display: inline-block;
+    background: var(--pride-icon-color);
+    height: 2px;
+    /* border: 1px solid rebeccapurple; */
+    float: left;
+    margin-top: 7px;
+}
+.section .controls .music .controlGroup {
+  margin-left: auto;
+    width: 150px;
+    padding: 0px 10px 50px 0px;
+}
+
+.section .widget .name .hue {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    margin-right: 7px;
+    border-radius: 100%;
+    border: 1px solid #666;
+}
+
+
+.section .hueSelect {
+    position: absolute;
+    height: 0px;
+}
+.section .hueSelect a {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    margin: 15px 0px 0px 20px;
+    border-radius: 100%;
+    border: 1px solid rgba(255,255,255,0);
+}
+.section .hueSelect a:hover, .section .hueSelect a:active {
+  border: 1px solid white;
+  -webkit-transition: 0.2s;
+ 
+}
+.section .hueSelectOptions {
+    position: relative;
+    top: 7px;
+    padding: 5px 25px 15px 10px;
+    background: #2a332e;
+    border-radius: 0px 0px 15px 15px;
+    left: 0;
+    left: -1px;
+    border-top: 1px solid #5f7167;
+}
+
+.shaddow {
+    width: 220px;
+    height: 220px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+}

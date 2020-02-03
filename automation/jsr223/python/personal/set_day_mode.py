@@ -40,9 +40,10 @@ def scriptLoaded(id):
 @when("Item Weather_Cloudy changed")
 @when("Item Alarm_Status changed to ARMED_HOME")
 @when("Item Alarm_Status changed to ARMED_AWAY")
-# @when("System started")
+@when("System started")
 def setDayMode(event):
     setDayMode.log = logging.getLogger("{}.setDayMode".format(LOG_PREFIX))
+    setDayMode.log.info("Enter Day_Mode with Day_Mode [{}], Clouds [{}], Astro_Day_Phase [{}]".format(ir.getItem("Day_Mode").state, ir.getItem("Weather_Cloudy").state, ir.getItem("Astro_Day_Phase").state))
 
     cloudy = str(ir.getItem("Weather_Cloudy").state)  or "OFF"
 
@@ -52,6 +53,9 @@ def setDayMode(event):
 
     if keyItem.get("mode") == "time":
         newState = keyItem.get("before_state") if DateTime.now().getHourOfDay() <= keyItem.get("mode_time") else keyItem.get("after_state")
+        # TODO: Fix this hack:
+        if str(ir.getItem("Astro_Day_Phase").state) in ["NIGHT", "NAUTIC_DAWN", "CIVIL_DAWN", "ASTRO_DAWN"]:
+            newState = "NIGHT" if DateTime.now().getHourOfDay() <= 6 else "MORNING"
     else:
         newState = keyItem.get("clear_state") if cloudy == "OFF" else keyItem.get("cloudy_state")
 

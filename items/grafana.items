@@ -11,51 +11,54 @@ Image							imgTempIndoor24h
 								"Indoor Temp last 24h"
 								(gSnapshot)
 								{channel="ftpupload:imagereceiver:grf_temp_indoor24h:image"}
+
 // Item to store the Grafana image for Outdoor temperature last 24h
 Image							imgTempOutdoor24h
 								"Outdoor Temp last 24h"
 								(gSnapshot)
 								{channel="ftpupload:imagereceiver:grf_temp_outdoor24h:image"}
-// Item to store the Grafana image for Net power consumption last 24H
-// Image							imgPwrDelta24H_6
-// 								"Power Consumption last 24H"
-// 								(gSnapshots10)
-// 								{channel="ftpupload:imagereceiver:grf_pwr_delta24h:image"}
-// Item to store the Grafana image for CPU Load last 24H
-Image							imgCPULoad24H_8
-								"CPU Load last 24H"
-								(gSnapshots60)
-								{channel="ftpupload:imagereceiver:grf_cpu_load24h:image"}
-// Item to store the Grafana image for Memory free last 24H
-Image							imgMemFree24H_10
-								"Memory Free last 24H"
-								(gSnapshots60)
-								{channel="ftpupload:imagereceiver:grf_mem_free24h:image"}
-// Item to store the Grafana image for Storage free last 7 days
-Image							imgStorageFree7D_14
-								"Storage Free last 7D"
-								(gSnapshots60)
-								{channel="ftpupload:imagereceiver:grf_stor_free7d:image"}
-// Item to store the Grafana image for CPU Temp last 24H
-Image							imgCPUTemp24H_12
-								"CPU Temp last 24H"
-								(gSnapshots60)
-								{channel="ftpupload:imagereceiver:grf_cpu_temp24h:image"}
-// CV Heater on/off discrete panel
-Image							imgHeaterState24H_16
-								"CV Heater status 24H"
-								(gSnapshots60)
-								{channel="ftpupload:imagereceiver:grf_state_heater24h:image"}
-// Solar panel production last 24H
-Image							imgSolarProd24H_18
-								"Solar production 24H"
-								(gSnapshots15)
-								{channel="ftpupload:imagereceiver:grf_solar_prod24h:image"}
-// Outdoor temperature for www.moerman.online
-Image							imgTempOutdoor24H_20
-								"Buitentemperatuur 24H"
-								(gSnapshots15)
-								{channel="ftpupload:imagereceiver:grf_temp_outdoor24:image"}
+
+// Item to store the Grafana image for Net power consumption last 24h
+Image							imgPowerDelta24h
+								"Power Consumption last 24h"
+								(gSnapshot)
+								{channel="ftpupload:imagereceiver:grf_pwr_delta24h:image"}
+
+// // Item to store the Grafana image for CPU Load last 24H
+// Image							imgCPULoad24H_8
+// 								"CPU Load last 24H"
+// 								(gSnapshots60)
+// 								{channel="ftpupload:imagereceiver:grf_cpu_load24h:image"}
+// // Item to store the Grafana image for Memory free last 24H
+// Image							imgMemFree24H_10
+// 								"Memory Free last 24H"
+// 								(gSnapshots60)
+// 								{channel="ftpupload:imagereceiver:grf_mem_free24h:image"}
+// // Item to store the Grafana image for Storage free last 7 days
+// Image							imgStorageFree7D_14
+// 								"Storage Free last 7D"
+// 								(gSnapshots60)
+// 								{channel="ftpupload:imagereceiver:grf_stor_free7d:image"}
+// // Item to store the Grafana image for CPU Temp last 24H
+// Image							imgCPUTemp24H_12
+// 								"CPU Temp last 24H"
+// 								(gSnapshots60)
+// 								{channel="ftpupload:imagereceiver:grf_cpu_temp24h:image"}
+// // CV Heater on/off discrete panel
+// Image							imgHeaterState24H_16
+// 								"CV Heater status 24H"
+// 								(gSnapshots60)
+// 								{channel="ftpupload:imagereceiver:grf_state_heater24h:image"}
+// // Solar panel production last 24H
+// Image							imgSolarProd24H_18
+// 								"Solar production 24H"
+// 								(gSnapshots15)
+// 								{channel="ftpupload:imagereceiver:grf_solar_prod24h:image"}
+// // Outdoor temperature for www.moerman.online
+// Image							imgTempOutdoor24H_20
+// 								"Buitentemperatuur 24H"
+// 								(gSnapshots15)
+// 								{channel="ftpupload:imagereceiver:grf_temp_outdoor24:image"}
 
 
 Switch							Grafana_Online
