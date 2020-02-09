@@ -138,10 +138,10 @@ Switch                          VoC_Engine_Started
                                 (gVoC)
                                 {channel="volvooncall:vehicle:v90:V90:other#engineRunning"}
 
-Switch                          VoC_Remote_Heater
-                                "Remote heater"
-                                (gVoC)
-                                {channel="volvooncall:vehicle:v90:V90:other#remoteHeater"}
+// Switch                          VoC_Remote_Heater
+//                                 "Remote heater"
+//                                 (gVoC)
+//                                 {channel="volvooncall:vehicle:v90:V90:other#remoteHeater"}
 
 String                          VoC_Service_Warning
                                 "Service status"
@@ -152,6 +152,11 @@ String							VoC_Journal_Log
 								"Journal log"
 								(gVoC)
 								{channel="volvooncall:vehicle:v90:V90:other#journalLog"}
+
+Switch                          VoC_Heater
+                                "Pre-climatization"
+                                (gVoC)
+                                // {channel="volvooncall:vehicle:v90:V90:other#preclimatization"}
 
     // // Car properties
     // public static final String ENGINE_START = "engineStart";

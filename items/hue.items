@@ -149,7 +149,7 @@ String							Light_Scene_Kitchen
 								<light>
 								(gLight,gKitchen,gPersist,gLighting_Scene)
 
-Group:Dimmer					gLight_Brightness_Kitchen
+Group:Dimmer:AVG				gLight_Brightness_Kitchen
 								"Kitchen"
 								<brightness>
 								(gLichtg,gKitchen)
@@ -212,7 +212,7 @@ String							Light_Scene_Dining
 								<light>
 								(gLight_Dining,gPersist,gLighting_Scene)
 
-Group:Dimmer					gLight_Brightness_Dining
+Group:Dimmer:AVG				gLight_Brightness_Dining
 								"Brightness Dining light"
 								<slider>
 								(gLicht_Dining)
@@ -317,7 +317,7 @@ String							Light_Scene_Hall
 								<light>
 								(gLight,gHall,gPersist,gLighting_Scene)
 
-Group:Dimmer					gLight_Brightness_Hall
+Group:Dimmer:AVG				gLight_Brightness_Hall
 								"Brightness Hallway light"
 								<slider>
 								(gLicht,gHall)
@@ -375,7 +375,7 @@ String							Light_Scene_HallCeiling
 								<light>
 								(gLight,gPersist,gLighting_Scene,gHallCeiling)
 
-Group:Dimmer					gLight_Brightness_HallCeiling
+Group:Dimmer:AVG				gLight_Brightness_HallCeiling
 								"Brightness Hallway Ceiling light"
 								<slider>
 								(gLicht,gHallCeiling)
@@ -415,7 +415,7 @@ String							Light_Scene_Toilet
 								<light>
 								(gLight,gToilet,gPersist,gLighting_Scene)
 
-Group:Dimmer					gLight_Brightness_Toilet
+Group:Dimmer:AVG				gLight_Brightness_Toilet
 								"Brightness Toilet light"
 								<slider>
 								(gLichts,gToilet)
@@ -454,7 +454,7 @@ String							Light_Scene_Bathroom
 								<light>
 								(gLight,gBathroom,gPersist,gLighting_Scene)
 
-Group:Dimmer					gLight_Brightness_Bathroom
+Group:Dimmer:AVG				gLight_Brightness_Bathroom
 								"Brightness Bathroom light"
 								<slider>
 								(gLight,gBathroom)
@@ -499,7 +499,7 @@ String							Light_Scene_Bedroom
 								<light>
 								(gLight,gBedroom,gPersist,gLighting_Scene)
 
-Group:Dimmer					gLight_Brightness_Bedroom
+Group:Dimmer:AVG				gLight_Brightness_Bedroom
 								"Brightness Bedroom"
 								<slider>
 								(gLicht,gBedroom)
@@ -562,7 +562,7 @@ String							Light_Scene_Guestroom
 								<light>
 								(gLight,gGuest,gPersist,gLighting_Scene)
 
-Group:Dimmer					gLight_Brightness_Guestroom
+Group:Dimmer:AVG				gLight_Brightness_Guestroom
 								"Brightness Menno's light"
 								<slider>
 								(gLicht,gGuest)
@@ -625,7 +625,7 @@ String							Light_Scene_Laundry
 								<light>
 								(gLight,gLaundry,gPersist,gLighting_Scene)
 
-Group:Dimmer					gLight_Brightness_Laundry
+Group:Dimmer:AVG				gLight_Brightness_Laundry
 								"Stephan's Light"
 								<slider>
 								(gLichts,gLaundry)
@@ -688,7 +688,7 @@ String							Light_Scene_Outside
 								<light>
 								(gLight,gOutside,gPersist,gLighting_Scene)
 
-Group:Dimmer					gLight_Brightness_Outside
+Group:Dimmer:AVG				gLight_Brightness_Outside
 								"Brightness Outdoor light"
 								<light>
 								(gLight,gOutside)
@@ -782,7 +782,7 @@ String							Light_Scene_Lodge
 								<light>
 								(gLight,gLodge,gPersist,gLighting_Scene)
 
-Group:Dimmer					gLight_Brightness_Lodge
+Group:Dimmer:AVG				gLight_Brightness_Lodge
 								"Brightness Lodge light"
 								<slider>
 								(gLight,gLodge)

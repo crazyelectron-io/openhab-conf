@@ -1,4 +1,5 @@
 @charset "UTF-8";
+/* Set correct background for Grafana rendered images */
 
 .panel-container {
     background-color: #19201c !important;

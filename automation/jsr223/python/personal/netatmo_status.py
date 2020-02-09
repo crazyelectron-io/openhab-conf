@@ -9,10 +9,6 @@ Changelog:
 
 from core.rules import rule
 from core.triggers import when
-from core.log import logging
-import configuration
-reload(configuration)
-from configuration import LOG_PREFIX
 from core.actions import NotificationAction
 
 #===================================================================================================
@@ -21,12 +17,8 @@ from core.actions import NotificationAction
 def netatmoStatus(event):
     if event.oldItemState is None:
         return
-
-    netatmoStatus.log = logging.getLogger("{}.netatmoStatus".format(LOG_PREFIX))
-
     msg = "Netatmo Healthy Home Coach is not responding, please check the status of the device and online API."
     netatmoStatus.log.warning(msg)
     NotificationAction.sendBroadcastNotification(msg)
-
     #Echo_TTS_Livingroom.sendCommand("The " + msg)
     events.sendCommand("NHC_Watchdog", "ON")

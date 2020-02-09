@@ -1,48 +1,26 @@
-sitemap default label="At Home"
-{
-    Frame label="Home"
-    {
+sitemap default label="At Home" {
+    Frame label="Home" {
         Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[MORNING="Morning"] visibility=[Day_Mode=="MORNING"]
         Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[DAY="Day"] visibility=[Day_Mode=="DAY"]
         Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[EVENING="Evening"] visibility=[Day_Mode=="EVENING"]
         Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[NIGHT="Night"] visibility=[Day_Mode=="NIGHT"]
 
-        Text item=Weather_Condition label="Weather [%s]" icon="sun_clouds"
-        {
+        Text item=Weather_Condition label="Weather [%s]" icon="sun_clouds" {
             Text item=Astro_Sun_RiseNext
             Text item=Astro_Sun_SetNext
-            Text item=Astro_Sun_Azimuth         visibility=[Astro_Sun_Elevation > 0]
-            Text item=Astro_Sun_Elevation       visibility=[Astro_Sun_Elevation > 0]
-            Text item=Astro_Moon_Phase          visibility=[Astro_Sun_Elevation <= 0]
-            Text item=Astro_Moon_Distance       visibility=[Astro_Sun_Elevation <= 0]
+            Text item=Astro_Sun_Azimuth    visibility=[Astro_Sun_Elevation > 0]
+            Text item=Astro_Sun_Elevation  visibility=[Astro_Sun_Elevation > 0]
+            Text item=Astro_Moon_Phase     visibility=[Astro_Sun_Elevation <= 0]
+            Text item=Astro_Moon_Distance  visibility=[Astro_Sun_Elevation <= 0]
             Text item=Astro_Moon_FullNext
             Text item=Astro_Moon_NewNext
 
             Text item=Temp_Avg_Livingroom valuecolor=[>22="red",>20="green",>19="orange",<19="blue"]
-            // {
-            //     Switch item=Climate_Period1 mappings=[TDY_30="Today", YDY_30="Yesterday", WK_1="Week", LWK_1="Wk-1", MNT_1D="Month", LMNT_1D="M-1"] label="" icon="calendar"
-            //     Webview label="Climate Livingroom" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period1&panelItem=Climate_Panel1" height=12 icon="line"
-            // }
-    
             Text item=NHC_CO2_Livingroom label="CO2 level livingroom [%.0f ppm]" valuecolor=[>1900="red",>1400="orange",<1400="green"]
-            // {
-            //     Switch item=Climate_Period2 mappings=[TDY_30="Vandaag", YDY_30="Gisteren", WK_1="Week", LWK_1="Wk-1", MNT_1D="Maand", LMNT_1D="Mnd-1"] label="" icon="calendar"
-            //     Webview label="Climate Livingroom" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel2" height=12 icon="line"
-            // }
-
             Text item=NHC_Humidity_Livingroom valuecolor=[>60="orange",>40="green",<=40="red"]
-            // {
-            //     Switch item=Climate_Period1 mappings=[TDY_30="Vandaag", YDY_30="Gisteren", WK_1="Week", LWK_1="Wk-1", MNT_1D="Maand", LMNT_1D="Mnd-1"] label="" icon="calendar"
-            //     Webview label="Climate Livingroom" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period1&panelItem=Climate_Panel1" height=12 icon="line"
-                Text item=Alarm_Humidity_SmokeGarage
-                Text item=Alarm_Humidity_SmokeCorridor
-            // }
-
+            Text item=Alarm_Humidity_SmokeGarage
+            Text item=Alarm_Humidity_SmokeCorridor
             Text item=Weather_TempAverage_Outdoor label="Outdoor temperature [%.0f °C]"
-            // {
-            //     Switch item=Climate_Period6 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
-            //     Webview label="Outdoor temperature left side of the house" url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period6&panelItem=Climate_Panel6" height=12 icon="none"
-            // }
 
             Text item=Motion_Temperature_Toilet     label="Toilet temperature [%.1f °C]"
             Text item=Alarm_Temp_SmokeGarage    label="Garage temperature [%.1f °C]"
@@ -50,25 +28,9 @@ sitemap default label="At Home"
             Text item=Alarm_Temp_SirenKitchen    label="Kitchen temperature [%.1f °C]"
 
             Text item=AC_Temp_Bedroom label="Bedroom [%.1f °C]" valuecolor=[>23="red",>18="orange",<=18="green"]
-            // {
-            //     Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
-            //     Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
-            // }
             Text item=AC_Temp_Study label="Study [%.1f °C]" valuecolor=[>23="red",>18="orange",<=18="green"]
-            // {
-            //     Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
-            //     Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
-            // }
             Text item=AC_Temp_Laundry label="Stephan's room [%.1f °C]" valuecolor=[>23="red",>20="orange",>10="green",<=10="blue"]
-            // {
-            //     Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
-            //     Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
-            // }
             Text item=AC_Temp_Guestroom label="Menno's room [%.1f °C]" valuecolor=[>23="red",>19="orange",>10="green",<=10="blue"]
-            // {
-            //     Switch item=Climate_Period2 mappings=[DAY="Today", DAY_1="Yesterday", WEEK="This Week", WEEK_1="Last Week"]
-            //     Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Climate_Period2&panelItem=Climate_Panel7" height=12 icon="none"
-            // }
         }
         Text item=Temp_Avg_Livingroom           valuecolor=[>22="red",>20="green",>19="orange",<19="blue"]
         Text item=Weather_TempAverage_Outdoor   label="Outdoor temperature [%.0f °C]"
@@ -76,23 +38,19 @@ sitemap default label="At Home"
         Text item=Astro_Sun_SetNext
     }
 
-    Frame label="Lighting"
-    {
+    Frame label="Lighting" {
         Switch item=Light_Scene_Livingroom  label="Livingroom"  icon="sofa"     mappings=[OFF="OFF", EVENING="EVENING", MOVIE="FILM", READ="READ"]
         Switch item=Light_Scene_Dining      label="Dining"      icon="cinema"   mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
         Switch item=Light_Scene_Kitchen     label="Kitchen"     icon="kitchen"  mappings=[OFF="OFF", EVENING="EVENING", WORK="WERK", BRIGHT="BRIGHT"]
-        // Switch item=Light_Scene_KitchenCeiling label="Kitchen Ceiling" icon="kitchen" mappings=[OFF="OFF", EVENING="EVENING", WORK="WERK", BRIGHT="BRIGHT"]
         Switch item=Light_Scene_Hall        label="Hallway"     icon="corridor" mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
-        Switch item=Light_Scene_HallCeiling label="HallCeiling" icon="none"     mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
+        // Switch item=Light_Scene_HallCeiling label="HallCeiling" icon="none"     mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
         Switch item=Light_Scene_Bedroom     label="Bedroom"     icon="bedroom"  mappings=[OFF="OFF", EVENING="EVENING", READ="READ", COSY="COSY"]
         Switch item=Light_Scene_Bathroom    label="Bathroom"    icon="bath"     mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
         // Switch item=Light_Scene_Lodge       label="Lodge"       icon="house"    mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
-        Switch item=Light_Scene_Outside     label="Garden"      icon="garden"   mappings=[OFF="OFF", EVENING="EVENING", BRIGHT="BRIGHT", WORK="WORK"]
+        // Switch item=Light_Scene_Outside     label="Garden"      icon="garden"   mappings=[OFF="OFF", EVENING="EVENING", BRIGHT="BRIGHT", WORK="WORK"]
 
-        Text item=gLight
-        {
-            Text item=gLight_Brightness_Livingroom
-            {
+        Text item=gLight {
+            Text item=gLight_Brightness_Livingroom {
                 // Livingroom Lighting
                 Switch item=Light_Dim_Chair         
                 Slider item=Light_Dim_Chair         
@@ -106,8 +64,7 @@ sitemap default label="At Home"
                 Slider item=Light_Dim_Couch  
                 Slider item=Light_ColorTemp_Couch    
             }
-            Text item=gLight_Brightness_Kitchen
-            {
+            Text item=gLight_Brightness_Kitchen {
                 // Kitchen lighting
                 Switch item=Light_Dim_KitchenLeft
                 Slider item=Light_Dim_KitchenLeft
@@ -116,8 +73,7 @@ sitemap default label="At Home"
                 Slider item=Light_Dim_KitchenRight
                 Slider item=Light_ColorTemp_KitchenRight
             }
-            Text item=gLight_Brightness_Dining
-            {
+            Text item=gLight_Brightness_Dining {
             // Dining table lighing
                 Switch item=Light_Dim_Dining1
                 Slider item=Light_Dim_Dining1
@@ -132,8 +88,7 @@ sitemap default label="At Home"
                 Slider item=Light_ColorTemp_Dining3
                 Colorpicker item=Light_Color_Dining3
             }
-            Text item=gLight_Brightness_Hall
-            {
+            Text item=gLight_Brightness_Hall {
                 // Hallway lighting
                 Switch item=Light_Dim_HallDoor
                 Slider item=Light_Dim_HallDoor
@@ -145,15 +100,13 @@ sitemap default label="At Home"
                 Slider item=Light_Dim_HallCeiling
                 Slider item=Light_ColorTemp_HallCeiling
             }
-            Text item=gLight_Brightness_Toilet
-            {
+            Text item=gLight_Brightness_Toilet {
                 // Toilet ceiling light
                 Switch item=Light_Dim_ToiletCeiling
                 Slider item=Light_Dim_ToiletCeiling
                 Slider item=Light_ColorTemp_ToiletCeiling
             }
-            Text item=gLight_Brightness_Bedroom
-            {
+            Text item=gLight_Brightness_Bedroom {
                 // Master bedroom lighting
                 Switch item=Light_Dim_BedroomLeft
                 Slider item=Light_Dim_BedroomLeft
@@ -162,8 +115,7 @@ sitemap default label="At Home"
                 Slider item=Light_Dim_BedroomRight
                 Slider item=Light_ColorTemp_BedroomRight
             }
-            Text item=gLight_Brightness_Guestroom label="Menno's Lighting"
-            {
+            Text item=gLight_Brightness_Guestroom label="Menno's Lighting" {
                 // Guestroom group switch
                 Switch item=gLight_OnOff_Guestroom
                 Slider item=Light_Dim_GuestroomCeiling1
@@ -171,22 +123,19 @@ sitemap default label="At Home"
                 Slider item=Light_Dim_GuestroomCeiling2
                 Slider item=Light_ColorTemp_GuestroomCeiling2
             }
-            Text item=gLight_Brightness_Laundry label="Stephan's Lighting"
-            {
+            Text item=gLight_Brightness_Laundry label="Stephan's Lighting" {
                 // Laundry room lighting
                 Switch item=Light_Dim_LaundryCeiling
                 Slider item=Light_Dim_LaundryCeiling
                 Slider item=Light_ColorTemp_LaundryCeiling
             }
-            Text item=gLight_Brightness_Bathroom
-            {
+            Text item=gLight_Brightness_Bathroom {
                 // Bathroom lighting
                 Switch item=Light_Dim_BathroomCeiling
                 Slider item=Light_Dim_BathroomCeiling
                 Slider item=Light_ColorTemp_BathroomCeiling
             }
-            Text item=gLight_Brightness_Outside
-            {
+            Text item=gLight_Brightness_Outside {
                 // Outside lighting group switch
                 Switch item=Light_Dim_OutsideLeftBack
                 Slider item=Light_Dim_OutsideLeftBack
@@ -211,10 +160,8 @@ sitemap default label="At Home"
             // }
         }
 
-        Text item=gLighting_Scene
-        {
-            Text item=Light_Scene_Livingroom
-            {
+        Text item=gLighting_Scene {
+            Text item=Light_Scene_Livingroom {
                 Slider  item=Livingroom_Brightness_EVENING
                 Text    item=Livingroom_Brightness_EVENING label="Brightness [%d]"
                 Slider  item=Livingroom_ColorTemp_EVENING
@@ -228,8 +175,7 @@ sitemap default label="At Home"
                 Slider  item=Livingroom_ColorTemp_READ
                 Text    item=Livingroom_ColorTemp_READ label="ColorTemp [%d]"
             }
-            Text item=Light_Scene_Kitchen
-            {
+            Text item=Light_Scene_Kitchen {
                 Slider  item=Kitchen_Brightness_EVENING
                 Text    item=Kitchen_Brightness_EVENING label="Brightness [%d]"
                 Slider  item=Kitchen_ColorTemp_EVENING
@@ -243,8 +189,7 @@ sitemap default label="At Home"
                 Slider  item=Kitchen_ColorTemp_BRIGHT
                 Text    item=Kitchen_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
-            Text item=Light_Scene_Dining
-            {
+            Text item=Light_Scene_Dining {
                 Slider  item=Dining_Brightness_EVENING
                 Text    item=Dining_Brightness_EVENING label="Brightness [%d]"
                 Slider  item=Dining_ColorTemp_EVENING
@@ -258,8 +203,7 @@ sitemap default label="At Home"
                 Slider  item=Dining_ColorTemp_BRIGHT
                 Text    item=Dining_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
-            Text item=Light_Scene_Hall
-            {
+            Text item=Light_Scene_Hall {
                 Slider  item=Hall_Brightness_EVENING
                 Text    item=Hall_Brightness_EVENING label="Brightness [%d]"
                 Slider  item=Hall_ColorTemp_EVENING
@@ -273,8 +217,7 @@ sitemap default label="At Home"
                 Slider  item=Hall_ColorTemp_BRIGHT
                 Text    item=Hall_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
-            Text item=Light_Scene_HallCeiling
-            {
+            Text item=Light_Scene_HallCeiling {
                 Slider  item=HallCeiling_Brightness_EVENING
                 Text    item=HallCeiling_Brightness_EVENING label="Brightness [%d]"
                 Slider  item=HallCeiling_ColorTemp_EVENING
@@ -288,8 +231,7 @@ sitemap default label="At Home"
                 Slider  item=HallCeiling_ColorTemp_BRIGHT
                 Text    item=HallCeiling_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
-            Text item=Light_Scene_Bedroom
-            {
+            Text item=Light_Scene_Bedroom {
                 Slider  item=Bedroom_Brightness_EVENING
                 Text    item=Bedroom_Brightness_EVENING label="Brightness [%d]"
                 Slider  item=Bedroom_ColorTemp_EVENING
@@ -303,8 +245,7 @@ sitemap default label="At Home"
                 Slider  item=Bedroom_ColorTemp_COSY
                 Text    item=Bedroom_ColorTemp_COSY label="ColorTemp [%d]"
             }
-            Text item=Light_Scene_Bathroom
-            {
+            Text item=Light_Scene_Bathroom {
                 Slider  item=Bathroom_Brightness_EVENING
                 Text    item=Bathroom_Brightness_EVENING label="Brightness [%d]"
                 Slider  item=Bathroom_ColorTemp_EVENING
@@ -333,8 +274,7 @@ sitemap default label="At Home"
                 Slider  item=Laundry_ColorTemp_BRIGHT
                 Text    item=Laundry_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
-            Text item=Light_Scene_Guestroom
-            {
+            Text item=Light_Scene_Guestroom {
                 Slider  item=Guestroom_Brightness_EVENING
                 Text    item=Guestroom_Brightness_EVENING label="Brightness [%d]"
                 Slider  item=Guestroom_ColorTemp_EVENING
@@ -348,8 +288,7 @@ sitemap default label="At Home"
                 Slider  item=Guestroom_ColorTemp_BRIGHT
                 Text    item=Guestroom_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
-            Text item=gOutside
-            {
+            Text item=gOutside {
                 Slider  item=Outside_Brightness_EVENING
                 Text    item=Outside_Brightness_EVENING label="Brightness [%d]"
                 Slider  item=Outside_Brightness_WORK
@@ -366,8 +305,7 @@ sitemap default label="At Home"
         }
     }
 
-    Frame label="Alarm"
-    {
+    Frame label="Alarm" {
         Switch item=Alarm_Status label="Alarm []" icon="alarm" mappings=[DISARMED="Off", ARMED_HOME="Arm Home", ARMED_AWAY="Away"]
         Text item=Alarm_LastChange
         Group item=gDoors valuecolor=[>3="red",>1="orange",<2="green"]
@@ -381,10 +319,8 @@ sitemap default label="At Home"
         Switch item=Presence_Menno label="Menno is []" mappings=[OFF="Away"] visibility=[Presence_Menno==OFF]
     }
 
-    Frame label="Energy"
-    {
-        Text item=Power_Delta_All_Current
-        {
+    Frame label="Energy" {
+        Text item=Power_Delta_All_Current {
             // Switch item=PwrPeriod1 mappings=[HR6_5="6 Hr",HR12_5="12 Hr",TDY_5="Today",YDY_5="Day-1",DBYDY_5="Day-2",WK_1="Week",LWK_1="Wk-1",MNT_1="Month",LMNT_1="Mn-1"] label="" icon="calendar"
             // Webview url="/static/grafana.html?kiosk&dashboard=openhab&fullscreen&theme=dark&fromItem=PwrPeriod1&panelItem=PwrPanel1" icon="none" height=15
             Text item=Power_Delta_All_Current
@@ -393,8 +329,7 @@ sitemap default label="At Home"
             Text item=Power_Delta_L3_Current
         }
 
-        Text item=Solar_Prod_Current
-        {
+        Text item=Solar_Prod_Current {
             // Switch item=Solar_Panel1 mappings=[SOLAR_PWR="Production", SOLAR_FREQ="Frequency"] icon="chart"
             // Switch item=Solar_Period1 mappings=[HR8_15="8 Hr", TDY_30="Today", YDY_30="Yesterday", WK_1="Week", LWK_1="Last week"] label="" icon="calendar"
             // Webview url="/static/grafana.html?kiosk&dashboard=openhab&fullscreen&theme=dark&fromItem=Solar_Period1&panelItem=Solar_Panel1" height=12 icon="line"
@@ -404,8 +339,7 @@ sitemap default label="At Home"
             // Text item=Solar_Prod_LastYear_Summary label="Last Year's Solar production [%s]"
         }
 
-        Text item=Power_Delta_Day_Summary //label="Today's Power usage [%s]"
-        {
+        Text item=Power_Delta_Day_Summary  {
             Text item=Power_Use_Day_Summary
             Text item=Power_Ret_Day_Summary
             Text item=Power_Use_Total icon="pressure"
@@ -417,8 +351,7 @@ sitemap default label="At Home"
 
         // Text item=dayPwrDeltaCost
 
-        Text item=Gas_Use_Hour_Summary label="Last Hour's Gas use [%s]"
-        {
+        Text item=Gas_Use_Hour_Summary label="Last Hour's Gas use [%s]" {
             // Switch item=GasPeriod3 mappings=[TDY_1="Today", YDY_1="Yesterday", WK_1D="Week",LWK_1D="Wk-1",MNT_1D="Month",LMNT_1D="Mn-1",YR_1D="Year",YRL_1W="Yr-1"] icon="calendar"
             // Webview url="/static/grafana.html?kiosk&dashboard=openhab&fullscreen&theme=dark&fromItem=GasPeriod3&panelItem=GasPanel3" height=12 icon="none"
             Text item=Gas_Use_Hour_Summary label="Last Hour's Gas use [%s]"
@@ -430,12 +363,10 @@ sitemap default label="At Home"
         // Text item=dayGasUseCost
     }
 
-    Frame label="Heating"
-    {
+    Frame label="Heating" {
         Switch item=CV_Heater_Active mappings=[ON="On"] visibility=[CV_Heater_Active==ON]
         Switch item=CV_Heater_Active mappings=[OFF="Off"] visibility=[CV_Heater_Active==OFF]
-        Text item=CV_SetPoint_Livingroom
-        {
+        Text item=CV_SetPoint_Livingroom {
             Setpoint item=CV_SetPoint_Livingroom minValue=18 maxValue=23 step=0.5 
             Text item=Temp_Avg_Livingroom
             Text item=CV_Pressure
@@ -451,8 +382,7 @@ sitemap default label="At Home"
         Switch item=CV_HotWater_Active mappings=[ON="On", OFF="Off"]
     }
 
-    Frame label="TV Wake on LAN"
-    {
+    Frame label="TV Wake on LAN" {
         Switch item=LGTV_Power_Livingroom
         Switch item=LGTV_WoL_Livingroom
         Switch item=LGTV_Mute_Livingroom
@@ -527,8 +457,7 @@ sitemap default label="At Home"
     //     Text      item=LR_Kodi_duration
     // }
 
-    Frame label="Airco"
-    {
+    Frame label="Airco" {
         Text item=AC_Temp_Bedroom label="AC Bedroom" icon="snow"
         {
             Switch item=AC_Power_Bedroom
@@ -538,24 +467,21 @@ sitemap default label="At Home"
             Text item=AC_FanDirection_Bedroom label=" "
             Switch item=AC_Vacation_Bedroom
         }
-        Text item=AC_Temp_Study label="AC Study" icon="snow"
-        {
+        Text item=AC_Temp_Study label="AC Study" icon="snow" {
             Switch item=AC_Power_Study
             Setpoint item=AC_SetTemp_Study minValue=18 maxValue=23 step=1
             Switch item=AC_Mode_Study label="" mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
             Switch item=AC_FanSpeed_Study label="" mappings=["AUTO"="Auto", "SILENCE"="Silent", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
             Text item=AC_FanDirection_Study label=""
         }
-        Text item=AC_Temp_Laundry label="AC Stephan" icon="snow"
-        {
+        Text item=AC_Temp_Laundry label="AC Stephan" icon="snow" {
             Switch item=AC_Power_Laundry 
             Setpoint item=AC_SetTemp_Laundry minValue=18 maxValue=23 step=1
             Switch item=AC_Mode_Laundry label="" mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
             Switch item=AC_FanSpeed_Laundry label="" mappings=["AUTO"="Auto", "SILENCE"="Silent", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
             Text item=AC_FanDirection_Laundry label=""
         }
-        Text item=AC_Temp_Guestroom label="AC Menno" icon="snow"
-        {
+        Text item=AC_Temp_Guestroom label="AC Menno" icon="snow" {
             Switch item=AC_Power_Guestroom
             Setpoint item=AC_SetTemp_Guestroom minValue=18 maxValue=23 step=1
             Switch item=AC_Mode_Guestroom label="" mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
@@ -564,11 +490,9 @@ sitemap default label="At Home"
         }
     }
 
-    Frame label="Volvo V90"
-    {
-        Group item=gVoC_Door_Status label="Car doors [%s]" icon="car" valuecolor=[>3="red",>1="orange",<2="green"]
-        // Switch  item=VoC_Doors_Tailgate
-        // Switch  item=gVoC_Window_Status
+    Frame label="Volvo V90" {
+        Group   item=gVoC_Door_Status label="Car doors [%s]" icon="car" valuecolor=[>3="red",>1="orange",<2="green"]
+        Switch  item=gVoC_Window_Status
         Switch  item=VoC_Car_Locked label="Car is []" icon="car" mappings=[ON="Locked", OFF="Open"]
         Text    item=VoC_Fuel_Level
         Text    item=VoC_Fuel_Amount
@@ -576,8 +500,7 @@ sitemap default label="At Home"
         Text    item=VoC_Distance_Left
         // Switch  item=VoC_Fuel_Alert
         Text    item=VoC_Washer_Level
-        Text    item=VoC_Location icon="movecontrol"
-        {
+        Text    item=VoC_Location icon="movecontrol" {
             Mapview item=VoC_Location height=10 icon="none" label="Huidige locatie Volvo V90 (idien niet ingebruik)"
             Text    item=VoC_Location_LUD
             Switch  item=VoC_Calculated_Location
@@ -587,8 +510,13 @@ sitemap default label="At Home"
         Text    item=VoC_TripMeter_1 icon="none"
         Text    item=VoC_TripMeter_2 icon="none"
         Switch  item=VoC_Engine_Started
-        Switch  item=VoC_Remote_Heater
+        Switch  item=VoC_Heater
         Text    item=VoC_Service_Warning
+    }
+
+    Frame label="Log Files" {
+        Webview url="/static/openhablog.html" height=15 icon=none
+        Webview url="/static/eventlog.html" height=15 icon=none
     }
 
     // Hide default navigation

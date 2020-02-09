@@ -9,47 +9,34 @@ Changelog:
 
 from core.rules import rule
 from core.triggers import when
-from core.log import logging, LOG_PREFIX
-import configuration
-reload(configuration)
-from configuration import LOG_PREFIX
-# from core.jsr223 import scope
 from core.jsr223.scope import actions
-
-
-log = logging.getLogger("{}.lgtv_updown".format(LOG_PREFIX))
-
 
 #==================================================================================================
 @rule("LGTVVolUpDn", description="Handle volume increase/decrease commands", tags=["media"])
 @when("Item LGTV_VolDummy_Livingroom received command")
-def lgtv_volume_updown(event):
-    log.info("LGTV Volume Up-Down [{}]".format(event.event))
+def lgtvVolumeUpDown(event):
+    lgtvVolumeUpDown.log.info("LGTV Volume Up-Down [{}]".format(event.event))
     if event.itemState == 0:
         events.sendCommand("LGTV_Volume_Livingroom", "DECREASE")
     elif event.itemState == 1:
         events.sendCommand("LGTV_Volume_Livingroom", "INCREASE")
     else:
-        log.warn("Invalid command [{}] received".format(event.itemState))
-
+        lgtvVolumeUpDown.log.warn("Invalid command [{}] received".format(event.itemState))
 
 #==================================================================================================
 @rule("LGTVChannelUpDn", description="Handle channel up/down commands", tags=["media"])
 @when("Item LGTV_ChannelDummy_Livingroom received command")
-def lgtv_channel_updown(event):
-    log.info("LGTV Channel Up-Down [{}]".format(event.event))
-
+def lgtvChannelUpDown(event):
+    lgtvChannelUpDown.log.info("LGTV Channel Up-Down [{}]".format(event.event))
     action = actions.get("lgwebos","lgwebos:WebOSTV:tvlivingroom")
     if action is None:
-        log.info("LGTV.Channel.UpDn", "Actions not found (check thing ID)")
+        lgtvChannelUpDown.log.info("LGTV.Channel.UpDn", "Actions not found (check thing ID)")
         return
-
     cmd = event.receivedCommand
-    log.info("LGTV.Channel.UpDn", "Received command [{}]".format(cmd))
-                
+    lgtvChannelUpDown.log.info("LGTV.Channel.UpDn", "Received command [{}]".format(cmd))
     if cmd == 0:
         action.decreaseChannel()
     elif cmd == 1:
         action.increaseChannel()
     else:
-        log.warn("Invalid channle up-down command")
+        lgtvChannelUpDown.log.warn("Invalid channle up-down command")

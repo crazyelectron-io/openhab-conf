@@ -177,9 +177,13 @@ DateTime						Alarm_Update_Connect
 								"Connectbox Timestamp [%1$tH:%1$tM]"
 								{channel="verisure:broadbandConnection:myverisure:broadband1:timestamp"}
 
-// String							Alarm_Status_Connect
-// 								"Internet connection [%s]"
-// 								{channel="verisure:broadbandConnection:myverisure:broadband1:connected"}
+String							Alarm_Status_Connect
+								"Internet connection [%s]"
+								{channel="verisure:broadbandConnection:myverisure:bc123456789:connected"}
+
+String							Alarm_Status_Connect1
+								"Internet connection [%s]"
+								{channel="verisure:broadbandConnection:myverisure:broadband1:connected"}
 
 // VeriSure Thing status string
 String							VeriSure_API_Status

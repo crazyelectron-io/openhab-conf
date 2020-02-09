@@ -9,20 +9,19 @@ Changelog:
 
 from core.rules import rule
 from core.triggers import when
+from core.items import add_item
 from core.log import logging
 import configuration
 reload(configuration)
 from configuration import LOG_PREFIX, COUNTRY, LATITUDE, LONGITUDE, CITY
-
+from org.joda.time import DateTime
+import datetime
 
 #---------------------------------------------------------------------------------------------------
 # create Sunrise and Sunset Items if they do not exist
 def addSunriseItems():
     addSunriseItems.log = logging.getLogger("{}.addSunriseItems".format(LOG_PREFIX))
-
     scriptExtension.importPreset("RuleSupport")
-    from core.items import add_item
-
     try:
         if ir.getItems("Astro_Sun_SetTomorrow") == []:
             add_item("Astro_Sun_SetTomorrow", item_type="DateTime", groups=["gAstro"], label="Tomorrow's Sunset [%1$tH:%1$tM]", category="sunset", tags=["Astro"])
@@ -36,29 +35,24 @@ def addSunriseItems():
         import traceback
         addSunriseItems.log.error(traceback.format_exc())
 
-
 #---------------------------------------------------------------------------------------------------
 # Use this to remove created items for testing
 def removeSunriseItems():
     from core.items import remove_item
-
     remove_item("Astro_Sun_SetTomorrow")
     remove_item("Astro_Sun_RiseTomorrow")
     remove_item("Astro_Sun_SetNext")
     remove_item("Astro_Sun_RiseNext")
-
 
 #---------------------------------------------------------------------------------------------------
 def scriptLoaded(id):
     # removeSunriseItems()
     addSunriseItems()
 
-
 #---------------------------------------------------------------------------------------------------
 def calcNextSunTimes():
     calcNextSunTimes.log = logging.getLogger("{}.calcNextSunTimes".format(LOG_PREFIX))
-
-    if str(ir.getItem("Astro_Day_Phase").state) == "DAYLIGHT":
+    if items["Astro_Day_Phase"] == StringType("DAYLIGHT"):
         calcNextSunTimes.log.info("Daylight - next sunrise is tomorrow, next sunset is today")
         events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTomorrow").state))
         events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTime").state))
@@ -79,8 +73,6 @@ def calcNextSunTimes():
         events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTomorrow").state))
         events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTomorrow").state))
     else:
-        from org.joda.time import DateTime
-
         if DateTime.now().getHourOfDay() > 12:
             calcNextSunTimes.log.info("Before midnight - next sunrise and sunset is tomorrow")
             events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTomorrow").state))
@@ -90,30 +82,22 @@ def calcNextSunTimes():
             events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTime").state))
             events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTime").state))
 
-
 #===================================================================================================
 @rule("AstroNextSun", description="Determine the next sunrise/sunset times for today and tomorrow", tags=["astro"])
 @when("Item Astro_Day_Phase changed")
 def astroNextSunTimes(event):
     calcNextSunTimes()
 
-
 #===================================================================================================
 @rule("AstroSunTomorrow", description="Calculate tomorrow's sunrise/sunset time", tags=["astro"])
 @when("Time cron 0 10 0 ? * * *")
 @when("System started")
 def calcSunTomorrow(event):
-    calcSunTomorrow.log = logging.getLogger("{}.addSunriseItems".format(LOG_PREFIX))
-
     import astral # pylint: disable=import-error
-    import datetime
-
     tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-
     my = astral.Location(info=(CITY, COUNTRY, LATITUDE, LONGITUDE, "Europe/Amsterdam", 1))
     my.solar_depression = 'civil'
     sun = my.sun(date=tomorrow, local=True)
-
     events.postUpdate("Astro_Sun_RiseTomorrow", str(sun['sunrise'].isoformat())[11:16])
     events.postUpdate("Astro_Sun_SetTomorrow", str(sun['sunset'].isoformat())[11:16])
     calcSunTomorrow.log.info("Tomorrow's sunrise [{}] and sunset [{}] calculated".format(str(sun['sunrise'].isoformat())[11:16], str(sun['sunset'].isoformat())[11:16]))

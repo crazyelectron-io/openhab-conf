@@ -51,9 +51,7 @@ from core.utils import sendCommandCheckFirst
 @rule("Nefit Easy Status Update", description="Get the Nefit CH/HW system status every minute", tags=["energy"])
 @when("Time cron 0 * * * * ?")
 def nefitStatus(event):
-    nefitStatus.log = logging.getLogger("{}.nefitStatus".format(LOG_PREFIX))
     httpHeader = {'Content-Type': 'application/json'} #,'Cache-Control': 'no-cache','Pragma': 'no-cache'}
-
     #--- Get Nefit thermostat info from the easy-server API
     response = requests.get(NEFIT_API_URL+"/status", headers=httpHeader)
     if response.status_code != 200:
@@ -99,16 +97,13 @@ def nefitStatus(event):
             sendCommandCheckFirst("CV_Heater_Active", "OFF")
             sendCommandCheckFirst("CV_HotWater_Active", "OFF")
 
-
 #===================================================================================================
 @rule("Nefit Check Online", description="Check if Netfit and Netatmo devices are still sending updates", tags=["heating"])
 @when("Item CV_Temp_Livingroom received update")
 @when("Item NHC_Temp_Livingroom received update")
 def nefitCheck(event):
-    nefitCheck.log = logging.getLogger("{}.nefitStatus".format(LOG_PREFIX))
-    # nefitCheck.log.debug("Received update from {}, reset watchdog".format(event.itemName))
+    nefitCheck.log.debug("Received update from {}, reset watchdog".format(event.itemName))
     events.sendCommand("CV_Watchdog" if event.itemName == "CV_Temp_Livingroom" else "NHC_Watchdog", "ON")
-
 
 #===================================================================================================
 #@rule("NefitNextProgram", description="Get the next programmed switch point (from the easy-server daemon)", tags=["heating"])

@@ -1,0 +1,1 @@
+Thing exec:command:ohlog [command="/openhab/conf/scripts/oh_log.sh", interval=60, timeout=5, autorun=false]

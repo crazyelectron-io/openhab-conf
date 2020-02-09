@@ -9,10 +9,6 @@ Changelog:
 
 from core.rules import rule
 from core.triggers import when
-from core.log import logging
-import configuration
-reload(configuration)
-from configuration import LOG_PREFIX
 
 #===================================================================================================
 @rule("DSMRPhaseDelta", description="Calculate current delta power per phase", tags=["energy"])
@@ -25,15 +21,10 @@ from configuration import LOG_PREFIX
 def powerPhasesNow(event):
     if event.oldItemState is None:
         return
-
-    powerPhasesNow.log = logging.getLogger("{}.powerPhasesNow".format(LOG_PREFIX))
-
     phase = event.itemName.split("_")[2]
-
     ItemPwrRet = ir.getItem("Power_Ret_" + phase + "_Current")
     ItemPwrUse = ir.getItem("Power_Use_" + phase + "_Current") 
     ItemPwrDelta = ir.getItem("Power_Delta_" + phase + "_Current")
-
     if not isinstance(ItemPwrRet, UnDefType) and not isinstance(ItemPwrUse, UnDefType):
         events.postUpdate(ItemPwrDelta.name, str(float(str(ItemPwrUse.state)) - float(str(ItemPwrRet.state))))
     else:

@@ -9,10 +9,10 @@ Changelog:
 
 from core.rules import rule
 from core.triggers import when
-from core.log import logging
-import configuration
-reload(configuration)
-from configuration import LOG_PREFIX
+# from core.log import logging
+# import configuration
+# reload(configuration)
+# from configuration import LOG_PREFIX
 from core.actions import NotificationAction
 
 #===================================================================================================
@@ -21,10 +21,8 @@ from core.actions import NotificationAction
 def alarmStatusUpdate(event):
     if event.oldItemState is None:
         return
-
-    alarmStatusUpdate.log = logging.getLogger("{}.alarmStatusUpdate".format(LOG_PREFIX))
     alarmStatusUpdate.log.info("Alarm changed from [{}] to [{}]".format(event.oldItemState, event.itemState))
-
-    state = "Armed" if str(ir.getItem("Alarm_Status").state)  == "ARMED_AWAY" or str(ir.getItem("Alarm_Status").state)  == "ARMED_HOME" else "Disarmed"
+    state = "Armed" if items["Alarm_Status"] == StringType("ARMED_AWAY") or \
+        items["Alarm_Status"] == StringType("ARMED_HOME") else "Disarmed"
     # Echo_TTS_Livingroom.sendCommand("<speak>Hi, " + msg + "</speak>")
     NotificationAction.sendBroadcastNotification("The alarm has been " + state)

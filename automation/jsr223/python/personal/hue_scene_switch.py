@@ -9,10 +9,6 @@ Changelog:
 
 from core.rules import rule
 from core.triggers import when
-from core.log import logging, LOG_PREFIX
-import configuration
-reload(configuration)
-from configuration import LOG_PREFIX
 from core.actions import NotificationAction
 
 #==================================================================================================
@@ -21,13 +17,9 @@ from core.actions import NotificationAction
 def hueSceneSwitch(event):
     if event.oldItemState is None:
         return
-
-    hueSceneSwitch.log = logging.getLogger("{}.hueSceneSwitch".format(LOG_PREFIX))
     hueSceneSwitch.log.info("{name} changed to {newState} from {oldState}".format(name=event.itemName, newState=event.itemState, oldState=event.oldItemState))
-
     # Determine the Scene to select (if any)
     command = "OFF" if str(ir.getItem("Day_Mode").state) == "DAY" else "EVENING" if str(ir.getItem("Day_Mode").state) == "EVENING" else ""
-	
     if command != "":
         hueSceneSwitch.log.info("Send command [{}] to Light Scenes".format(command))
 		# gLight_Automatic.sendCommand(command)
@@ -37,9 +29,7 @@ def hueSceneSwitch(event):
         events.sendCommand("Light_Scene_Hall", command)
         events.sendCommand("Light_Scene_Outside", command)
 		# Light_Scene_Lodge.sendCommand(command)
-
         if command == "OFF":
             events.sendCommand("Light_Scene_HallCeiling", command)
-
         msg = "Day mode change: lights switched to Scene " + command
         NotificationAction.sendBroadcastNotification(msg)

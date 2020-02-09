@@ -1,5 +1,5 @@
 @charset "UTF-8";
-
+/* 20200202 - Changed font size for 'decimals' */
 
 /* latin */
 @font-face {
@@ -601,7 +601,7 @@ body {
   line-height: 0px;
   float: left;
   color: #575f59;
-  padding-top: 65px;
+  padding-top: 40px;
 }
 .section .bigDash .sub {
 	font-size: 45px;

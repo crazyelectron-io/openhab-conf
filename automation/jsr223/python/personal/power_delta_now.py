@@ -21,11 +21,8 @@ from configuration import LOG_PREFIX
 def powerDeltaNow(event):
     if event.oldItemState is None:
         return
-
-    powerDeltaNow.log = logging.getLogger("{}.powerDeltaNow".format(LOG_PREFIX))
-
     if not isinstance(ir.getItem("Power_Ret_All_Current"), UnDefType) and not isinstance(ir.getItem("Power_Use_All_Current"), UnDefType):
-        events.postUpdate("Power_Delta_All_Current", str(float(str(ir.getItem("Power_Use_All_Current").state)) - float(str(ir.getItem("Power_Ret_All_Current").state))))
+        events.postUpdate("Power_Delta_All_Current", str(float(str(items["Power_Use_All_Current"])) - float(str(items["Power_Ret_All_Current"]))))
         events.sendCommand("DSMR_Watchdog", "ON")
     else:
-        powerDeltaNow.log.warn("[{}] not initialized, skip calculation of PowerDelta".format("Power_Ret_All_current" if ir.getItem("Power_Ret_All_Current").state is None else ir.getItem("Power_Use_All_Current").state))
+        powerDeltaNow.log.warn("[{}] not initialized, skip calculation of PowerDelta".format("Power_Ret_All_current" if isinstance(ir.getItem("Power_Ret_All_Current"), UnDefType) else items["Power_Use_All_Current"]))

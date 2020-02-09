@@ -11,10 +11,10 @@ Changelog:
 
 from core.rules import rule
 from core.triggers import when
-from core.log import logging, LOG_PREFIX
-import configuration
-reload(configuration)
-from configuration import LOG_PREFIX
+# from core.log import logging, LOG_PREFIX
+# import configuration
+# reload(configuration)
+# from configuration import LOG_PREFIX
 
 #==================================================================================================
 @rule("Set Hue Scene", description="Change lighting in area to the specified scene", tags=["lights"])
@@ -30,17 +30,12 @@ from configuration import LOG_PREFIX
 @when("Item Light_Scene_Laundry changed")
 @when("Item Light_Scene_Outside changed")
 def hueSetScene(event):
-    hueSetScene.log = logging.getLogger("{}.hueSetScene".format(LOG_PREFIX))
     hueSetScene.log.info("[{}] changed, state is [{}], previous state [{}]".format(event.itemName, event.itemState, event.oldItemState))
     if event.oldItemState is None:
         return
-
     lightArea = event.itemName.split('_')[2]
     scene = str(event.itemState)
-    # hueSetScene.log.debug("Received update [{}] for area [{}]".format(scene, lightArea))
     lightGroup = ir.getItem("gLight_Brightness_" + lightArea)
-    # hueSetScene.log.debug("Set Lighting Scene to [{}] for [{}]".format(scene, str(lightGroup.name)))
-
     if scene == "OFF":
         events.sendCommand(str(lightGroup.name), "OFF")
     elif scene == "EVENING" or scene == "READ" or scene == "WORK" or scene == "BRIGHT" or scene == "MOVIE":
