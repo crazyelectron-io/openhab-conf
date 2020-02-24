@@ -103,17 +103,17 @@ def addGrafanaItems():
     scriptExtension.importPreset("RuleSupport")
     # Add Grafana Group if it doesn't exist
     if ir.getItems(GRAFANA_GROUP) == []:
-        addGrafanaItems.log.debug("Create Group [{}]".format(GRAFANA_GROUP))
+        addGrafanaItems.log.info("Create Group [{}]".format(GRAFANA_GROUP))
         add_item(GRAFANA_GROUP, item_type="Group", label="Grafana Snapshot images", tags=["Grafana"])
     else:
-        addGrafanaItems.log.debug("Group [{}] already exists".format(GRAFANA_GROUP))
+        addGrafanaItems.log.info("Group [{}] already exists".format(GRAFANA_GROUP))
     try:
         for entry in grafImgDict.values():
             imgItemName = entry.get("item_name")
             if ir.getItems(imgItemName) == []:
                 add_item(imgItemName, item_type="Image", groups=[entry.get("item_group")], label=entry.get("item_description"), tags=["Grafana"])
                 grafanaChannel = "ftpupload:imagereceiver:"+entry.get("ftp_channel")+":image"
-                addGrafanaItems.log.debug("Created item [{}], link channel [{}]".format(imgItemName, grafanaChannel))
+                addGrafanaItems.log.info("Created item [{}], link channel [{}]".format(imgItemName, grafanaChannel))
                 add_link(imgItemName, ChannelUID(grafanaChannel))
             set_metadata(imgItemName, "Grafana_Graphs", \
                 {"PanelId": entry.get("grafana_panelid"), \
@@ -122,7 +122,7 @@ def addGrafanaItems():
                 "RangeTo": entry.get("grafana_range_to"), \
                 "Theme": entry.get("grafana_theme"), \
                 "LastRefresh": entry.get("last_refresh")}, overwrite=True)
-            addGrafanaItems.log.debug("Metadata set [{}] [{}] [{}] [{}]".format(get_key_value(imgItemName, "Grafana_Graphs", "PanelId"), get_key_value(imgItemName, "Grafana_Graphs", "RefreshRate"), get_key_value(imgItemName, "Grafana_Graphs", "Theme"), get_key_value(imgItemName, "Grafana_Graphs", "LastRefresh")))
+            addGrafanaItems.log.info("Metadata set [{}] [{}] [{}] [{}]".format(get_key_value(imgItemName, "Grafana_Graphs", "PanelId"), get_key_value(imgItemName, "Grafana_Graphs", "RefreshRate"), get_key_value(imgItemName, "Grafana_Graphs", "Theme"), get_key_value(imgItemName, "Grafana_Graphs", "LastRefresh")))
     except:
         import traceback
         addGrafanaItems.log.error(traceback.format_exc())
