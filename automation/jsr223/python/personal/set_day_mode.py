@@ -40,6 +40,7 @@ def scriptLoaded(id):
 @when("Item Weather_Cloudy changed")
 @when("Item Alarm_Status changed to ARMED_HOME")
 @when("Item Alarm_Status changed to ARMED_AWAY")
+@when("Time cron 0 */10 * * * ?")
 @when("System started")
 def setDayMode(event):
     setDayMode.log = logging.getLogger("{}.setDayMode".format(LOG_PREFIX))
