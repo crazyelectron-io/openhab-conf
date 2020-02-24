@@ -35,10 +35,22 @@ Number							CV_Temp_Livingroom
 								<temperature>
 								(gPersist,gTempSensor)
 
+// CV gas burner active switch
+Group:Switch:OR(ON,OFF)			CV_Burner_Active
+								"CV Burner active"
+								<fire>
+								(gPersist,gHist1)
+
+// CV heater active switch
+Switch							CV_Heater_Active
+								"Heating active"
+								<fire>
+								(gHist1,gPersist,CV_Burner_Active)
+
 // Hot water tapped switch
 Switch							CV_HotWater_Active
 								"Hot water active"
-								(gHistory,gPersist)
+								(gHistory,gPersist,CV_Burner_Active)
 
 // CV thermostat SetPoint
 Number							CV_SetPoint_Livingroom
@@ -51,12 +63,6 @@ Number							CV_Pressure
 								"CV water pressure [%.1f bar]"
 								(gHourly,gPersist)
 
-// CV gas burner active switch
-Group:Switch:OR(ON,OFF)			CV_Burner_Active
-								"CV Burner active [%s]"
-								<fire>
-								(gPersist,gHist1)
-
 // Retry reading the gas usage after a HTTP failure
 Switch							CV_Retry_GasUsage
 								"Retry retrieving gas usage timer"
@@ -68,12 +74,6 @@ Number							Temp_Avg_Livingroom
 								<temperature>
 								(gHist10,gTempSensor,gLivingroom,gPersist)
 								["CurrentTemperature"]
-
-// CV heater active switch
-Switch							CV_Heater_Active
-								"Heating active"
-								<fire>
-								(gHist1,gPersist)
 
 // Watchdog 'timer' item - to detect if the NefitEasy input is stalled/stopped for more than 30m
 Switch							CV_Watchdog

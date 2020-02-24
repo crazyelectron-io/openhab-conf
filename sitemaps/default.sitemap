@@ -364,14 +364,14 @@ sitemap default label="At Home" {
     }
 
     Frame label="Heating" {
-        Switch item=CV_Heater_Active mappings=[ON="On"] visibility=[CV_Heater_Active==ON]
-        Switch item=CV_Heater_Active mappings=[OFF="Off"] visibility=[CV_Heater_Active==OFF]
+        Switch item=CV_Burner_Active mappings=[ON="On"] visibility=[CV_Burner_Active==ON]
+        Switch item=CV_Burner_Active mappings=[OFF="Off"] visibility=[CV_Burner_Active==OFF]
         Text item=CV_SetPoint_Livingroom {
             Setpoint item=CV_SetPoint_Livingroom minValue=18 maxValue=23 step=0.5 
             Text item=Temp_Avg_Livingroom
-            Text item=CV_Pressure
-            Switch item=CV_Burner_Active mappings=[ON="On", OFF="Off"]
+            Switch item=CV_Heater_Active mappings=[ON="On", OFF="Off"]
             Switch item=CV_HotWater_Active mappings=[ON="On", OFF="Off"]
+            Text item=CV_Pressure
     //         Switch item=CV_Panel1 mappings=[CH_BURN="Heating", HW_BURN="Warm Water"] label="Graph" icon="chart"
     //         Switch item=CV_Period1 mappings=[HR4_5="4 Hr",TDY_5="5 Hr",YDY_5="Yesterday",DBYDY_5="Day before yesterday"] label="Periode" icon="calendar"
     //         Webview label="Brander actief uren Nefit CV ketel" url="/static/grafana-small.html?kiosk&theme=dark&dashboard=openhab&fromItem=CV_Period1&panelItem=CV_Panel1" height=4 icon="line"
@@ -512,11 +512,6 @@ sitemap default label="At Home" {
         Switch  item=VoC_Engine_Started
         Switch  item=VoC_Heater
         Text    item=VoC_Service_Warning
-    }
-
-    Frame label="Log Files" {
-        Webview url="/static/openhablog.html" height=15 icon=none
-        Webview url="/static/eventlog.html" height=15 icon=none
     }
 
     // Hide default navigation
