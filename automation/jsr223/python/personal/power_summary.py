@@ -31,6 +31,7 @@ def powerSummary(event):
         return
     else:
         events.postUpdate("DSMR_Watchdog", "ON")
+
     # Define variables
     usedHour = 0
     usedDay = 0
@@ -43,6 +44,7 @@ def powerSummary(event):
     returnedYear = 0
     returnedContract = 0
     kWhPrice = float(powerPriceDict.get("T"+str(items["Power_Tariff"])).get("use_price"))
+
     # Calculate multiple periods of power consumption
     if not isinstance(ir.getItem("Power_Use_Total"), UnDefType):
         usedHour = float(str(PersistenceExtensions.deltaSince(ir.getItem("Power_Use_Total"), DateTime.now().minusHours(1))))
@@ -52,6 +54,7 @@ def powerSummary(event):
         usedMonth = float(str(PersistenceExtensions.deltaSince(ir.getItem("Power_Use_Total"), DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1))))
         usedYear = float(str(PersistenceExtensions.deltaSince(ir.getItem("Power_Use_Total"), DateTime.now().withTimeAtStartOfDay().withMonthOfYear(1).withDayOfMonth(1))))
         usedContract = float(str(PersistenceExtensions.deltaSince(ir.getItem("Power_Use_Total"), contractStart)))
+
     # Calculate multiple periods power return
     if not isinstance(ir.getItem("Power_Ret_Total"), UnDefType):
         returnedHour = float(str(PersistenceExtensions.deltaSince(ir.getItem("Power_Ret_Total"), DateTime.now().minusHours(1))))
@@ -61,38 +64,43 @@ def powerSummary(event):
         returnedMonth = float(str(PersistenceExtensions.deltaSince(ir.getItem("Power_Ret_Total"), DateTime.now().withTimeAtStartOfDay().withDayOfMonth(1))))
         returnedYear = float(str(PersistenceExtensions.deltaSince(ir.getItem("Power_Ret_Total"), DateTime.now().withTimeAtStartOfDay().withMonthOfYear(1).withDayOfMonth(1))))
         returnedContract = float(str(PersistenceExtensions.deltaSince(ir.getItem("Power_Ret_Total"), contractStart)))
+
     # Calculate last hour's power delta usage and price
     delta = usedHour - returnedHour
     deltaPrice = (usedHour * kWhPrice) - (returnedHour * kWhPrice)
     powerSummary.log.debug("Last hours power use/return/delta [{0:.3f}/{1:.3f}/{2:.3f}]; net cost [{3:.2f}]".format(usedHour, returnedHour, delta, deltaPrice))
     events.postUpdate("Power_Delta_Hour", "{0:.3f}".format(delta))
     events.postUpdate("Power_Delta_Hour_Cost", "{0:.2f}".format(deltaPrice))
-    events.postUpdate("Power_Delta_Hour_Summary", "{0:.3f} kWh, EUR {1:.2f}".format(delta/1000, deltaPrice/100))
+    events.postUpdate("Power_Delta_Hour_Summary", u"{0:.3f} kWh, € {1:.2f}".format(delta/1000, deltaPrice))
+
     # Calculate today's power delta
     delta = usedDay - returnedDay
     deltaPrice = (usedDay * kWhPrice) - (returnedDay * kWhPrice)
     powerSummary.log.debug("Todays power use/return/delta [{0:.3f}/{1:.3f}/{2:.3f}]; net cost [{3:.2f}]".format(usedDay/1000, returnedDay/1000, delta/1000, deltaPrice))
     events.postUpdate("Power_Delta_Day", str(delta))
     events.postUpdate("Power_Delta_Day_Cost", str(deltaPrice))
-    events.postUpdate("Power_Delta_Day_Summary", "{0:.3f} kWh, EUR {1:.2f}".format(delta/1000, deltaPrice/100))
+    events.postUpdate("Power_Delta_Day_Summary", u"{0:.2f} kWh, € {1:.2f}".format(delta/1000, deltaPrice))
+
     # Calculate this month's power delta
     delta = usedMonth - returnedMonth
     deltaPrice = (usedMonth * kWhPrice) - (returnedMonth * kWhPrice)
     powerSummary.log.debug("This months power use/return/delta [{}/{}/{}]; net cost [{}]".format(usedMonth, returnedMonth, delta, deltaPrice))
     events.postUpdate("Power_Delta_Month", str(delta))
     events.postUpdate("Power_Delta_Month_Cost", str(deltaPrice))
-    events.postUpdate("Power_Delta_Month_Summary", "{0:.3f} kWh, EUR {1:.2f}".format(delta/1000, deltaPrice/100))
+    events.postUpdate("Power_Delta_Month_Summary", u"{0:.0f} kWh, € {1:.2f}".format(delta/1000, deltaPrice))
+
     # Calculate this year's power delta
     delta = usedYear - returnedYear
     deltaPrice = (usedYear * kWhPrice) - (returnedYear * kWhPrice)
     powerSummary.log.debug("This years power use/return/delta [{}/{}/{}]; net cost [{}]".format(usedYear, returnedYear, delta, deltaPrice))
     events.postUpdate("Power_Delta_Year", str(delta))
     events.postUpdate("Power_Delta_Year_Cost", str(deltaPrice))
-    events.postUpdate("Power_Delta_Year_Summary", "{0:.3f} m3, EUR {1:.2f}".format(delta/1000, deltaPrice/100))
+    events.postUpdate("Power_Delta_Year_Summary", u"{0:.0f} kWh, € {1:.2f}".format(delta/1000, deltaPrice))
+
     # Calculate this contract period's power delta
     delta = usedContract - returnedContract
     deltaPrice = (usedContract * kWhPrice) - (returnedContract * kWhPrice)
     powerSummary.log.debug("This contract period's power use/return/delta [{}/{}/{}]; net cost [{}]".format(usedContract, returnedContract, delta, deltaPrice))
     events.postUpdate("Power_Delta_Contract", str(delta))
     events.postUpdate("Power_Delta_Contract_Cost", str(deltaPrice))
-    events.postUpdate("Power_Delta_Contract_Summary", "{0:.3f} m3, EUR {1:.2f}".format(delta/1000, deltaPrice/100))
+    events.postUpdate("Power_Delta_Contract_Summary", u"{0:.0f} kWh, € {1:.2f}".format(delta/1000, deltaPrice))

@@ -383,14 +383,11 @@ Number							POWER_RET_PRICE
 								<piggybank>
 								(gPersist,gDaily)
 
-
-
 // Watchdog 'timer' item - to detect if the DSMR input is stalled/stopped for more than 10m
 Switch							DSMR_Watchdog
 								"Watchdog timer switch"
 								(gResetExpire)
 								{expire="10m,command=OFF"}
-
 
 //--------------------------------------------------------------------------------------------------
 // SolarEdge API-based Items.
@@ -400,6 +397,16 @@ Number							Solar_Prod_Current
 								<solarplant>
 								(gHist5)
 								{channel="solaredge:generic:se7k:live#production"}
+
+Number							Solar_Prod_Hour
+								"Solar hour production [%d Wh]"
+								<solarplant>
+								(gHist10,gPersiste)
+
+String 							Solar_Prod_Hour_Summary
+								"Hour Solar production and price [%s]"
+								<solarplant>
+								(gPersist)
 
 Number							Solar_Prod_Day
 								"Solar day production [%d Wh]"

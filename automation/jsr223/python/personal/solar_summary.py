@@ -9,6 +9,8 @@ Changelog:
 
 from core.rules import rule
 from core.triggers import when
+from core.actions import PersistenceExtensions
+from org.joda.time import DateTime
 import configuration
 reload(configuration)
 from configuration import powerPriceDict
@@ -28,3 +30,8 @@ def solarSummary(event):
     events.postUpdate(costItem, str(cost))
     summaryItem = ir.getItem(event.itemName + "_Summary")
     events.postUpdate(summaryItem.name, summary)
+
+    solarDelta = float(str(PersistenceExtensions.deltaSince(ir.getItem("Solar_Prod_Day"), DateTime.now().minusHours(1))))
+    cost = float(solarDelta) * float(price)
+    summary = "{} kWh, EUR {}".format(solarDelta/1000, cost/100)
+    events.postUpdate("Solar_Prod_Hour_Summary", summary)

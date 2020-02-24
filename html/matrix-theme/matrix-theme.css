@@ -205,7 +205,7 @@ body {
 	color: white;
 }
 .section a {
-  color: #ff2c0a;
+  color: #26bf75;
 }
 .section .title {
 	clear: left;
@@ -539,7 +539,7 @@ body {
     color: #00afb8;
 }
 .section .widget .valueGroup .value:nth-child(n+2) {
-	color: #1d4d3b;	
+	color: #1d7d3b;	
 }
 .section .controls {
 	margin-bottom: 10px;
