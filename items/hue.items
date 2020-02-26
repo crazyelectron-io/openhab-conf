@@ -69,7 +69,7 @@ Dimmer							Light_Dim_Chair
 								{channel="hue:0220:0017882ec5b3:bulb_chair:brightness"}
 
 Dimmer							Light_ColorTemp_Chair
-								"ColorTemperature Chair light"
+								"ColorTemp Chair Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Livingroom)
 								{channel="hue:0220:0017882ec5b3:bulb_chair:color_temperature"}
@@ -81,7 +81,7 @@ Dimmer							Light_Dim_Corner
 								{channel="hue:0220:0017882ec5b3:bulb_corner:brightness"}
 
 Dimmer							Light_ColorTemp_Corner
-								"ColorTemperature Corner Table light"
+								"ColorTemp Corner Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Livingroom)
 								{channel="hue:0220:0017882ec5b3:bulb_corner:color_temperature"}
@@ -93,7 +93,7 @@ Dimmer							Light_Dim_SideTable
 								{channel="hue:0220:0017882ec5b3:bulb_side:brightness"}
 
 Dimmer							Light_ColorTemp_SideTable
-								"ColorTemperature Side Table light"
+								"ColorTemp Sideyable Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Livingroom)
 								{channel="hue:0220:0017882ec5b3:bulb_side:color_temperature"}
@@ -111,7 +111,7 @@ Dimmer							Light_Dim_Backdoor
 								{channel="hue:0220:0017882ec5b3:bulb_bdoor:brightness"}
 
 Dimmer							Light_ColorTemp_Backdoor
-								"ColorTemperature Backdoor light"
+								"ColorTemp Backdoor Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Livingroom)
 								{channel="hue:0220:0017882ec5b3:bulb_bdoor:color_temperature"}
@@ -129,7 +129,7 @@ Dimmer							Light_Dim_Couch
 								{channel="hue:0220:0017882ec5b3:bulb_couch:brightness"}
 
 Dimmer							Light_ColorTemp_Couch
-								"Couch"
+								"ColorTemp Couch Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Livingroom)
 								{channel="hue:0220:0017882ec5b3:bulb_couch:color_temperature"}
@@ -174,7 +174,7 @@ Dimmer							Light_Dim_KitchenLeft
 								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:brightness"}
 
 Dimmer							Light_ColorTemp_KitchenLeft
-								"ColorTemperature Left Kitchen"
+								"ColorTemp Kitchen L [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:color_temperature"}
@@ -186,7 +186,7 @@ Dimmer							Light_Dim_KitchenRight
 								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:brightness"}
 
 Dimmer							Light_ColorTemp_KitchenRight
-								"ColorTemperature Right Kitchen"
+								"ColorTemp Kitchen R [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:color_temperature"}
@@ -243,7 +243,7 @@ Dimmer							Light_Dim_Dining1
 								{channel="hue:0210:0017882ec5b3:bulb_dining1:color"}
 
 Dimmer							Light_ColorTemp_Dining1
-								"ColorTemperature Dining Light 1"
+								"ColorTemp Dining Light1 [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Dining)
 								{channel="hue:0210:0017882ec5b3:bulb_dining1:color_temperature"}
@@ -255,7 +255,7 @@ Dimmer							Light_Dim_Dining2
 								{channel="hue:0210:0017882ec5b3:bulb_dining2:color"}
 
 Dimmer							Light_ColorTemp_Dining2
-								"ColorTemperature Dining Light 2"
+								"ColorTemp Dining Light2 [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Dining)
 								{channel="hue:0210:0017882ec5b3:bulb_dining2:color_temperature"}
@@ -267,7 +267,7 @@ Dimmer							Light_Dim_Dining3
 								{channel="hue:0210:0017882ec5b3:bulb_dining3:color"}
 
 Dimmer							Light_ColorTemp_Dining3
-								"ColorTemperature Dining Light 3"
+								"ColorTemp Dining Light3 [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Dining)
 								{channel="hue:0210:0017882ec5b3:bulb_dining3:color_temperature"}
@@ -342,7 +342,7 @@ Dimmer							Light_Dim_HallDoor
 								{channel="hue:0220:0017882ec5b3:bulb_hallfd:brightness"}
 
 Dimmer							Light_ColorTemp_HallDoor
-								"ColorTemperature Frontdoor light"
+								"ColorTemp Frontdoor Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Hall)
 								{channel="hue:0220:0017882ec5b3:bulb_hallfd:color_temperature"}
@@ -354,7 +354,7 @@ Dimmer							Light_Dim_HallWall
 								{channel="hue:0220:0017882ec5b3:bulb_hallwl:brightness"}
 
 Dimmer							Light_ColorTemp_HallWall
-								"ColorTemperature Hall Corner light"
+								"ColorTemp Hall Corner Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Hall)
 								{channel="hue:0220:0017882ec5b3:bulb_hallwl:color_temperature"}
@@ -400,7 +400,7 @@ Dimmer							Light_Dim_HallCeiling
 								{channel="hue:0220:0017882ec5b3:bulb_hallcl:brightness"}
 
 Dimmer							Light_ColorTemp_HallCeiling
-								"ColorTemperature Hallway Ceiling light"
+								"ColorTemp Hall Ceiling Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_HallCeiling)
 								{channel="hue:0220:0017882ec5b3:bulb_hallcl:color_temperature"}
@@ -428,7 +428,7 @@ Group:Dimmer:AVG				gLight_Brightness_Toilet
 								{alexa="Lighting"}
 
 Group:Dimmer					gLight_ColorTemp_Toilet
-								"ColorTemperature Toilet light"
+								"ColorTemp Toilet Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLichts,gToilet)
 
@@ -479,7 +479,7 @@ Dimmer							Light_Dim_BathroomCeiling
 								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:brightness"}
 
 Dimmer							Light_ColorTemp_BathroomCeiling
-								"ColorTemperature Bathroom Ceiling light"
+								"ColorTemp Bathroom Ceiling Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Bathroom)
 								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:color_temperature"}
@@ -524,7 +524,7 @@ Dimmer							Light_Dim_BedroomLeft
 								{channel="hue:0220:0017882ec5b3:bulb_lbed:brightness"}
 
 Dimmer							Light_ColorTemp_BedroomLeft
-								"ColorTemperature Bedroom light Ron"
+								"ColorTemp Bedroom Ron [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Bedroom)
 								{channel="hue:0220:0017882ec5b3:bulb_lbed:color_temperature"}
@@ -536,7 +536,7 @@ Dimmer							Light_Dim_BedroomRight
 								{channel="hue:0220:0017882ec5b3:bulb_rbed:brightness"}
 
 Dimmer							Light_ColorTemp_BedroomRight
-								"ColorTemperature Bedroom light Arniël"
+								"ColorTemp Bedroom Arniël [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Bedroom)
 								{channel="hue:0220:0017882ec5b3:bulb_rbed:color_temperature"}
@@ -587,7 +587,7 @@ Dimmer							Light_Dim_GuestroomCeiling1
 								{channel="hue:0220:0017882ec5b3:bulb_guest1:brightness"}
 
 Dimmer							Light_ColorTemp_GuestroomCeiling1
-								"Menno plafondspot1 tint"
+								"ColorTemp Ceiling Light1 [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Guestroom)
 								{channel="hue:0220:0017882ec5b3:bulb_guest1:color_temperature"}
@@ -599,7 +599,7 @@ Dimmer							Light_Dim_GuestroomCeiling2
 								{channel="hue:0220:0017882ec5b3:bulb_guest2:brightness"}
 
 Dimmer							Light_ColorTemp_GuestroomCeiling2
-								"Menno plafondspot2 tint"
+								"ColorTemp Ceiling Light2 [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Guestroom)
 								{channel="hue:0220:0017882ec5b3:bulb_guest2:color_temperature"}
@@ -650,7 +650,7 @@ Dimmer							Light_Dim_LaundryCeiling
 								{channel="hue:0220:0017882ec5b3:bulb_laundry:brightness"}
 
 Dimmer							Light_ColorTemp_LaundryCeiling
-								"ColorTemperature Stephan's Ceiling light"
+								"ColorTemp Stephan Ceiling Light [JS(i18n_hue0210_colortemp.js):%s]"
 								<slider>
 								(gLight_ColorTemp_Laundry,gLaundry,gLight)
 								{channel="hue:0220:0017882ec5b3:bulb_laundry:color_temperature"}
