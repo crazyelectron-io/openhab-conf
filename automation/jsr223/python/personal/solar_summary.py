@@ -31,7 +31,8 @@ def solarSummary(event):
     summaryItem = ir.getItem(event.itemName + "_Summary")
     events.postUpdate(summaryItem.name, summary)
 
-    solarDelta = float(str(PersistenceExtensions.deltaSince(ir.getItem("Solar_Prod_Day"), DateTime.now().minusHours(1))))
-    cost = float(solarDelta) * float(price)
-    summary = "{} kWh, EUR {}".format(solarDelta/1000, cost/100)
-    events.postUpdate("Solar_Prod_Hour_Summary", summary)
+    if (event.itemName == StringType("Solar_Prod_Day")):
+        solarDelta = float(str(PersistenceExtensions.deltaSince(ir.getItem("Solar_Prod_Day"), DateTime.now().minusHours(1))))
+        cost = float(solarDelta) * float(price)
+        summary = "{} kWh, EUR {}".format(solarDelta/1000, cost/100)
+        events.postUpdate("Solar_Prod_Hour_Summary", summary)
