@@ -33,26 +33,32 @@ Group							gAlert
 //--------------------------------------------------------------------------------------------------
 
 // Livingroom groups
+Group							gLightLivingroom
+								(gLight,gLivingroom)
+
+Group							gAlertLivingroom
+								(gAlert,gLivingroom)
+
 Group							gLight_Alert_Livingroom
 								"Alert Livingroom Lighting"
 								<alarm>
-								(gLivingroom,gAlert)
+								(gAlertLivingroom)
 
 String							Light_Scene_Livingroom
 								"Scene Livingroom"
 								<light>
-								(gLight,gLivingroom,gPersist,gLighting_Scene)
+								(gLightLivingroom,gPersist,gLighting_Scene)
 
 Group:Dimmer:AVG				gLight_Brightness_Livingroom
 								"Living Room"
 								<slider>
-								(gLicht,gLivingroom)
+								(gLichtLivingroom)
 								{alexa="BrightnessController.brightness,PowerController.powerState"}
 
 Group:Dimmer					gLight_ColorTemp_Livingroom
 								"Livingroom"
 								<slider>
-								(gLicht,gLivingroom)
+								(gLichtLivingroom)
 								{alexa="ColorTemperature.colorTemperatureInKelvin"}
 
 // Livingroom lights
@@ -677,7 +683,10 @@ String							Light_Alert_LaundryCeiling
 // Outside lighting
 //--------------------------------------------------------------------------------------------------
 
-// Outside light group
+// Outside lights
+Group							gLightSwitch_Outside
+								(gLight,gOutside)
+
 Group							gLight_Alert_Outside
 								"Alert Outside Lighting"
 								<alarm>
@@ -698,37 +707,37 @@ Group:Dimmer:AVG				gLight_Brightness_Outside
 Dimmer							Light_Dim_OutsideLeftBack
 								"Lantaarn Left back"
 								<slider>
-								(gLight_Brightness_Outside)
+								(gLight_Brightness_Outside,gLightSwitch_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_lhouse:brightness"}
 
 Dimmer							Light_Dim_OutsideLeft
 								"Lantaarn Left"
 								<slider>
-								(gLight_Brightness_Outside)
+								(gLight_Brightness_Outside,gLightSwitch_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_lback:brightness"}
 
 Dimmer							Light_Dim_OutsideRight
-								"Lantaarn Right"
+								"Lantern Right"
 								<slider>
-								(gLight_Brightness_Outside)
+								(gLight_Brightness_Outside,gLightSwitch_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_rback:brightness"}
 
 Dimmer							Light_Dim_OutsideFront
-								"Frontdoor light"
+								"Frontdoor Light"
 								<slider>
-								(gLight_Brightness_Outside)
+								(gLight_Brightness_Outside,gLightSwitch_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_frontdoor:brightness"}
 
 Dimmer							Light_Dim_OutsideTerrace
-								"Terraslantaarn"
+								"Terrace Light"
 								<slider>
-								(gLight_Brightness_Outside)
+								(gLight_Brightness_Outside,gLightSwitch_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_terrace:brightness"}
 
 Dimmer							Light_Dim_OutsideToolshed
-								"Tuinhuis Lantaarn"
+								"Toolshed Light"
 								<slider>
-								(gLight_Brightness_Outside)
+								(gLight_Brightness_Outside,gLightSwitch_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_shed:brightness"}
 
 String							Light_Alert_OutsideLeft
@@ -772,6 +781,9 @@ String							Light_Alert_OutsideToolshed
 //--------------------------------------------------------------------------------------------------
 
 // Lodge light groups
+Group							gLightSwitch_Lodge
+								(gLight,gLodge)
+
 Group							gLight_Alert_Lodge
 								"Alert Lodge Lighting"
 								<alarm>
@@ -792,13 +804,13 @@ Group:Dimmer:AVG				gLight_Brightness_Lodge
 Dimmer							Light_Dim_LodgeWall1
 								"Lodge wandlamp 1"
 								<slider>
-								(gLight_Brightness_Lodge)
+								(gLight_Brightness_Lodge,gLightSwitch_Lodge)
 								{channel="hue:0100:0017882ec5b3:bulb_lodge1:brightness"}
 
 Dimmer							Light_Dim_LodgeWall2
 								"Lodge wandlamp 2"
 								<slider>
-								(gLight_Brightness_Lodge)
+								(gLight_Brightness_Lodge,gLightSwitch_Lodge)
 								{channel="hue:0100:0017882ec5b3:bulb_lodge2:brightness"}
 
 String							Light_Alert_LodgeWall1
