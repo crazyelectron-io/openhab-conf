@@ -1140,9 +1140,3 @@ Dimmer							Outside_Brightness_WORK
 Dimmer							Outside_Brightness_BRIGHT
 								"Outside brightness BRIGHT"
 								(gPersist)
-
-//--------------------------------------------------------------------------------------------------
-// Hue bridge Thing status
-//--------------------------------------------------------------------------------------------------
-
-String							HUE_Gateway_Status

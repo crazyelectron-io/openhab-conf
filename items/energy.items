@@ -401,7 +401,7 @@ Number							Solar_Prod_Current
 Number							Solar_Prod_Hour
 								"Solar hour production [%d Wh]"
 								<solarplant>
-								(gHist10,gPersiste)
+								(gHist10,gPersist)
 
 String 							Solar_Prod_Hour_Summary
 								"Hour Solar production and price [%s]"
@@ -472,12 +472,3 @@ Switch							Solar_Watchdog
 								"Watchdog timer switch"
 								(gResetExpire)
 								{expire="1h,command=OFF"}
-
-String							SolarEdge_API_Status
-
-
-//--------------------------------------------------------------------------------------------------
-// MQTT Broker Thing status
-//--------------------------------------------------------------------------------------------------
-String							MQTT_Broker_Status
-

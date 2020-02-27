@@ -10,18 +10,19 @@ Changelog:
 from core.rules import rule
 from core.triggers import when
 from core.log import logging
+from core.items import add_item
+from core.utils import postUpdateCheckFirst #,postUpdateIfDifferent
+from org.joda.time import DateTime
 import configuration
 reload(configuration)
 from configuration import LOG_PREFIX, DAY_PHASES_DICT
+
 
 #---------------------------------------------------------------------------------------------------
 # create Day Mode Item if it does not exist
 def addDayModeItem():
     addDayModeItem.log = logging.getLogger("{}.addDayModeItem".format(LOG_PREFIX))
-
-    scriptExtension.importPreset("RuleSupport")
-
-    from core.items import add_item
+    # scriptExtension.importPreset("RuleSupport")
 
     try:
         if ir.getItems("Day_Mode") == []:
@@ -30,9 +31,11 @@ def addDayModeItem():
         import traceback
         addDayModeItem.log.error(traceback.format_exc())
 
+
 #---------------------------------------------------------------------------------------------------
 def scriptLoaded(id):
     addDayModeItem()
+
 
 #==================================================================================================
 @rule("Astro Set Day Mode", description="Update current Day Mode based on time, weather and sun position", tags=["astro"])
@@ -40,17 +43,15 @@ def scriptLoaded(id):
 @when("Item Weather_Cloudy changed")
 @when("Item Alarm_Status changed to ARMED_HOME")
 @when("Item Alarm_Status changed to ARMED_AWAY")
-@when("Time cron 0 */10 * * * ?")
+# @when("Time cron 0 */10 * * * ?")
 @when("System started")
 def setDayMode(event):
-    setDayMode.log = logging.getLogger("{}.setDayMode".format(LOG_PREFIX))
+    # setDayMode.log = logging.getLogger("{}.setDayMode".format(LOG_PREFIX))
     setDayMode.log.info("Enter Day_Mode with Day_Mode [{}], Clouds [{}], Astro_Day_Phase [{}]".format(ir.getItem("Day_Mode").state, ir.getItem("Weather_Cloudy").state, ir.getItem("Astro_Day_Phase").state))
 
     cloudy = str(ir.getItem("Weather_Cloudy").state)  or "OFF"
 
     keyItem = DAY_PHASES_DICT.get(str(ir.getItem("Astro_Day_Phase").state) )
-
-    from org.joda.time import DateTime
 
     if keyItem.get("mode") == "time":
         newState = keyItem.get("before_state") if DateTime.now().getHourOfDay() <= keyItem.get("mode_time") else keyItem.get("after_state")
@@ -61,7 +62,4 @@ def setDayMode(event):
         newState = keyItem.get("clear_state") if cloudy == "OFF" else keyItem.get("cloudy_state")
 
     setDayMode.log.info("Set Day_Mode to [{}], if different from [{}]".format(newState, ir.getItem("Day_Mode").state))
-
-    from core.utils import postUpdateCheckFirst #,postUpdateIfDifferent
-
     postUpdateCheckFirst("Day_Mode", str(newState))

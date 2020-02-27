@@ -3,6 +3,7 @@
 weather_cloudy.py - Set global variable based on clioudiness.
 ----------------------------------------------------------------------------------------------------
 Changelog:
+20200226 v02    Added 'buien' to cloudy conditions.
 20200119 v01    Created initial script.
 ----------------------------------------------------------------------------------------------------
 '''
@@ -10,7 +11,9 @@ Changelog:
 from core.rules import rule
 from core.triggers import when
 
-cloudyConditions = ["bewolkt", "zwaarbewolkt", "regen", "mist", "hagel", "sneeuw", "nachtmist", "wolkennacht"]
+
+cloudyConditions = ["bewolkt", "zwaarbewolkt", "regen", "buien", "mist", "hagel", "sneeuw", "nachtmist", "wolkennacht"]
+
 
 #===================================================================================================
 @rule("Weather Cloudy State", description="Determine Cloudiness of weather condition and set global variable", tags=["weather"])

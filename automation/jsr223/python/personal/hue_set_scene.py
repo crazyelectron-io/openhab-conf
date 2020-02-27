@@ -38,7 +38,7 @@ def hueSetScene(event):
     lightGroup = ir.getItem("gLight_Brightness_" + lightArea)
     if scene == "OFF":
         events.sendCommand(str(lightGroup.name), "OFF")
-    elif scene == "EVENING" or scene == "READ" or scene == "WORK" or scene == "BRIGHT" or scene == "MOVIE":
+    elif scene in ["EVENING", "READ", "WORK", "BRIGHT", "MOVIE"]:
         brightnessGroup = ir.getItem("gLight_Brightness_" + lightArea)
         brightness = ir.getItem(lightArea + "_Brightness_" + event.itemState.toString()).state.toString()
         hueSetScene.log.info("Brightness command [{}], group [{}]".format(brightness, brightnessGroup.name))

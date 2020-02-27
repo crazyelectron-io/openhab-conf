@@ -21,7 +21,7 @@ import datetime
 # create Sunrise and Sunset Items if they do not exist
 def addSunriseItems():
     addSunriseItems.log = logging.getLogger("{}.addSunriseItems".format(LOG_PREFIX))
-    scriptExtension.importPreset("RuleSupport")
+    # scriptExtension.importPreset("RuleSupport")
     try:
         if ir.getItems("Astro_Sun_SetTomorrow") == []:
             add_item("Astro_Sun_SetTomorrow", item_type="DateTime", groups=["gAstro"], label="Tomorrow's Sunset [%1$tH:%1$tM]", category="sunset", tags=["Astro"])
@@ -36,7 +36,7 @@ def addSunriseItems():
         addSunriseItems.log.error(traceback.format_exc())
 
 #---------------------------------------------------------------------------------------------------
-# Use this to remove created items for testing
+# Use this to remove created items. For testing purposes only!
 def removeSunriseItems():
     from core.items import remove_item
     remove_item("Astro_Sun_SetTomorrow")
@@ -52,7 +52,7 @@ def scriptLoaded(id):
 #---------------------------------------------------------------------------------------------------
 def calcNextSunTimes():
     calcNextSunTimes.log = logging.getLogger("{}.calcNextSunTimes".format(LOG_PREFIX))
-    if items["Astro_Day_Phase"] == StringType("DAYLIGHT"):
+    if str(items["Astro_Day_Phase"]) in ["DAYLIGHT", "NOON"]:
         calcNextSunTimes.log.info("Daylight - next sunrise is tomorrow, next sunset is today")
         events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTomorrow").state))
         events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTime").state))
@@ -82,11 +82,13 @@ def calcNextSunTimes():
             events.postUpdate("Astro_Sun_RiseNext", str(ir.getItem("Astro_Sun_RiseTime").state))
             events.postUpdate("Astro_Sun_SetNext", str(ir.getItem("Astro_Sun_SetTime").state))
 
+
 #===================================================================================================
 @rule("AstroNextSun", description="Determine the next sunrise/sunset times for today and tomorrow", tags=["astro"])
 @when("Item Astro_Day_Phase changed")
 def astroNextSunTimes(event):
     calcNextSunTimes()
+
 
 #===================================================================================================
 @rule("AstroSunTomorrow", description="Calculate tomorrow's sunrise/sunset time", tags=["astro"])

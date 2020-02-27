@@ -21,8 +21,11 @@ from configuration import powerPriceDict
 @when("Item Solar_Prod_Month changed")
 @when("Item Solar_Prod_Year changed")
 def solarSummary(event):
-    if event.oldItemState is None:
+    if isinstance(items[event.itemName], UnDefType) or event.oldItemState is None:
         return
+    else:
+        solarSummary.log.info("Calculate Solar Summary, triggered by [{}]".format(event.itemName))
+
     price = powerPriceDict.get("T"+str(items["Power_Tariff"])).get("return_price")
     cost = float(event.itemState.toString()) * float(price)
     summary = "{} kWh, EUR {}".format(float(str(event.itemState))/1000, cost/100)
@@ -31,8 +34,10 @@ def solarSummary(event):
     summaryItem = ir.getItem(event.itemName + "_Summary")
     events.postUpdate(summaryItem.name, summary)
 
-    if (event.itemName == StringType("Solar_Prod_Day")):
+    if (str(event.itemName) == "Solar_Prod_Day"):
         solarDelta = float(str(PersistenceExtensions.deltaSince(ir.getItem("Solar_Prod_Day"), DateTime.now().minusHours(1))))
+        solarSummary.log.info("Calculate last hours solar production: [{}]".format(solarDelta))
+        events.postUpdate("Solar_Prod_Hour", str(solarDelta))
         cost = float(solarDelta) * float(price)
         summary = "{} kWh, EUR {}".format(solarDelta/1000, cost/100)
         events.postUpdate("Solar_Prod_Hour_Summary", summary)

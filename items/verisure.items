@@ -184,6 +184,3 @@ String							Alarm_Status_Connect
 String							Alarm_Status_Connect1
 								"Internet connection [%s]"
 								{channel="verisure:broadbandConnection:myverisure:broadband1:connected"}
-
-// VeriSure Thing status string
-String							VeriSure_API_Status
