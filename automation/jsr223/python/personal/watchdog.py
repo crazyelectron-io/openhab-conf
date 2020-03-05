@@ -218,7 +218,7 @@ def addWatchdogItems():
 
 
 #---------------------------------------------------------------------------------------------------
-def scriptLoaded(id):
+def scriptLoaded(id_):
     # removeWatchdogItems()        # *For testing purposes only*
     addWatchdogItems()
 
