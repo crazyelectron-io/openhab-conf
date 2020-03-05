@@ -52,7 +52,7 @@ keyThingsDict = {
         "watched_items": ["xxx"],
         "restart_info": {
             "binding_uri": "org.openhab.binding.daikin",
-            "wait_time": 90,
+            "wait_time": 120,
             "reschedule_timer_on_update": True,
             "notify_restart": True,
         }
@@ -88,7 +88,7 @@ keyThingsDict = {
         "watched_items": ["xxx"],
         "restart_info": {
             "binding_uri": "org.openhab.binding.daikin",
-            "wait_time": 180,
+            "wait_time": 300,
             "reschedule_timer_on_update": True,
             "notify_restart": True,
         }
@@ -112,7 +112,7 @@ keyThingsDict = {
         "watched_items": ["xxx"],
         "restart_info": {
             "binding_uri": "org.openhab.binding.verisure",
-            "wait_time": 120,
+            "wait_time": 180,
             "reschedule_timer_on_update": True,
             "notify_restart": True,
         },
@@ -136,7 +136,7 @@ keyThingsDict = {
         "watched_items": ["xxx"],
         "restart_info": {
             "binding_uri": "org.openhab.binding.volvooncall",
-            "wait_time": 300,
+            "wait_time": 600,
             "reschedule_timer_on_update": True,
             "notify_rerstart": True,
         },
