@@ -223,8 +223,9 @@ def schedule_binding_restart(
         return
 
     if timers.get(binding_id) is None:
-        if notify_restart is True:
-            NotificationAction.sendBroadcastNotification(u"Auto binding restart scheduled for '{}' in {}s (current status of bindingID '{}'='{}')".format(binding_id, binding_name, delay_seconds, current_state))
+        # if notify_restart is True:
+        #     NotificationAction.sendBroadcastNotification(u"Auto binding restart scheduled for '{}' in {}s (current status of bindingID '{}'='{}')".format(binding_id, binding_name, delay_seconds, current_state))
+
         # Define the call-back that will be executed when the timer expires
         def cb():
             global logTitle
@@ -309,7 +310,7 @@ def Rule_KeyThingStatusUpdate(event):
 
         # Restart some bindings if needed
         if bindingRestartInfo:
-            LogAction.logDebug(logTitle, logPrefix+u"Will attempt restarting '{}' binding with URI '{}' if offline - current status is {}".format(keyStatusItemThingName, bindingRestartInfo.get("binding_uri"), nodeState))
+            # LogAction.logDebug(logTitle, logPrefix+u"Will attempt restarting '{}' binding with URI '{}' if offline - current status is {}".format(keyStatusItemThingName, bindingRestartInfo.get("binding_uri"), nodeState))
             # Note: schedule_binding_restart() takes care of managing the Thing status, so don't do it here:
             schedule_binding_restart(
                 bindingRestartInfo.get("binding_uri"),
