@@ -213,7 +213,7 @@ def addWatchdogItems():
 
 
 #---------------------------------------------------------------------------------------------------
-def scriptLoaded(id):
+def scriptLoaded(id_):
     # removeWatchdogItems()        # *For testing purposes only*
     addWatchdogItems()
 
@@ -262,7 +262,6 @@ def schedule_binding_restart(
         return
 
     if timers.get(binding_id) is None:
-<<<<<<< HEAD
         if notify_restart is True:
             NotificationAction.sendBroadcastNotification(
                 u"Restart scheduled for '{name}' in {delay}s (status='{state}')".format(
@@ -272,12 +271,6 @@ def schedule_binding_restart(
                 )
             )
         # Define the call-back that will be executed when the timer expires.
-=======
-        # if notify_restart is True:
-        #     NotificationAction.sendBroadcastNotification(u"Auto binding restart scheduled for '{}' in {}s (current status of bindingID '{}'='{}')".format(binding_id, binding_name, delay_seconds, current_state))
-
-        # Define the call-back that will be executed when the timer expires
->>>>>>> 6f76c33a0957f66ee41736513a097b837cf4b3c0
         def cb():
             global logTitle
             current_state = str(things.get(ThingUID(binding_thing_name)).status)
@@ -401,7 +394,6 @@ def Rule_KeyThingStatusUpdate(event):
 
         # Restart some bindings if needed
         if bindingRestartInfo:
-<<<<<<< HEAD
             LogAction.logDebug(logTitle,
                 logPrefix + u"Will attempt restarting '{name}' binding with URI '{uri}' if offline; current status is {state}".format(
                     name=keyStatusItemThingName,
@@ -410,10 +402,6 @@ def Rule_KeyThingStatusUpdate(event):
                 )
             )
             # Note: schedule_binding_restart() takes care of managing the Thing status
-=======
-            # LogAction.logDebug(logTitle, logPrefix+u"Will attempt restarting '{}' binding with URI '{}' if offline - current status is {}".format(keyStatusItemThingName, bindingRestartInfo.get("binding_uri"), nodeState))
-            # Note: schedule_binding_restart() takes care of managing the Thing status, so don't do it here:
->>>>>>> 6f76c33a0957f66ee41736513a097b837cf4b3c0
             schedule_binding_restart(
                 bindingRestartInfo.get("binding_uri"),
                 keyStatusItemThingName,
