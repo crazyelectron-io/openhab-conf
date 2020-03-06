@@ -20,6 +20,20 @@
             "**/.factorypath": true
         },
         "extensions.showRecommendationsOnlyOnDemand": true,
-        "python.linting.pylintEnabled": true
+        "python.linting.pylintEnabled": true,
+        "python.jediEnabled": true,
+        "python.linting.lintOnSave": true,
+        "python.linting.enabled": true,
+        "editor.wordWrapColumn": 100,
+        "editor.accessibilityPageSize": 2,
+        "editor.accessibilitySupport": "off",
+        "extensions.ignoreRecommendations": true,
+        "git.confirmSync": false,
+        "git.enableSmartCommit": true,
+        "git.ignoreLimitWarning": true,
+        "git.supportCancellation": true,
+        "oh-alignment-tool.formatStyle": "Multiline",
+        "oh-alignment-tool.multilineIndentAmount": 7,
+        "remote.SSH.enableAzureIntegration": true,
     }
 }
