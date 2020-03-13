@@ -145,19 +145,19 @@ sitemap default label="At Home" {
                 Slider item=Light_Dim_OutsideRight
                 Switch item=Light_Dim_OutsideFront
                 Slider item=Light_Dim_OutsideFront
-                // Switch item=Light_Dim_OutsideTerrace
-                // Slider item=Light_Dim_OutsideTerrace
-                // Switch item=Light_Dim_OutsideShed
-                // Slider item=Light_Dim_OutsideShed
+                Switch item=Light_Dim_OutsideTerrace
+                Slider item=Light_Dim_OutsideTerrace
+                Switch item=Light_Dim_OutsideShed
+                Slider item=Light_Dim_OutsideShed
             }
-            // Text item=gLight_OnOff_Lodge
-            // {
-            //     // Lodge lighting group switch
-            //     Switch item=Light_Dim_LodgeWall1
-            //     Slider item=Light_Dim_LodgeWall1
-            //     Switch item=Light_Dim_LodgeWall2
-            //     Slider item=Light_Dim_LodgeWall2
-            // }
+            Text item=gLight_OnOff_Lodge
+            {
+                // Lodge lighting group switch
+                Switch item=Light_Dim_LodgeWall1
+                Slider item=Light_Dim_LodgeWall1
+                Switch item=Light_Dim_LodgeWall2
+                Slider item=Light_Dim_LodgeWall2
+            }
         }
 
         Text item=gLighting_Scene {
@@ -295,12 +295,12 @@ sitemap default label="At Home" {
                 Text    item=Outside_Brightness_WORK label="Brightness [%d]"
                 Slider  item=Outside_Brightness_BRIGHT
                 Text    item=Outside_Brightness_BRIGHT label="Brightness [%d]"
-                // Slider  item=Lodge_Brightness_EVENING
-                // Text    item=Lodge_Brightness_EVENING label="Brightness [%d]"
-                // Slider  item=Lodge_Brightness_READ
-                // Text    item=Lodge_Brightness_READ label="Brightness [%d]"
-                // Slider  item=Lodge_Brightness_BRIGHT
-                // Text    item=Lodge_Brightness_BRIGHT label="Brightness [%d]"
+                Slider  item=Lodge_Brightness_EVENING
+                Text    item=Lodge_Brightness_EVENING label="Brightness [%d]"
+                Slider  item=Lodge_Brightness_READ
+                Text    item=Lodge_Brightness_READ label="Brightness [%d]"
+                Slider  item=Lodge_Brightness_BRIGHT
+                Text    item=Lodge_Brightness_BRIGHT label="Brightness [%d]"
             }
         }
     }

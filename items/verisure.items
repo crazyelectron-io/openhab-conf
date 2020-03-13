@@ -105,7 +105,8 @@ Group:Contact:OR(OPEN, CLOSED)	gDoors
 								"Open doors [(%d)]"
 
 Contact							Alarm_Door_Scullery
-								"Scullery Door Open"
+								"Washok deur"
+								(gDoors)
 								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:sculleryDoorSensor:state"}
 
@@ -114,7 +115,8 @@ DateTime						Alarm_Update_Door_Scullery
 								{channel="verisure:doorWindowSensor:myverisure:sculleryDoorSensor:timestamp"}
 
 Contact							Alarm_Door_Bedroom
-								"Bedroom Door Open"
+								"Bedroom Door"
+								(gDoors)
 								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:bedroomDoorSensor:state"}
 
@@ -123,7 +125,7 @@ DateTime						Alarm_Update_Door_Bedroom
 								{channel="verisure:doorWindowSensor:myverisure:bedroomDoorSensor:timestamp"}
 
 Contact							Alarm_Door_Livingroom
-								"Livingroom Door Open"
+								"Livingroom Door"
 								(gDoors)
 								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:livingroomDoorSensor:state"}
@@ -133,7 +135,7 @@ DateTime						Alarm_Update_Door_Livingroom
 								{channel="verisure:doorWindowSensor:myverisure:livingroomDoorSensor:timestamp"}
 
 Contact							Alarm_Door_GarageSide
-								"Garage Side door Open"
+								"Garage Side Door"
 								(gDoors)
 								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:garageDoorSensor:state"}
@@ -143,7 +145,7 @@ DateTime						Alarm_Update_Door_GarageSide
 								{channel="verisure:doorWindowSensor:myverisure:garageDoorSensor:timestamp"}
 
 Contact							Alarm_Door_Dining
-								"Diningroom Door Open"
+								"Diningroom Door"
 								(gDoors)
 								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:diningDoorSensor:state"}
@@ -153,7 +155,7 @@ DateTime						Alarm_Update_Door_Dining
 								{channel="verisure:doorWindowSensor:myverisure:diningDoorSensor:timestamp"}
 
 Contact							Alarm_Door_Front
-								"Front Door Open"
+								"Front Door"
 								(gDoors)
 								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:frontDoorSensor:state"}
@@ -163,7 +165,7 @@ DateTime						Alarm_Update_Door_Front
 								{channel="verisure:doorWindowSensor:myverisure:frontDoorSensor:timestamp"}
 
 Contact							Alarm_Door_Fusebox
-								"FuseBox Door open"
+								"FuseBox Door"
 								(gDoors)
 								// ["ContactSensor"]
 								{channel="verisure:doorWindowSensor:myverisure:fuseboxDoorSensor:state"}
