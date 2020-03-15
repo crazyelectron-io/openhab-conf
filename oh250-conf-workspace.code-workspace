@@ -11,32 +11,20 @@
         "openhab.remoteLspPort": 5007,
         "openhab.karafCommand": "ssh openhab-karaf",
         "openhab.useRestApi": true,
+        "oh-alignment-tool.formatStyle": "Multiline",
+        "oh-alignment-tool.multilineIndentAmount": 7,
         "python.pythonPath": "/usr/bin/python",
         "python.linting.ignorePatterns": [
             "**/automation/**/python/core/**/*.py",
             "**/automation/**/python/community/**/*.py"
         ],
-        "files.exclude": {
-            "**/.classpath": true,
-            "**/.project": true,
-            "**/.settings": true,
-            "**/.factorypath": true
-        },
         "extensions.showRecommendationsOnlyOnDemand": true,
-        "python.linting.pylintEnabled": true,
-        "python.jediEnabled": false,
-        "python.linting.lintOnSave": true,
-        "python.linting.enabled": true,
+        // "python.linting.pylintEnabled": true,
+        // "python.jediEnabled": false,
+        // "python.linting.lintOnSave": true,
+        // "python.linting.enabled": true,
         "editor.wordWrapColumn": 100,
-        "editor.accessibilityPageSize": 2,
-        "editor.accessibilitySupport": "off",
-        "extensions.ignoreRecommendations": true,
         "git.confirmSync": false,
         "git.enableSmartCommit": true,
-        "git.ignoreLimitWarning": true,
-        "git.supportCancellation": true,
-        "oh-alignment-tool.formatStyle": "Multiline",
-        "oh-alignment-tool.multilineIndentAmount": 7,
-        "remote.SSH.enableAzureIntegration": true,
     }
 }
