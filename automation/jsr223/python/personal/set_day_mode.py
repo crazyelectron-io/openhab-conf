@@ -75,7 +75,7 @@ def setDayMode(event):
         else:
             newState = keyItem.get("after_state")
         # TODO: Fix this hack:
-        if str(ir.getItem("Astro_Day_Phase").state) in ["NIGHT", "NAUTIC_DAWN", "CIVIL_DAWN", "ASTRO_DAWN"] and DateTime.now().getHourOfDay() <= 6:
+        if str(ir.getItem("Astro_Day_Phase").state) in ["NIGHT", "NAUTIC_DAWN", "CIVIL_DAWN", "ASTRO_DAWN"] and DateTime.now().getHourOfDay() < 6:
             newState = "NIGHT"
     else:
         newState = keyItem.get("clear_state") if cloudy == "OFF" else keyItem.get("cloudy_state")

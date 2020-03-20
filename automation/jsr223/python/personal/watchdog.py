@@ -1,9 +1,9 @@
 '''
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 watchdog.py - Monitor status of bindings and sensors.
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 20200229 v01    Initial version
---------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
 '''
 
 from core.rules import rule
@@ -66,7 +66,7 @@ keyThingsDict = {
             "binding_uri": "org.openhab.binding.daikin",
             "wait_time": 300,
             "reschedule_timer_on_update": True,
-            "notify_restart": True,
+            "notify_restart": False,
         }
     },
     # Daikin Thing Menno
@@ -78,7 +78,7 @@ keyThingsDict = {
             "binding_uri": "org.openhab.binding.daikin",
             "wait_time": 300,
             "reschedule_timer_on_update": True,
-            "notify_restart": True,
+            "notify_restart": False,
         }
     },
     # Daikin Thing Study
@@ -90,7 +90,7 @@ keyThingsDict = {
             "binding_uri": "org.openhab.binding.daikin",
             "wait_time": 300,
             "reschedule_timer_on_update": True,
-            "notify_restart": True,
+            "notify_restart": False,
         }
     },
     # HUE Binding
@@ -164,19 +164,17 @@ timers = {}
 binding_restarts = {}
 
 
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 # For testing purposes only: Use this to remove created items
 @log_traceback
 def removeWatchdogItems():
     for item in ir.getItemsByTag("Watchdog"):
-        LogAction.logInfo(logTitle,
-            u"Remove Watchdog Item [{}]".format(item.name)
-        )
+        LogAction.logInfo(logTitle, u"Remove Watchdog Item [{}]".format(item.name))
         remove_item(item)
     remove_item(WATCHDOG_GROUP)
 
 
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 def addWatchdogItems():
     """
     Create the Watchdog Items and Group if they don't exist yet.
@@ -186,27 +184,13 @@ def addWatchdogItems():
     # Add Watchdog Group if it doesn't exist
     if ir.getItems(WATCHDOG_GROUP) == []:
         LogAction.logInfo(logTitle, u"Create Group [{}]".format(WATCHDOG_GROUP))
-        add_item(WATCHDOG_GROUP,
-            item_type="Group",
-            label="Watchdog Items Group",
-            tags=["Watchdog"]
-        )
+        add_item(WATCHDOG_GROUP, item_type="Group", label="Watchdog Items Group", tags=["Watchdog"])
     try:
         for entry in keyThingsDict.values():
             wdItemName = entry.get("status_item")
             if ir.getItems(wdItemName) == []:
-                add_item(wdItemName,
-                    item_type="String",
-                    groups=[WATCHDOG_GROUP],
-                    label=entry.get("thing_name"),
-                    tags=["Watchdog"]
-                )
-                LogAction.logInfo(logTitle,
-                    u"Created item [{item}] in Group [{group}]".format(
-                        item=wdItemName,
-                        group=WATCHDOG_GROUP
-                    )
-                )
+                add_item(wdItemName, item_type="String", groups=[WATCHDOG_GROUP], label=entry.get("thing_name"), tags=["Watchdog"])
+                LogAction.logInfo(logTitle, u"Created item [{}] in Group [{}]".format(wdItemName, WATCHDOG_GROUP))
     except:
         import traceback
         LogAction.logError(logTitle, u"{}".format(traceback.format_exc()))
@@ -218,7 +202,7 @@ def scriptLoaded(id_):
     addWatchdogItems()
 
 
-#-------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 def schedule_binding_restart(
     binding_id,
     binding_name,
@@ -231,11 +215,9 @@ def schedule_binding_restart(
     Schedule a binding restart if needed (if Thing status is not 'ONLINE')
     
     Arguments:
-        binding_id {String} - The binding identifier
-                                (e.g. 'org.openhab.binding.xyzzy')
+        binding_id {String} - The binding identifier (e.g. 'org.openhab.binding.xyzzy')
         binding_name {String} - The name of the binding, e.g. 'XYZZY'
-        binding_thing_name {String} - The Thing name linked to the binding
-                                        (e.g. binding:id:x:y:z)
+        binding_thing_name {String} - The Thing name linked to the binding (e.g. binding:id:x:y:z)
         delay_seconds {Integer} - # seconds to wait before restarting the binding
     Keyword Arguments:
         reschedule_timer_on_update {bool} - Reschedule restart if update received
@@ -253,48 +235,22 @@ def schedule_binding_restart(
         if timers.get(binding_id):
             timers[binding_id].cancel()
             timers[binding_id] = None
-            LogAction.logInfo(logTitle,
-                u"No need to restart '{binding}' ('{thing}' back online)".format(
-                    binding=binding_name,
-                    thing=binding_thing_name
-                )
-            )
+            LogAction.logInfo(logTitle, u"No need to restart {} ({} back online)".format(binding_name, binding_thing_name))
         return
 
     if timers.get(binding_id) is None:
         if notify_restart is True:
-            NotificationAction.sendBroadcastNotification(
-                u"Restart scheduled for '{name}' in {delay}s (status='{state}')".format(
-                    name=binding_name,
-                    delay=delay_seconds,
-                    state=current_state
-                )
-            )
+            NotificationAction.sendBroadcastNotification(u"Restart scheduled for {} in {}s (status={})".format(binding_name, delay_seconds, current_state))
         # Define the call-back that will be executed when the timer expires.
         def cb():
             global logTitle
             current_state = str(things.get(ThingUID(binding_thing_name)).status)
             if current_state == "ONLINE":
-                LogAction.logInfo(logTitle,
-                    u"No need to restart '{name}' (status='{state}')".format(
-                        name=binding_name,
-                        state=current_state
-                    )
-                )
+                LogAction.logInfo(logTitle, u"No need to restart {} (status={})".format(binding_name, current_state))
                 if notify_restart is True:
-                    NotificationAction.sendBroadcastNotification(
-                        u"Auto restart canceled for '{}' (status='{}')".format(
-                            binding_name,
-                            current_state
-                        )
-                    )
+                    NotificationAction.sendBroadcastNotification(u"Auto restart canceled for {} (status={})".format(binding_name, current_state))
             else:
-                LogAction.logInfo(logTitle,
-                    u"Will now restart '{name}' (status='{state}')".format(
-                        name=binding_name,
-                        state=current_state
-                    )
-                )
+                LogAction.logInfo(logTitle, u"Will now restart {} (status={})".format(binding_name, current_state))
                 # Keep track of binding restarts
                 restart_counter = binding_restarts.get(binding_id)
                 if restart_counter is None:
@@ -303,58 +259,35 @@ def schedule_binding_restart(
                     binding_restarts[binding_id] = int(restart_counter) + 1
 
                 if notify_restart is True:
-                    NotificationAction.sendBroadcastNotification(
-                        u"Auto restart of '{name}' binding (status='{state}')".format(
-                            name=binding_name,
-                            state=current_state
-                        )
-                    )
-                # Restart the binding (use the 'karaf' entry in ssh config file)
-                Exec.executeCommandLine(
-                    "/bin/sh@@-c@@ssh karaf 'bundle:restart {binding}'".format(
-                        binding=binding_id)
-                )
+                    NotificationAction.sendBroadcastNotification(u"Auto restart of {} (status={})".format(binding_name, current_state))
+                # Restart the binding (use the 'openhab-karaf' entry in ssh config file)
+                Exec.executeCommandLine("/bin/sh@@-c@@ssh openhab-karaf 'bundle:restart {}'".format(binding_id))
             timers[binding_id] = None
 
-        timers[binding_id] = ScriptExecution.createTimer(
-            DateTime.now().plusSeconds(delay_seconds),
-            cb
-        )
+        timers[binding_id] = ScriptExecution.createTimer(DateTime.now().plusSeconds(delay_seconds), cb)
 
     else:
         if reschedule_timer_on_update is True:
-            LogAction.logInfo(logTitle,
-                u"Reschedule '{name}' binding restart (status='{state}').".format(
-                    name=binding_name,
-                    state=current_state
-                )
-            )
+            LogAction.logInfo(logTitle, u"Reschedule '{}' binding restart (status='{}').".format(binding_name, current_state))
             timers.get(binding_id).reschedule(DateTime.now().plusSeconds(delay_seconds))
 
 
-#--------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------
 # Automatically add the needed decorators for all monitored Things in things_dict
 def key_things_trigger_generator_thing_changed(things_dict):
     def generated_triggers(function):
         global logTitle
         for k in keyThingsDict.keys():
-            logPrefix = u"generated_triggers(): adding @when(\"Thing '{thing}' changed\") trigger for '{name}'".format(
-                thing=k,
-                name=unicode(keyThingsDict.get(k).get("thing_name"))
-            )
+            logPrefix = u"generated_triggers(): adding @when(\"Thing {} changed\") trigger for {}".format(k, unicode(keyThingsDict.get(k).get("thing_name")))
             LogAction.logInfo(logTitle, logPrefix)
-            when("Thing '{}' changed".format(k))(function)
+            when("Thing {} changed".format(k))(function)
         return function
 
     return generated_triggers
 
 
-#===============================================================================
-@rule(
-    rulePrefix + "Thing status update",
-    description=u"Update Thing-proxy items with status" + ruleTimeStamp,
-    tags=["watchdog", ruleTimeStamp]
-)
+#===================================================================================================
+@rule(rulePrefix+"Thing status update", description=u"Update Thing-proxy items with status"+ruleTimeStamp, tags=["watchdog", ruleTimeStamp])
 @when("Time cron 0 0/10 * * * ?")
 @key_things_trigger_generator_thing_changed(keyThingsDict)
 def Rule_KeyThingStatusUpdate(event):
@@ -379,28 +312,14 @@ def Rule_KeyThingStatusUpdate(event):
         # thing state is not available in event if rule triggered by cron:
         if event:
             nodeState = str(event.statusInfo)
-            LogAction.logInfo(
-                logTitle,
-                logPrefix + "Thing '{node}' ({thing}, status item '{item}') status changed to '{state}'".format(
-                    node=nodeName,
-                    thing=keyStatusItemThingName,
-                    item=keyStatusItem,
-                    state=nodeState
-                )
-            )
+            LogAction.logInfo(logTitle, logPrefix+"Thing {} ({}, status item {}) status changed to {}".format(nodeName, keyStatusItemThingName, keyStatusItem, nodeState))
         else:
             nodeState = things.get(ThingUID(k)).status
         events.postUpdate(keyStatusItem, str(nodeState))
 
         # Restart some bindings if needed
         if bindingRestartInfo:
-            LogAction.logDebug(logTitle,
-                logPrefix + u"Will attempt restarting '{name}' binding with URI '{uri}' if offline; current status is {state}".format(
-                    name=keyStatusItemThingName,
-                    uri=bindingRestartInfo.get("binding_uri"),
-                    state=nodeState
-                )
-            )
+            LogAction.logDebug(logTitle, logPrefix+u"Restart {} (URI {}) if offline; current status is {}".format(keyStatusItemThingName, bindingRestartInfo.get("binding_uri"), nodeState))
             # Note: schedule_binding_restart() takes care of managing the Thing status
             schedule_binding_restart(
                 bindingRestartInfo.get("binding_uri"),
