@@ -1,1 +1,1 @@
-Number RAIN_CURRENT "Current rain" (Rain) {channel="buienradar:rain_forecast:home:forecast_0" }
+Number Rain_Current "Current rain [%.1f mm]" (Rain) {channel="buienradar:rain_forecast:home:forecast_0" }

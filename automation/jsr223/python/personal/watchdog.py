@@ -261,7 +261,7 @@ def schedule_binding_restart(
                 if notify_restart is True:
                     NotificationAction.sendBroadcastNotification(u"Auto restart of {} (status={})".format(binding_name, current_state))
                 # Restart the binding (use the 'openhab-karaf' entry in ssh config file)
-                Exec.executeCommandLine("/bin/sh@@-c@@ssh openhab-karaf 'bundle:restart {}'".format(binding_id))
+                Exec.executeCommandLine("/bin/sh@@-c@@ssh openhab-karaf bundle:restart {}".format(binding_id))
             timers[binding_id] = None
 
         timers[binding_id] = ScriptExecution.createTimer(DateTime.now().plusSeconds(delay_seconds), cb)
