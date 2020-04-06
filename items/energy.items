@@ -472,3 +472,53 @@ Switch							Solar_Watchdog
 								"Watchdog timer switch"
 								(gResetExpire)
 								{expire="1h,command=OFF"}
+
+// SolarEdge modbus data
+Number							Solar_Power_Actual
+								"Actual power production [%.1f W]"
+								<energy>
+								(gPersist, gHist0)
+								{channel="mqtt:topic:mosquitto:semodbus:SE_Pwr"}
+
+Number							Solar_Mode_Actual
+								"Actual Mode [%d]"
+								<energy>
+								(gPersist, gHist)
+								{channel="mqtt:topic:mosquitto:semodbus:SE_Mode" }
+
+Number							Solar_Temp_Actual
+								"Actual Temperature [%.1f °C]"
+								<energy>
+								(gPersist, gHist0)
+								{channel="mqtt:topic:mosquitto:semodbus:SE_Temp"}
+
+Number							Solar_Freq_Actual
+								"Actual Frequency [%.5f Hz]"
+								<energy>
+								(gPersist, gHist0)
+								{channel="mqtt:topic:mosquitto:semodbus:SE_Freq"}
+
+// SolarEdge serial data
+Number							Solar_Day_Total
+								"Day total Power [%.3f Wh]"
+								<energy>
+								(gPersist, gHist0)
+								{channel="mqtt:topic:mosquitto:seserial:SE_Eday"}
+
+Number							Solar_Month_Total
+								"Month total Power [%.3f Wh]"
+								<energy>
+								(gPersist, gHist0)
+								{channel="mqtt:topic:mosquitto:seserial:SE_Emon"}
+
+Number							Solar_Year_Total
+								"Year total Power [%.3f Wh]"
+								<energy>
+								(gPersist, gHist0)
+								{channel="mqtt:topic:mosquitto:seserial:SE_Eyear"}
+
+Number							Solar_All_Total
+								"Inverter total Power [%.3f Wh]"
+								<energy>
+								(gPersist, gHist0)
+								{channel="mqtt:topic:mosquitto:seserial:SE_Etot"}

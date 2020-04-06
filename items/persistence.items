@@ -1,12 +1,14 @@
 //==============================================================================
-// persistence.items    v02 20191130 Updated naming
+// persistence.items - Define Groups to assign Items to specific persistence services
+//  v03 20200404 Added every change interval
+//  v02 20191130 Updated naming
 //==============================================================================
-// Define Groups to assign Items to specific persistence services:
-//  mapdb for openHAB state restore on restart
-//  influxdb for charts and history
+// Use mapDB for openHAB state restore on restart
+// Use influxDB for charts and history
 //------------------------------------------------------------------------------
 
 // Group to persist Items for history and Grafana views (using InfluxDB)
+Group gHist0        // Every change interval
 Group gHist1        // 1 minute interval
 Group gHist5        // 5 minute interval
 Group gHist10       // 10 minute interval
@@ -16,5 +18,5 @@ Group gDaily        // 1 day interval
 Group gWeekly       // 1 week interval
 Group gMonthly      // 30 day interval
 
-// Group to persist Items to restore on startup using mapdb
+// Group to persist Items to restore on startup (using mapDB)
 Group gPersist

@@ -8,7 +8,7 @@ Strategies {
     default = everyChange
 }
 Items {
-    gHist* : strategy = everyChange
+    gHist0* : strategy = everyChange
     gHist1* : strategy = everyChange, everyMinute
     gHist5* : strategy = everyChange, every5Minutes
     gHist10* : strategy = everyChange, every10Minutes
