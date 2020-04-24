@@ -15,25 +15,25 @@ Group							gAstro
 
 // The NTP-synced local date and time
 DateTime						Astro_Day_Time
-								"Today [%1$tA, %1$td.%1$tm.%1$tY]"
+								"Vandaag [%1$tA, %1$td.%1$tm.%1$tY]"
 								<clock>
 								(gAstro)
 								{channel="ntp:ntp:local:dateTime"}
 
 // Current day phase (SUN_RISE, ASTRO_DAWN, NAUTIC_DAWN, CIVIL_DAWN, CIVIL_DUSK, NAUTIC_DUSK, ASTRO_DUSK, SUN_SET, DAYLIGHT, NIGHT)
 String							Astro_Day_Phase
-								"Day Phase [%s]"
+								"Dagfase [%s]"
 								(gAstro,gPersist)
 								{channel="astro:sun:home:phase#name"}
 
 Number							Astro_Day_Light
-								"Daylight duration [%1$tH:%1$tM]"
+								"Daglicht duur [%1$tH:%1$tM]"
 								(gAstro,gPersist)
 								{channel="astro:sun:home:daylight#duration"}
 
 // Current season name
 String							Astro_Season_Name
-								"Season [%s]"
+								"Seizoen [%s]"
 								(gAstro,gPersist)
 								{channel="astro:sun:home:season#name"}
 
@@ -42,27 +42,27 @@ String							Astro_Season_Name
 
 // Today's sunset time
 DateTime						Astro_Sun_SetTime
-								"Today's Sunset [%1$tH:%1$tM]"
+								"Zonsondergang [%1$tH:%1$tM]"
 								<sunset>
 								(gAstro)
 								{channel="astro:sun:home:set#start"}
 
 // Today's sunrise time
 DateTime						Astro_Sun_RiseTime
-								"Today's Sunrise [%1$tH:%1$tM]"
+								"Zonsopkomst [%1$tH:%1$tM]"
 								<sunrise>
 								(gAstro,gPersist)
 								{channel="astro:sun:home:rise#start"}
 
 // Sun position Items
 Number							Astro_Sun_Elevation
-								"Sun elevation [%.0f °]"
+								"Zonhoogte [%.0f °]"
 								<sun>
 								(gAstro)
 								{channel="astro:sun:home:position#elevation"}
 
 Number							Astro_Sun_Azimuth
-								"Sun direction [SCALE(windDirection.scale):%s]"
+								"Zonrichting [SCALE(windDirection.scale):%s]"
 								<sun>
 								(gAstro)
 								{channel="astro:sun:home:position#azimuth"}
@@ -70,26 +70,26 @@ Number							Astro_Sun_Azimuth
 //--------------------------------------------------------------------------------------------------
 // Moon related Items
 Number							Astro_Moon_Distance
-								"Moon distance [%.0f km]"
+								"Maan afstand [%.0f km]"
 								<moon>
 								(gAstro)
 								{channel="astro:moon:home:distance#distance"}
 
 String							Astro_Moon_Phase
-								"Moon phase [%s]"
+								"Maanfase [MAP(astro.map):%s]"
 								<moon>
 								(gAstro)
 								{channel="astro:moon:home:phase#name"}
 
 								//[MAP(astro.map):%s]
 DateTime						Astro_Moon_FullNext
-								"Next full moon [%1$td.%1$tm.%1$tY]"
+								"Vollemaan [%1$td.%1$tm.%1$tY]"
 								<moon>
 								(gAstro)
 								{channel="astro:moon:home:phase#full"}
 
 DateTime						Astro_Moon_NewNext
-								"Next new moon [%1$td.%1$tm.%1$tY]"
+								"Nieuwe maan [%1$td.%1$tm.%1$tY]"
 								<moon>
 								(gAstro)
 								{channel="astro:moon:home:phase#new"}
@@ -98,17 +98,17 @@ DateTime						Astro_Moon_NewNext
 // Radiation related Items
 //--------------------------------------------------------------------------------------------------
 Number							Astro_Radiation_Total
-								"Sun Radiation [%.2f %unit%]"
+								"Zonnekracht [%.2f %unit%]"
 								(gAstro)
 								{channel="astro:sun:home:radiation#total"}
 
 Number							Astro_Radiation_Direct
-								"Direct Radiation [%.2f %unit%]"
+								"Directe straling [%.2f %unit%]"
 								(gAstro)
 								{channel="astro:sun:home:radiation#direct"}
 
 Number:Intensity				Astro_Radiation_Diffuse
-								"Diffuse Radiation [%.0f W/m\u00B2]"
+								"Indirecte straling [%.0f W/m\u00B2]"
 								<sun>
 								(gAstro,gHist5)
 								{channel="astro:sun:home:radiation#diffuse"}
@@ -119,4 +119,4 @@ Number:Intensity				Astro_Radiation_Diffuse
 
 // AlarmCLock of Ron's Android device
 DateTime						AlarmClock
-								"Next Alarm time"
+								"Volgende alarmtijd"

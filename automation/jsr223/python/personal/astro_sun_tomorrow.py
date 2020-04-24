@@ -28,9 +28,9 @@ def addSunriseItems():
         if ir.getItems("Astro_Sun_RiseTomorrow") == []:
             add_item("Astro_Sun_RiseTomorrow", item_type="DateTime", groups=["gAstro"], label="Tomorrow's Sunrise [%1$tH:%1$tM]", category="sunrise", tags=["Astro"])
         if ir.getItems("Astro_Sun_SetNext") == []:
-            add_item("Astro_Sun_SetNext", item_type="DateTime", groups=["gAstro"], label="Next Sunset [%1$tH:%1$tM]", category="sunset", tags=["Astro"])
+            add_item("Astro_Sun_SetNext", item_type="DateTime", groups=["gAstro"], label="Zonsondergang [%1$tH:%1$tM]", category="sunset", tags=["Astro"])
         if ir.getItems("Astro_Sun_RiseNext") == []:
-            add_item("Astro_Sun_RiseNext", item_type="DateTime", groups=["gAstro"], label="Next Sunrise [%1$tH:%1$tM]", category="sunrise", tags=["Astro"])
+            add_item("Astro_Sun_RiseNext", item_type="DateTime", groups=["gAstro"], label="Zonsopkomst [%1$tH:%1$tM]", category="sunrise", tags=["Astro"])
     except:
         import traceback
         addSunriseItems.log.error(traceback.format_exc())

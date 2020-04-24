@@ -28,7 +28,7 @@ def solarSummary(event):
 
     price = powerPriceDict.get("T"+str(items["Power_Tariff"])).get("return_price")
     cost = float(event.itemState.toString()) * float(price)
-    summary = "{} kWh, EUR {}".format(float(str(event.itemState))/1000, cost/100)
+    summary = "{:.1f} kWh, EUR {:.2f}".format(float(str(event.itemState))/1000, cost)
     costItem = ir.getItem(event.itemName + "_Cost")
     events.postUpdate(costItem, str(cost))
     summaryItem = ir.getItem(event.itemName + "_Summary")
@@ -39,5 +39,5 @@ def solarSummary(event):
         solarSummary.log.info("Calculate last hours solar production: [{}]".format(solarDelta))
         events.postUpdate("Solar_Prod_Hour", str(solarDelta))
         cost = float(solarDelta) * float(price)
-        summary = "{} kWh, EUR {}".format(solarDelta/1000, cost/100)
+        summary = "{:.1f} kWh, EUR {:.2f}".format(solarDelta/1000, cost)
         events.postUpdate("Solar_Prod_Hour_Summary", summary)

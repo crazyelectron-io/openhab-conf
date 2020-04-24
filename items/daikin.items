@@ -13,36 +13,36 @@ Group							gACLaundry
 								"Airco Stephan"
 
 Switch							AC_Online_Laundry
-								"AC Status Stephan [%s]"
+								"Airco status Stephan [%s]"
 								<network>
 								(gSensorStatus, gResetExpire)
 								{channel="network:pingdevice:ac_laundry:online", expire="5m", Static="meta"[name="Airco"]}
 
 Switch							AC_Power_Laundry
-								"Airco On/Off Stephan"
+								"Airco Aan Stephan"
 								(gLaundry,gHist5,gACLaundry)
 								{channel="daikin:ac_unit:192_168_2_125:power"}
 
 Number							AC_SetTemp_Laundry
-								"Target Temp [%s °C]"
+								"Doeltemperatuur [%s °C]"
 								<temperature>
 								(gLaundry,gACLaundry)
 								{channel="daikin:ac_unit:192_168_2_125:settemp"}
 
 Number							AC_Temp_Laundry
-								"Room Temp [%s °C]"
+								"Temp kamer Stephan [%s °C]"
 								<temperature>
 								(gLaundry,gTempSensor,gHist5,gACLaundry)
 								{channel="daikin:ac_unit:192_168_2_125:indoortemp"}
 
 String							AC_Mode_Laundry
-								"AC Mode"
+								"Airco mode Stephan"
 								<heating>
 								(gLaundry,gACLaundry)
 								{channel="daikin:ac_unit:192_168_2_125:mode"}
 
 String							AC_FanSpeed_Laundry
-								"Fan speed"
+								"Ventilatorsnelheid"
 								<fan>
 								(gLaundry)
 								{channel="daikin:ac_unit:192_168_2_125:fanspeed"}
@@ -57,33 +57,33 @@ String							AC_FanDirection_Laundry
 // Daikin AC Guest room items
 //--------------------------------------------------------------------------------------------------
 Group							gACGuestroom
-								"Airo Menno"
+								"Airco Menno"
 
 Switch							AC_Online_Guestroom
-								"AC Status Menno [%s]"
+								"Airco status Menno [%s]"
 								<network>
 								(gSensorStatus, gResetExpire)
 								{channel="network:pingdevice:ac_guestroom:online", expire="5m", Static="meta"[name="Airco"]}
 
 Switch							AC_Power_Guestroom
-								"Airco Menno On/Off Menno"
+								"Airco Aan Menno"
 								(gGuestroom,gHist5,gACGuestroom)
 								{channel="daikin:ac_unit:192_168_2_160:power"}
 	
 Number							AC_SetTemp_Guestroom
-								"Target Temp [%.0f °C]"
+								"Airco doeltemp Menno [%.0f °C]"
 								<temperature>
 								(gGuestroom,gACGuestroom)
 								{channel="daikin:ac_unit:192_168_2_160:settemp"}
 
 Number							AC_Temp_Guestroom
-								"Room Temp [%s °C]"
+								"Kamertemp Menno [%s °C]"
 								<temperature>
 								(gGuestroom,gTempSensor,gHist5,gACGuestroom)
 								{channel="daikin:ac_unit:192_168_2_160:indoortemp"}
 
 String							AC_Mode_Guestroom
-								"AC Mode"
+								"Airco Mode Menno"
 								<heating>
 								(gGuestroom,gACGuestroom)
 								{channel="daikin:ac_unit:192_168_2_160:mode"}

@@ -20,10 +20,10 @@
 //--------------------------------------------------------------------------------------------------
 
 Group							gLight
-								"All House Lights"
+								"Alle verlichting"
 
 Group							gLighting_Scene
-								"All Light Scenes"
+								"Alle lichtscenes"
 
 Group							gAlert
 								"Light Alert"
@@ -45,25 +45,25 @@ Group							gLight_Alert_Livingroom
 								(gAlertLivingroom)
 
 String							Light_Scene_Livingroom
-								"Scene Livingroom"
+								"Scene woonkamer"
 								<light>
 								(gLightLivingroom,gPersist,gLighting_Scene)
 
 Group:Dimmer:AVG				gLight_Brightness_Livingroom
-								"Living Room"
+								"woonkamer"
 								<slider>
 								(gLichtLivingroom)
 								{alexa="BrightnessController.brightness,PowerController.powerState"}
 
 Group:Dimmer					gLight_ColorTemp_Livingroom
-								"Livingroom"
+								"woonkamer"
 								<slider>
 								(gLichtLivingroom)
 								{alexa="ColorTemperature.colorTemperatureInKelvin"}
 
 // Livingroom lights
 Dimmer							Light_Dim_Chair
-								"Chair light"
+								"Staandelamp stoel"
 								<slider>
 								(gLight_Brightness_Livingroom)
 								{channel="hue:0220:0017882ec5b3:bulb_chair:brightness"}
@@ -146,7 +146,7 @@ String							Light_Alert_Couch
 
 // Kitchen groups
 Group							gLight_Alert_Kitchen
-								"Alert Kitchen"
+								"Alert keuken"
 								<alarm>
 								(gLight_Kitchen,gAlert)
 
@@ -156,7 +156,7 @@ String							Light_Scene_Kitchen
 								(gLight,gKitchen,gPersist,gLighting_Scene)
 
 Group:Dimmer:AVG				gLight_Brightness_Kitchen
-								"Kitchen"
+								"keuken"
 								<brightness>
 								(gLichtg,gKitchen)
 								{alexa="PowerController.powerState,BrightnessController.brightness"}
@@ -168,7 +168,7 @@ Group:Dimmer					gLight_ColorTemp_Kitchen
 
 // Kitchen lights
 Dimmer							Light_Dim_KitchenLeft
-								"Brightness Left Kitchen"
+								"Brightness Left keuken"
 								<slider>
 								(gLight_Brightness_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:brightness"}
@@ -180,7 +180,7 @@ Dimmer							Light_ColorTemp_KitchenLeft
 								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:color_temperature"}
 
 Dimmer							Light_Dim_KitchenRight
-								"Brightness Right Kitchen"
+								"Brightness Right keuken"
 								<slider>
 								(gLight_Brightness_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:brightness"}
@@ -192,13 +192,13 @@ Dimmer							Light_ColorTemp_KitchenRight
 								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:color_temperature"}
 
 String							Light_Alert_KitchenLeft
-								"Alert Left Kitchen"
+								"Alert Left keuken"
 								<alarm>
 								(gLight_Alert_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_lkitchen:alert"}
 
 String							Light_Alert_KitchenRight
-								"Alert Right Kitchen"
+								"Alert Right keuken"
 								<alarm>
 								(gLight_Alert_Kitchen)
 								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:alert"}

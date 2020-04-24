@@ -31,36 +31,36 @@
 //==================================================================================================
 // CV thermostat (Nefit Easy) temperature
 Number							CV_Temp_Livingroom
-								"Livingroom temperature [%.1f °C]"
+								"Woonkamer [%.1f °C]"
 								<temperature>
 								(gPersist,gTempSensor)
 
 // CV gas burner active switch
 Group:Switch:OR(ON,OFF)			CV_Burner_Active
-								"CV Burner active"
+								"CV-ketel"
 								<fire>
 								(gPersist,gHist1)
 
 // CV heater active switch
 Switch							CV_Heater_Active
-								"Heating active"
+								"Verwarming"
 								<fire>
 								(gHist1,gPersist,CV_Burner_Active)
 
 // Hot water tapped switch
 Switch							CV_HotWater_Active
-								"Hot water active"
+								"Warmwater"
 								(gHistory,gPersist,CV_Burner_Active)
 
 // CV thermostat SetPoint
 Number							CV_SetPoint_Livingroom
-								"Set point [%.1f °C]"
+								"Ingesteld [%.1f °C]"
 								<heating>
 								(gPersist,gTemp,gLivingroom,gThermostat)
 
 // CV water pressure (bar)
 Number							CV_Pressure
-								"CV water pressure [%.1f bar]"
+								"Waterdruk [%.1f bar]"
 								(gHourly,gPersist)
 
 // Retry reading the gas usage after a HTTP failure
@@ -70,7 +70,7 @@ Switch							CV_Retry_GasUsage
 
 // Average livingroom temperature (derived from NefitEasy and Netatmo HC)
 Number							Temp_Avg_Livingroom
-								"Livingroom [%.1f °C]"
+								"Woonkamer [%.1f °C]"
 								<temperature>
 								(gHist10,gTempSensor,gLivingroom,gPersist)
 								["CurrentTemperature"]
@@ -82,7 +82,7 @@ Switch							CV_Watchdog
 								{expire="30m,command=OFF"}
 
 Switch							CV_Online
-								"Nefit Status [%s]"
+								"Nefit status [%s]"
 								<network>
 								(gSensorStatus, gResetExpire)
 								{channel="network:servicedevice:nefit:online", expire="5m", Static="meta"[name="Heating"]}

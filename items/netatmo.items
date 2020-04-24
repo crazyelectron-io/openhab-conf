@@ -13,14 +13,14 @@ Group				gNHC
 
 // The temparature (in degrees Celcius)
 Number				NHC_Temp_Livingroom
-					"Temperature [%.1f °C]"
+					"Temperatuur [%.1f °C]"
 					<temperature>
 					(gLiving,gNHC,gTempSensor,gPersist)
 					{channel="netatmo:NHC:home:livingroom:Temperature"}
 
 // CO2 is given in ppm
 Number				NHC_CO2_Livingroom
-					"CO2 level woonkamer [%.0f ppm]"
+					"CO2-niveau woonkamer [%.0f ppm]"
 					<carbondioxide>
 					(gLiving,gHist10,gNHC,gPersist,gSensorStatus)
 					{channel="netatmo:NHC:home:livingroom:Co2"}
@@ -41,7 +41,7 @@ Number				NHC_Pressure_Livingroom
 
 // Noise level is givin in dB
 Number				NHC_NoiseLevel_Livingroom
-					"Geluidsniveau [%d dB]"
+					"Geluidsniveau woonkamer [%d dB]"
 					<none>
 					(gLiving,gHCoach,gPersist,gSensorStatus)
 					{channel="netatmo:NHC:home:livingroom:Noise"}

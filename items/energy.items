@@ -43,7 +43,7 @@
 
 // Current tariff for power consumption and return
 Number							Power_Tariff
-								"Current Power Tariff [%d]"
+								"Stroomtarief [%d]"
 								<energy>
 								(gPersist,gHist5)
 								{channel="mqtt:topic:mosquitto:dsmr:P_Tariff"}
@@ -51,13 +51,13 @@ Number							Power_Tariff
 
 // Items to store current actual power usage readings from DSMR P1 interface.
 Number							Power_Use_All_Current
-								"Current use [%d W]"
+								"Huidig gebruik [%d W]"
 								<energy>
 								(gHist)
 								{channel="mqtt:topic:mosquitto:dsmr:P_Use"}
 
 Number							Power_Use_L1_Current
-								"Current use L1 [%d W]"
+								"Actueel L1 gebruik [%d W]"
 								<energy>
 								(gHist)
 								{channel="mqtt:topic:mosquitto:dsmr:P_UseL1"}
@@ -79,7 +79,7 @@ Number							Power_Use_L3_Current
 // Items to store current actual power return readings from DSMR (received through MQTT Thing).
 //--------------------------------------------------------------------------------------------------
 Number							Power_Ret_All_Current
-								"Current return [%d W]"
+								"Huidig retour [%d W]"
 								<energy>
 								(gHist)
 								{channel="mqtt:topic:mosquitto:dsmr:P_Ret"}
@@ -108,19 +108,19 @@ Number							Power_Ret_L3_Current
 // (received through MQTT Thing).
 //--------------------------------------------------------------------------------------------------
 Number							Power_Use_T1_Total
-								"Usage meter T1 [%d Wh]"
+								"Meterstand T1 [%d Wh]"
 								<energy>
 								(gHist5,gPersist)
 								{channel="mqtt:topic:mosquitto:dsmr:P_UseTotT1"}
 
 Number							Power_Use_T2_Total
-								"Usage meter T2 [%d Wh]"
+								"Meterstand T2 [%d Wh]"
 								<energy>
 								(gHist5,gPersist)
 								{channel="mqtt:topic:mosquitto:dsmr:P_UseTotT2"}
 
 Number							Power_Use_Total
-								"Power usage meter [%d Wh]"
+								"Meterstand stroom [%d Wh]"
 								<energy>
 								(gHist5,gPersist)
 
@@ -130,7 +130,7 @@ Number							Power_Use_Total
 // The gas meter updates it readings only once an hour in the DSMR 4.x standard.
 //--------------------------------------------------------------------------------------------------
 Number							Gas_Use_Total
-								"Gas meter [%d dm3]"
+								"Meterstand gas [%d dm3]"
 								<gas>
 								(gHist15,gPersist)
 								{channel="mqtt:topic:mosquitto:dsmr:G_UseTot"}
@@ -152,7 +152,7 @@ Number							Power_Ret_T2_Total
 								{channel="mqtt:topic:mosquitto:dsmr:P_RetTotT2"}
 
 Number							Power_Ret_Total
-								"Power Return meter [%d Wh]"
+								"Meterstand retour [%d Wh]"
 								<energy>
 								(gHist5,gPersist)
 
@@ -163,7 +163,7 @@ Number							Power_Ret_Total
 
 // Items to store the delta of consumed and returned actual power.
 Number							Power_Delta_All_Current
-								"Current Net usage [%d W]"
+								"Huidig nettogebruik [%d W]"
 								<energy>
 								(gHist)
 
@@ -183,193 +183,193 @@ Number							Power_Delta_L3_Current
 								(gHist)
 
 Number							Power_Use_Hour
-								"Last hour's power use [%d Wh]"
+								"Verbruik per uur [%d Wh]"
 								<energy>
 								(gHist15,gPersist)
 
 Number							Power_Use_Hour_Cost
-								"Last hour's power cost [%.2f]"
+								"Prijs per uur [%.2f]"
 								<piggybank>
 								(gHist15,gPersist)
 
 Number							Power_Use_Day
-								"Today's power use [%d Wh]"
+								"Verbruik vandaag [%d Wh]"
 								<energy>
 								(gHist60,gPersist)
 
 Number							Power_Use_Day_Cost
-								"Today's power cost [%.2f]"
+								"Kosten vandaag [%.2f]"
 								<piggybank>
 								(gHist60,gPersist)
 
 
 Number							Power_Ret_Hour
-								"Last hour's power return [%d Wh]"
+								"Retour per uur [%d Wh]"
 								<energy>
 								(gHist15,gPersist)
 
 Number							Power_Ret_Hour_Cost
-								"Last hour's power return price [%.2f]"
+								"Opbrengst per uur [%.2f]"
 								<piggybank>
 								(gHist15,gPersist)
 
 Number							Power_Ret_Day
-								"Today's power return [%d Wh]"
+								"Retour vandaag [%d Wh]"
 								<energy>
 								(gHist60,gPersist)
 
 Number							Power_Ret_Day_Cost
-								"Today's power return price [%.2f]"
+								"Opbrengst vandaag [%.2f]"
 								<piggybank>
 								(gHist60,gPersist)
 
 // Items to store periodic power usage.
 Number							Power_Delta_Hour
-								"Last hour's net power use [%d Wh]"
+								"Nettoverbruik dit uur [%d Wh]"
 								<energy>
 								(gHist5,gPersist)
 
 Number							Power_Delta_Hour_Cost
-								"Last hour's net power cost [%.2f]"
+								"Nettoprijs dit uur [%.2f]"
 								<piggybank>
 								(gHist5,gPersist)
 
 String							Power_Delta_Hour_Summary
-								"Last hour's net power use [%s]"
+								"Nettostroom dit uur [%s]"
 								<energy>
 								(gPersist)
 
 Number							Power_Delta_Day
-								"Today's net power use [%d Wh]"
+								"Nettoverbruik vandaag [%d Wh]"
 								<energy>
 								(gHist60,gPersist)
 
 Number							Power_Delta_Day_Cost
-								"Today's net power cost [%.2f]"
+								"Nettoprijs vandaag [%.2f]"
 								<piggybank>
 								(gHist60,gPersist)
 
 String							Power_Delta_Day_Summary
-								"Today's net power use [%s]"
+								"Nettostroom vandaag [%s]"
 								<energy>
 								(gPersist)
 
 Number							Power_Delta_Month
-								"This month's net power use [%d Wh]"
+								"Nettoverbruik deze maand [%d Wh]"
 								<energy>
 								(gDaily,gPersist)
 
 Number							Power_Delta_Month_Cost
-								"This month's net power cost [%.2f]"
+								"Nettokosten deze maand [%.2f]"
 								<piggybank>
 								(gDaily,gPersist)
 
 String							Power_Delta_Month_Summary
-								"This month's net power use [%s]"
+								"Nettostroom deze maand [%s]"
 								<energy>
 								(gPersist)
 
 // Power Delta Items
 Number							Power_Delta_Year
-								"This year's power use [%d Wh]"
+								"Nettoverbruik dit jaar [%d Wh]"
 								<energy>
 								(gDaily,gPersist)
 
 Number							Power_Delta_Year_Cost
-								"This year's power use [%d Wh]"
+								"Nettokosten dit jaar [%d Wh]"
 								<piggybank>
 								(gDaily,gPersist)
 
 String							Power_Delta_Year_Summary
-								"This year's power use summary [%s]"
+								"Nettostroom dit jaar [%s]"
 								<energy>
 								(gPersist)
 
 Number							Power_Delta_Contract
-								"This contract period's power use [%d Wh]"
+								"Nettoverbruik contractperiode [%d Wh]"
 								<energy>
 								(gDaily,gPersist)
 
 Number							Power_Delta_Contract_Cost
-								"This contract period's power use [%d Wh]"
+								"Nettokosten contractperiode [%d Wh]"
 								<piggybank>
 								(gDaily,gPersist)
 
 String							Power_Delta_Contract_Summary
-								"This contract periods's power use summary [%s]"
+								"Nettostroom contractperiode [%s]"
 								<energy>
 								(gPersist)
 
 // Current total gas comsumption today (calculated from midnight).
 Number							Gas_Use_Hour
-								"Last hour's gas use [%d dm3]"
+								"Gasverbruik dit uur [%d dm3]"
 								<gas>
 								(gHis150,gPersist)
 
 Number							Gas_Use_Hour_Cost
-								"Last hour's gas cost [%.2f]"
+								"Gasprijs dit uur [%.2f]"
 								<piggybank>
 								(gHist15,gPersist)
 
 String							Gas_Use_Hour_Summary
-								"Last hours gas use summary [%s]"
+								"Gasverbruik laatste uur [%s]"
 								<gas>
 								(gPersist)
 
 Number							Gas_Use_Day
-								"Today's gas use [%d dm3]"
+								"Gasverbruik vandaag [%d dm3]"
 								<gas>
 								(gHist15,gPersist)
 
 Number							Gas_Use_Day_Cost
-								"Today's gas cost [%.2f]"
+								"Gasprijs vandaag [%.2f]"
 								<piggybank>
 								(gHist15,gPersist)
 
 String							Gas_Use_Day_Summary
-								"Today's gas use summary [%s]"
+								"Gasverbruik vandaag [%s]"
 								<gas>
 								(gPersist)
 
 Number							Gas_Use_Month
-								"This month's gas use [%d dm3]"
+								"Gasverbruik deze maand [%d dm3]"
 								<gas>
 								(gDaily,gPersist)
 
 Number							Gas_Use_Month_Cost
-								"This month's gas use cost [%.2f]"
+								"Gasprijs deze maand [%.2f]"
 								<piggybank>
 								(gDaily,gPersist)
 
 String							Gas_Use_Month_Summary
-								"This month's gas use summary [%s]"
+								"Gasverbruik deze maand [%s]"
 								<gas>
 								(gPersist)
 
 Number							Gas_Use_Year
-								"This year's gas use [%d dm3]"
+								"Gasverbruik dit jaar [%d dm3]"
 								<gas>
 								(gDaily,gPersist)
 
 Number							Gas_Use_Year_Cost
-								"This year's gas use cost [%.2f]"
+								"Gasverbruik dit jaar [%.2f]"
 								<piggybank>
 								(gDaily,gPersist)
 
 String							Gas_Use_Year_Summary
-								"This year's gas use summary [%s]"
+								"Gasverbruik dit jaar [%s]"
 								<gas>
 								(gPersist)
 
 Number							Gas_Use_YearLast
-								"Last year's gas use [%.2f]"
+								"Gasveruik vorig jaar [%.2f]"
 								<piggybank>
 								(gPersist)
 
 
 // Gas & Power price for this period (persist daily for historic tracking)                                                                                                                                // Set once (manually in Karaf console) at start of contract period.
 Number							GAS_PRICE_PER_DM3
-								"Gas price per dm3"
+								"Gasprijs per dm3"
 								<piggybank>
 								(gPersist,gDaily)
 
@@ -393,50 +393,50 @@ Switch							DSMR_Watchdog
 // SolarEdge API-based Items.
 //--------------------------------------------------------------------------------------------------
 Number							Solar_Prod_Current
-								"Current Solar power [%d W]"
+								"Zonnepanelen nu [%d W]"
 								<solarplant>
 								(gHist5)
 								{channel="solaredge:generic:se7k:live#production"}
 
 Number							Solar_Prod_Hour
-								"Solar hour production [%d Wh]"
+								"Uurproductie zonnepanelen [%d Wh]"
 								<solarplant>
 								(gHist10,gPersist)
 
 String 							Solar_Prod_Hour_Summary
-								"Hour Solar production and price [%s]"
+								"Zonnepanelen dit uur [%s]"
 								<solarplant>
 								(gPersist)
 
 Number							Solar_Prod_Day
-								"Solar day production [%d Wh]"
+								"Dagproductie zonnepanelen [%d Wh]"
 								<solarplant>
 								(gHist10,gPersist)
 								{channel="solaredge:generic:se7k:aggregate_day#production"}
 
 Number							Solar_Prod_Day_Cost
-								"Dagopbrengts Solar [%.5f]"
+								"Opbrengst vandaag [%.5f]"
 								<piggybank>
 								(gPersist,gHist60)
 
 String							Solar_Prod_Day_Summary
-								"Day Solar production and price [%s]"
+								"Zonnepanelen vandaag [%s]"
 								<solarplant>
 								(gPersist)
 
 Number							Solar_Prod_Month
-								"Maandproductie Solar [%d Wh]"
+								"Maandproductie zonnepanelen [%d Wh]"
 								<solarplant>
 								(gDaily,gPersist)
 								{channel="solaredge:generic:se7k:aggregate_month#production"}
 
 Number							Solar_Prod_Month_Cost
-								"Maandopbrengst Solar [%.5f]"
+								"Maandopbrengst zonnepanelen [%.5f]"
 								<piggybank>
 								(gPersist)
 
 String							Solar_Prod_Month_Summary
-								"Month production and price [%s]"
+								"Zonnepanelen deze maand [%s]"
 								<solarplant>
 								(gPersist)
 
@@ -452,17 +452,17 @@ Number							Solar_Prod_Year_Cost
 								(gPersist)
 
 String							Solar_Prod_Year_Summary
-								"Solar Year production and price [%s]"
+								"Zonnepanelen dit jaar [%s]"
 								<solarplant>
 								(gPersist)
 
 Number							SoLar_Prod_LastYear
-								"Last year's Solar production [%d kWh]"
+								"Zonnepanelen vorig jaar [%d kWh]"
 								<solarplant>
 								(gPersist)
 
 Number							Solar_Prod_LastYear_Cost
-								"Last year's Solar opbrengst [%.2f €]"
+								"Opbrengst vorig jaar [%.2f €]"
 								<piggybank>
 								(gPersist)
 

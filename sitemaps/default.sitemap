@@ -1,11 +1,11 @@
 sitemap default label="At Home" {
-    Frame label="Home" {
-        Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[MORNING="Morning"] visibility=[Day_Mode=="MORNING"]
-        Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[DAY="Day"] visibility=[Day_Mode=="DAY"]
-        Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[EVENING="Evening"] visibility=[Day_Mode=="EVENING"]
-        Switch item=Day_Mode label="Day Phase []" icon="sun_clouds" mappings=[NIGHT="Night"] visibility=[Day_Mode=="NIGHT"]
+    Frame label="Thuis" {
+        Switch item=Day_Mode label="Dagfase []" icon="sun_clouds" mappings=[MORNING="Morning"] visibility=[Day_Mode=="MORNING"]
+        Switch item=Day_Mode label="Dagfase []" icon="sun_clouds" mappings=[DAY="Day"] visibility=[Day_Mode=="DAY"]
+        Switch item=Day_Mode label="Dagfase []" icon="sun_clouds" mappings=[EVENING="Evening"] visibility=[Day_Mode=="EVENING"]
+        Switch item=Day_Mode label="Dagfase []" icon="sun_clouds" mappings=[NIGHT="Night"] visibility=[Day_Mode=="NIGHT"]
 
-        Text item=Weather_Condition label="Weather [%s]" icon="sun_clouds" {
+        Text item=Weather_Condition label="Weer [%s]" icon="sun_clouds" {
             Text item=Astro_Sun_RiseNext
             Text item=Astro_Sun_SetNext
             Text item=Astro_Sun_Azimuth    visibility=[Astro_Sun_Elevation > 0]
@@ -16,38 +16,40 @@ sitemap default label="At Home" {
             Text item=Astro_Moon_NewNext
 
             Text item=Temp_Avg_Livingroom valuecolor=[>22="red",>20="green",>19="orange",<19="blue"]
-            Text item=NHC_CO2_Livingroom label="CO2 level livingroom [%.0f ppm]" valuecolor=[>1900="red",>1400="orange",<1400="green"]
+            Text item=NHC_CO2_Livingroom label="CO2 woonkamer [%.0f ppm]" valuecolor=[>1900="red",>1400="orange",<1400="green"]
             Text item=NHC_Humidity_Livingroom valuecolor=[>60="orange",>40="green",<=40="red"]
             Text item=Alarm_Humidity_SmokeGarage
             Text item=Alarm_Humidity_SmokeCorridor
-            Text item=Weather_TempAverage_Outdoor label="Outdoor temperature [%.0f °C]"
+            Text item=Weather_TempAverage_Outdoor label="Buitentemperatuur [%.0f °C]"
 
-            Text item=Motion_Temperature_Toilet     label="Toilet temperature [%.1f °C]"
-            Text item=Alarm_Temp_SmokeGarage    label="Garage temperature [%.1f °C]"
-            Text item=Alarm_Temp_SmokeCorridor   label="Corridor temperature [%.1f °C]"
-            Text item=Alarm_Temp_SirenKitchen    label="Kitchen temperature [%.1f °C]"
+            Text item=Motion_Temperature_Toilet     label="Toilet temperatuur [%.1f °C]"
+            Text item=Alarm_Temp_SmokeGarage    label="Garage temperatuur [%.1f °C]"
+            Text item=Alarm_Temp_SmokeCorridor   label="Boven temperatuur [%.1f °C]"
+            Text item=Alarm_Temp_SirenKitchen    label="Keuken temperatuur [%.1f °C]"
 
-            Text item=AC_Temp_Bedroom label="Bedroom [%.1f °C]" valuecolor=[>23="red",>18="orange",<=18="green"]
-            Text item=AC_Temp_Study label="Study [%.1f °C]" valuecolor=[>23="red",>18="orange",<=18="green"]
-            Text item=AC_Temp_Laundry label="Stephan's room [%.1f °C]" valuecolor=[>23="red",>20="orange",>10="green",<=10="blue"]
-            Text item=AC_Temp_Guestroom label="Menno's room [%.1f °C]" valuecolor=[>23="red",>19="orange",>10="green",<=10="blue"]
+            Text item=AC_Temp_Bedroom label="Slaapkamer [%.1f °C]" valuecolor=[>23="red",>18="orange",<=18="green"]
+            Text item=AC_Temp_Study label="Werkkamer [%.1f °C]" valuecolor=[>23="red",>18="orange",<=18="green"]
+            Text item=AC_Temp_Laundry label="Stephan's kamer [%.1f °C]" valuecolor=[>23="red",>20="orange",>10="green",<=10="blue"]
+            Text item=AC_Temp_Guestroom label="Menno's kamer [%.1f °C]" valuecolor=[>23="red",>19="orange",>10="green",<=10="blue"]
         }
         Text item=Temp_Avg_Livingroom           valuecolor=[>22="red",>20="green",>19="orange",<19="blue"]
-        Text item=Weather_TempAverage_Outdoor   label="Outdoor temperature [%.0f °C]"
+        Text item=Weather_TempAverage_Outdoor   label="Buitentemperatuur [%.0f °C]"
         Text item=Astro_Sun_RiseNext
         Text item=Astro_Sun_SetNext
+        Text item=Astro_Moon_Distance
+        Text item=Astro_Moon_FullNext
     }
 
-    Frame label="Lighting" {
-        Switch item=Light_Scene_Livingroom  label="Livingroom"  icon="sofa"     mappings=[OFF="OFF", EVENING="EVENING", MOVIE="FILM", READ="READ"]
-        Switch item=Light_Scene_Dining      label="Dining"      icon="cinema"   mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
-        Switch item=Light_Scene_Kitchen     label="Kitchen"     icon="kitchen"  mappings=[OFF="OFF", EVENING="EVENING", WORK="WERK", BRIGHT="BRIGHT"]
-        Switch item=Light_Scene_Hall        label="Hallway"     icon="corridor" mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
-        // Switch item=Light_Scene_HallCeiling label="HallCeiling" icon="none"     mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
-        Switch item=Light_Scene_Bedroom     label="Bedroom"     icon="bedroom"  mappings=[OFF="OFF", EVENING="EVENING", READ="READ", COSY="COSY"]
-        Switch item=Light_Scene_Bathroom    label="Bathroom"    icon="bath"     mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
+    Frame label="Verlichting" {
+        Switch item=Light_Scene_Livingroom  label="Woonkamer"  icon="sofa"     mappings=[OFF="UIT", EVENING="AVOND", MOVIE="FILM", READ="LEES"]
+        Switch item=Light_Scene_Dining      label="Eethoek"      icon="cinema"   mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
+        Switch item=Light_Scene_Kitchen     label="Keuken"     icon="kitchen"  mappings=[OFF="UIT", EVENING="AVOND", WORK="WERK", BRIGHT="MAX"]
+        Switch item=Light_Scene_Hall        label="Hal"     icon="corridor" mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
+        Switch item=Light_Scene_HallCeiling label="Hal plafond" icon="none"     mappings=[OFF="UIT", EVENING="AVOND", READ="LESS", BRIGHT="MAX"]
+        Switch item=Light_Scene_Bedroom     label="Slaapkamer"     icon="bedroom"  mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", COSY="KNUS"]
+        Switch item=Light_Scene_Bathroom    label="Badkamer"    icon="bath"     mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
         // Switch item=Light_Scene_Lodge       label="Lodge"       icon="house"    mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
-        // Switch item=Light_Scene_Outside     label="Garden"      icon="garden"   mappings=[OFF="OFF", EVENING="EVENING", BRIGHT="BRIGHT", WORK="WORK"]
+        Switch item=Light_Scene_Outside     label="Tuin"      icon="garden"   mappings=[OFF="UIT", EVENING="AVOND", BRIGHT="MAX", WORK="WERK"]
 
         Text item=gLight {
             Text item=gLight_Brightness_Livingroom {
@@ -115,7 +117,7 @@ sitemap default label="At Home" {
                 Slider item=Light_Dim_BedroomRight
                 Slider item=Light_ColorTemp_BedroomRight
             }
-            Text item=gLight_Brightness_Guestroom label="Menno's Lighting" {
+            Text item=gLight_Brightness_Guestroom label="Menno's verlichting" {
                 // Guestroom group switch
                 Switch item=gLight_OnOff_Guestroom
                 Slider item=Light_Dim_GuestroomCeiling1
@@ -123,7 +125,7 @@ sitemap default label="At Home" {
                 Slider item=Light_Dim_GuestroomCeiling2
                 Slider item=Light_ColorTemp_GuestroomCeiling2
             }
-            Text item=gLight_Brightness_Laundry label="Stephan's Lighting" {
+            Text item=gLight_Brightness_Laundry label="Stephan's verlichting" {
                 // Laundry room lighting
                 Switch item=Light_Dim_LaundryCeiling
                 Slider item=Light_Dim_LaundryCeiling
@@ -163,17 +165,17 @@ sitemap default label="At Home" {
         Text item=gLighting_Scene {
             Text item=Light_Scene_Livingroom {
                 Slider  item=Livingroom_Brightness_EVENING
-                Text    item=Livingroom_Brightness_EVENING label="Brightness [%d]"
+                Text    item=Livingroom_Brightness_EVENING label="Helderheid [%d]"
                 Slider  item=Livingroom_ColorTemp_EVENING
-                Text    item=Livingroom_ColorTemp_EVENING label="ColorTemp [%d]"
+                Text    item=Livingroom_ColorTemp_EVENING label="Kleurtemp [%d]"
                 Slider  item=Livingroom_Brightness_MOVIE
-                Text    item=Livingroom_Brightness_MOVIE label="Brightness [%d]"
+                Text    item=Livingroom_Brightness_MOVIE label="Helderheid [%d]"
                 Slider  item=Livingroom_ColorTemp_MOVIE
-                Text    item=Livingroom_ColorTemp_MOVIE label="ColorTemp [%d]"
+                Text    item=Livingroom_ColorTemp_MOVIE label="Kleurtemp [%d]"
                 Slider  item=Livingroom_Brightness_READ
-                Text    item=Livingroom_Brightness_READ label="Brightness [%d]"
+                Text    item=Livingroom_Brightness_READ label="Helderheid [%d]"
                 Slider  item=Livingroom_ColorTemp_READ
-                Text    item=Livingroom_ColorTemp_READ label="ColorTemp [%d]"
+                Text    item=Livingroom_ColorTemp_READ label="Kleurtemp [%d]"
             }
             Text item=Light_Scene_Kitchen {
                 Slider  item=Kitchen_Brightness_EVENING
@@ -305,21 +307,7 @@ sitemap default label="At Home" {
         }
     }
 
-    Frame label="Alarm" {
-        Switch item=Alarm_Status label="Alarm []" icon="alarm" mappings=[DISARMED="Off", ARMED_HOME="Arm Home", ARMED_AWAY="Away"]
-        Text item=Alarm_LastChange
-        Group item=gDoors valuecolor=[>3="red",>1="orange",<2="green"]
-        Switch item=Presence_Ron label="Ron is []" mappings=[ON="Home"] visibility=[Presence_Ron==ON]
-        Switch item=Presence_Ron label="Ron is []" mappings=[OFF="Away"] visibility=[Presence_Ron==OFF]
-        Switch item=Presence_Arniel label="Arniël is []" icon="woman_1" mappings=[ON="Home"] visibility=[Presence_Arniel==ON]
-        Switch item=Presence_Arniel label="Arniël is []" icon="woman_1" mappings=[OFF="Away"] visibility=[Presence_Arniel==OFF]
-        Switch item=Presence_Stephan label="Stephan is[]" mappings=[ON="Home"] visibility=[Presence_Stephan==ON]
-        Switch item=Presence_Stephan label="Stephan is[]" mappings=[OFF="Away"] visibility=[Presence_Stephan==OFF]
-        Switch item=Presence_Menno label="Menno is []" mappings=[ON="Home"] visibility=[Presence_Menno==ON]
-        Switch item=Presence_Menno label="Menno is []" mappings=[OFF="Away"] visibility=[Presence_Menno==OFF]
-    }
-
-    Frame label="Energy" {
+    Frame label="Energie" {
         Text item=Power_Delta_All_Current {
             // Switch item=PwrPeriod1 mappings=[HR6_5="6 Hr",HR12_5="12 Hr",TDY_5="Today",YDY_5="Day-1",DBYDY_5="Day-2",WK_1="Week",LWK_1="Wk-1",MNT_1="Month",LMNT_1="Mn-1"] label="" icon="calendar"
             // Webview url="/static/grafana.html?kiosk&dashboard=openhab&fullscreen&theme=dark&fromItem=PwrPeriod1&panelItem=PwrPanel1" icon="none" height=15
@@ -333,9 +321,10 @@ sitemap default label="At Home" {
             // Switch item=Solar_Panel1 mappings=[SOLAR_PWR="Production", SOLAR_FREQ="Frequency"] icon="chart"
             // Switch item=Solar_Period1 mappings=[HR8_15="8 Hr", TDY_30="Today", YDY_30="Yesterday", WK_1="Week", LWK_1="Last week"] label="" icon="calendar"
             // Webview url="/static/grafana.html?kiosk&dashboard=openhab&fullscreen&theme=dark&fromItem=Solar_Period1&panelItem=Solar_Panel1" height=12 icon="line"
-            Text item=Solar_Prod_Day_Summary label="Today's Solar production [%s]"
-            Text item=Solar_Prod_Month_Summary label="This month's Solar production [%s]"
-            Text item=Solar_Prod_Year_Summary label="This year's Solar production [%s]"
+            Text item=Solar_Prod_Hour_Summary //label="Today's Solar production [%s]"
+            Text item=Solar_Prod_Day_Summary //label="Today's Solar production [%s]"
+            Text item=Solar_Prod_Month_Summary //label="This month's Solar production [%s]"
+            Text item=Solar_Prod_Year_Summary //label="This year's Solar production [%s]"
             // Text item=Solar_Prod_LastYear_Summary label="Last Year's Solar production [%s]"
         }
 
@@ -351,26 +340,42 @@ sitemap default label="At Home" {
 
         // Text item=dayPwrDeltaCost
 
-        Text item=Gas_Use_Hour_Summary label="Last Hour's Gas use [%s]" {
+        Text item=Gas_Use_Hour_Summary { //label="Last Hour's Gas use [%s]"
             // Switch item=GasPeriod3 mappings=[TDY_1="Today", YDY_1="Yesterday", WK_1D="Week",LWK_1D="Wk-1",MNT_1D="Month",LMNT_1D="Mn-1",YR_1D="Year",YRL_1W="Yr-1"] icon="calendar"
             // Webview url="/static/grafana.html?kiosk&dashboard=openhab&fullscreen&theme=dark&fromItem=GasPeriod3&panelItem=GasPanel3" height=12 icon="none"
-            Text item=Gas_Use_Hour_Summary label="Last Hour's Gas use [%s]"
-            Text item=Gas_Use_Day_Summary label="Today's Gas use [%s]"
-            Text item=Gas_Use_Month_Summary label="This Month's Gas use [%s]"
-            Text item=Gas_Use_Year_Summary label="This Year's Gas use [%s]"
-            Text item=Gas_Use_Total label="Gas Meter [%s]" icon="pressure"
+            Text item=Gas_Use_Hour_Summary //label="Last Hour's Gas use [%s]"
+            Text item=Gas_Use_Day_Summary //label="Today's Gas use [%s]"
+            Text item=Gas_Use_Month_Summary //label="This Month's Gas use [%s]"
+            Text item=Gas_Use_Year_Summary //label="This Year's Gas use [%s]"
+            Text item=Gas_Use_Total icon="pressure" //label="Gas Meter [%s]"
         }
         // Text item=dayGasUseCost
     }
 
-    Frame label="Heating" {
-        Switch item=CV_Burner_Active mappings=[ON="On"] visibility=[CV_Burner_Active==ON]
-        Switch item=CV_Burner_Active mappings=[OFF="Off"] visibility=[CV_Burner_Active==OFF]
+    Frame label="Alarm" {
+        Switch item=Alarm_Status label="Alarm []" icon="alarm" mappings=[DISARMED="Uit", ARMED_HOME="Thuis", ARMED_AWAY="Weg"]
+        Text item=Alarm_LastChange
+        Group item=gDoors valuecolor=[>3="red",>1="orange",<2="green"]
+        Switch item=Presence_Ron label="Ron is []" mappings=[ON="Home"] visibility=[Presence_Ron==ON]
+        Switch item=Presence_Ron label="Ron is []" mappings=[OFF="Away"] visibility=[Presence_Ron==OFF]
+        Switch item=Presence_Arniel label="Arniël is []" icon="woman_1" mappings=[ON="Home"] visibility=[Presence_Arniel==ON]
+        Switch item=Presence_Arniel label="Arniël is []" icon="woman_1" mappings=[OFF="Away"] visibility=[Presence_Arniel==OFF]
+        Switch item=Presence_Stephan label="Stephan is[]" mappings=[ON="Home"] visibility=[Presence_Stephan==ON]
+        Switch item=Presence_Stephan label="Stephan is[]" mappings=[OFF="Away"] visibility=[Presence_Stephan==OFF]
+        Switch item=Presence_Menno label="Menno is []" mappings=[ON="Home"] visibility=[Presence_Menno==ON]
+        Switch item=Presence_Menno label="Menno is []" mappings=[OFF="Away"] visibility=[Presence_Menno==OFF]
+    }
+
+    Frame label="Verwarming" {
+        Switch item=CV_Burner_Active mappings=[ON="Aan"] visibility=[CV_Burner_Active==ON]
+        Switch item=CV_Burner_Active mappings=[OFF="Uit"] visibility=[CV_Burner_Active==OFF]
         Text item=CV_SetPoint_Livingroom {
-            Setpoint item=CV_SetPoint_Livingroom minValue=18 maxValue=23 step=0.5 
+            Setpoint item=CV_SetPoint_Livingroom minValue=18 maxValue=23 step=0.5
             Text item=Temp_Avg_Livingroom
-            Switch item=CV_Heater_Active mappings=[ON="On", OFF="Off"]
-            Switch item=CV_HotWater_Active mappings=[ON="On", OFF="Off"]
+            Switch item=CV_Heater_Active mappings=[ON="Aan"] visibility=[CV_Heater_Active==ON]
+            Switch item=CV_Heater_Active mappings=[OFF="Uit"] visibility=[CV_Heater_Active==OFF]
+            Switch item=CV_HotWater_Active mappings=[ON="Aan"] visibility=[CV_HotWater_Active==ON]
+            Switch item=CV_HotWater_Active mappings=[OFF="Uit"] visibility=[CV_HotWater_Active==OFF]
             Text item=CV_Pressure
     //         Switch item=CV_Panel1 mappings=[CH_BURN="Heating", HW_BURN="Warm Water"] label="Graph" icon="chart"
     //         Switch item=CV_Period1 mappings=[HR4_5="4 Hr",TDY_5="5 Hr",YDY_5="Yesterday",DBYDY_5="Day before yesterday"] label="Periode" icon="calendar"
@@ -379,53 +384,54 @@ sitemap default label="At Home" {
     //         Webview url="/static/grafana.html?kiosk&dashboard=openhab&theme=dark&fromItem=Gas_Period4&panelItem=Gas_Panel4" height=12 icon="none"
         }
         Text item=Temp_Avg_Livingroom
-        Switch item=CV_HotWater_Active mappings=[ON="On", OFF="Off"]
+        Switch item=CV_HotWater_Active mappings=[ON="On"] visibility=[CV_HotWater_Active==ON]
+        Switch item=CV_HotWater_Active mappings=[OFF="Off"] visibility=[CV_HotWater_Active==OFF]
     }
 
-    Frame label="TV Wake on LAN" {
-        Switch item=LGTV_Power_Livingroom
-        Switch item=LGTV_WoL_Livingroom
-        Switch item=LGTV_Mute_Livingroom
-        Text item=LGTV_Volume_Livingroom icon="none"
-        Switch item=LGTV_VolDummy_Livingroom icon="soundvolume" label="Volume" mappings=[1="▲", 0="▼"]
-        Text item=LGTV_ChannelNo_Livingroom icon="none"
-        Switch item=LGTV_ChannelDummy_Livingroom icon="screen" label="Channel" mappings=[1="▲", 0="▼"]
-        Text item=LGTV_Channel_Livingroom icon="none"
-        Default item=LGTV_Player_Livingroom
-        Text item=LGTV_Application_Livingroom icon="none"
-        Selection item=LGTV_Application_Livingroom icon="none" mappings=[
-            "amazon"="Amazon Prime",
-            "netflix"="Netflix",
-            "npo"="NPO",
-            "rtl"="RTL XL",
-            "spotify-beehive"="Spotify",
-            "youtube.leanback.v4"="YouTube",
-            "com.davidxo.uhdf"="UHD Fireplace",
-            "com.xstars.app.fireplace2"="Fireplace Relax",
-            "com.webos.app.livetv"="Live TV",
-            "com.webos.app.livemenu"="Tv-gids",
-            "com.webos.app.igallery"="Galerij",
-            "com.webos.app.photovideo"="Foto en video",
-            "com.webos.app.recordings"="Opnamen",
-            "com.webos.app.music"="Muziek",
-            "com.webos.app.hdmi1"="HDMI1",
-            "com.webos.app.hdmi2"="HDMI2",
-            "com.webos.app.scheduler"="Planner",
-            "com.webos.app.miracast"="Screen Share",
-            "com.webos.app.multiview"="Multi-view",
-            "de.2kit.castbrowserlg"="TV Cast",
-            "com.webos.app.screensaver"="Screen Saver",
-            "com.webos.app.tvsimpleviewer"="Viewer",
-            "com.webos.app.voice"="Zoeken",
-            "com.webos.app.browser"="Webbrowser",
-            "com.webos.app.cheeringtv"="Cheering Mode",
-            "com.webos.app.discovery"="LG Content Store",
-            "com.webos.app.notificationcenter"="Meldingen",
-            "com.webos.app.remotesetting"="Instellingen afstandsbediening",
-            "com.webos.app.googleassistant"="Google Assistant",
-            "com.webos.app.softwareupdate"="Software Update",
-            "com.palm.app.settings"="Instellingen"]
-    }
+    // Frame label="LG TV" {
+    //     Switch item=LGTV_Power_Livingroom
+    //     Switch item=LGTV_WoL_Livingroom
+    //     Switch item=LGTV_Mute_Livingroom
+    //     Text item=LGTV_Volume_Livingroom icon="none"
+    //     Switch item=LGTV_VolDummy_Livingroom icon="soundvolume" label="Volume" mappings=[1="▲", 0="▼"]
+    //     Text item=LGTV_ChannelNo_Livingroom icon="none"
+    //     Switch item=LGTV_ChannelDummy_Livingroom icon="screen" label="Channel" mappings=[1="▲", 0="▼"]
+    //     Text item=LGTV_Channel_Livingroom icon="none"
+    //     Default item=LGTV_Player_Livingroom
+    //     Text item=LGTV_Application_Livingroom icon="none"
+    //     Selection item=LGTV_Application_Livingroom icon="none" mappings=[
+    //         "amazon"="Amazon Prime",
+    //         "netflix"="Netflix",
+    //         "npo"="NPO",
+    //         "rtl"="RTL XL",
+    //         "spotify-beehive"="Spotify",
+    //         "youtube.leanback.v4"="YouTube",
+    //         "com.davidxo.uhdf"="UHD Fireplace",
+    //         "com.xstars.app.fireplace2"="Fireplace Relax",
+    //         "com.webos.app.livetv"="Live TV",
+    //         "com.webos.app.livemenu"="Tv-gids",
+    //         "com.webos.app.igallery"="Galerij",
+    //         "com.webos.app.photovideo"="Foto en video",
+    //         "com.webos.app.recordings"="Opnamen",
+    //         "com.webos.app.music"="Muziek",
+    //         "com.webos.app.hdmi1"="HDMI1",
+    //         "com.webos.app.hdmi2"="HDMI2",
+    //         "com.webos.app.scheduler"="Planner",
+    //         "com.webos.app.miracast"="Screen Share",
+    //         "com.webos.app.multiview"="Multi-view",
+    //         "de.2kit.castbrowserlg"="TV Cast",
+    //         "com.webos.app.screensaver"="Screen Saver",
+    //         "com.webos.app.tvsimpleviewer"="Viewer",
+    //         "com.webos.app.voice"="Zoeken",
+    //         "com.webos.app.browser"="Webbrowser",
+    //         "com.webos.app.cheeringtv"="Cheering Mode",
+    //         "com.webos.app.discovery"="LG Content Store",
+    //         "com.webos.app.notificationcenter"="Meldingen",
+    //         "com.webos.app.remotesetting"="Instellingen afstandsbediening",
+    //         "com.webos.app.googleassistant"="Google Assistant",
+    //         "com.webos.app.softwareupdate"="Software Update",
+    //         "com.palm.app.settings"="Instellingen"]
+    // }
 
     // Frame label="Media"
     // {
@@ -458,61 +464,68 @@ sitemap default label="At Home" {
     // }
 
     Frame label="Airco" {
-        Text item=AC_Temp_Bedroom label="AC Bedroom" icon="snow"
-        {
+        Text item=AC_Temp_Bedroom label="Slaapkamer" icon="snow" visibility=[AC_Power_Bedroom==ON]
+        Text item=AC_Temp_Bedroom label="Slaapkamer" icon="switch-off" visibility=[AC_Power_Bedroom==OFF]
+        Text item=AC_Power_Bedroom label="Airco status [%s]" icon="snow" {
             Switch item=AC_Power_Bedroom
             Setpoint item=AC_SetTemp_Bedroom minValue=18 maxValue=23 step=1
-            Switch item=AC_Mode_Bedroom label=" " mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
-            Switch item=AC_FanSpeed_Bedroom label=" " mappings=["AUTO"="Auto", "SILENCE"="Silent", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
+            Switch item=AC_Mode_Bedroom label=" " mappings=["AUTO"="Auto", "COLD"="Koud", "HEAT"="Warm"]
+            Switch item=AC_FanSpeed_Bedroom label=" " mappings=["AUTO"="Auto", "SILENCE"="Stil", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
             Text item=AC_FanDirection_Bedroom label=" "
             Switch item=AC_Vacation_Bedroom
         }
-        Text item=AC_Temp_Study label="AC Study" icon="snow" {
+        Text item=AC_Temp_Study label="Werkkamer" icon="snow" visibility=[AC_Power_Study==ON]
+        Text item=AC_Temp_Study label="Werkkamer" icon="switch-off" visibility=[AC_Power_Study==OFF]
+        Text item=AC_Power_Study label="Airco status [%s]" icon="snow" {
             Switch item=AC_Power_Study
             Setpoint item=AC_SetTemp_Study minValue=18 maxValue=23 step=1
-            Switch item=AC_Mode_Study label="" mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
-            Switch item=AC_FanSpeed_Study label="" mappings=["AUTO"="Auto", "SILENCE"="Silent", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
+            Switch item=AC_Mode_Study label="" mappings=["AUTO"="Auto", "COLD"="Koud", "HEAT"="Warm"]
+            Switch item=AC_FanSpeed_Study label="" mappings=["AUTO"="Auto", "SILENCE"="Stil", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
             Text item=AC_FanDirection_Study label=""
         }
-        Text item=AC_Temp_Laundry label="AC Stephan" icon="snow" {
+        Text item=AC_Temp_Laundry label="Stephan" icon="snow" visibility=[AC_Power_Laundry==ON]
+        Text item=AC_Temp_Laundry label="Stephan" icon="switch" visibility=[AC_Power_Laundry==OFF]
+        Text item=AC_Power_Laundry label="Airco status [%s]" icon="snow" {
             Switch item=AC_Power_Laundry 
             Setpoint item=AC_SetTemp_Laundry minValue=18 maxValue=23 step=1
-            Switch item=AC_Mode_Laundry label="" mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
-            Switch item=AC_FanSpeed_Laundry label="" mappings=["AUTO"="Auto", "SILENCE"="Silent", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
+            Switch item=AC_Mode_Laundry label="" mappings=["AUTO"="Auto", "COLD"="Koud", "HEAT"="Warm"]
+            Switch item=AC_FanSpeed_Laundry label="" mappings=["AUTO"="Auto", "SILENCE"="Stil", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
             Text item=AC_FanDirection_Laundry label=""
         }
-        Text item=AC_Temp_Guestroom label="AC Menno" icon="snow" {
+        Text item=AC_Temp_Guestroom label="Menno" icon="snow" visibility=[AC_Power_Guestroom==ON]
+        Text item=AC_Temp_Guestroom label="Menno" icon="switch" visibility=[AC_Power_Guestroom==OFF]
+        Text item=AC_Power_Guestroom label="Airco status [%s]" icon="snow" {
             Switch item=AC_Power_Guestroom
             Setpoint item=AC_SetTemp_Guestroom minValue=18 maxValue=23 step=1
-            Switch item=AC_Mode_Guestroom label="" mappings=["AUTO"="Auto", "COLD"="Cold", "HEAT"="Heat"]
-            Switch item=AC_FanSpeed_Guestroom label="" mappings=["AUTO"="Auto", "SILENCE"="Silent", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
+            Switch item=AC_Mode_Guestroom label="" mappings=["AUTO"="Auto", "COLD"="Koud", "HEAT"="Warm"]
+            Switch item=AC_FanSpeed_Guestroom label="" mappings=["AUTO"="Auto", "SILENCE"="Stil", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
             Text item=AC_FanDirection_Guestroom label=""
         }
     }
 
-    Frame label="Volvo V90" {
-        Group   item=gVoC_Door_Status label="Car doors [%s]" icon="car" valuecolor=[>3="red",>1="orange",<2="green"]
-        Switch  item=gVoC_Window_Status
-        Switch  item=VoC_Car_Locked label="Car is []" icon="car" mappings=[ON="Locked", OFF="Open"]
-        Text    item=VoC_Fuel_Level
-        Text    item=VoC_Fuel_Amount
-        Text    item=VoC_Consumption_Average
-        Text    item=VoC_Distance_Left
-        // Switch  item=VoC_Fuel_Alert
-        Text    item=VoC_Washer_Level
-        Text    item=VoC_Location icon="movecontrol" {
-            Mapview item=VoC_Location height=10 icon="none" label="Huidige locatie Volvo V90 (idien niet ingebruik)"
-            Text    item=VoC_Location_LUD
-            Switch  item=VoC_Calculated_Location
-        }
-        Switch  item=VoC_Heading
-        Text    item=VoC_Odometer icon="none"
-        Text    item=VoC_TripMeter_1 icon="none"
-        Text    item=VoC_TripMeter_2 icon="none"
-        Switch  item=VoC_Engine_Started
-        Switch  item=VoC_Heater
-        Text    item=VoC_Service_Warning
-    }
+    // Frame label="Volvo V90" {
+    //     Group   item=gVoC_Door_Status label="Deuren [%s]" icon="car" valuecolor=[>3="red",>1="orange",<2="green"]
+    //     Switch  item=gVoC_Window_Status
+    //     Switch  item=VoC_Car_Locked label="Auto is []" icon="car" mappings=[ON="Locked", OFF="Open"]
+    //     Text    item=VoC_Fuel_Level
+    //     Text    item=VoC_Fuel_Amount
+    //     Text    item=VoC_Consumption_Average
+    //     Text    item=VoC_Distance_Left
+    //     // Switch  item=VoC_Fuel_Alert
+    //     Text    item=VoC_Washer_Level
+    //     Text    item=VoC_Location icon="movecontrol" {
+    //         Mapview item=VoC_Location height=10 icon="none" label="Huidige locatie V90 (idien niet ingebruik)"
+    //         Text    item=VoC_Location_LUD
+    //         Switch  item=VoC_Calculated_Location
+    //     }
+    //     Switch  item=VoC_Heading
+    //     Text    item=VoC_Odometer icon="none"
+    //     Text    item=VoC_TripMeter_1 icon="none"
+    //     Text    item=VoC_TripMeter_2 icon="none"
+    //     Switch  item=VoC_Engine_Started
+    //     Switch  item=VoC_Heater
+    //     Text    item=VoC_Service_Warning
+    // }
 
     // Hide default navigation
 	Webview url="/static/hideheader.html" icon=none
