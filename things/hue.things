@@ -48,6 +48,13 @@ Bridge hue:bridge:0017882ec5b3 [ipAddress="192.168.2.98", userName="BwV8002ZezIL
     0220 bulb_hallwl [lightId="27", fadetime=700]
 
     //----------------------------------------------------------------------------------------------
+    // Garage
+    //----------------------------------------------------------------------------------------------
+
+    // Garage ceiling light
+    0100 bulb_garagecl [lightId="18"]
+
+    //----------------------------------------------------------------------------------------------
     // Bedroom
     //----------------------------------------------------------------------------------------------
 
@@ -98,7 +105,7 @@ Bridge hue:bridge:0017882ec5b3 [ipAddress="192.168.2.98", userName="BwV8002ZezIL
     // Outdoor toolshed left light
     0100 bulb_shed [lightId="11", fadetime=1000]
     // Outdoor terras lantern light
-    0100 bulb_terrace [lightId="18", fadetime=1000]
+    // 0100 bulb_terrace [lightId="18", fadetime=1000]
     // Frontdoor light (vintage bulb)
     0100 bulb_frontdoor [lightId="29", fadetime=1000]
 
@@ -150,6 +157,33 @@ Bridge hue:bridge:0017882ec5b3 [ipAddress="192.168.2.98", userName="BwV8002ZezIL
     0820 dim_toilet [sensorId="26"]
     // Dimmer Switch Menno's room
     0820 dim_guest [sensorId="47"]
-    // Dimmer Switch Bathroom
-    0820 dim_bathroom [sensorId="45"]
+    // // Dimmer Switch Bathroom
+    // 0820 dim_bathroom [sensorId="45"]
+}
+
+Bridge hue:bridge:001788FFFE6D2293 [ipAddress="192.168.2.94", userName="4fwyTZtHSm1v1rkJLCam5ce08xyZifdX4U0WpGwe"] //, sensorPollingInterval=300]
+{
+    // Tap Switch Bathroom
+    0830 tap_bathroom [sensorId="5"]
+    // Spot ceiling sink
+    0220 bulb_bathsink [lightId="3", fadetime=500]
+    // Spot ceiling door
+    0220 bulb_bathdoor [lightId="4", fadetime=500]
+    // Spot ceiling bench
+    0220 bulb_bathbench [lightId="5", fadetime=500]
+    // Spot ceiling shower
+    0220 bulb_bathshower [lightId="6", fadetime=500]
+    // Spot ceiling toilet
+    0220 bulb_bathtoilet [lightId="7", fadetime=500]
+    // Outdoor terras lantern light
+    0100 bulb_terrace [lightId="8", fadetime=1000]
+
+    //==============================================================================================
+    // Motion sensors
+    //==============================================================================================
+    
+    // Nathroom Hue motion sensor
+    // 0302 temp_bathroom "Temperature" @ "Bathroom" [sensorId="XX"]
+    // 0107 motion_bathroom "Motion sensor" @ "Bathroom" [sensorId="XX"]
+    // 0106 llux_bathroom "Light intensity" @ "Bathroom" [sensorId="XX"]
 }

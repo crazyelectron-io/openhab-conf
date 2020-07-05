@@ -12,11 +12,12 @@ from core.rules import rule
 from core.triggers import when
 
 #===================================================================================================
-@rule("Hue Tap SW34", description="Hue Tap Upper Right Key pressed", tags=["lights"])
+@rule("Hue Tap Dining 34", description="Hue Tap Upper Right Key pressed", tags=["lights"])
 @when("Channel hue:0830:0017882ec5b3:tap_dining:tap_switch_event triggered 34.0")
 def hueDiningTap34(event):
     hueDiningTap34.log.info("Event [{}] received".format(event.event))
     sceneName = "Light_Scene_" + (str(event.channel).split(":")[3].split("_")[1]).capitalize()
+    hueDiningTap34.log.info("Scene Name [{}]".format(sceneName))
     if items[sceneName] == StringType("OFF") or items["Light_Scene_Livingroom"] == StringType("BRIGHT"):
         events.sendCommand(sceneName, "EVENING")
     elif items["Light_Scene_Livingroom"] == StringType("EVENING"):
@@ -25,7 +26,7 @@ def hueDiningTap34(event):
         events.sendCommand(sceneName, "BRIGHT")
 
 #===================================================================================================
-@rule("Hue Tap SW18", description="Hue Tap Lower Right Key pressed", tags=["lights"])
+@rule("Hue Tap Dining 18", description="Hue Tap Lower Right Key pressed", tags=["lights"])
 @when("Channel hue:0830:0017882ec5b3:tap_dining:tap_switch_event triggered 18.0")
 def hueDiningTap18(event):
     hueDiningTap18.log.info("Event [{}] received".format(event.event))
@@ -34,7 +35,7 @@ def hueDiningTap18(event):
     events.sendCommand(sceneName, "OFF")
 
 #===================================================================================================
-@rule("Hue Tap SW99", description="Hue Tap Lower Right Key pressed", tags=["lights"])
+@rule("Hue Tap Dining 99", description="Hue Tap Lower Right Key pressed", tags=["lights"])
 @when("Channel hue:0830:0017882ec5b3:tap_dining:tap_switch_event triggered 99.0")
 def hueDiningTap99(event):
     hueDiningTap99.log.info("Event [{}] received".format(event.event))
@@ -42,7 +43,7 @@ def hueDiningTap99(event):
     events.sendCommand("Light_Scene_Dining", "OFF")
 
 #===================================================================================================
-@rule("Hue Tap SW16", description="Hue Tap Upper Left Key pressed", tags=["lights"])
+@rule("Hue Tap Dining 16", description="Hue Tap Upper Left Key pressed", tags=["lights"])
 @when("Channel hue:0830:0017882ec5b3:tap_dining:tap_switch_event triggered 16.0")
 def hueDiningTap16(event):
     hueDiningTap16.log.info("Event [{}] received".format(event.event))
@@ -55,7 +56,7 @@ def hueDiningTap16(event):
         events.sendCommand("Light_Scene_Livingroom", "READ")
 
 #===================================================================================================
-@rule("Hue Tap SW17", description="Hue dining tap Lower Left Key pressed", tags=["lights"])
+@rule("Hue Tap Dining 17", description="Hue dining tap Lower Left Key pressed", tags=["lights"])
 @when("Channel hue:0830:0017882ec5b3:tap_dining:tap_switch_event triggered 17.0")
 def hueDiningTap17(event):
     hueDiningTap17.log.info("Event [{}] received".format(event.event))
@@ -63,7 +64,7 @@ def hueDiningTap17(event):
     events.sendCommand("Light_Scene_Livingroom", "OFF")
 
 #===================================================================================================
-@rule("Hue Tap SW98", description="Hue Tap Lower Left+Right Key pressed", tags=["lights"])
+@rule("Hue Tap Dining 98", description="Hue Tap Lower Left+Right Key pressed", tags=["lights"])
 @when("Channel hue:0830:0017882ec5b3:tap_dining:tap_switch_event triggered 98.0")
 def hueDiningTap98(event):
     hueDiningTap98.log.info("Event [{}] received".format(event.event))
@@ -72,7 +73,7 @@ def hueDiningTap98(event):
     events.sendCommand("Light_Scene_Dining", "OFF")
 
 #===================================================================================================
-@rule("Hue Tap SW101", description="Hue Tap Upper Left+Right Key pressed", tags=["lights"])
+@rule("Hue Tap Dining 101", description="Hue Tap Upper Left+Right Key pressed", tags=["lights"])
 @when("Channel hue:0830:0017882ec5b3:tap_dining:tap_switch_event triggered 101.0")
 def hueDiningTap101(event):
     hueDiningTap101.log.info("Event [{}] received".format(event.event))

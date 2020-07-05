@@ -204,7 +204,7 @@ String							Light_Alert_KitchenRight
 								{channel="hue:0220:0017882ec5b3:bulb_rkitchen:alert"}
 
 //--------------------------------------------------------------------------------------------------
-// Dining table lights                                                                                                                                                                                                          // Dining table lights
+// Dining table lights
 //--------------------------------------------------------------------------------------------------
 
 // Dining light groups
@@ -446,6 +446,29 @@ Dimmer							Light_ColorTemp_ToiletCeiling
 								{channel="hue:0220:0017882ec5b3:bulb_toilet:color_temperature"}
 
 //--------------------------------------------------------------------------------------------------
+// Garage lighting
+//--------------------------------------------------------------------------------------------------
+
+// Garage lights groups 
+String							Light_Scene_Garage
+								"Scene Garage light"
+								<light>
+								(gLight,gGarage,gPersist,gLighting_Scene)
+
+// Garage lights
+Group:Dimmer:AVG				gLight_Brightness_Garage
+								"Brightness Garage light"
+								<slider>
+								(gLichts,gGarage)
+								{alexa="Lighting"}
+
+Dimmer							Light_Dim_GarageCeiling
+								"Brightness Garage Ceiling light"
+								<slider>
+								(gLight_Brightness_Garage)
+								{channel="hue:0100:0017882ec5b3:bulb_garagecl:brightness"}
+
+//--------------------------------------------------------------------------------------------------
 // Bathroom  lighting
 //--------------------------------------------------------------------------------------------------
 
@@ -455,40 +478,98 @@ Group							gLight_Alert_Bathroom
 								<alarm>
 								(gBathroom,gAlert)
 
-String							Light_Scene_Bathroom
-								"Scene Bathroom light"
+String							Light_Scene_BathroomShower
+								"Scene Bathroom Shower lights"
 								<light>
 								(gLight,gBathroom,gPersist,gLighting_Scene)
 
-Group:Dimmer:AVG				gLight_Brightness_Bathroom
-								"Brightness Bathroom light"
+Group:Dimmer:AVG				gLight_Brightness_BathroomShower
+								"Brightness Bathroom Shower light"
 								<slider>
 								(gLight,gBathroom)
 								{alexa="Lighting"}
 
-Group:Dimmer					gLight_ColorTemp_Bathroom
-								"ColorTemperature Bathroom light"
+String							Light_Scene_BathroomSink
+								"Scene Bathroom Sink lights"
+								<light>
+								(gLight,gBathroom,gPersist,gLighting_Scene)
+
+Group:Dimmer:AVG				gLight_Brightness_BathroomSink
+								"Brightness Bathroom Sink light"
+								<slider>
+								(gLight,gBathroom)
+								{alexa="Lighting"}
+
+Group:Dimmer					gLight_ColorTemp_BathroomShower
+								"ColorTemperature BathroomShower light"
+								<slider>
+								(gLichts,gBathroom)
+
+Group:Dimmer					gLight_ColorTemp_BathroomSink
+								"ColorTemperature BathroomSink light"
 								<slider>
 								(gLichts,gBathroom)
 
 // Bathroom lights
-Dimmer							Light_Dim_BathroomCeiling
-								"Brightness Bathroom Ceiling light"
+Dimmer							Light_Dim_BathroomShower1
+								"Brightness Bathroom Shower1 light"
 								<slider>
-								(gLight_Brightness_Bathroom)
-								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:brightness"}
+								(gLight_Brightness_BathroomShower)
+								{channel="hue:0220:001788FFFE6D2293:bulb_bathbench:brightness"}
 
-Dimmer							Light_ColorTemp_BathroomCeiling
-								"ColorTemp Bathroom Ceiling Light [JS(i18n_hue0210_colortemp.js):%s]"
+Dimmer							Light_Dim_BathroomShower2
+								"Brightness Bathroom Shower2 light"
 								<slider>
-								(gLight_ColorTemp_Bathroom)
-								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:color_temperature"}
+								(gLight_Brightness_BathroomShower)
+								{channel="hue:0220:001788FFFE6D2293:bulb_bathshower:brightness"}
 
-String							Light_Alert_BathroomCeiling
-								"Alert Bathroom Ceiling light"
-								<alarm>
-								(gLight_Alert_Bathroom)
-								{channel="hue:0220:0017882ec5b3:bulb_bathceiling:alert"}
+Dimmer							Light_Dim_BathroomShower3
+								"Brightness Bathroom Shower3 light"
+								<slider>
+								(gLight_Brightness_BathroomShower)
+								{channel="hue:0220:001788FFFE6D2293:bulb_bathtoilet:brightness"}
+
+Dimmer							Light_Dim_BathroomSink1
+								"Brightness Bathroom Sink1 light"
+								<slider>
+								(gLight_Brightness_BathroomSink)
+								{channel="hue:0220:001788FFFE6D2293:bulb_bathsink:brightness"}
+
+Dimmer							Light_Dim_BathroomSink2
+								"Brightness Bathroom Sink2 light"
+								<slider>
+								(gLight_Brightness_BathroomSink)
+								{channel="hue:0220:001788FFFE6D2293:bulb_bathdoor:brightness"}
+
+Dimmer							Light_ColorTemp_BathroomShower1
+								"ColorTemp Bathroom Shower1 Light [JS(i18n_hue0210_colortemp.js):%s]"
+								<slider>
+								(gLight_ColorTemp_BathroomShower)
+								{channel="hue:0220:0017882ec5b3:bulb_bathbench:color_temperature"}
+
+Dimmer							Light_ColorTemp_BathroomShower2
+								"ColorTemp Bathroom Shower2 Light [JS(i18n_hue0210_colortemp.js):%s]"
+								<slider>
+								(gLight_ColorTemp_BathroomShower)
+								{channel="hue:0220:0017882ec5b3:bulb_bathshower:color_temperature"}
+
+Dimmer							Light_ColorTemp_BathroomShower3
+								"ColorTemp Bathroom Shower3 Light [JS(i18n_hue0210_colortemp.js):%s]"
+								<slider>
+								(gLight_ColorTemp_BathroomShower)
+								{channel="hue:0220:0017882ec5b3:bulb_bathtoilet:color_temperature"}
+
+Dimmer							Light_ColorTemp_BathroomSink1
+								"ColorTemp Bathroom Sink1 Light [JS(i18n_hue0210_colortemp.js):%s]"
+								<slider>
+								(gLight_ColorTemp_BathroomSink)
+								{channel="hue:0220:001788FFFE6D2293:bulb_bathsink:color_temperature"}
+
+Dimmer							Light_ColorTemp_BathroomSink2
+								"ColorTemp Bathroom Sink2 Light [JS(i18n_hue0210_colortemp.js):%s]"
+								<slider>
+								(gLight_ColorTemp_BathroomSink)
+								{channel="hue:0220:001788FFFE6D2293:bulb_bathdoor:color_temperature"}
 
 //--------------------------------------------------------------------------------------------------
 // Master bedroom lighting
@@ -655,17 +736,17 @@ Dimmer							Light_ColorTemp_LaundryCeiling
 								(gLight_ColorTemp_Laundry,gLaundry,gLight)
 								{channel="hue:0220:0017882ec5b3:bulb_laundry:color_temperature"}
 
-// Dimmer                      Light_Dim_LaundryBureau
-//                             "Dim Stephan's Bureau light"
-//                             <slider>
-//                             (gLight_Brightness_Laundry)
-//                             {channel="hue:0220:0017882ec5b3:bulb_laundrybr:brightness"}
+Dimmer							Light_Dim_LaundryBureau
+                            	"Dim Stephan's Bureau light"
+                            	<slider>
+                            	(gLight_Brightness_Laundry)
+                            	{channel="hue:0220:0017882ec5b3:bulb_laundrybr:brightness"}
 
-// Dimmer                      Light_ColorTemp_LaundryBureau
-//                             "ColorTemp Stephan's Bureau light"
-//                             <slider>
-//                             (gLight_ColorTemp_Laundry)
-//                             {channel="hue:0220:0017882ec5b3:bulb_laundrybr:color_temperature"}
+Dimmer							Light_ColorTemp_LaundryBureau
+                        		"ColorTemp Stephan's Bureau light"
+                            	<slider>
+                            	(gLight_ColorTemp_Laundry)
+                            	{channel="hue:0220:0017882ec5b3:bulb_laundrybr:color_temperature"}
 
 String							Light_Alert_LaundryCeiling
 								"Alert Laundry Ceiling light"
@@ -673,11 +754,11 @@ String							Light_Alert_LaundryCeiling
 								(gLight_Alert_Laundry)
 								{channel="hue:0220:0017882ec5b3:bulb_laundry:alert"}
 
-// String							Light_Alert_LaundryBureau
-// 								"Alert Laundry Bureau light"
-// 								<alarm>
-// 								(gLight_Alert_Laundry)
-// 								{channel="hue:0220:0017882ec5b3:bulb_laundrybr:alert"}
+String							Light_Alert_LaundryBureau
+								"Alert Laundry Bureau light"
+								<alarm>
+								(gLight_Alert_Laundry)
+								{channel="hue:0220:0017882ec5b3:bulb_laundrybr:alert"}
 
 //--------------------------------------------------------------------------------------------------
 // Outside lighting
@@ -732,7 +813,7 @@ Dimmer							Light_Dim_OutsideTerrace
 								"Terrace Light"
 								<slider>
 								(gLight_Brightness_Outside,gLightSwitch_Outside)
-								{channel="hue:0100:0017882ec5b3:bulb_terrace:brightness"}
+								{channel="hue:0100:001788FFFE6D2293:bulb_terrace:brightness"}
 
 Dimmer							Light_Dim_OutsideToolshed
 								"Toolshed Light"
@@ -1015,29 +1096,54 @@ Dimmer							HallCeiling_ColorTemp_BRIGHT
 								"HallCeiling colortemp BRIGHT"
 								(gPersist)
 
-// Bathroom lighting Scene configuration
-Dimmer							Bathroom_Brightness_EVENING
-								"Bathroom brightness EVENING"
+// Bathroom Sink lighting Scene configuration.
+Dimmer							BathroomSink_Brightness_EVENING
+								"Bath Sink brightness EVENING"
 								(gPersist)
 
-Dimmer							Bathroom_Brightness_READ
-								"Bathroom brightness READ"
+Dimmer							BathroomSink_Brightness_READ
+								"Bath Sink brightness READ"
 								(gPersist)
 
-Dimmer							Bathroom_Brightness_BRIGHT
-								"Bathroom brightness BRIGHT"
+Dimmer							BathroomSink_Brightness_BRIGHT
+								"Bath Sink brightness BRIGHT"
 								(gPersist)
 
-Dimmer							Bathroom_ColorTemp_EVENING
-								"Bathroom colortemp EVENING"
+Dimmer							BathroomSink_ColorTemp_EVENING
+								"Bath Sink colortemp EVENING"
 								(gPersist)
 
-Dimmer							Bathroom_ColorTemp_READ
-								"Bathroom colortemp READ"
+Dimmer							BathroomSink_ColorTemp_READ
+								"Bath Sink colortemp READ"
 								(gPersist)
 
-Dimmer							Bathroom_ColorTemp_BRIGHT
-								"Bathroom colortemp BRIGHT"
+Dimmer							BathroomSink_ColorTemp_BRIGHT
+								"Bath Sink colortemp BRIGHT"
+								(gPersist)
+
+// Bathroom Shower lighting Scene configuration
+Dimmer							BathroomShower_Brightness_EVENING
+								"Bath Shower brightness EVENING"
+								(gPersist)
+
+Dimmer							BathroomShower_Brightness_READ
+								"Bath Shower brightness READ"
+								(gPersist)
+
+Dimmer							BathroomShower_Brightness_BRIGHT
+								"Bath Shower brightness BRIGHT"
+								(gPersist)
+
+Dimmer							BathroomShower_ColorTemp_EVENING
+								"Bath Shower colortemp EVENING"
+								(gPersist)
+
+Dimmer							BathroomShower_ColorTemp_READ
+								"Bath Shower colortemp READ"
+								(gPersist)
+
+Dimmer							BathroomShower_ColorTemp_BRIGHT
+								"Bath Shower colortemp BRIGHT"
 								(gPersist)
 
 // Bedroom lighting Scene configuration

@@ -1,0 +1,5 @@
+Bridge amazonechocontrol:account:account1 "Amazon Account" @ "Accounts"
+        [ amazonSite="amazon.de", email="ron@crazyelectron.io", password="5dI8y@be8#Q42sFt#5N2&", pollingIntervalInSeconds=15 ]
+{
+    Thing echo echodot1 "Alexa" @ "Living room" [serialNumber="G090L91071741CSE"]
+}

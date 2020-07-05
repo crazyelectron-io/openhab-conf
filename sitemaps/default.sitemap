@@ -40,16 +40,18 @@ sitemap default label="At Home" {
         Text item=Astro_Moon_FullNext
     }
 
-    Frame label="Verlichting" {
-        Switch item=Light_Scene_Livingroom  label="Woonkamer"  icon="sofa"     mappings=[OFF="UIT", EVENING="AVOND", MOVIE="FILM", READ="LEES"]
-        Switch item=Light_Scene_Dining      label="Eethoek"      icon="cinema"   mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
-        Switch item=Light_Scene_Kitchen     label="Keuken"     icon="kitchen"  mappings=[OFF="UIT", EVENING="AVOND", WORK="WERK", BRIGHT="MAX"]
-        Switch item=Light_Scene_Hall        label="Hal"     icon="corridor" mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
-        Switch item=Light_Scene_HallCeiling label="Hal plafond" icon="none"     mappings=[OFF="UIT", EVENING="AVOND", READ="LESS", BRIGHT="MAX"]
-        Switch item=Light_Scene_Bedroom     label="Slaapkamer"     icon="bedroom"  mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", COSY="KNUS"]
-        Switch item=Light_Scene_Bathroom    label="Badkamer"    icon="bath"     mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
-        // Switch item=Light_Scene_Lodge       label="Lodge"       icon="house"    mappings=[OFF="OFF", EVENING="EVENING", READ="READ", BRIGHT="BRIGHT"]
-        Switch item=Light_Scene_Outside     label="Tuin"      icon="garden"   mappings=[OFF="UIT", EVENING="AVOND", BRIGHT="MAX", WORK="WERK"]
+    Frame label="Verlichting" { 
+        Switch item=Light_Scene_Livingroom      label="Woonkamer"   icon="sofa"     mappings=[OFF="UIT", EVENING="AVOND", MOVIE="FILM", READ="LEES"]
+        Switch item=Light_Scene_Dining          label="Eethoek"     icon="cinema"   mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
+        Switch item=Light_Scene_Kitchen         label="Keuken"      icon="kitchen"  mappings=[OFF="UIT", EVENING="AVOND", WORK="WERK", BRIGHT="MAX"]
+        Switch item=Light_Scene_Hall            label="Hal"         icon="corridor" mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
+        Switch item=Light_Scene_HallCeiling     label="Hal plafond" icon="none"     mappings=[OFF="UIT", EVENING="AVOND", READ="LESS", BRIGHT="MAX"]
+        Switch item=Light_Scene_Garage          label="Garage"      icon="garage"   mappings=[OFF="UIT", EVENING="AVOND", BRIGHT="MAX", WORK="WERK"]
+        Switch item=Light_Scene_Bedroom         label="Slaapkamer"  icon="bedroom"  mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", COSY="KNUS"]
+        Switch item=Light_Scene_BathroomSink    label="Wastafel"    icon="bath"     mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
+        Switch item=Light_Scene_BathroomShower  label="Douche"      icon="bath"     mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
+        Switch item=Light_Scene_Lodge           label="Lodge"       icon="house"    mappings=[OFF="UIT", EVENING="AVOND", READ="LEES", BRIGHT="MAX"]
+        Switch item=Light_Scene_Outside         label="Tuin"        icon="garden"   mappings=[OFF="UIT", EVENING="AVOND", BRIGHT="MAX", WORK="WERK"]
 
         Text item=gLight {
             Text item=gLight_Brightness_Livingroom {
@@ -108,6 +110,11 @@ sitemap default label="At Home" {
                 Slider item=Light_Dim_ToiletCeiling
                 Slider item=Light_ColorTemp_ToiletCeiling
             }
+            Text item=gLight_Brightness_Garage {
+                // Garage ceiling light
+                Switch item=Light_Dim_GarageCeiling
+                Slider item=Light_Dim_GarageCeiling
+            }
             Text item=gLight_Brightness_Bedroom {
                 // Master bedroom lighting
                 Switch item=Light_Dim_BedroomLeft
@@ -133,9 +140,12 @@ sitemap default label="At Home" {
             }
             Text item=gLight_Brightness_Bathroom {
                 // Bathroom lighting
-                Switch item=Light_Dim_BathroomCeiling
-                Slider item=Light_Dim_BathroomCeiling
-                Slider item=Light_ColorTemp_BathroomCeiling
+                Switch item=Light_Dim_BathroomSink
+                Slider item=Light_Dim_BathroomSink
+                Slider item=Light_ColorTemp_BathroomSink
+                Switch item=Light_Dim_BathroomShower
+                Slider item=Light_Dim_BathroomShower
+                Slider item=Light_ColorTemp_BathroomShower
             }
             Text item=gLight_Brightness_Outside {
                 // Outside lighting group switch
@@ -233,6 +243,14 @@ sitemap default label="At Home" {
                 Slider  item=HallCeiling_ColorTemp_BRIGHT
                 Text    item=HallCeiling_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
+            Text item=gGarage {
+                Slider  item=Garage_Brightness_EVENING
+                Text    item=Garage_Brightness_EVENING label="Brightness [%d]"
+                Slider  item=Garage_Brightness_WORK
+                Text    item=Garage_Brightness_WORK label="Brightness [%d]"
+                Slider  item=Garage_Brightness_BRIGHT
+                Text    item=Garage_Brightness_BRIGHT label="Brightness [%d]"
+            }
             Text item=Light_Scene_Bedroom {
                 Slider  item=Bedroom_Brightness_EVENING
                 Text    item=Bedroom_Brightness_EVENING label="Brightness [%d]"
@@ -247,19 +265,33 @@ sitemap default label="At Home" {
                 Slider  item=Bedroom_ColorTemp_COSY
                 Text    item=Bedroom_ColorTemp_COSY label="ColorTemp [%d]"
             }
-            Text item=Light_Scene_Bathroom {
-                Slider  item=Bathroom_Brightness_EVENING
-                Text    item=Bathroom_Brightness_EVENING label="Brightness [%d]"
-                Slider  item=Bathroom_ColorTemp_EVENING
-                Text    item=Bathroom_ColorTemp_EVENING label="ColorTemp [%d]"
-                Slider  item=Bathroom_Brightness_READ
-                Text    item=Bathroom_Brightness_READ label="Brightness [%d]"
-                Slider  item=Bathroom_ColorTemp_READ
-                Text    item=Bathroom_ColorTemp_READ label="ColorTemp [%d]"
-                Slider  item=Bathroom_Brightness_BRIGHT
-                Text    item=Bathroom_Brightness_BRIGHT label="Brightness [%d]"
-                Slider  item=Bathroom_ColorTemp_BRIGHT
-                Text    item=Bathroom_ColorTemp_BRIGHT label="ColorTemp [%d]"
+            Text item=Light_Scene_BathroomSink {
+                Slider  item=BathroomSink_Brightness_EVENING
+                Text    item=BathroomSink_Brightness_EVENING label="Brightness [%d]"
+                Slider  item=BathroomSink_ColorTemp_EVENING
+                Text    item=BathroomSink_ColorTemp_EVENING label="ColorTemp [%d]"
+                Slider  item=BathroomSink_Brightness_READ
+                Text    item=BathroomSink_Brightness_READ label="Brightness [%d]"
+                Slider  item=BathroomSink_ColorTemp_READ
+                Text    item=BathroomSink_ColorTemp_READ label="ColorTemp [%d]"
+                Slider  item=BathroomSink_Brightness_BRIGHT
+                Text    item=BathroomSink_Brightness_BRIGHT label="Brightness [%d]"
+                Slider  item=BathroomSink_ColorTemp_BRIGHT
+                Text    item=BathroomSink_ColorTemp_BRIGHT label="ColorTemp [%d]"
+            }
+            Text item=Light_Scene_BathroomShower {
+                Slider  item=BathroomShower_Brightness_EVENING
+                Text    item=BathroomShower_Brightness_EVENING label="Brightness [%d]"
+                Slider  item=BathroomShower_ColorTemp_EVENING
+                Text    item=BathroomShower_ColorTemp_EVENING label="ColorTemp [%d]"
+                Slider  item=BathroomShower_Brightness_READ
+                Text    item=BathroomShower_Brightness_READ label="Brightness [%d]"
+                Slider  item=BathroomShower_ColorTemp_READ
+                Text    item=BathroomShower_ColorTemp_READ label="ColorTemp [%d]"
+                Slider  item=BathroomShower_Brightness_BRIGHT
+                Text    item=BathroomShower_Brightness_BRIGHT label="Brightness [%d]"
+                Slider  item=BathroomShower_ColorTemp_BRIGHT
+                Text    item=BathroomShower_ColorTemp_BRIGHT label="ColorTemp [%d]"
             }
             Text item=Light_Scene_Laundry
             {
@@ -526,6 +558,12 @@ sitemap default label="At Home" {
     //     Switch  item=VoC_Heater
     //     Text    item=VoC_Service_Warning
     // }
+
+// Frame label="AC Study" {
+//     text    item=AC_SpecialMode_Study
+//     text    item=AC_Powerfull_Study
+//     text    item=AC_Energy_Study
+// }
 
     // Hide default navigation
 	Webview url="/static/hideheader.html" icon=none

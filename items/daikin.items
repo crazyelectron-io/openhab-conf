@@ -147,6 +147,23 @@ String							AC_FanDirection_Study
 								(gStudy,gACStudy)
 								{channel="daikin:ac_unit:192_168_2_137:fandir"}
 
+// String							AC_SpecialMode_Study
+// 								"Special Mode [%s]"
+// 								<fan>
+// 								(gStudy,gACStudy)
+// 								{channel="daikin:ac_unit:192_168_2_137:specialmode"}
+
+// String							AC_Powerfull_Study
+// 								"Powerfull [%s]"
+// 								<fan>
+// 								(gStudy,gACStudy)
+// 								{channel="daikin:ac_unit:192_168_2_137:specialmode-powerful"}
+
+// String							AC_Energy_Study
+// 								"Energy Cooling June [%s]"
+// 								<fan>
+// 								(gStudy,gACStudy)
+// 								{channel="daikin:ac_unit:192_168_2_137:energycoolingcurrentyear-6"}
 
 //--------------------------------------------------------------------------------------------------
 // Daikin Master Bedroom items

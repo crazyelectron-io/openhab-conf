@@ -28,7 +28,7 @@ def hueSceneSwitch(event):
         events.sendCommand("Light_Scene_Kitchen", command)
         events.sendCommand("Light_Scene_Hall", command)
         events.sendCommand("Light_Scene_Outside", command)
-		# Light_Scene_Lodge.sendCommand(command)
+        events.sendCommand("Light_Scene_Lodge", command)
         if command == "OFF":
             events.sendCommand("Light_Scene_HallCeiling", command)
         msg = "Day mode change: lights switched to Scene " + command

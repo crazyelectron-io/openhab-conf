@@ -1,0 +1,4 @@
+Bridge volvooncall:vocapi:v90 "VoC V90" @ "System" [username="ron@moerman.online", password="F1etsB3L"]
+{
+    Thing vehicle V90 "V90" @ "World" [vin="YV1PW10BDH1023818", refreshinterval=5]
+}

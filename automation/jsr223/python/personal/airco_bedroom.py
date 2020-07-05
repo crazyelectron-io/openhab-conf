@@ -19,7 +19,7 @@ from core.utils import iround
 
 lastTime = ZonedDateTime.now()
 
-#==================================================================================================
+#===================================================================================================
 @rule("AC Bedroom Handling", description="Turn on or off AC in Bedroom based on time and temperature", tags=["astro"])
 @when("Item AC_Temp_Bedroom changed")
 @when("Item Alarm_Door_Bedroom changed")
@@ -29,13 +29,13 @@ def aircoBedroom(event):
     global lastTime
     nowTime = ZonedDateTime.now()
     # Define threshold values
-    tempNightThreshold = 16
-    tempMorningThreshold = 17
-    tempDayThreshold = 18
+    tempNightThreshold = 18
+    tempMorningThreshold = 19
+    tempDayThreshold = 20
     tempThreshold = tempDayThreshold
     outsideTempHiThreshold = 23
     outsideTempLoThreshold = 14
-    delay = 5                       # In minutes
+    delay = 10                       # In minutes
     # Get current temperature readings
     tempBedroom = iround(float(str(items["AC_Temp_Bedroom"])))
     tempOutside = iround(float(str(items["AC_Temp_Outdoor"])))
@@ -81,6 +81,7 @@ def aircoBedroom(event):
             aircoBedroom.log.info("Vacation mode is on, turn off AC and exit Daikin rule")
             events.sendCommand("AC_Power_Bedroom", "OFF")
             return
+
         # Check if bedroom temperature is above threshold to turn AC on
         if tempBedroom > tempThreshold:
             msg = "The bedroom temperature is rising, so I turned on the airco to keep it cool"
@@ -95,6 +96,7 @@ def aircoBedroom(event):
                 aircoBedroom.log.info("06. Bedroom temp is [{}], turn-AC-on flag set to [{}]".format(tempBedroom, turnOn))
             else:
                 aircoBedroom.log.info("07.Bedroom temp [{}] below threshold, but outside temp [{}], not turning off the AC if still on, AC-on is [{}]".format(tempBedroom, tempOutside, acIsOn))
+
     # Turn off the Airco if the door is open
     if doorIsOpen:
         if turnOn:

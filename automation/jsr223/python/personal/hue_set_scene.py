@@ -23,19 +23,24 @@ from core.triggers import when
 @when("Item Light_Scene_Dining changed")
 @when("Item Light_Scene_Hall changed")
 @when("Item Light_Scene_HallCeiling changed")
-@when("Item Light_Scene_Bathroom changed")
+@when("Item Light_Scene_BathroomShower changed")
+@when("Item Light_Scene_BathroomSink changed")
 @when("Item Light_Scene_Bedroom changed")
 @when("Item Light_Scene_Lodge changed")
 @when("Item Light_Scene_Guestroom changed")
 @when("Item Light_Scene_Laundry changed")
 @when("Item Light_Scene_Outside changed")
+@when("Item Light_Scene_Lodge changed")
 def hueSetScene(event):
     hueSetScene.log.info("[{}] changed, state is [{}], previous state [{}]".format(event.itemName, event.itemState, event.oldItemState))
     if event.oldItemState is None:
         return
+
     lightArea = event.itemName.split('_')[2]
     scene = str(event.itemState)
     lightGroup = ir.getItem("gLight_Brightness_" + lightArea)
+    hueSetScene.log.info("LightArea [{}], Scene [{}], LightGroup [{}]".format(lightArea, scene, lightGroup.name))
+
     if scene == "OFF":
         events.sendCommand(str(lightGroup.name), "OFF")
     elif scene in ["EVENING", "READ", "WORK", "BRIGHT", "MOVIE"]:
