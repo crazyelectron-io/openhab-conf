@@ -3,13 +3,13 @@
 airco_menno.py - Check the mode of the AC
 ----------------------------------------------------------------------------------------------------
 Changelog:
+20200724 v02    Added SetTemp command.
 20200705 v01    Created initial script.
 ----------------------------------------------------------------------------------------------------
 '''
 
 from core.rules import rule
 from core.triggers import when
-# from core.log import logging
 import configuration
 reload(configuration)
 
@@ -24,3 +24,4 @@ def aircoGuestroom(event):
         aircoGuestroom.log.info("01. Airco Guestroom is ON, set Mode to COLD and Fan to AUTO")
         events.sendCommand("AC_Mode_Guestroom", "COLD")
         events.sendCommand("AC_FanSpeed_Guestroom", "AUTO")
+        events.sendCommand("AC_SetTemp_Guestroom", "18")

@@ -6,31 +6,33 @@ sitemap default label="At Home" {
         Switch item=Day_Mode label="Dagfase []" icon="sun_clouds" mappings=[NIGHT="Night"] visibility=[Day_Mode=="NIGHT"]
 
         Text item=Weather_Condition label="Weer [%s]" icon="sun_clouds" {
-            Text item=Astro_Sun_RiseNext
-            Text item=Astro_Sun_SetNext
-            Text item=Astro_Sun_Azimuth    visibility=[Astro_Sun_Elevation > 0]
-            Text item=Astro_Sun_Elevation  visibility=[Astro_Sun_Elevation > 0]
-            Text item=Astro_Moon_Phase     visibility=[Astro_Sun_Elevation <= 0]
-            Text item=Astro_Moon_Distance  visibility=[Astro_Sun_Elevation <= 0]
-            Text item=Astro_Moon_FullNext
-            Text item=Astro_Moon_NewNext
-
+            Frame label="Astro" {
+                Text item=Astro_Sun_RiseNext
+                Text item=Astro_Sun_SetNext
+                Text item=Astro_Sun_Azimuth    visibility=[Astro_Sun_Elevation > 0]
+                Text item=Astro_Sun_Elevation  visibility=[Astro_Sun_Elevation > 0]
+                Text item=Astro_Moon_Phase     visibility=[Astro_Sun_Elevation <= 0]
+                Text item=Astro_Moon_Distance  visibility=[Astro_Sun_Elevation <= 0]
+                Text item=Astro_Moon_FullNext
+                Text item=Astro_Moon_NewNext
+            }
+            Frame label="Weather" {
+            Text item=Weather_TempAverage_Outdoor label="Buitentemperatuur [%.0f °C]"
             Text item=Temp_Avg_Livingroom valuecolor=[>22="red",>20="green",>19="orange",<19="blue"]
             Text item=NHC_CO2_Livingroom label="CO2 woonkamer [%.0f ppm]" valuecolor=[>1900="red",>1400="orange",<1400="green"]
             Text item=NHC_Humidity_Livingroom valuecolor=[>60="orange",>40="green",<=40="red"]
-            Text item=Alarm_Humidity_SmokeGarage
-            Text item=Alarm_Humidity_SmokeCorridor
-            Text item=Weather_TempAverage_Outdoor label="Buitentemperatuur [%.0f °C]"
-
+            Text item=Alarm_Temp_SirenKitchen    label="Keuken temperatuur [%.1f °C]"
             Text item=Motion_Temperature_Toilet     label="Toilet temperatuur [%.1f °C]"
             Text item=Alarm_Temp_SmokeGarage    label="Garage temperatuur [%.1f °C]"
+            Text item=Alarm_Humidity_SmokeGarage
             Text item=Alarm_Temp_SmokeCorridor   label="Boven temperatuur [%.1f °C]"
-            Text item=Alarm_Temp_SirenKitchen    label="Keuken temperatuur [%.1f °C]"
+            Text item=Alarm_Humidity_SmokeCorridor
 
             Text item=AC_Temp_Bedroom label="Slaapkamer [%.1f °C]" valuecolor=[>23="red",>18="orange",<=18="green"]
             Text item=AC_Temp_Study label="Werkkamer [%.1f °C]" valuecolor=[>23="red",>18="orange",<=18="green"]
             Text item=AC_Temp_Laundry label="Stephan's kamer [%.1f °C]" valuecolor=[>23="red",>20="orange",>10="green",<=10="blue"]
             Text item=AC_Temp_Guestroom label="Menno's kamer [%.1f °C]" valuecolor=[>23="red",>19="orange",>10="green",<=10="blue"]
+            }
         }
         Text item=Temp_Avg_Livingroom           valuecolor=[>22="red",>20="green",>19="orange",<19="blue"]
         Text item=Weather_TempAverage_Outdoor   label="Buitentemperatuur [%.0f °C]"
@@ -349,7 +351,7 @@ sitemap default label="At Home" {
             Text item=Power_Delta_L3_Current
         }
 
-        Text item=Solar_Prod_Current {
+        Text item=Solar_Power_Actual {
             // Switch item=Solar_Panel1 mappings=[SOLAR_PWR="Production", SOLAR_FREQ="Frequency"] icon="chart"
             // Switch item=Solar_Period1 mappings=[HR8_15="8 Hr", TDY_30="Today", YDY_30="Yesterday", WK_1="Week", LWK_1="Last week"] label="" icon="calendar"
             // Webview url="/static/grafana.html?kiosk&dashboard=openhab&fullscreen&theme=dark&fromItem=Solar_Period1&panelItem=Solar_Panel1" height=12 icon="line"

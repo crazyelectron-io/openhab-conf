@@ -236,17 +236,17 @@ Switch							AC_MessageRepeat
 //--------------------------------------------------------------------------------------------------
 Switch							AC_Vacation_Bedroom
 								"AC Bedroom vacation Mode"
-								(gBedroom,gACBedroom)
+								(gBedroom,gACBedroom,gPersist)
 
 Switch							AC_Vacation_Guestroom
 								"AC Guestroom vacation Mode"
-								(gGuestroom,gACGuestroom)
+								(gGuestroom,gACGuestroom,gPersist)
 
 Switch							AC_Vacation_Laundry
 								"AC Laundry room vacation Mode"
-								(gLaundry,gACLaundry)
+								(gLaundry,gACLaundry,gPersist)
 
 Switch							AC_Vacation_Study
 								"AC Study vacation Mode"
-								(gStudy,gACStudy)
+								(gStudy,gACStudy,gPersist)
 
