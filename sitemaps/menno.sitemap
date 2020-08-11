@@ -1,18 +1,13 @@
 sitemap menno label="Menno" {
-    Switch item=Day_Mode label="Dagfase []" icon="sun_clouds" mappings=[MORNING="Morning"] visibility=[Day_Mode=="MORNING"]
-    Switch item=Day_Mode label="Dagfase []" icon="sun_clouds" mappings=[DAY="Day"] visibility=[Day_Mode=="DAY"]
-    Switch item=Day_Mode label="Dagfase []" icon="sun_clouds" mappings=[EVENING="Evening"] visibility=[Day_Mode=="EVENING"]
-    Switch item=Day_Mode label="Dagfase []" icon="sun_clouds" mappings=[NIGHT="Night"] visibility=[Day_Mode=="NIGHT"]
-
     Text item=Weather_TempAverage_Outdoor label="Buitentemperatuur [%.0f °C]"
-    Text item=AC_Temp_Guestroom label="Menno's kamer [%.1f °C]" valuecolor=[>23="red",>19="orange",>10="green",<=10="blue"]
+    // Text item=AC_Temp_Guestroom label="Menno's kamer [%.1f °C]" valuecolor=[>23="red",>19="orange",>10="green",<=10="blue"]
 
     Text item=AC_Temp_Guestroom label="Menno" icon="snow" visibility=[AC_Power_Guestroom==ON]
     Text item=AC_Temp_Guestroom label="Menno" icon="switch" visibility=[AC_Power_Guestroom==OFF]
     Switch item=AC_Power_Guestroom
+    Switch item=AC_Timer_Guestroom label="Nachtmodus [%s]" icon="switch"
     Setpoint item=AC_SetTemp_Guestroom minValue=18 maxValue=23 step=1
     Switch item=AC_Mode_Guestroom label="" mappings=["AUTO"="Auto", "COLD"="Koud", "HEAT"="Warm"]
-    Switch item=AC_Timer_Guestroom label="Nachtmodus [%s]" icon="switch"
 
     Webview url="/static/hideheader.html" icon=none
 }
