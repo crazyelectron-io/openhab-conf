@@ -534,6 +534,7 @@ sitemap default label="At Home" {
             Switch item=AC_Mode_Guestroom label="" mappings=["AUTO"="Auto", "COLD"="Koud", "HEAT"="Warm"]
             Switch item=AC_FanSpeed_Guestroom label="" mappings=["AUTO"="Auto", "SILENCE"="Stil", "LEVEL_2"="1", "LEVEL_3"="2", "LEVEL_5"="3"]
             Text item=AC_FanDirection_Guestroom label=""
+            Switch item=AC_Timer_Guestroom label="Nachtmodus [%s]" icon="switch"
         }
     }
 

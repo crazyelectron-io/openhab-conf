@@ -100,6 +100,11 @@ String							AC_FanDirection_Guestroom
 								(gGuestroom)
 								{channel="daikin:ac_unit:192_168_2_160:fandir"}
 
+Switch							AC_Timer_Guestroom
+								"AC Sleep On Timer [%S]"
+								(gGuestroom, gResetExpire)
+								{expire="2h, command=OFF"}
+
 //--------------------------------------------------------------------------------------------------
 // Daikin AC Study items
 //--------------------------------------------------------------------------------------------------
