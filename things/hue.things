@@ -97,26 +97,26 @@ Bridge hue:bridge:0017882ec5b3 [ipAddress="192.168.2.98", userName="BwV8002ZezIL
     //----------------------------------------------------------------------------------------------
 
     // Outdoor leftside house light
-    0100 bulb_lhouse [lightId="2", fadetime=1000]
+    0100 bulb_lhouse [lightId="2", fadetime=2000]
     // Outdoor left back light
-    0100 bulb_lback [lightId="5", fadetime=1000]
+    0100 bulb_lback [lightId="34", fadetime=2000]
     // Outdoor right back light
-    0100 bulb_rback [lightId="8", fadetime=1000]
+    0100 bulb_rback [lightId="35", fadetime=2000]
     // Outdoor toolshed left light
-    0100 bulb_shed [lightId="11", fadetime=1000]
+    0100 bulb_shed [lightId="11", fadetime=2000]
     // Outdoor terras lantern light
     // 0100 bulb_terrace [lightId="18", fadetime=1000]
     // Frontdoor light (vintage bulb)
-    0100 bulb_frontdoor [lightId="29", fadetime=1000]
+    0100 bulb_frontdoor [lightId="29", fadetime=2000]
 
     //----------------------------------------------------------------------------------------------
     // The Lodge
     //----------------------------------------------------------------------------------------------
 
     // The Lodge walllight right light (vintage bulb)
-    0100 bulb_lodge1 [lightId="30", fadetime=1000]
+    0100 bulb_lodge1 [lightId="30", fadetime=2000]
     // The Lodge walllight left light (vintage bulb)
-    0100 bulb_lodge2 [lightId="31", fadetime=1000]
+    0100 bulb_lodge2 [lightId="31", fadetime=2000]
 
     // Spare light
     // 0100 bulb_spare1 [lightId="21", fadetime=1000]

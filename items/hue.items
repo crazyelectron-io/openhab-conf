@@ -784,9 +784,8 @@ Group:Dimmer:AVG				gLight_Brightness_Outside
 								(gLight,gOutside)
 								{alexa="Lighting"}
 
-// Outside lights
 Dimmer							Light_Dim_OutsideLeftBack
-								"Lantaarn Left back"
+								"Lantaarn Linksachter"
 								<slider>
 								(gLight_Brightness_Outside,gLightSwitch_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_lhouse:brightness"}
@@ -798,7 +797,7 @@ Dimmer							Light_Dim_OutsideLeft
 								{channel="hue:0100:0017882ec5b3:bulb_lback:brightness"}
 
 Dimmer							Light_Dim_OutsideRight
-								"Lantern Right"
+								"Lantern Rechtsachter"
 								<slider>
 								(gLight_Brightness_Outside,gLightSwitch_Outside)
 								{channel="hue:0100:0017882ec5b3:bulb_rback:brightness"}
