@@ -15,8 +15,9 @@ from core.actions import NotificationAction
 @rule("Hue Scene Switch", description="Turn lights on and off based on the Day Mode", tags=["astro"])
 @when("Item Day_Mode changed")
 def hueSceneSwitch(event):
-    if event.oldItemState is None:
+    if isinstance(event.oldItemState, UnDefType) or event.oldItemState is None:
         return
+
     hueSceneSwitch.log.info("{name} changed to {newState} from {oldState}".format(name=event.itemName, newState=event.itemState, oldState=event.oldItemState))
     # Determine the Scene to select (if any)
     command = "OFF" if str(ir.getItem("Day_Mode").state) == "DAY" else "EVENING" if str(ir.getItem("Day_Mode").state) == "EVENING" else ""

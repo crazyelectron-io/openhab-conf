@@ -1,0 +1,7 @@
+Rollershutter Shelly_GarageDoor_Roller "Garage Door Rollershutter"   {channel="shelly:shelly25-roller:68c63af9c3ec:roller#control"}
+Dimmer Shelly_GarageDoor_Position "Garage Door Roller position"   {channel="shelly:shelly25-roller:68c63af9c3ec:roller#rollerpos"}
+Switch Shelly_GarageDoor_Switch "Garage Door Roller switch"   {channel="shelly:shelly25-roller:68c63af9c3ec:roller#input"}
+String Shelly_GarageDoor_Direction "Garage Door Roller direction"   {channel="shelly:shelly25-roller:68c63af9c3ec:roller#lastDirection"}
+Switch Shelly_GarageDoor_Stop "Garage Door Roller stop"   {channel="shelly:shelly25-roller:68c63af9c3ec:roller#stopReason"}
+Number Shelly_GarageDoor_Power "Garage Door Roller power"   {channel="shelly:shelly25-roller:68c63af9c3ec:meter#currentWatts"}
+Number Shelly_GarageDoor_TotPwr "Garage Door Roller totPower"   {channel="shelly:shelly25-roller:68c63af9c3ec:meter#totalKWH"}
