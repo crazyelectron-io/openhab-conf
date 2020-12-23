@@ -1,0 +1,31 @@
+// import org.eclipse.smarthome.core.types.RefreshType
+
+// rule "Handle Refesh of Verisure"
+// when
+//     Item RefreshVerisure received command
+// then
+//     var String command = RefreshVerisure.state.toString.toLowerCase
+//     logDebug("RULES","RefreshVerisure Rule command: " + command)
+//     sendCommand(VerisureBridgeStatus, RefreshType.REFRESH)
+// end
+
+// rule "Verisure SmartLock Event Triggers"
+// when
+//     Channel "verisure:smartLock:myverisure:JannesSmartLock:smartLockTriggerChannel" triggered
+// then
+//     logInfo("RULES", "A SmartLock trigger event was detected:" + receivedEvent.toString())
+// end
+
+// rule "Verisure Gateway Event Triggers"
+// when
+//     Channel "verisure:gateway:myverisure:JannesGateway:gatewayTriggerChannel" triggered
+// then
+//     logInfo("RULES", "A Gateway trigger event was detected:" + receivedEvent.toString())
+// end
+
+rule "Verisure DoorWindow Event Triggers"
+when
+    Channel "verisure:doorWindowSensor:myverisure:garageDoorSensor:doorWindowTriggerChannel" triggered
+then
+    logInfo("RULES", "A DoorWindow trigger event was detected:" + receivedEvent.toString())
+end

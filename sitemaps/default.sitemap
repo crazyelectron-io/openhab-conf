@@ -538,6 +538,17 @@ sitemap default label="At Home" {
         }
     }
 
+    Frame label="RollerShutters" {
+        Default item=Shelly_GarageDoor_Roller 
+        Slider item=Shelly_GarageDoor_Position
+        // Switch item=Shelly_GarageDoor_Switch1 icon="switch"
+        // Switch item=Shelly_GarageDoor_Switch2 icon="switch"
+        // Text item=Shelly_GarageDoor_Direction
+        // Switch item=Shelly_GarageDoor_Stop icon="switch"
+        // Text item=Shelly_GarageDoor_Power label="Garage Door Roller power [%d W]"
+        // Text item=Shelly_GarageDoor_TotPwr label="Garage Door Roller totPower [%d Wh]"
+    }
+
     // Frame label="Volvo V90" {
     //     Group   item=gVoC_Door_Status label="Deuren [%s]" icon="car" valuecolor=[>3="red",>1="orange",<2="green"]
     //     Switch  item=gVoC_Window_Status

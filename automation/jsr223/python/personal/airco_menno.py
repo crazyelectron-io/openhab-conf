@@ -71,4 +71,4 @@ def aircoGuestroomNightOff(event):
         aircoGuestroomNightOff.log.info("01. NightMode Timer OFF, check temperature")
         # if tempGuestroom > 18:
         aircoGuestroomNightOff.log.info("02. Temp Guestroom is above minimum, turn on airco")
-        events.sendCommand("AC_Power_Guestroom", "ON")
+        # events.sendCommand("AC_Power_Guestroom", "ON")
