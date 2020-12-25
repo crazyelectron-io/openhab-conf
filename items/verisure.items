@@ -180,9 +180,17 @@ DateTime						Alarm_Update_Connect
 								{channel="verisure:broadbandConnection:myverisure:broadband1:timestamp"}
 
 String							Alarm_Status_Connect
-								"Internetverbinding [%s]"
-								{channel="verisure:broadbandConnection:myverisure:bc123456789:connected"}
+								"Internet connection [%s]"
+								{channel="verisure:broadbandConnection:myverisure:bc57046073518:connected"}
 
 String							Alarm_Status_Connect1
 								"Internet connection [%s]"
 								{channel="verisure:broadbandConnection:myverisure:broadband1:connected"}
+
+String							VerisureGatewayModel
+								"Gateway Model"
+								{channel="verisure:gateway:myverisure:verisureGateway:model"}
+
+String 							Alarm_Eventlog               
+								"Alarm Eventlog"
+								{channel="verisure:eventLog:myverisure:alarmEventlog:eventLog"}

@@ -121,7 +121,7 @@ def aircoBedroom(event):
             aircoBedroom.log.info(msg)
             if items["AC_MessageRepeat"] != ON:
                 aircoBedroom.log.debug("15. Sending message [{}] to Alexa".format(msg))
-                Echo_TTS_Livingroom.sendCommand(msg)
+                # Echo_TTS_Livingroom.sendCommand(msg)
                 events.sendCommand("AC_MessageRepeat", "ON")
             else:
                 aircoBedroom.log.debug("16. Skipping message [{}] to Alexa".format(msg))

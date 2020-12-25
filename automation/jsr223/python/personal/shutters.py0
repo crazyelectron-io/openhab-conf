@@ -1,0 +1,25 @@
+'''
+----------------------------------------------------------------------------------------------------
+shutters.py - Handle roller shutter processing with Shelly modules.
+----------------------------------------------------------------------------------------------------
+Changelog:
+20200822 v01    Created initial script.
+----------------------------------------------------------------------------------------------------
+'''
+
+from core.rules import rule
+from core.triggers import when
+import configuration
+reload(configuration)
+from core.actions import NotificationAction
+from core.date import ZonedDateTime,minutes_between
+from core.utils import iround
+
+
+#===================================================================================================
+@rule("Shutter Garage Door Handling", description="xxxxxx", tags=["shutter"])
+@when("Item Alarm_Door_Bedroom changed")
+@when("Time cron 0 */10 * * * ?")
+@when("System started")
+def shutterGarageDoor(event):
+    #--- Define threshold values
