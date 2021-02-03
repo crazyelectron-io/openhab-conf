@@ -1,0 +1,250 @@
+
+//====== Rollershutter sidedoor garage ======
+Rollershutter                   Shelly_GarageDoor_Roller
+                                "Garagedoor Rollershutter"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:roller#control"}
+
+Dimmer                          Shelly_GarageDoor_Position
+                                "Garagedoor Roller Position [%d]"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:roller#rollerpos"}
+
+String                          Shelly_GarageDoor_State
+                                "Garagedoor Rollershutter state [%s]"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:roller#state"}
+
+String                          Shelly_GarageDoor_Stop
+                                "Garagedoor Roller stop [%s]"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:roller#stopReason"}
+
+Switch                          Shelly_GarageDoor_Switch1
+                                "Garagedoor Roller Switch1"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:roller#input1"}
+
+Switch                          Shelly_GarageDoor_Switch2
+                                "Garagedoor Roller Switch2"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:roller#input2"}
+
+DateTime                        Shelly_GarageDoor_LastUpdate
+                                "Garagedoor Roller Last update [%1$tH:%1$tM]"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:meter#lastUpdate"}
+
+String                          Shelly_GarageDoor_Direction
+                                "Garagedoor Roller Direction [%s]"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:roller#lastDirection"}
+
+Number:Power                    Shelly_GarageDoor_Power
+                                "Garagedoor Roller power [%d W]"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:meter#currentWatts"}
+
+Number:Energy                   Shelly_GarageDoor_TotPwr
+                                "Garagedoor Roller totPower [%.3f kWh]"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:meter#totalKWH"}
+
+Number                          Shelly_GarageDoor_WiFi
+                                "Garagedoor Roller Wifi signal"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:device#wifiSignal"}
+
+Number:Temperature              Shelly_GarageDoor_InternalTemp
+                                "Garagedoor Roller Temp [%.1f %unit%]"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:device#internalTemp"}
+
+Switch                          Shelly_GarageDoor_UpdateAvail
+                                "Garagedoor Roller Update available"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:device#updateAvailable"}
+
+Number                          Shelly_GarageDoor_Uptime
+                                "Garagedoor Roller uptime [%d]"
+                                {channel="shelly:shelly25-roller:68c63af9c3ec:device#uptime"}
+
+//====== Dryer power metering ======
+Switch                          Shelly_Dryer_Switch
+                                "Dryer"
+                                <switch>
+                                (gPersist)
+                                {channel="shelly:shellyplugs:1601b4:relay#output"}
+
+Number:Power                    Shelly_Dryer_Power_Current
+                                "Dryer Actual Power [%d W]"
+                                (gHist0)
+                                {channel="shelly:shellyplugs:1601b4:meter#currentWatts"}
+
+Number:Energy                    Shelly_Dryer_Power_Total
+                                "Dryer Total Power [%.3f kWh]"
+                                (gHist5)
+                                {channel="shelly:shellyplugs:1601b4:meter#totalKWH"}
+
+DateTime                        Shelly_Dryer_LastUpdate
+                                "Dryer Last Update [%1$tH:%1$tM]"
+                                {channel="shelly:shellyplugs:1601b4:meter#lastUpdate"}
+
+Switch                          Shelly_Dryer_UpdateAvailable
+                                "Dryer Switch Update Available [%s]"
+                                {channel="shelly:shellyplugs:1601b4:device#updateAvailable"}
+
+Number:Temperature              Shelly_Dryer_InternalTemp
+                                "Dryer Switch Temperature [%.1f %unit%]"
+                                {channel="shelly:shellyplugs:1601b4:device#internalTemp"}
+
+Number                          Shelly_Dryer_WifiSignal
+                                "Dryer Switch WiFi signal [%d]"
+                                {channel="shelly:shellyplugs:1601b4:device#wifiSignal"}
+
+//====== SideTable Livingroom Switch (Winter Fire bin) ======
+Switch                          Shelly_SideTable_Switch
+                                "Shelly SideTable Plug"
+                                (gPersist)
+                                {channel="shelly:shellyplugs:9a3f4e:relay#output"}
+
+Number:Power                    Shelly_SideTable_Power_Current
+                                "SideTable Fire bin Actual Power [%d W]"
+                                (gHist0)
+                                {channel="shelly:shellyplugs:9a3f4e:meter#currentWatts"}
+
+Number:Energy                    Shelly_SideTable_Power_Total
+                                "SideTable Fire bin Total Power [%.3f kWh]"
+                                (gHist5)
+                                {channel="shelly:shellyplugs:9a3f4e:meter#totalKWH"}
+
+DateTime                        Shelly_SideTable_LastUpdate
+                                "SideTable Fire bin Last Update [%1$tH:%1$tM]"
+                                {channel="shelly:shellyplugs:9a3f4e:meter#lastUpdate"}
+
+Switch                          Shelly_SideTable_UpdateAvailable
+                                "SideTable Front Lights Update Available [%s]"
+                                {channel="shelly:shellyplugs:9a3f4e:device#updateAvailable"}
+
+Number:Temperature              Shelly_SideTable_InternalTemp
+                                "SideTable Fire bin Temperature [%.1f %unit%]"
+                                {channel="shelly:shellyplugs:9a3f4e:device#internalTemp"}
+
+Number                          Shelly_SideTable_WifiSignal
+                                "SideTable Fire bin WiFi signal [%d]"
+                                {channel="shelly:shellyplugs:9a3f4e:device#wifiSignal"}
+
+//====== Nefit Central heating ======
+Switch                          Shelly_Nefit_Switch
+                                "Nefit Plug Switch"
+                                (gPersist)
+                                {channel="shelly:shellyplugs:169e7b:relay#output"}
+
+Number:Power                    Shelly_Nefit_Power
+                                "Nefit Plug Current power [%d W]"
+                                (gHist0)
+                                {channel="shelly:shellyplugs:169e7b:meter#currentWatts"}
+                
+Number:Energy                   Shelly_Nefit_Power_Total
+                                "Nefit Plug Total power [%.3f kWh]"
+                                (gHist5)
+                                {channel="shelly:shellyplugs:169e7b:meter#totalKWH"}
+
+DateTime                        Shelly_Nefit_LastUpdate
+                                "Nefit Plug Last Update [%1$tH:%1$tM]"
+                                {channel="shelly:shellyplugs:169e7b:meter#lastUpdate"}
+
+Switch                          Shelly_Nefit_UpdateAvailable
+                                "Nefit Plug Update Available [%s]"
+                                {channel="shelly:shellyplugs:169e7b:device#updateAvailable"}
+
+Number:Temperature              Shelly_Nefit_InternalTemp
+                                "Nefit Plug Temperature [%.1f %unit%]"
+                                {channel="shelly:shellyplugs:169e7b:device#internalTemp"}
+
+Number                          Shelly_Nefit_WifiSignal
+                                "Nefit Plug WiFi signal [%d]"
+                                {channel="shelly:shellyplugs:169e7b:device#wifiSignal"}
+
+//====== Freezer ======
+Switch                          Shelly_Freezer_Switch
+                                "Shelly Freezer Switch"
+                                (gPersist)
+                                {channel="shelly:shellyplugs:9a3f3a:relay#output"}
+
+Number:Power                    Shelly_Freezer_Power
+                                "Shelly Freezer Current power [%d W]"
+                                (gHist0)
+                                {channel="shelly:shellyplugs:9a3f3a:meter#currentWatts"}
+
+Number:Energy                   Shelly_Freezer_Power_Total
+                                "Shelly Freezer Total power [%d.3f kWh]"
+                                (gHist5)
+                                {channel="shelly:shellyplugs:9a3f3a:meter#totalKWH"}
+
+DateTime                        Shelly_Freezer_LastUpdate
+                                "Shelly Freezer Last Update [%1$tH:%1$tM]"
+                                {channel="shelly:shellyplugs:9a3f3a:meter#lastUpdate"}
+
+Switch                          Shelly_Freezer_UpdateAvailable
+                                "Shelly Freezer Update Available [%s]"
+                                {channel="shelly:shellyplugs:9a3f3a:device#updateAvailable"}
+
+Number:Temperature              Shelly_Freezer_InternalTemp
+                                "Shelly Freezer Temperature [%.1f %unit%]"
+                                {channel="shelly:shellyplugs:9a3f3a:device#internalTemp"}
+
+Number                          Shelly_Freezer_WifiSignal
+                                "Shelly Freezer WiFi signal [%d]"
+                                {channel="shelly:shellyplugs:9a3f3a:device#wifiSignal"}
+
+//====== Jura S8 Coffee maker  ======
+Switch                          Shelly_Jura_Switch
+                                "Shelly Jura Switch"
+                                (gPersist)
+                                {channel="shelly:shellyplugs:97757a:relay#output"}
+
+Number:Power                    Shelly_Jura_Power
+                                "Shelly Jura Current power [%d W]"
+                                (gHist0)
+                                {channel="shelly:shellyplugs:97757a:meter#currentWatts"}
+
+Number:Energy                   Shelly_Jura_Power_Total
+                                "Shelly Jura Total power [%.3f kWh]"
+                                (gHist5)
+                                {channel="shelly:shellyplugs:97757a:meter#totalKWH"}
+
+DateTime                        Shelly_Jura_LastUpdate
+                                "Shelly Jura Last Update [%1$tH:%1$tM]"
+                                {channel="shelly:shellyplugs:97757a:meter#lastUpdate"}
+
+Switch                          Shelly_Jura_UpdateAvailable
+                                "Shelly Jura Update Available [%s]"
+                                {channel="shelly:shellyplugs:97757a:device#updateAvailable"}
+
+Number:Temperature              Shelly_Jura_InternalTemp
+                                "Shelly Jura Temperature [%.1f %unit%]"
+                                {channel="shelly:shellyplugs:97757a:device#internalTemp"}
+
+Number                          Shelly_Jura_WifiSignal
+                                "Shelly Jura WiFi signal [%d]"
+                                {channel="shelly:shellyplugs:97757a:device#wifiSignal"}
+
+//====== Floor heater pump  ======
+Switch                          Shelly_FloorPump_Switch
+                                "Shelly FloorPump Switch"
+                                (gPersist,gHist5)
+                                {channel="shelly:shellyplugs:9d9ab3:relay#output"}
+
+Number:Power                    Shelly_FloorPump_Power
+                                "Shelly FloorPump Current power [%d W]"
+                                (gHist0)
+                                {channel="shelly:shellyplugs:9d9ab3:meter#currentWatts"}
+
+Number:Energy                   Shelly_FloorPump_Power_Total
+                                "Shelly FloorPump Total power [%.3f kWh]"
+                                (gHist5)
+                                {channel="shelly:shellyplugs:9d9ab3:meter#totalKWH"}
+
+DateTime                        Shelly_FloorPump_LastUpdate
+                                "Shelly FloorPump Last Update [%1$tH:%1$tM]"
+                                {channel="shelly:shellyplugs:9d9ab3:meter#lastUpdate"}
+
+Switch                          Shelly_FloorPump_UpdateAvailable
+                                "Shelly FloorPump Update Available [%s]"
+                                {channel="shelly:shellyplugs:9d9ab3:device#updateAvailable"}
+
+Number:Temperature              Shelly_FloorPump_InternalTemp
+                                "Shelly FloorPump Temperature [%.1f %unit%]"
+                                {channel="shelly:shellyplugs:9d9ab3:device#internalTemp"}
+
+Number                          Shelly_FloorPump_WifiSignal
+                                "Shelly FloorPump WiFi signal [%d]"
+                                {channel="shelly:shellyplugs:9d9ab3:device#wifiSignal"}
