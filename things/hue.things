@@ -90,7 +90,7 @@ Bridge hue:bridge:0017882ec5b3 [ipAddress="192.168.2.98", userName="BwV8002ZezIL
     //----------------------------------------------------------------------------------------------
 
     // Bathroom ceiling light
-    0220 bulb_bathceiling [lightId="28", fadetime=800]
+    // 0220 bulb_bathceiling [lightId="28", fadetime=800]
 
     //----------------------------------------------------------------------------------------------
     // Outside house/garden
