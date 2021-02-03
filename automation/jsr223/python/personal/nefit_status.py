@@ -46,6 +46,8 @@ from configuration import LOG_PREFIX, NEFIT_API_URL, NEFIT_BRIDGE_URL
 import json # pylint: disable=unused-import
 import requests
 from core.utils import sendCommandCheckFirst
+from core.actions import PersistenceExtensions
+
 
 #==================================================================================================
 @rule("Nefit Easy Status Update", description="Get the Nefit CH/HW system status every minute", tags=["energy"])
@@ -97,6 +99,7 @@ def nefitStatus(event):
             sendCommandCheckFirst("CV_Heater_Active", "OFF")
             sendCommandCheckFirst("CV_HotWater_Active", "OFF")
 
+
 #===================================================================================================
 @rule("Nefit Check Online", description="Check if Netfit and Netatmo devices are still sending updates", tags=["heating"])
 @when("Item CV_Temp_Livingroom received update")
@@ -104,6 +107,39 @@ def nefitStatus(event):
 def nefitCheck(event):
     nefitCheck.log.debug("Received update from {}, reset watchdog".format(event.itemName))
     events.sendCommand("CV_Watchdog" if event.itemName == "CV_Temp_Livingroom" else "NHC_Watchdog", "ON")
+
+
+#===================================================================================================
+@rule("Nefit Control Floor Pump", description="Switch Floor heating Pump based on CV status", tags=["heating"])
+@when("Item CV_Heater_Active received command")
+def nefitPumpCheck(event):
+    nefitPumpCheck.log.info("{name} received command {command}".format(name=event.itemName, command=event.itemCommand))
+    if str(event.itemCommand) == "OFF":
+        nefitPumpCheck.log.info("CV heater switched off, wait 5 minutes before turning off the Floor Pump")
+        if str(ir.getItem("Shelly_FloorPump_Switch")) == "OFF":
+            nefitPumpCheck.log.info("Shelly FloorPump is already off, exit rule")
+            return
+        nefitPumpCheck.log.info("Shelly Floor Pump is on, set 5 minute expire switch")
+        events.sendCommand("CV_Pump_Off", "ON")
+    if str(event.itemCommand) == "ON":
+        nefitPumpCheck.log.info("CV heater switched on, turn on the Floor Pump")
+        events.sendCommand("CV_Pump_Off", "OFF")
+        events.sendCommand("Shelly_FloorPump_Switch", "ON")
+
+
+#===================================================================================================
+@rule("CV Floor Pump", description="Switch Floor heating Pump based on CV status", tags=["heating"])
+@when("Item CV_Pump_Off received command")
+def nefitPumpSwitch(event):
+    nefitPumpSwitch.log.info("{name} received command {command}".format(name=event.itemName, command=event.itemCommand))
+    if str(event.itemCommand) == "OFF":
+        nefitPumpSwitch.log.info("CV Pump off timer expired")
+        if str(ir.getItem("CV_Heater_Active").state) == "ON":
+            # events.sendCommand("CV_Pump_Off", "ON")
+            nefitPumpSwitch.log.info("Timer expired but CV heater is active again, ignore timer")
+        else:
+            events.sendCommand("Shelly_FloorPump_Switch", "OFF")
+            nefitPumpSwitch.log.info("Timer expired, turn off the CV floor pump")
 
 #===================================================================================================
 #@rule("NefitNextProgram", description="Get the next programmed switch point (from the easy-server daemon)", tags=["heating"])

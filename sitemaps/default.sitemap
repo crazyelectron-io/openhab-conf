@@ -341,6 +341,15 @@ sitemap default label="At Home" {
         }
     }
 
+    Frame label="Shelly" {
+        Switch item=Shelly_Dryer_Switch
+        Switch item=Shelly_SideTable_Switch
+        Switch item=Shelly_Nefit_Switch
+        Switch item=Shelly_Freezer_Switch
+        Switch item=Shelly_Jura_Switch
+        Switch item=Shelly_FloorPump_Switch
+    }
+
     Frame label="Energie" {
         Text item=Power_Delta_All_Current {
             // Switch item=PwrPeriod1 mappings=[HR6_5="6 Hr",HR12_5="12 Hr",TDY_5="Today",YDY_5="Day-1",DBYDY_5="Day-2",WK_1="Week",LWK_1="Wk-1",MNT_1="Month",LMNT_1="Mn-1"] label="" icon="calendar"

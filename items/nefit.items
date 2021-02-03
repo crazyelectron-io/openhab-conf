@@ -86,3 +86,8 @@ Switch							CV_Online
 								<network>
 								(gSensorStatus, gResetExpire)
 								{channel="network:servicedevice:nefit:online", expire="5m", Static="meta"[name="Heating"]}
+
+Switch							CV_Pump_Off
+								"Timer for delayed floor pump switching"
+								(gResetExpire)
+								{expire="1m,command=OFF"}

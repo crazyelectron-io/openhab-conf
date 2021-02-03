@@ -22,7 +22,7 @@ tempGuestroom = iround(float(str(items["AC_Temp_Guestroom"])))
 @when("Time cron 0 */5 * * * ?")
 @when("System started")
 def aircoGuestroom(event):
-    aircoGuestroom.log.info("00. >>> Enter rule")
+    aircoGuestroom.log.debug("00. >>> Enter rule")
     global tempGuestroom
 
     # if not isinstance(ir.getItem("AC_Timer_Guestroom"), UnDefType) and items["AC_Timer_Guestroom"] == OFF:
@@ -44,7 +44,7 @@ def aircoGuestroom(event):
         events.sendCommand("AC_FanSpeed_Guestroom", "AUTO")
         events.sendCommand("AC_SetTemp_Guestroom", "18")
 
-    aircoGuestroom.log.info("99. >>> Exit rule")
+    aircoGuestroom.log.debug("99. >>> Exit rule")
 
 
 #==================================================================================================
