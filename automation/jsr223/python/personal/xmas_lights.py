@@ -37,7 +37,7 @@ def winterLivingRoomSwitch(event):
     winterLivingRoomSwitch.log.info("{name} changed to {newState} from {oldState}".format(name=event.itemName, newState=event.itemState, oldState=event.oldItemState))
     # Determine the Scene to select
     command = "OFF" if str(ir.getItem("Light_Scene_Livingroom").state) == "OFF" else "ON"
-    winterSceneSwitch.log.info("Send command [{}] to Winter livingroom lights".format(command))
+    winterLivingRoomSwitch.log.info("Send command [{}] to Winter livingroom lights".format(command))
     events.sendCommand("Shelly_SideTable_Switch", command)
     msg = "Livingroom lights change: Winter lights switched to Scene " + command
     NotificationAction.sendBroadcastNotification(msg)
