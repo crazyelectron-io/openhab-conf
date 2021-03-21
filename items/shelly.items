@@ -89,36 +89,36 @@ Number                          Shelly_Dryer_WifiSignal
                                 "Dryer Switch WiFi signal [%d]"
                                 {channel="shelly:shellyplugs:1601b4:device#wifiSignal"}
 
-//====== SideTable Livingroom Switch (Winter Fire bin) ======
-Switch                          Shelly_SideTable_Switch
-                                "Shelly SideTable Plug"
+//====== Bathroom floor Unifi AC-Pro Switch ======
+Switch                          Shelly_UnifiBathroom_Switch
+                                "Shelly Unifi Bathroom Plug"
                                 (gPersist)
                                 {channel="shelly:shellyplugs:9a3f4e:relay#output"}
 
-Number:Power                    Shelly_SideTable_Power_Current
-                                "SideTable Fire bin Actual Power [%d W]"
+Number:Power                    Shelly_UnifiBathroom_Power_Current
+                                "Unifi Bathroom AC-Pro AP Actual Power [%d W]"
                                 (gHist0)
                                 {channel="shelly:shellyplugs:9a3f4e:meter#currentWatts"}
 
-Number:Energy                    Shelly_SideTable_Power_Total
-                                "SideTable Fire bin Total Power [%.3f kWh]"
+Number:Energy                    Shelly_UnifiBathroom_Power_Total
+                                "Unifi Bathroom AC-Pro AP Total Power [%.3f kWh]"
                                 (gHist5)
                                 {channel="shelly:shellyplugs:9a3f4e:meter#totalKWH"}
 
-DateTime                        Shelly_SideTable_LastUpdate
-                                "SideTable Fire bin Last Update [%1$tH:%1$tM]"
+DateTime                        Shelly_UnifiBathroom_LastUpdate
+                                "Unifi Bathroom AC-Pro AP Last Update [%1$tH:%1$tM]"
                                 {channel="shelly:shellyplugs:9a3f4e:meter#lastUpdate"}
 
-Switch                          Shelly_SideTable_UpdateAvailable
-                                "SideTable Front Lights Update Available [%s]"
+Switch                          Shelly_UnifiBathroom_UpdateAvailable
+                                "Unifi Bathroom AC-Pro AP Update Available [%s]"
                                 {channel="shelly:shellyplugs:9a3f4e:device#updateAvailable"}
 
-Number:Temperature              Shelly_SideTable_InternalTemp
-                                "SideTable Fire bin Temperature [%.1f %unit%]"
+Number:Temperature              Shelly_UnifiBathroom_InternalTemp
+                                "Unifi Bathroom AC-Pro AP Temperature [%.1f %unit%]"
                                 {channel="shelly:shellyplugs:9a3f4e:device#internalTemp"}
 
-Number                          Shelly_SideTable_WifiSignal
-                                "SideTable Fire bin WiFi signal [%d]"
+Number                          Shelly_UnifiBathroom_WifiSignal
+                                "Unifi Bathroom AC-Pro AP WiFi signal [%d]"
                                 {channel="shelly:shellyplugs:9a3f4e:device#wifiSignal"}
 
 //====== Nefit Central heating ======

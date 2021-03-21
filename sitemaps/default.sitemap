@@ -343,7 +343,7 @@ sitemap default label="At Home" {
 
     Frame label="Shelly" {
         Switch item=Shelly_Dryer_Switch
-        Switch item=Shelly_SideTable_Switch
+        Switch item=Shelly_UnifiBathroom_Switch
         Switch item=Shelly_Nefit_Switch
         Switch item=Shelly_Freezer_Switch
         Switch item=Shelly_Jura_Switch
